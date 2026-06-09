@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE         .layout-grid { display: flex; flex-direction: <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -23,10 +23,11 @@
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             z-index: -1;
         }
 
+        /* NAGŁÓWEK Z NOWYMI LICZNIKAMI DLA TURYSTÓW */
         .header-panel {
             background: linear-gradient(135deg, #1e2530, #11141b);
             border: 2px solid #ffd700;
@@ -36,73 +37,94 @@
             margin-bottom: 20px;
             box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             box-sizing: border-box;
         }
 
-        .header-panel h2 { margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; color: #eaeded; }
-        .counter { font-size: 18px; font-weight: bold; color: #ffd700; }
+        .header-panel h2 { margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; color: #eaeded; }
+        .stats-container { display: flex; justify-content: center; gap: 40px; font-size: 16px; font-weight: bold; }
+        .stat-item { color: #fff; }
+        .stat-item span { color: #ffd700; font-size: 18px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
 
-        /* WIDOK GŁÓWNY: INTERAKTYWNA MAPA POLSKI */
+        /* NOWA WIDOCZNA MAPA POLSKI */
         #map-view {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 800px;
-            background: rgba(20,24,33,0.95);
+            max-width: 900px;
+            background: rgba(15, 19, 28, 0.95);
             padding: 25px;
             border-radius: 12px;
             border: 2px solid #ffd700;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
             box-sizing: border-box;
         }
-        #map-view h1 { color: #ffd700; font-size: 24px; margin: 0 0 20px 0; text-transform: uppercase; text-align: center; }
+        #map-view h1 { color: #ffd700; font-size: 22px; margin: 0 0 25px 0; text-transform: uppercase; text-align: center; letter-spacing: 1px; }
         
         .map-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 1.1 / 1;
-            background: #151922 url('https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=800&auto=format&fit=crop&q=60') no-repeat center;
-            background-size: cover;
-            border: 2px solid #2c3e50;
-            border-radius: 8px;
+            aspect-ratio: 1.2 / 1;
+            background: #11141b linear-gradient(145deg, #151922, #0b0d12);
+            border: 3px solid #2c3e50;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
         }
 
-        /* PINS DLA 10 MIAST */
+        /* DUŻE, WIDOCZNE PINEZKI I NAPISY MIAST */
         .city-pin {
             position: absolute;
-            width: 16px; height: 16px;
-            background-color: #ffd700;
-            border-radius: 50%;
             transform: translate(-50%, -50%);
             cursor: pointer;
-            box-shadow: 0 0 15px #ffd700;
-            transition: transform 0.2s;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .city-pin:hover { transform: translate(-50%, -50%) scale(1.3); background-color: #ff8c00; }
+        
+        .pin-dot {
+            width: 14px; height: 14px;
+            background-color: #ffd700;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ffd700, 0 0 10px #ff8c00;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        
         .city-label {
-            position: absolute; color: #fff; font-size: 11px; font-weight: bold; white-space: nowrap;
-            background: #000; padding: 3px 7px; border-radius: 3px; transform: translate(-50%, -180%);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 4px 10px;
+            border-radius: 5px;
+            margin-top: 5px;
             border: 1px solid #ffd700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.2s;
         }
 
-        /* Pozycjonowanie 10 miast na mapie poglądowej */
-        #pin-karpacz { top: 70%; left: 20%; }
-        #pin-zakopane { top: 85%; left: 55%; }
-        #pin-szklarska { top: 67%; left: 13%; }
-        #pin-kolobrzeg { top: 15%; left: 20%; }
-        #pin-sopot { top: 12%; left: 48%; }
-        #pin-krynica { top: 82%; left: 70%; }
-        #pin-milkow { top: 72%; left: 24%; }
-        #pin-wisla { top: 78%; left: 42%; }
-        #pin-swinoujscie { top: 14%; left: 8%; }
-        #pin-szczawnica { top: 84%; left: 63%; }
+        .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
+        .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 14px; }
+
+        /* Dokładne, rozbielone rozmieszczenie 10 miast na czystej mapie */
+        #pin-swinoujscie { top: 12%; left: 10%; }
+        #pin-kolobrzeg   { top: 10%; left: 25%; }
+        #pin-sopot        { top: 12%; left: 52%; }
+        #pin-szklarska    { top: 68%; left: 14%; }
+        #pin-karpacz      { top: 74%; left: 20%; }
+        #pin-milkow       { top: 71%; left: 27%; }
+        #pin-wisla        { top: 79%; left: 45%; }
+        #pin-zakopane     { top: 88%; left: 58%; }
+        #pin-szczawnica   { top: 85%; left: 70%; }
+        #pin-krynica      { top: 82%; left: 82%; }
 
         /* WIDOK PANELU REKLAMOWO-TURYSTYCZNEGO */
-        #dashboard-view { display: none; width: 100%; max-width: 1300px; }
+        #dashboard-view { display: none; width: 100%; max-width: 1450px; }
         
         .back-btn {
             background: #2c3e50; color: #ffd700; border: 1px solid #ffd700;
@@ -111,7 +133,7 @@
         }
         .back-btn:hover { background: #ffd700; color: #000; }
 
-        /* POTĘŻNA METALOWA RAMA BILLBOARDU */
+        /* METALOWA RAMA BILLBOARDU */
         .billboard-frame {
             background: linear-gradient(135deg, #bdc3c7 0%, #eaeded 25%, #95a5a6 50%, #eaeded 75%, #7f8c8d 100%);
             padding: 20px;
@@ -123,31 +145,26 @@
             width: 100%;
         }
 
-        .billboard-frame::after {
-            content: '•   •   •   •   •   •   •   •   •   •   •   •   •   •   •   •';
-            position: absolute; top: 4px; left: 0; width: 100%;
-            text-align: center; color: #555; font-size: 10px; letter-spacing: 25px;
-        }
-
         .billboard-inner { background-color: #1a1d24; border: 3px solid #2c3e50; padding: 15px; border-radius: 2px; }
-
         .layout-grid { display: flex; flex-direction: column; gap: 20px; }
-        @media(min-width: 1100px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
+        @media(min-width: 1250px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
 
-        /* SIATKA OKIENEK */
+        /* SIATKA DOKŁADNIE 100 OKIENEK (10 x 10) */
         .grid-board {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 6px;
+            grid-template-rows: repeat(10, 1fr);
+            gap: 5px;
             background-color: #11141b;
-            padding: 12px;
+            padding: 10px;
             border-radius: 4px;
             border: 2px solid #2c3e50;
-            flex: 1.2;
+            flex: 1.4;
             box-sizing: border-box;
+            aspect-ratio: 1;
         }
 
-        .cell-link { text-decoration: none; display: block; aspect-ratio: 1; }
+        .cell-link { text-decoration: none; display: block; width: 100%; height: 100%; }
 
         .grid-item {
             width: 100%; height: 100%;
@@ -167,14 +184,12 @@
             box-sizing: border-box;
             position: relative;
         }
-        .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
-
+        .cell-link:hover .grid-item { transform: scale(1.08); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
         
-        /* KAFeLEK ZAKUPIONY (PRAWDZIWE LOGO) */
         .grid-item.taken {
             background-color: #ffffff;
-            background-size: 80% auto;
+            background-size: 85% auto;
             background-repeat: no-repeat;
             background-position: center center;
             border: 1px solid #eaeded;
@@ -186,29 +201,44 @@
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
 
-        /* ŚRODKOWY TELEBIM */
+        /* ŚRODKOWY TELEBIM (Wiersze 4-7, Kolumny 4-7) */
         .grid-center {
-            grid-column: span 4; grid-row: span 4;
+            grid-column: 4 / span 4;
+            grid-row: 4 / span 4;
             background: linear-gradient(135deg, #0a0c10 0%, #151922 100%);
-            border: 3px solid #ffd700; border-radius: 4px; padding: 12px;
+            border: 3px solid #ffd700; border-radius: 4px; padding: 10px;
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.45);
             display: flex; flex-direction: column; justify-content: space-between;
             align-items: center; text-align: center; box-sizing: border-box;
+            position: relative; z-index: 2;
         }
-        .banner-crown { color: #ffd700; font-size: 10px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed #ffd700; padding-bottom: 4px;}
-        .banner-main-title { font-size: 15px; font-weight: 900; color: #ffd700; text-shadow: 0 0 8px rgba(255,215,0,0.6); }
-        #winnerName { font-size: 11px; color: #fff; font-weight: bold; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
-        .live-countdown { background: #ef4444; color: #fff; font-family: monospace; font-size: 12px; font-weight: bold; padding: 3px 8px; border-radius: 3px; }
+        .banner-crown { color: #ffd700; font-size: 9px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed #ffd700; padding-bottom: 2px;}
+        .banner-main-title { font-size: 13px; font-weight: 900; color: #ffd700; text-shadow: 0 0 8px rgba(255,215,0,0.6); }
+        #winnerName { font-size: 11px; color: #fff; font-weight: bold; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 4px; width: 95%; }
+        .live-countdown { background: #ef4444; color: #fff; font-family: monospace; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 3px; }
 
-        /* SEKCJA DWÓCH KÓŁ FORTUNY */
+        /* MINI KOŁO DO BANERU GŁÓWNEGO */
+        .center-wheel-box { position: relative; width: 85px; height: 85px; margin: 2px 0; }
+        #centerWheel { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #ffd700; transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        .center-pointer {
+            position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+            border-top: 10px solid #ffd700; z-index: 10;
+        }
+        .btn-center-spin {
+            background: #ffd700; color: #000; font-size: 8px; font-weight: 900; border: none;
+            padding: 3px 8px; border-radius: 10px; cursor: pointer; text-transform: uppercase;
+        }
+
+        /* SEKCJA DWÓCH KÓŁ BOCZNYCH */
         .wheels-sidebar {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            flex: 0.9;
+            gap: 15px;
+            flex: 0.8;
             width: 100%;
         }
-        @media(min-width: 650px) and (max-width: 1099px) { .wheels-sidebar { flex-direction: row; } }
+        @media(min-width: 650px) and (max-width: 1249px) { .wheels-sidebar { flex-direction: row; } }
 
         .wheel-card {
             background: rgba(20,24,33,0.96);
@@ -217,10 +247,10 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.5); flex: 1; box-sizing: border-box;
         }
         .wheel-card.tourist-card { border-color: #2ed573; box-shadow: 0 8px 30px rgba(46,213,115,0.15); }
-        .wheel-card h3 { font-size: 12px; color: #ffd700; margin: 0 0 12px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
+        .wheel-card h3 { font-size: 12px; color: #ffd700; margin: 0 0 12px 0; text-transform: uppercase; text-align: center; }
         .wheel-card.tourist-card h3 { color: #2ed573; }
 
-        .wheel-box { position: relative; width: 180px; height: 180px; margin-bottom: 12px; }
+        .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 12px; }
         .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
         .wheel-card.tourist-card .wheel-canvas { border-color: #2ed573; }
         
@@ -234,12 +264,11 @@
         .btn {
             background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); color: #000;
             border: none; padding: 10px 15px; font-size: 11px; font-weight: 900;
-            border-radius: 20px; cursor: pointer; width: 100%; text-transform: uppercase; box-shadow: 0 4px 12px rgba(255,140,0,0.3);
+            border-radius: 20px; cursor: pointer; width: 100%; text-transform: uppercase;
         }
-        .btn-tourist { background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%); color: #fff; box-shadow: 0 4px 12px rgba(46,213,115,0.3); }
-        .btn:disabled { background: #4c566a; color: #434c5e; cursor: not-allowed; box-shadow: none; }
+        .btn-tourist { background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%); color: #fff; }
+        .btn:disabled, .btn-center-spin:disabled { background: #4c566a !important; color: #434c5e !important; cursor: not-allowed; }
 
-        /* POPUPY WYNIKÓW */
         .result-display {
             display: none; width: 100%; background: rgba(255,255,255,0.05);
             border: 1px solid #ffd700; border-radius: 4px; padding: 8px; margin-top: 10px;
@@ -253,7 +282,7 @@
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(15,17,21,0.96); border-top: 1px solid #ffd700;
             padding: 8px 20px; display: flex; justify-content: center; align-items: center;
-            gap: 15px; z-index: 100; box-shadow: 0 -5px 25px rgba(0,0,0,0.6); box-sizing: border-box;
+            gap: 15px; z-index: 100; box-sizing: border-box;
         }
         .audio-dock span { font-size: 11px; color: #ffd700; font-weight: bold; text-transform: uppercase; }
         .audio-dock audio { height: 26px; max-width: 220px; }
@@ -265,298 +294,42 @@
 
     <div class="header-panel">
         <h2>PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
-        <div class="counter">Prognozowany Przychód Sieci: 142 500 zł / mc</div>
+        <div class="stats-container">
+            <div class="stat-item">Licznik Gości w Sieci: <span id="globalGuests">14 205</span> osób dzisiaj</div>
+            <div class="stat-item">Wolne Okienka w Regionie: <span id="regionFreeSlots">84</span> / 100</div>
+        </div>
     </div>
 
-    <!-- 1. WIDOK GŁÓWNY: MAPA 10 MIAST -->
     <div id="map-view">
-        <h1>Wybierz miasto, aby wejść na tablicę</h1>
+        <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
         <div class="map-container">
-            <div class="city-pin" id="pin-karpacz" onclick="loadCityPlatform('Karpacz')"><div class="city-label">Karpacz</div></div>
-            <div class="city-pin" id="pin-zakopane" onclick="loadCityPlatform('Zakopane')"><div class="city-label">Zakopane</div></div>
-            <div class="city-pin" id="pin-szklarska" onclick="loadCityPlatform('Szklarska Poręba')"><div class="city-label">Szklarska Poręba</div></div>
-            <div class="city-pin" id="pin-kolobrzeg" onclick="loadCityPlatform('Kołobrzeg')"><div class="city-label">Kołobrzeg</div></div>
-            <div class="city-pin" id="pin-sopot" onclick="loadCityPlatform('Sopot')"><div class="city-label">Sopot</div></div>
-            <div class="city-pin" id="pin-krynica" onclick="loadCityPlatform('Krynica-Zdrój')"><div class="city-label">Krynica-Zdrój</div></div>
-            <div class="city-pin" id="pin-milkow" onclick="loadCityPlatform('Miłków')"><div class="city-label">Miłków</div></div>
-            <div class="city-pin" id="pin-wisla" onclick="loadCityPlatform('Wisła')"><div class="city-label">Wisła</div></div>
-            <div class="city-pin" id="pin-swinoujscie" onclick="loadCityPlatform('Świnoujście')"><div class="city-label">Świnoujście</div></div>
-            <div class="city-pin" id="pin-szczawnica" onclick="loadCityPlatform('Szczawnica')"><div class="city-label">Szczawnica</div></div>
-        </div>
-    </div>
-
-    <!-- 2. WIDOK LIVE TABLICY I DWÓCH KÓŁ FORTUNY -->
-    <div id="dashboard-view">
-        <button class="back-btn" onclick="backToMainMap()">← Wróć do Mapy Polski</button>
-
-        <div class="billboard-frame">
-            <div class="billboard-inner">
-                <div class="layout-grid">
-                    
-                    <!-- INTERAKTYWNA TABLICA REKLAMOWA -->
-                    <div class="grid-board" id="boardGrid">
-                        <!-- Środkowy Ekran Losowania Głównego -->
-                        <div class="grid-center" style="grid-column: 4 / span 4; grid-row: 4 / span 4;">
-                            <div class="banner-crown">Wielkie Losowanie Baneru</div>
-                            <div class="banner-main-title">ZŁOTY EKSPONAT</div>
-                            <div id="winnerName">Czeka na ruch streamera...</div>
-                            <div class="live-countdown" id="liveTimer">00:00:04:00</div>
-                        </div>
-                    </div>
-
-                    <!-- SEKCJA DWÓCH KÓŁ FORTUNY -->
-                    <div class="wheels-sidebar">
-                        
-                        <!-- KOŁO 1: VOUCHERY DLA WIDZÓW / TURYSTÓW (STEROWANE PRZEZ CIEBIE) -->
-                        <div class="wheel-card">
-                            <h3>🎁 Koło 1: Vouchery i Rabaty</h3>
-                            <div class="wheel-box">
-                                <div class="wheel-pointer"></div>
-                                <canvas class="wheel-canvas" id="promoWheel" width="180" height="180"></canvas>
-                            </div>
-                            <button class="btn" id="btnPromo" onclick="spinPromoWheel()">Losuj Rabat Widzowi</button>
-                            <div class="result-display" id="promoResult"></div>
-                        </div>
-
-                        <!-- KOŁO 2: DLA TURYSTY (ATRAKCJE + WYCIECZKI - SAMODZIELNE) -->
-                        <div class="wheel-card tourist-card">
-                            <h3>🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień</h3>
-                            <div class="wheel-box">
-                                <div class="wheel-pointer"></div>
-                                <canvas class="wheel-canvas" id="touristWheel" width="180" height="180"></canvas>
-                            </div>
-                            <button class="btn btn-tourist" id="btnTourist" onclick="spinTouristWheel()">Wylosuj Moje Atrakcje</button>
-                            <div class="result-display" id="touristResult"></div>
-                        </div>
-
-                    </div>
-
-                </div>
+            <div class="city-pin" id="pin-swinoujscie" onclick="loadCityPlatform('Świnoujście', 42)">
+                <div class="pin-dot"></div><div class="city-label">Świnoujście</div>
             </div>
-        </div>
-    </div>
-
-    <!-- RELAKSUJĄCY I PRZYJEMNY DLA UCHA PODKŁAD MUZYCZNY -->
-    <div class="audio-dock">
-        <span>🎵 Ambient Karkonosze (Pleasant Chillout):</span>
-        <audio controls loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
-            Twoja przeglądarka nie obsługuje audio.
-        </audio>
-    </div>
-
-    <script>
-        // Baza prawdziwych firm z Karpacza z autentycznymi linkami przekierowującymi turystów
-        const authenticCompanies = [
-            { name: "Wonder Home Apartamenty", url: "https://www.wonderhome.pl", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60&auto=format&fit=crop&q=60" },
-            { name: "Hotel Gołębiewski Karpacz", url: "https://www.golebiewski.pl/karpacz", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60&auto=format&fit=crop&q=60" },
-            { name: "Schronisko Samotnia", url: "https://www.samotnia.com.pl", logo: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=60&auto=format&fit=crop&q=60" },
-            { name: "Kopa Pass / Wyciąg", url: "https://kopa.com.pl", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60&auto=format&fit=crop&q=60" },
-            { name: "Restauracja Aquakultura", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=60&auto=format&fit=crop&q=60" },
-            { name: "Karkonoskie Tajemnice", url: "https://www.karkonoskietajemnice.pl", logo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=60&auto=format&fit=crop&q=60" }
-        ];
-
-        // Koło 1: Baza voucherów rabatowych
-        const voucherPool = [
-            "15% Zniżki w Wonder Home",
-            "Darmowy Gofr w Karczmie",
-            "Bilet ulgowy Kopa Pass",
-            "Voucher 50zł Gołębiewski",
-            "Gadżet PolskieOkienka",
-            "Kawa Gratis w Kawiarni"
-        ];
-
-        // Koło 2: Autentyczne atrakcje z opisami i linkami dla turysty
-        const touristAttractions = [
-            { name: "Śnieżka (1602m)", desc: "Najwyższy szczyt Karkonoszy z niesamowitym Obserwatorium. Podejmij wyzwanie!", link: "https://kpnmab.pl" },
-            { name: "Świątynia Wang", desc: "Ekskluzywny, drewniany kościółek skandynawski przeniesiony wprost z Norwegii.", link: "https://www.wang.com.pl" },
-            { name: "Dziki Wodospad", desc: "Zjawiskowy wodospad w pobliżu dolnej stacji wyciągu na Kopę. Idealny na zdjęcia!", link: "https://www.karpacz.pl" },
-            { name: "Zapora na Łomnicy", desc: "Malownicza zapora tworząca piękne zalewisko w sercu Karpacza. Świetny spacer.", link: "https://www.karpacz.pl" },
-            { name: "Karkonoskie Tajemnice", desc: "Podziemna ekspozycja legend o Duchu Gór, zdobywca nagród National Geographic.", link: "https://www.karkonoskietajemnice.pl" },
-            { name: "Kopa Pass", desc: "Wjedź wyciągiem na grzbiet Karkonoszy i zaplanuj prostą wycieczkę na Śnieżkę.", link: "https://kopa.com.pl" }
-        ];
-
-        const mockViewers = ["@mordeczka_karpacz", "@turysta_z_wawy", "@gorska_wiedzma", "@szymon_b", "@wroclawianka"];
-        let rotationPromo = 0, rotationTourist = 0, isSpinning = false;
-
-        function loadCityPlatform(cityName) {
-            document.getElementById('map-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-            
-            buildBoardGrid();
-            initWheel('promoWheel', voucherPool, ['#1a1d24', '#c0392b', '#2c3e50', '#d35400', '#2e3440', '#962d22']);
-            initWheel('touristWheel', touristAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24', '#27ae60', '#11141b']);
-        }
-
-        function backToMainMap() {
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('map-view').style.display = 'flex';
-        }
-
-        // GENEROWANIE PLANSZY Z POMINIĘCIEM ŚRODKA I SZTYWNYM WONDER HOME
-        function buildBoardGrid() {
-            const grid = document.getElementById('boardGrid');
-            // Usuwamy stare kafelki zachowując centralny baner
-            const center = grid.querySelector('.grid-center');
-            grid.innerHTML = "";
-            grid.appendChild(center);
-
-            let poolIndex = [];
-
-            for (let i = 1; i <= 100; i++) {
-                let row = Math.ceil(i / 10);
-                let col = i % 10 === 0 ? 10 : i % 10;
-                
-                if (row >= 4 && row <= 7 && col >= 4 && col <= 7) continue;
-
-                const linkNode = document.createElement('a');
-                linkNode.className = 'cell-link';
-                const item = document.createElement('div');
-                item.classList.add('grid-item');
-
-                if (i === 1) {
-                    // WONDER HOME NA POZYCJI NUMER 1 Z LINKIEM[cite: 1]
-                    item.classList.add('taken');
-                    item.style.backgroundImage = `url('${authenticCompanies[0].logo}')`;
-                    item.innerHTML = `<div class="company-label-tag">${authenticCompanies[0].name}</div>`;
-                    linkNode.href = authenticCompanies[0].url;
-                    linkNode.target = "_blank";
-                    poolIndex.push(authenticCompanies[0].name);
-                } else if (Math.random() > 0.65) {
-                    // POZOSTAŁE AUTENTYCZNE FIRMY Z PRZEKIEROWANIEM
-                    const comp = authenticCompanies[Math.floor(Math.random() * authenticCompanies.length)];
-                    item.classList.add('taken');
-                    item.style.backgroundImage = `url('${comp.logo}')`;
-                    item.innerHTML = `<div class="company-label-tag">${comp.name}</div>`;
-                    linkNode.href = comp.url;
-                    linkNode.target = "_blank";
-                    poolIndex.push(comp.name);
-                } else {
-                    if (Math.random() > 0.8) {
-                        item.classList.add('premium');
-                        item.innerText = "350 zł\nPremium";
-                    } else {
-                        item.innerText = "200 zł\nStandard";
-                    }
-                    linkNode.href = "javascript:void(0);";
-                    linkNode.onclick = () => alert("To okienko czeka na Ciebie! Zarezerwuj je na PolskieOkienka.pl");
-                }
-
-                grid.appendChild(linkNode);
-            }
-
-            // Opcjonalny mechanizm wygrywania baneru przez firmy z tablicy
-            window.activeCompaniesPool = poolIndex;
-        }
-
-        // UNIWERSALNY RENDERER KÓŁ FORTUNY
-        function initWheel(canvasId, labelArray, colors) {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            const segments = labelArray.length;
-            const deg = 360 / segments;
-            ctx.clearRect(0, 0, 180, 180);
-
-            for (let i = 0; i < segments; i++) {
-                const start = (i * deg * Math.PI) / 180;
-                const end = ((i + 1) * deg * Math.PI) / 180;
-
-                ctx.beginPath();
-                ctx.fillStyle = colors[i % colors.length];
-                ctx.moveTo(90, 90);
-                ctx.arc(90, 90, 90, start, end);
-                ctx.fill();
-
-                ctx.strokeStyle = '#ffd700';
-                if(canvasId === 'touristWheel') ctx.strokeStyle = '#2ed573';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(90, 90);
-                ctx.rotate(start + (deg * Math.PI) / 360);
-                ctx.fillStyle = "#fff";
-                ctx.font = "bold 7px sans-serif";
-                ctx.textAlign = "right";
-                ctx.fillText(labelArray[i].substring(0, 18), 82, 3);
-                ctx.restore();
-            }
-        }
-
-        // KOŁO 1: LOSOWANIE RABATÓW DLA WIDZÓW
-        function spinPromoWheel() {
-            if (isSpinning) return;
-            isSpinning = true;
-            document.getElementById('btnPromo').disabled = true;
-            document.getElementById('promoResult').style.display = 'none';
-
-            const segments = voucherPool.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-            
-            rotationPromo += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            const wheel = document.getElementById('promoWheel');
-            wheel.style.transform = `rotate(${rotationPromo}deg)`;
-
-            setTimeout(() => {
-                const luckyUser = mockViewers[Math.floor(Math.random() * mockViewers.length)];
-                const reward = voucherPool[prizeIndex];
-
-                const resBox = document.getElementById('promoResult');
-                resBox.innerHTML = `<strong>${luckyUser}</strong> wygrywa:<br><span style="color:#ffd700;font-weight:bold;">${reward}</span>`;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnPromo').disabled = false;
-            }, 4500);
-        }
-
-        // KOŁO 2: SAMODZIELNE LOSOWANIE ATRAKCJI PRZEZ TURYSTĘ (OPISY + LINKI)
-        function spinTouristWheel() {
-            if (isSpinning) return;
-            isSpinning = true;
-            document.getElementById('btnTourist').disabled = true;
-            document.getElementById('touristResult').style.display = 'none';
-
-            const segments = touristAttractions.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotationTourist += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            const wheel = document.getElementById('touristWheel');
-            wheel.style.transform = `rotate(${rotationTourist}deg)`;
-
-            setTimeout(() => {
-                const attr = touristAttractions[prizeIndex];
-
-                const resBox = document.getElementById('touristResult');
-                resBox.innerHTML = `
-                    <strong style="color:#2ed573; font-size:12px;">🎯 Wylosowano: ${attr.name}</strong>
-                    <p style="margin:4px 0; color:#ccc; font-size:10px;">${attr.desc}</p>
-                    <a href="${attr.link}" target="_blank">Zobacz szczegóły / Kup Bilet →</a>
-                `;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnTourist').disabled = false;
-            }, 4500);
-        }
-
-        // CYKLICZNY STOPER TELEBIMU
-        let totalSeconds = 240;
-        setInterval(() => {
-            if (totalSeconds <= 0) {
-                totalSeconds = 240;
-                if(window.activeCompaniesPool && window.activeCompaniesPool.length > 0) {
-                    const winner = window.activeCompaniesPool[Math.floor(Math.random() * window.activeCompaniesPool.length)];
-                    document.getElementById('winnerName').innerText = `Główny Ekran zgarnia: ${winner.toUpperCase()}`;
-                }
-            }
-            totalSeconds--;
-            const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-            const secs = String(totalSeconds % 60).padStart(2, '0');
-            document.getElementById('liveTimer').innerText = `00:00:${mins}:${secs}`;
-        }, 1000);
-    </script>
-</body>
-</html>
+            <div class="city-pin" id="pin-kolobrzeg" onclick="loadCityPlatform('Kołobrzeg', 38)">
+                <div class="pin-dot"></div><div class="city-label">Kołobrzeg</div>
+            </div>
+            <div class="city-pin" id="pin-sopot" onclick="loadCityPlatform('Sopot', 19)">
+                <div class="pin-dot"></div><div class="city-label">Sopot</div>
+            </div>
+            <div class="city-pin" id="pin-szklarska" onclick="loadCityPlatform('Szklarska Poręba', 51)">
+                <div class="pin-dot"></div><div class="city-label">Szklarska Poręba</div>
+            </div>
+            <div class="city-pin" id="pin-karpacz" onclick="loadCityPlatform('Karpacz', 45)">
+                <div class="pin-dot"></div><div class="city-label">Karpacz</div>
+            </div>
+            <div class="city-pin" id="pin-milkow" onclick="loadCityPlatform('Miłków', 68)">
+                <div class="pin-dot"></div><div class="city-label">Miłków</div>
+            </div>
+            <div class="city-pin" id="pin-wisla" onclick="loadCityPlatform('Wisła', 33)">
+                <div class="pin-dot"></div><div class="city-label">Wisła</div>
+            </div>
+            <div class="city-pin" id="pin-zakopane" onclick="loadCityPlatform('Zakopane', 12)">
+                <div class="pin-dot"></div><div class="city-label">Zakopane</div>
+            </div>
+            <div class="city-pin" id="pin-szczawnica" onclick="loadCityPlatform('Szczawnica', 55)">
+                <div class="pin-dot"></div><div class="city-label">Szczawnica</div>
+            </div>
+            <div class="city-pin" id="pin-krynica" onclick="loadCityPlatform('Krynica-Zdrój', 49)">
+                <div class="pin-dot">; gap: 20px; }
+        @ * degPerSeg) - (degPerSeg /
