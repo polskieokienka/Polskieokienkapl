@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieOkienka.pl - Oficjalna Tablica Reklamowa</title>
+    <title>PolskieOkienka.pl - Karpacz</title>
     <style>
         body {
             background: #0f1115 url('https://images.unsplash.com/photo-1605886300408-f404e76a6cf3?w=1600&auto=format&fit=crop&q=80') no-repeat center top fixed;
             background-size: cover;
             color: #ffffff;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 15px;
             display: flex;
@@ -19,7 +19,7 @@
             box-sizing: border-box;
         }
 
-        /* Przyciemnienie tła krajobrazu pod tablicę */
+        /* Przyciemnienie tła pod tablicę dla lepszego kontrastu */
         body::before {
             content: '';
             position: fixed;
@@ -28,7 +28,35 @@
             z-index: -1;
         }
 
-        /* POTĘŻNA METALOWA RAMA BILLBOARDU */
+        .header-panel {
+            background: linear-gradient(135deg, #1e2530, #11141b);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 15px 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            width: 100%;
+            max-width: 960px;
+            box-sizing: border-box;
+        }
+
+        .header-panel h2 {
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 900;
+            color: #eaeded;
+        }
+
+        .counter {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255,215,0,0.4);
+        }
+
+        /* POTĘŻNA METALOWA RAMA BILLBOARDU Z GRAFIKI */
         .billboard-frame {
             background: linear-gradient(135deg, #bdc3c7 0%, #eaeded 25%, #95a5a6 50%, #eaeded 75%, #7f8c8d 100%);
             padding: 22px;
@@ -39,6 +67,7 @@
             width: 1004px;
             box-sizing: border-box;
             position: relative;
+            margin-bottom: 60px; /* Miejsce na dolny dock audio */
         }
 
         /* Nity montażowe na metalowej ramie */
@@ -59,82 +88,15 @@
             border-radius: 2px;
         }
 
-        /* GÓRNY NEONOWY NAGŁÓWEK NA TABLICY */
-        .billboard-top-bar {
-            background: #2c3e50;
-            border: 2px solid #7f8c8d;
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            font-weight: 900;
-            font-size: 20px;
-            letter-spacing: 2px;
-            color: #eaeded;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        /* WIDOK ARCHITEKTURY STRONY */
-        #map-view {
+        .main-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 20px;
             width: 100%;
-            max-width: 600px;
-            background: rgba(20,24,33,0.95);
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid #ffd700;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        #map-view h1 { color: #ffd700; font-size: 22px; margin: 0 0 15px 0; text-transform: uppercase; text-align: center; }
-
-        .map-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background: #11141a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .city-pin {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background-color: #ffd700;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            box-shadow: 0 0 12px #ffd700;
-        }
-        .city-label {
-            position: absolute;
-            color: #fff; font-size: 10px; font-weight: bold; white-space: nowrap;
-            background: #000; padding: 2px 6px; border-radius: 3px; transform: translate(-50%, -180%);
-        }
-        #pin-karpacz { top: 75%; left: 35%; }
-        #pin-zakopane { top: 88%; left: 65%; }
-
-        #dashboard-view { display: none; width: 100%; }
-
-        .back-btn {
-            background: #2c3e50; color: #ffd700; border: 1px solid #ffd700;
-            padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;
-            margin-bottom: 12px; transition: 0.2s; text-transform: uppercase; font-size: 12px;
-        }
-        .back-btn:hover { background: #ffd700; color: #000; }
-
-        /* GŁÓWNA STRUKTURA PODZIAŁU */
-        .layout-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
         @media(min-width: 950px) {
-            .layout-grid { flex-direction: row; align-items: flex-start; }
+            .main-container { flex-direction: row; align-items: flex-start; }
         }
 
         /* SIATKA OKIENEK REKLAMOWYCH */
@@ -142,325 +104,436 @@
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             gap: 5px;
-            background: #11141b;
+            background-color: #11141b;
             padding: 10px;
             border-radius: 4px;
             border: 2px solid #2c3e50;
             flex: 1;
+            box-sizing: border-box;
         }
 
-        .cell-link { text-decoration: none; display: block; aspect-ratio: 1 / 1; }
-        
-        .cell {
-            width: 100%; height: 100%;
+        .grid-item {
+            aspect-ratio: 1;
             background: linear-gradient(135deg, #2e3440 0%, #1a1d24 100%);
             border: 1px solid #434c5e;
             border-radius: 2px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            font-size: 7px;
+            justify-content: center;
+            font-size: 8px;
             font-weight: bold;
             color: #d8dee9;
-            cursor: pointer;
-            box-sizing: border-box;
             text-align: center;
-            position: relative;
-            transition: transform 0.15s;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s;
+            box-sizing: border-box;
+            line-height: 1.2;
         }
-        .cell-link:hover .cell { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
+        .grid-board .grid-item:hover {
+            transform: scale(1.06);
+            z-index: 5;
+            border-color: #ffd700;
+        }
 
-        /* AKTYWNE OKIENKA FIRM - METALE I LOGOTYPY */
-        .cell.taken {
+        /* OKIENKA PREMIUM ZE ZŁOTĄ RAMKĄ */
+        .grid-item.premium {
+            border: 1px solid #ffd700;
+            box-shadow: inset 0 0 8px rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+
+        /* AKTYWNE OKIENKO Z LOGO FIRMY */
+        .grid-item.taken {
             background-color: #ffffff;
             background-size: 75% auto;
             background-repeat: no-repeat;
-            background-position: center 30%;
-            border: 2px solid #d8dee9;
-            box-shadow: inset 0 0 6px rgba(0,0,0,0.15);
-        }
-        .cell.taken .company-title {
-            position: absolute;
-            bottom: 2px; width: 100%;
-            font-size: 6.5px; font-weight: 800;
-            color: #2e3440; text-transform: uppercase;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            background-position: center center;
+            color: #2e3440;
+            border: 1px solid #eaeded;
         }
 
-        .cell.premium {
-            border: 1px solid #ffd700;
-            color: #ffd700;
-            background: linear-gradient(135deg, #3b4252 0%, #1a1d24 100%);
-        }
-
-        /* GŁÓWNY ZŁOTY EKRAN CENTRALNY */
-        .center-banner {
+        /* GŁÓWNY ZŁOTY EKRAN CENTRALNY Z GRAFIK */
+        .grid-center {
             grid-column: span 4;
             grid-row: span 4;
             background: linear-gradient(135deg, #0a0c10 0%, #151922 100%);
             border: 3px solid #ffd700;
             border-radius: 4px;
-            padding: 10px;
+            padding: 12px;
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.45), inset 0 0 15px rgba(255, 215, 0, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             text-align: center;
-            position: relative;
             box-sizing: border-box;
         }
 
-        .center-banner .gold-crown {
+        .banner-crown {
             color: #ffd700; font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
-            background: rgba(255,215,0,0.1); width: 100%; padding: 3px 0; border-bottom: 1px dashed #ffd700;
+            background: rgba(255,215,0,0.1); width: 100%; padding: 4px 0; border-bottom: 1px dashed #ffd700;
         }
 
-        .center-banner .jackpot-box {
+        .banner-main-title {
+            font-size: 16px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(255,215,0,0.6);
             margin: 5px 0;
         }
-        .center-banner .jackpot-title {
-            font-size: 15px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px;
-            text-shadow: 0 0 8px rgba(255,215,0,0.6);
-        }
-        .center-banner .jackpot-value {
-            font-size: 11px; color: #fff; font-weight: bold; margin-top: 2px;
+
+        #winnerName {
+            font-size: 12px; color: #fff; font-weight: bold; background: rgba(255,255,255,0.05);
+            padding: 6px 12px; border-radius: 4px; border: 1px dashed #555; width: 90%;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
 
-        /* ZEGAR ODLICZANIA LIVE */
+        /* ZEGAR ODLICZANIA LIVE (Z DRUGIEGO UJĘCIA) */
         .live-countdown {
             background: #ef4444; color: #fff; font-family: monospace;
-            font-size: 14px; font-weight: bold; padding: 4px 10px;
+            font-size: 13px; font-weight: bold; padding: 4px 10px;
             border-radius: 3px; border: 1px solid #f87171;
             letter-spacing: 1px; box-shadow: 0 0 10px rgba(239,68,68,0.4);
         }
 
-        /* PANEL BOCZNY - KOŁO FORTUNY */
-        .sidebar {
-            width: 100%; max-width: 320px;
-            display: flex; flex-direction: column; gap: 15px;
+        /* PANEL KONTROLNY / KOŁO */
+        .controls-panel {
+            width: 100%;
+            max-width: 320px;
+            background: rgba(20,24,33,0.95);
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px solid #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+        }
+
+        .controls-panel h3 {
+            font-size: 13px; color: #ffd700; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;
         }
 
         .wheel-box {
-            background: rgba(20,24,33,0.95);
-            border: 2px solid #2c3e50;
-            border-radius: 6px; padding: 15px; text-align: center;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin-bottom: 15px;
         }
-        .wheel-box h3 { font-size: 14px; color: #ffd700; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px; }
 
-        .wheel-container { position: relative; width: 220px; height: 220px; margin: 0 auto; }
-        .wheel-canvas {
-            width: 220px; height: 220px; border-radius: 50%;
-            border: 5px solid #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
             transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1);
         }
+
         .wheel-pointer {
-            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
-            border-top: 20px solid #ffd700; z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid #ffd700;
+            z-index: 20;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
-        .spin-btn {
+        .btn {
             background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-            color: #000; border: none; padding: 11px 24px; font-size: 13px; font-weight: 900;
-            border-radius: 25px; cursor: pointer; margin-top: 15px; width: 100%;
-            box-shadow: 0 5px 15px rgba(255,140,0,0.4); text-transform: uppercase; letter-spacing: 0.5px;
+            color: #000;
+            border: none;
+            padding: 11px 20px;
+            font-size: 12px;
+            font-weight: 900;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,140,0,0.4);
+            transition: transform 0.2s;
+            margin: 5px 0;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .spin-btn:disabled { background: #4c566a; color: #434c5e; cursor: not-allowed; box-shadow: none; }
+        .btn:hover { transform: scale(1.03); }
+        .btn:disabled { background: #4c566a; color: #434c5e; cursor: not-allowed; box-shadow: none; }
+        .btn-viewer { background: linear-gradient(135deg, #2ed573, #26af5f); color: #fff; box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4); }
 
-        /* POPUP WYGRANEGO VOUCHERA (Z TRZECIEGO UJĘCIA) */
+        /* BOX WYGRANEGO WIDZA Z TRZECIEGO ZDJĘCIA */
         #winner-popup {
             display: none;
             background: linear-gradient(135deg, #11141b 0%, #1f2430 100%);
-            border: 2px solid #ffd700; border-radius: 6px; padding: 12px; margin-top: 12px;
-            box-shadow: 0 0 20px rgba(255,215,0,0.3); animation: fadeIn 0.4s ease;
+            border: 2px solid #ffd700; border-radius: 6px; padding: 10px; margin-top: 10px; width: 100%;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3); box-sizing: border-box;
+            animation: fadeIn 0.4s ease; text-align: center;
         }
-        .popup-title { color: #ffd700; font-size: 12px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
-        .popup-name { color: #fff; font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.06); padding: 5px; border-radius: 4px; }
+        .popup-title { color: #ffd700; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
+        .popup-name { color: #fff; font-size: 13px; font-weight: bold; background: rgba(255,255,255,0.06); padding: 5px; border-radius: 4px; }
 
-        /* DOLNY INTERAKTYWNY SKŁADNIK MUZYCZNY */
+        .chat-box {
+            width: 100%;
+            background-color: #11141b;
+            border: 1px solid #2c3e50;
+            border-radius: 4px;
+            height: 110px;
+            margin-top: 12px;
+            padding: 8px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            font-size: 11px;
+        }
+        .chat-msg { margin-bottom: 5px; color: #888; line-height: 1.3; }
+        .chat-msg .user { color: #1e90ff; font-weight: bold; }
+        .chat-msg .win { color: #2ed573; font-weight: bold; }
+
+        /* INTERAKTYWNA BELKA AUDIO */
         .audio-dock {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(15,17,21,0.92); border-top: 1px solid #ffd700;
+            background: rgba(15,17,21,0.95); border-top: 1px solid #ffd700;
             padding: 8px 20px; display: flex; justify-content: center; align-items: center;
             gap: 15px; z-index: 100; box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
             box-sizing: border-box;
         }
-        .audio-dock span { font-size: 11px; color: #ffd700; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
+        .audio-dock span { font-size: 11px; color: #ffd700; font-weight: bold; text-transform: uppercase; }
         .audio-dock audio { height: 28px; max-width: 240px; }
-
-        /* STOPKA REZERWACYJNA */
-        .billboard-footer-bar {
-            background: #11141b; border: 1px solid #2c3e50; text-align: center;
-            padding: 8px; margin-top: 15px; font-size: 12px; font-weight: bold; color: #eaeded;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .billboard-footer-bar span { color: #ffd700; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- GŁÓWNA STRUKTURA BILLBOARDU -->
+    <div class="header-panel">
+        <h2>PolskieOkienka.pl - Panel Zarządzania</h2>
+        <div class="counter">Prognozowany Przychód (10 miast): <span id="cash">142 500</span> zł / mc</div>
+    </div>
+
+    <!-- MECHANIZM METALOWEGO BILLBOARDU -->
     <div class="billboard-frame">
         <div class="billboard-inner">
-            
-            <!-- NAGŁÓWEK TABLICY -->
-            <div class="billboard-top-bar" id="top-title-text">TABLICA REKLAMOWA KORONY KARKONOSZY</div>
-
-            <!-- WIDOK MAPY SELEKCYJNEJ -->
-            <div id="map-view">
-                <h1>Wybierz punkt docelowy platformy</h1>
-                <div class="map-container">
-                    <div class="city-pin" id="pin-karpacz" onclick="openPlatform('Karpacz')"><div class="city-label">Karpacz</div></div>
-                    <div class="city-pin" id="pin-zakopane" onclick="openPlatform('Zakopane')"><div class="city-label">Zakopane</div></div>
+            <div class="main-container">
+                
+                <!-- TABLICA REKLAMOWA -->
+                <div class="grid-board" id="board">
+                    <!-- Centralny Złoty Baner z Grafik -->
+                    <div class="grid-center" id="mainBanner" style="grid-column: 4 / span 4; grid-row: 4 / span 4;">
+                        <div class="banner-crown">Główna Nagroda Reklamodawcy</div>
+                        <div class="banner-main-title">MILION ZŁOTYCH</div>
+                        <div id="winnerName">Czeka na losowanie...</div>
+                        <div class="live-countdown" id="live-clock">00:00:04:00</div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- WIDOK PANELU GŁÓWNEGO -->
-            <div id="dashboard-view">
-                <button class="back-btn" onclick="returnToMap()">← Powrót do mapy punktów</button>
-
-                <div class="layout-grid">
-                    
-                    <!-- SIATKA REKLAMOWA -->
-                    <div class="grid-board" id="board-container"></div>
-
-                    <!-- PANEL SENSACYJNEGO KOŁA FORTUNY -->
-                    <div class="sidebar">
-                        <div class="wheel-box">
-                            <h3>🎁 KOŁO LOSOWANIA VOUCHERÓW</h3>
-                            <div class="wheel-pointer"></div>
-                            <div class="wheel-container">
-                                <canvas class="wheel-canvas" id="voucherWheel" width="220" height="220"></canvas>
-                            </div>
-                            <button class="spin-btn" id="spinBtn" onclick="runVoucherLottery()">LOSUJ NAGRODĘ WIDZA</button>
-                            
-                            <!-- PANEL WYGRANEJ Z TRZECIEGO ZDJĘCIA -->
-                            <div id="winner-popup">
-                                <div class="popup-title">🎁 ZWYCIĘZCA WIDZÓW:</div>
-                                <div class="popup-name" id="winner-target-user">[@ZUZANNA_KRZECZYK]</div>
-                            </div>
-                        </div>
+                <!-- PANEL STEROWANIA I KOŁO FORTUNY -->
+                <div class="controls-panel">
+                    <h3>🎁 KOŁO FORTUNY VOUCHERÓW</h3>
+                    <div class="wheel-box">
+                        <div class="wheel-pointer"></div>
+                        <canvas class="wheel" id="wheelCanvas" width="220" height="220"></canvas>
                     </div>
 
+                    <button class="btn" id="spinBtn" onclick="spinWheel()">ZAKRĘĆ DLA FIRM (200 / 350 zł)</button>
+                    <button class="btn btn-viewer" id="viewerBtn" onclick="drawViewer()">LOSUJ NAGRODĘ DLA WIDZA</button>
+
+                    <!-- PANEL DYNAMICZNEGO WYGRANEGO -->
+                    <div id="winner-popup">
+                        <div class="popup-title">🎁 ZWYCIĘZCA WIDZÓW:</div>
+                        <div class="popup-name" id="winner-target-user">-</div>
+                    </div>
+
+                    <div class="chat-box" id="chat">
+                        <div class="chat-msg"><span class="user">@turek_karpacz</span>: Rezerwuję okienko premium!</div>
+                        <div class="chat-msg"><span class="user">@goral_99</span>: Kiedy live z losowania biletów?</div>
+                        <div class="chat-msg"><span class="user">@aneczka_wroc</span>: Oby wygrał mój ulubiony pensjonat!</div>
+                    </div>
                 </div>
+
             </div>
-
-            <!-- PASEK DOLNY REZERWACYJNY -->
-            <div class="billboard-footer-bar">ZAREZERWUJ OKIENKO NA NASZEJ STRONIE: <span>POLSKIEOKIENKA.PL</span></div>
-
         </div>
     </div>
 
-    <!-- INTEGRACJA PODKŁADU MUZYCZNEGO (PHONK / SIGMA BEAT) -->
+    <!-- TLE MUZYCZNE (DOCIĄGNIĘCIE MAGII) -->
     <div class="audio-dock">
-        <span>🎵 Podkład Magiczny (Karkonosze Flow):</span>
-        <audio controls loop>
-            <!-- Legalny, darmowy i działający strumień muzyki instrumentalnej synthwave/phonk-ambient -->
+        <span>🎵 Podkład Magiczny (Karkonosze Beat):</span>
+        <audio controls loop id="bg-music">
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
             Twoja przeglądarka nie obsługuje audio.
         </audio>
     </div>
 
     <script>
-        // Realne podmioty z branży i profesjonalne ikony brandingowe ze zbiorów Unsplash
-        const businessDatabase = [
-            { name: "Wonder Home", url: "https://www.wonderhome.pl", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60&auto=format&fit=crop&q=60" },
-            { name: "Karczma Karkonoska", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=60&auto=format&fit=crop&q=60" },
-            { name: "Aparthotel Śnieżka", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60&auto=format&fit=crop&q=60" },
-            { name: "Kopa Pass", url: "https://kopa.com.pl", logo: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=60&auto=format&fit=crop&q=60" },
-            { name: "Ski School", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60&auto=format&fit=crop&q=60" },
-            { name: "Coffee Shop", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=60&auto=format&fit=crop&q=60" }
+        // Baza firm reklamowych
+        const companies = [
+            { name: "Wonder Home", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60&auto=format&fit=crop&q=60" },
+            { name: "Karczma Karkonoska", logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=60&auto=format&fit=crop&q=60" },
+            { name: "Hotel Gołębiewski", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60&auto=format&fit=crop&q=60" },
+            { name: "Kopa Pass", logo: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=60&auto=format&fit=crop&q=60" },
+            { name: "Ski School", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60&auto=format&fit=crop&q=60" },
+            { name: "Coffee Shop", logo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=60&auto=format&fit=crop&q=60" }
         ];
 
-        // Wykaz Voucherów na Kole Fortuny (wartości podkręcające akcję)
+        // Wykaz Voucherów na Kole Fortuny
         const voucherPrizes = [
             "Hotel Gołębiewski 500zł",
             "Pobyt Wonder Home",
             "Kolacja w Karczmie",
             "Kopa Pass - Ski",
             "Voucher Premium 350zł",
-            "Gadżety PolskieOkienka"
+            "Gadżety Okienka"
         ];
 
-        // Przykładowa pula aktywnych widzów do wylosowania na żywo
-        const mockViewers = ["@ZUZANNA_KRZECZYK", "@MARCIN_KOWARY", "@SIGMA_TRAVELER", "@ANNA_KARKONOSZE", "@MATEO_REELS"];
+        const viewers = ["@mordeczka_karpacz", "@turysta_z_wawy", "@gorska_wiedzma", "@szymon_b", "@wroclawianka", "@mateo_reels"];
+        
+        const board = document.getElementById('board');
+        let pool = [];
 
-        let countdownInterval;
-
-        function openPlatform(cityName) {
-            document.getElementById('map-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-            document.getElementById('top-title-text').innerText = `TABLICA REKLAMOWA ${cityName.toUpperCase()}`;
+        // DYNAMICZNE BUDOWANIE PLANSZY 10x10 Z WYCIĘCIEM ŚRODKA[cite: 1]
+        for (let i = 1; i <= 100; i++) {
+            let row = Math.ceil(i / 10);
+            let col = i % 10 === 0 ? 10 : i % 10;
             
-            buildGrid();
-            renderVoucherWheel();
-            startLiveTimer();
-        }
+            if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
+                continue; 
+            }
 
-        function returnToMap() {
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('map-view').style.display = 'flex';
-            document.getElementById('top-title-text').innerText = "TABLICA REKLAMOWA KORONY KARKONOSZY";
-            clearInterval(countdownInterval);
-        }
-
-        // GENEROWANIE PLANU ARCHITEKTONICZNEGO OKIENEK
-        function buildGrid() {
-            const container = document.getElementById('board-container');
-            container.innerHTML = "";
-            let cellIndex = 1;
-
-            for (let row = 0; row < 10; row++) {
-                for (let col = 0; col < 10; col++) {
-                    // Budowanie strefy centralnego złotego ekranu 4x4
-                    if (row >= 3 && row <= 6 && col >= 3 && col <= 6) {
-                        if (row === 3 && col === 3) {
-                            const centerBox = document.createElement('div');
-                            centerBox.className = 'center-banner';
-                            centerBox.innerHTML = `
-                                <div class="gold-crown">Główna Nagroda Reklamodawcy</div>
-                                <div class="jackpot-box">
-                                    <div class="jackpot-title">MILION ZŁOTYCH</div>
-                                    <div class="jackpot-value">LOSOWANIE MIESIĘCZNE</div>
-                                </div>
-                                <div class="live-countdown" id="live-clock">00:00:04:00</div>
-                            `;
-                            container.appendChild(centerBox);
-                        }
+            const item = document.createElement('div');
+            item.classList.add('grid-item');
+            
+            // SZTYWNA REZERWACJA POZYCJI NUMER 1 DLA WONDER HOME
+            if (i === 1) {
+                item.classList.add('taken');
+                item.style.backgroundImage = `url('${companies[0].logo}')`;
+                item.title = "Wonder Home - Oficjalny Partner";
+                // Dodajemy do puli losowania, żeby też mogli wygrać główny baner
+                pool.push(companies[0].name);
+            } else {
+                // Logika losowania pozostałych zajętych kafelków dla realizmu
+                if (Math.random() > 0.65) {
+                    const comp = companies[Math.floor(Math.random() * companies.length)];
+                    item.classList.add('taken');
+                    item.style.backgroundImage = `url('${comp.logo}')`;
+                    pool.push(comp.name);
+                } else {
+                    if (Math.random() > 0.75) {
+                        item.classList.add('premium');
+                        item.innerText = "350 zł\nPremium";
                     } else {
-                        const link = document.createElement('a');
-                        link.className = 'cell-link';
-                        const item = document.createElement('div');
-
-                        if (cellIndex % 3 === 0) {
-                            const data = businessDatabase[cellIndex % businessDatabase.length];
-                            item.className = 'cell taken';
-                            item.style.backgroundImage = `url('${data.logo}')`;
-                            item.innerHTML = `<div class="company-title">${data.name}</div>`;
-                            link.href = data.url;
-                            link.target = "_blank";
-                        } else {
-                            const premiumNode = cellIndex % 7 === 0;
-                            item.className = 'cell' + (premiumNode ? ' premium' : '');
-                            item.innerHTML = premiumNode ? 'PREMIUM' : 'STANDARD';
-                            link.href = "javascript:void(0);";
-                            link.onclick = () => alert("Zarezerwuj to okienko reklamowe na stronie głównej!");
-                        }
-
-                        link.appendChild(item);
-                        container.appendChild(link);
-                        cellIndex++;
+                        item.innerText = "200 zł\nStandard";
                     }
                 }
             }
+            board.appendChild(item);
         }
 
-        // RYSOWANIE LUKSUSOWEGO KOŁA FORTUNY (Złoto i Granat)
-        const canvas = document.getElementById('voucherWheel');
+        // RENDEROWANIE KOŁA NA CANVASIE
+        const canvas = document.getElementById('wheelCanvas');
         const ctx = canvas.getContext('2d');
-        const wheelColors 
+        const wheelColors = ['#1a1d24', '#c0392b', '#2c3e50', '#d35400', '#2e3440', '#962d22'];
+
+        function drawWheelGraphics() {
+            const segments = voucherPrizes.length;
+            const deg = 360 / segments;
+            ctx.clearRect(0, 0, 220, 220);
+
+            for (let i = 0; i < segments; i++) {
+                const start = (i * deg * Math.PI) / 180;
+                const end = ((i + 1) * deg * Math.PI) / 180;
+
+                ctx.beginPath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.moveTo(110, 110);
+                ctx.arc(110, 110, 110, start, end);
+                ctx.fill();
+
+                ctx.strokeStyle = '#ffd700';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(110, 110);
+                ctx.rotate(start + (deg * Math.PI) / 360);
+                ctx.fillStyle = "#ffd700";
+                ctx.font = "bold 8px sans-serif";
+                ctx.textAlign = "right";
+                ctx.fillText(voucherPrizes[i], 100, 3);
+                ctx.restore();
+            }
+        }
+        drawWheelGraphics();
+
+        // LOSOWANIE DLA FIRM (Złoty Baner)
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function spinWheel() {
+            if (isSpinning || pool.length === 0) return;
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+
+            const winnerName = document.getElementById('winnerName');
+            winnerName.innerText = "Losowanie w toku...";
+
+            const addedRotation = Math.floor(Math.random() * 360) + 2160; 
+            currentRotation += addedRotation;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                const luckyWinner = pool[Math.floor(Math.random() * pool.length)];
+                winnerName.innerText = `★ ${luckyWinner.toUpperCase()} ★`;
+                
+                const chat = document.getElementById('chat');
+                chat.innerHTML += `<div class="chat-msg"><span class="win">[SYSTEM]</span> Firma <span class="win">${luckyWinner}</span> wygrywa Główny Baner!</div>`;
+                chat.scrollTop = chat.scrollHeight;
+
+                isSpinning = false;
+                document.getElementById('spinBtn').disabled = false;
+            }, 4500);
+        }
+
+        // LOSOWANIE VOUCHERA DLA WIDZA LIVE
+        function drawViewer() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('viewerBtn').disabled = true;
+            document.getElementById('winner-popup').style.display = 'none';
+
+            const segmentCount = voucherPrizes.length;
+            const prizeIndex = Math.floor(Math.random() * segmentCount);
+            const degPerSeg = 360 / segmentCount;
+            const targetRotation = currentRotation + 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            
+            currentRotation = targetRotation;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                const luckyUser = viewers[Math.floor(Math.random() * viewers.length)];
+                const luckyPrize = voucherPrizes[prizeIndex];
+
+                document.getElementById('winner-target-user').innerText = `${luckyUser} -> ${luckyPrize}`;
+                document.getElementById('winner-popup').style.display = 'block';
+                
+                const chat = document.getElementById('chat');
+                chat.innerHTML += `<div class="chat-msg"><span class="win">[LIVE]</span> ${luckyUser} zgarnia 🎁 ${luckyPrize}!</div>`;
+                chat.scrollTop = chat.scrollHeight;
+
+                isSpinning = false;
+                document.getElementById('viewerBtn').disabled = false;
+            }, 4500);
+        }
+
+        // ZEGAR LIVE (4 minuty w pętli)
+        let totalSeconds = 240;
+        setInterval(() => {
+            if (totalSeconds <= 0) totalSeconds = 240;
+            totalSeconds--;
+            const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+            const secs = String(totalSeconds % 60).padStart(2, '0');
+            document.getElementById('live-clock').innerText = `00:00:${mins}:${secs}`;
+        }, 1000);
+    </script>
+</body>
+</html>
