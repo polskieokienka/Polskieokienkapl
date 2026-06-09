@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieOkienka.pl - Ogólnopolska Sieć Reklamowa</title>
+    <title>PolskieOkienka.pl - Oficjalna Tablica Reklamowa</title>
     <style>
         body {
-            background-color: #121212;
+            background: #0f1115 url('https://images.unsplash.com/photo-1605886300408-f404e76a6cf3?w=1600&auto=format&fit=crop&q=80') no-repeat center top fixed;
+            background-size: cover;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -18,61 +19,85 @@
             box-sizing: border-box;
         }
 
-        /* Sekcja nagłówka mapy */
-        .map-header {
+        /* Przyciemnienie tła krajobrazu pod tablicę */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: -1;
+        }
+
+        /* POTĘŻNA METALOWA RAMA BILLBOARDU */
+        .billboard-frame {
+            background: linear-gradient(135deg, #bdc3c7 0%, #eaeded 25%, #95a5a6 50%, #eaeded 75%, #7f8c8d 100%);
+            padding: 22px;
+            border-radius: 4px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.6);
+            border: 4px solid #7f8c8d;
+            max-width: 100%;
+            width: 1004px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Nity montażowe na metalowej ramie */
+        .billboard-frame::after {
+            content: '•   •   •   •   •   •   •   •   •   •   •   •';
+            position: absolute;
+            top: 4px; left: 0; width: 100%;
             text-align: center;
-            margin-top: 15px;
-            margin-bottom: 25px;
-            padding: 0 10px;
+            color: #555;
+            font-size: 10px;
+            letter-spacing: 25px;
         }
 
-        .map-header h1 {
-            color: #ffd700;
-            font-size: 24px;
-            margin: 0 0 8px 0;
+        .billboard-inner {
+            background-color: #1a1d24;
+            border: 3px solid #2c3e50;
+            padding: 12px;
+            border-radius: 2px;
+        }
+
+        /* GÓRNY NEONOWY NAGŁÓWEK NA TABLICY */
+        .billboard-top-bar {
+            background: #2c3e50;
+            border: 2px solid #7f8c8d;
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            font-weight: 900;
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: #eaeded;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        .map-header p {
-            color: #aaaaaa;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* Kontener Mapy */
+        /* WIDOK ARCHITEKTURY STRONY */
         #map-view {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
             max-width: 600px;
-            animation: fadeIn 0.5s ease;
+            background: rgba(20,24,33,0.95);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
+
+        #map-view h1 { color: #ffd700; font-size: 22px; margin: 0 0 15px 0; text-transform: uppercase; text-align: center; }
 
         .map-container {
             position: relative;
             width: 100%;
             aspect-ratio: 1 / 1;
-            background: radial-gradient(circle, #1e1e1e 0%, #151515 100%);
-            border: 2px solid #ffd700;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.1);
+            background: #11141a;
+            border: 1px solid #333;
+            border-radius: 8px;
             overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .poland-bg {
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 80%;
-            height: 80%;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 40% 50% 35% 45%;
-            filter: blur(20px);
-            pointer-events: none;
         }
 
         .city-pin {
@@ -84,552 +109,358 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             box-shadow: 0 0 12px #ffd700;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
-
-        .city-pin::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: transparent;
-            border: 2px solid #ffd700;
-            border-radius: 50%;
-            animation: pulse 1.8s infinite ease-in-out;
-        }
-
-        .city-pin:hover {
-            background-color: #ff4500;
-            box-shadow: 0 0 20px #ff4500;
-            transform: translate(-50%, -50%) scale(1.3);
-        }
-
         .city-label {
             position: absolute;
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: bold;
-            white-space: nowrap;
-            background: rgba(0,0,0,0.85);
-            padding: 2px 5px;
-            border-radius: 4px;
-            border: 1px solid rgba(255,215,0,0.3);
-            transform: translate(-50%, -180%);
-            pointer-events: none;
+            color: #fff; font-size: 10px; font-weight: bold; white-space: nowrap;
+            background: #000; padding: 2px 6px; border-radius: 3px; transform: translate(-50%, -180%);
         }
+        #pin-karpacz { top: 75%; left: 35%; }
+        #pin-zakopane { top: 88%; left: 65%; }
 
-        /* Pozycje 10 miast na mapie */
-        #pin-sopot { top: 8%; left: 48%; }
-        #pin-kolobrzeg { top: 11%; left: 22%; }
-        #pin-ustka { top: 7%; left: 34%; }
-        #pin-leba { top: 6%; left: 41%; }
-        #pin-swinoujscie { top: 14%; left: 8%; }
-        #pin-karpacz { top: 75%; left: 22%; }
-        #pin-milkow { top: 73%; left: 25%; }
-        #pin-szklarska { top: 74%; left: 18%; }
-        #pin-zakopane { top: 90%; left: 55%; }
-        #pin-krynica { top: 86%; left: 68%; }
-
-        /* Widok tablicy */
-        #dashboard-view {
-            display: none;
-            width: 100%;
-            max-width: 1200px;
-            animation: fadeIn 0.5s ease;
-        }
+        #dashboard-view { display: none; width: 100%; }
 
         .back-btn {
-            background: #222222;
-            color: #ffd700;
-            border: 1px solid #ffd700;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 15px;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            background: #2c3e50; color: #ffd700; border: 1px solid #ffd700;
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;
+            margin-bottom: 12px; transition: 0.2s; text-transform: uppercase; font-size: 12px;
         }
+        .back-btn:hover { background: #ffd700; color: #000; }
 
-        .back-btn:hover {
-            background: #ffd700;
-            color: #121212;
-        }
-
-        /* Panel Statystyk */
-        .stats-panel {
-            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
-            border: 2px solid #ffd700;
-            border-radius: 10px;
-            padding: 15px 20px;
+        /* GŁÓWNA STRUKTURA PODZIAŁU */
+        .layout-grid {
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+        }
+        @media(min-width: 950px) {
+            .layout-grid { flex-direction: row; align-items: flex-start; }
         }
 
-        .stat-box { text-align: center; min-width: 150px; }
-        .stat-box .label { font-size: 12px; color: #aaaaaa; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-box .value { font-size: 22px; font-weight: bold; color: #ffd700; }
-        .stat-box .value.green { color: #2ecc71; }
-
-        .main-container { display: flex; flex-direction: column; gap: 20px; align-items: center; }
-        
-        @media(min-width: 900px) {
-            .main-container { flex-direction: row; align-items: flex-start; justify-content: center; }
-        }
-
+        /* SIATKA OKIENEK REKLAMOWYCH */
         .grid-board {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 4px;
-            background: #1e1e1e;
-            padding: 8px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .cell-link {
-            text-decoration: none;
-            display: block;
-            aspect-ratio: 1 / 1;
-        }
-
-        .cell {
-            width: 100%;
-            height: 100%;
-            background-color: #2c2c2c;
-            border: 1px solid #444;
+            gap: 5px;
+            background: #11141b;
+            padding: 10px;
             border-radius: 4px;
+            border: 2px solid #2c3e50;
+            flex: 1;
+        }
+
+        .cell-link { text-decoration: none; display: block; aspect-ratio: 1 / 1; }
+        
+        .cell {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2e3440 0%, #1a1d24 100%);
+            border: 1px solid #434c5e;
+            border-radius: 2px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 6px;
+            font-size: 7px;
             font-weight: bold;
-            color: #bbb;
+            color: #d8dee9;
             cursor: pointer;
-            transition: all 0.2s;
             box-sizing: border-box;
-            padding: 1px;
             text-align: center;
             position: relative;
-            overflow: hidden;
+            transition: transform 0.15s;
         }
+        .cell-link:hover .cell { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
 
-        .cell-link:hover .cell { transform: scale(1.05); z-index: 2; }
-        .cell.premium { border: 1px solid #ffd700; box-shadow: inset 0 0 5px rgba(255,215,0,0.4); color: #ffd700; font-weight: 900; }
-        
-        /* Styl okienka z LOGO/FOTKĄ FIRMY */
+        /* AKTYWNE OKIENKA FIRM - METALE I LOGOTYPY */
         .cell.taken {
-            border: 1px solid #2ecc71;
-            color: #ffffff;
-            background-size: cover;
-            background-position: center;
+            background-color: #ffffff;
+            background-size: 75% auto;
+            background-repeat: no-repeat;
+            background-position: center 30%;
+            border: 2px solid #d8dee9;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.15);
         }
-        .cell.taken .overlay {
+        .cell.taken .company-title {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 2px;
-            box-sizing: border-box;
-        }
-        .cell.taken .company-logo {
-            font-size: 7px;
-            color: #ffd700;
-            text-transform: uppercase;
-            font-weight: 900;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 100%;
-            text-shadow: 1px 1px 2px #000;
-        }
-        .cell.taken .badge {
-            font-size: 5px;
-            background: #2ecc71;
-            color: #000;
-            padding: 1px 2px;
-            border-radius: 2px;
-            text-transform: uppercase;
-            font-weight: 900;
-            align-self: center;
+            bottom: 2px; width: 100%;
+            font-size: 6.5px; font-weight: 800;
+            color: #2e3440; text-transform: uppercase;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
 
+        .cell.premium {
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            background: linear-gradient(135deg, #3b4252 0%, #1a1d24 100%);
+        }
+
+        /* GŁÓWNY ZŁOTY EKRAN CENTRALNY */
         .center-banner {
             grid-column: span 4;
             grid-row: span 4;
-            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
-            color: #000;
+            background: linear-gradient(135deg, #0a0c10 0%, #151922 100%);
+            border: 3px solid #ffd700;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.45), inset 0 0 15px rgba(255, 215, 0, 0.2);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            font-weight: bold;
             text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-            transition: background 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
+            position: relative;
+            box-sizing: border-box;
         }
-        .center-banner .title { font-size: 8px; letter-spacing: 0.5px; margin-bottom: 2px; text-transform: uppercase; }
-        .center-banner .status { font-size: 11px; font-weight: 900; text-transform: uppercase; width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
-        /* Panel boczny */
-        .sidebar { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; max-width: 340px; }
-        .wheel-box { background: #1e1e1e; border: 1px solid #333; border-radius: 12px; padding: 12px; text-align: center; width: 100%; box-sizing: border-box; }
-        .wheel-box h3 { font-size: 13px; color: #ffd700; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .wheel-container { position: relative; width: 180px; height: 180px; margin: 0 auto; }
-        .wheel-canvas { width: 180px; height: 180px; border-radius: 50%; border: 3px solid #ffd700; box-shadow: 0 0 10px rgba(255,215,0,0.2); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-pointer { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 16px solid #ffd700; z-index: 10; }
-
-        .wheel-btn { background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); color: #000; border: none; padding: 10px 20px; font-size: 12px; font-weight: bold; border-radius: 20px; cursor: pointer; margin-top: 10px; width: 100%; box-shadow: 0 4px 10px rgba(255,140,0,0.3); text-transform: uppercase; }
-        .wheel-btn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; }
-        .tourist-btn { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: #fff; box-shadow: 0 4px 10px rgba(0,114,255,0.3); }
-        
-        /* Czat */
-        .chat-box { background: #151515; border: 1px solid #222; border-radius: 8px; padding: 10px; width: 100%; height: 130px; overflow-y: auto; text-align: left; box-sizing: border-box; font-size: 11px; }
-        .chat-msg { margin-bottom: 7px; line-height: 1.4; border-bottom: 1px solid #1c1c1c; padding-bottom: 4px; }
-        .chat-user { color: #3498db; font-weight: bold; }
-        .chat-premium { color: #ffd700; }
-        .chat-owner { color: #2ecc71; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2.2); opacity: 0; }
+        .center-banner .gold-crown {
+            color: #ffd700; font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
+            background: rgba(255,215,0,0.1); width: 100%; padding: 3px 0; border-bottom: 1px dashed #ffd700;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .center-banner .jackpot-box {
+            margin: 5px 0;
         }
+        .center-banner .jackpot-title {
+            font-size: 15px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(255,215,0,0.6);
+        }
+        .center-banner .jackpot-value {
+            font-size: 11px; color: #fff; font-weight: bold; margin-top: 2px;
+        }
+
+        /* ZEGAR ODLICZANIA LIVE */
+        .live-countdown {
+            background: #ef4444; color: #fff; font-family: monospace;
+            font-size: 14px; font-weight: bold; padding: 4px 10px;
+            border-radius: 3px; border: 1px solid #f87171;
+            letter-spacing: 1px; box-shadow: 0 0 10px rgba(239,68,68,0.4);
+        }
+
+        /* PANEL BOCZNY - KOŁO FORTUNY */
+        .sidebar {
+            width: 100%; max-width: 320px;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .wheel-box {
+            background: rgba(20,24,33,0.95);
+            border: 2px solid #2c3e50;
+            border-radius: 6px; padding: 15px; text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+        .wheel-box h3 { font-size: 14px; color: #ffd700; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px; }
+
+        .wheel-container { position: relative; width: 220px; height: 220px; margin: 0 auto; }
+        .wheel-canvas {
+            width: 220px; height: 220px; border-radius: 50%;
+            border: 5px solid #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1);
+        }
+        .wheel-pointer {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
+            border-top: 20px solid #ffd700; z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            color: #000; border: none; padding: 11px 24px; font-size: 13px; font-weight: 900;
+            border-radius: 25px; cursor: pointer; margin-top: 15px; width: 100%;
+            box-shadow: 0 5px 15px rgba(255,140,0,0.4); text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .spin-btn:disabled { background: #4c566a; color: #434c5e; cursor: not-allowed; box-shadow: none; }
+
+        /* POPUP WYGRANEGO VOUCHERA (Z TRZECIEGO UJĘCIA) */
+        #winner-popup {
+            display: none;
+            background: linear-gradient(135deg, #11141b 0%, #1f2430 100%);
+            border: 2px solid #ffd700; border-radius: 6px; padding: 12px; margin-top: 12px;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3); animation: fadeIn 0.4s ease;
+        }
+        .popup-title { color: #ffd700; font-size: 12px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
+        .popup-name { color: #fff; font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.06); padding: 5px; border-radius: 4px; }
+
+        /* DOLNY INTERAKTYWNY SKŁADNIK MUZYCZNY */
+        .audio-dock {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(15,17,21,0.92); border-top: 1px solid #ffd700;
+            padding: 8px 20px; display: flex; justify-content: center; align-items: center;
+            gap: 15px; z-index: 100; box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
+            box-sizing: border-box;
+        }
+        .audio-dock span { font-size: 11px; color: #ffd700; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
+        .audio-dock audio { height: 28px; max-width: 240px; }
+
+        /* STOPKA REZERWACYJNA */
+        .billboard-footer-bar {
+            background: #11141b; border: 1px solid #2c3e50; text-align: center;
+            padding: 8px; margin-top: 15px; font-size: 12px; font-weight: bold; color: #eaeded;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .billboard-footer-bar span { color: #ffd700; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- WIDOK 1: MAPA -->
-    <div id="map-view">
-        <div class="map-header">
-            <h1>Interaktywna mapa dla turystów i przedsiębiorców</h1>
-            <p>Wybierz jeden z 10 głównych kurortów, aby wejść na tablicę ogłoszeń</p>
-        </div>
-
-        <div class="map-container">
-            <div class="poland-bg"></div>
+    <!-- GŁÓWNA STRUKTURA BILLBOARDU -->
+    <div class="billboard-frame">
+        <div class="billboard-inner">
             
-            <div class="city-pin" id="pin-sopot" onclick="openCity('Sopot')"><div class="city-label">Sopot</div></div>
-            <div class="city-pin" id="pin-kolobrzeg" onclick="openCity('Kołobrzeg')"><div class="city-label">Kołobrzeg</div></div>
-            <div class="city-pin" id="pin-ustka" onclick="openCity('Ustka')"><div class="city-label">Ustka</div></div>
-            <div class="city-pin" id="pin-leba" onclick="openCity('Łeba')"><div class="city-label">Łeba</div></div>
-            <div class="city-pin" id="pin-swinoujscie" onclick="openCity('Świnoujście')"><div class="city-label">Świnoujście</div></div>
-            <div class="city-pin" id="pin-karpacz" onclick="openCity('Karpacz')"><div class="city-label">Karpacz</div></div>
-            <div class="city-pin" id="pin-milkow" onclick="openCity('Miłków')"><div class="city-label">Miłków</div></div>
-            <div class="city-pin" id="pin-szklarska" onclick="openCity('Szklarska Poręba')"><div class="city-label">Szklarska Poręba</div></div>
-            <div class="city-pin" id="pin-zakopane" onclick="openCity('Zakopane')"><div class="city-label">Zakopane</div></div>
-            <div class="city-pin" id="pin-krynica" onclick="openCity('Krynica-Zdrój')"><div class="city-label">Krynica-Zdrój</div></div>
+            <!-- NAGŁÓWEK TABLICY -->
+            <div class="billboard-top-bar" id="top-title-text">TABLICA REKLAMOWA KORONY KARKONOSZY</div>
+
+            <!-- WIDOK MAPY SELEKCYJNEJ -->
+            <div id="map-view">
+                <h1>Wybierz punkt docelowy platformy</h1>
+                <div class="map-container">
+                    <div class="city-pin" id="pin-karpacz" onclick="openPlatform('Karpacz')"><div class="city-label">Karpacz</div></div>
+                    <div class="city-pin" id="pin-zakopane" onclick="openPlatform('Zakopane')"><div class="city-label">Zakopane</div></div>
+                </div>
+            </div>
+
+            <!-- WIDOK PANELU GŁÓWNEGO -->
+            <div id="dashboard-view">
+                <button class="back-btn" onclick="returnToMap()">← Powrót do mapy punktów</button>
+
+                <div class="layout-grid">
+                    
+                    <!-- SIATKA REKLAMOWA -->
+                    <div class="grid-board" id="board-container"></div>
+
+                    <!-- PANEL SENSACYJNEGO KOŁA FORTUNY -->
+                    <div class="sidebar">
+                        <div class="wheel-box">
+                            <h3>🎁 KOŁO LOSOWANIA VOUCHERÓW</h3>
+                            <div class="wheel-pointer"></div>
+                            <div class="wheel-container">
+                                <canvas class="wheel-canvas" id="voucherWheel" width="220" height="220"></canvas>
+                            </div>
+                            <button class="spin-btn" id="spinBtn" onclick="runVoucherLottery()">LOSUJ NAGRODĘ WIDZA</button>
+                            
+                            <!-- PANEL WYGRANEJ Z TRZECIEGO ZDJĘCIA -->
+                            <div id="winner-popup">
+                                <div class="popup-title">🎁 ZWYCIĘZCA WIDZÓW:</div>
+                                <div class="popup-name" id="winner-target-user">[@ZUZANNA_KRZECZYK]</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PASEK DOLNY REZERWACYJNY -->
+            <div class="billboard-footer-bar">ZAREZERWUJ OKIENKO NA NASZEJ STRONIE: <span>POLSKIEOKIENKA.PL</span></div>
+
         </div>
     </div>
 
-    <!-- WIDOK 2: TABLICA MIASTA -->
-    <div id="dashboard-view">
-        <button class="back-btn" onclick="goToMap()">← Wróć do mapy Polski</button>
-
-        <div class="stats-panel">
-            <div class="stat-box">
-                <div class="label">📍 Wybrany Kurort</div>
-                <div class="value" id="current-city-name">Karpacz</div>
-            </div>
-            <div class="stat-box">
-                <div class="label">👤 Turystów online teraz</div>
-                <div class="value green" id="visitor-counter">14 230</div>
-            </div>
-            <div class="stat-box">
-                <div class="label">🔥 Wolne okienka dla firm</div>
-                <div class="value" id="free-slots-counter">84 / 84</div>
-            </div>
-        </div>
-
-        <div class="main-container">
-            <!-- Siatka Okienek -->
-            <div class="grid-board" id="board-container"></div>
-
-            <div class="sidebar">
-                <!-- KOŁO 1: LIGA FIRM (Dla Przedsiębiorców) -->
-                <div class="wheel-box">
-                    <h3>🎡 Koło Fortuny Ligi Firm</h3>
-                    <div class="wheel-pointer"></div>
-                    <div class="wheel-container">
-                        <canvas class="wheel-canvas" id="wheelCanvas" width="180" height="180"></canvas>
-                    </div>
-                    <button class="wheel-btn" id="spinBusinessBtn" onclick="spinBusinessWheel()">ZAKRĘĆ DLA LIGI FIRM</button>
-                </div>
-
-                <!-- KOŁO 2: PLANER ATRAKCJI (Dla Turystów) -->
-                <div class="wheel-box">
-                    <h3>🗺️ Losowy Planer Atrakcji</h3>
-                    <div class="wheel-pointer"></div>
-                    <div class="wheel-container">
-                        <canvas class="wheel-canvas" id="touristWheelCanvas" width="180" height="180"></canvas>
-                    </div>
-                    <button class="wheel-btn tourist-btn" id="spinTouristBtn" onclick="spinTouristWheel()">Wylosuj moją wycieczkę!</button>
-                </div>
-
-                <!-- Czat akcji promocyjnej -->
-                <div class="chat-box">
-                    <div class="chat-msg"><span class="chat-owner">@Admin_PolskieOkienka</span>: 🔥 Każda lokalna firma otrzymuje okienko z własnym LOGO i zdjęciem na 30 dni ZA DARMO!</div>
-                    <div class="chat-msg"><span class="chat-user chat-premium">@wonder_home</span>: Nasze apartamenty w Karpaczu mają świetną klikalność z tych kafelków graficznych! 😎</div>
-                    <div class="chat-msg"><span class="chat-user">@pizzeria_napoli</span>: Kurczę, to koło atrakcji dla turystów to hit, sam kręcę dla zabawy i planuję jutrzejszy dzień! 🍕</div>
-                    <div class="chat-msg"><span class="chat-user">@karpacz_trip</span>: Wylosowałem Śnieżkę i obiad w Karczmie Górskiej, idealny plan na sobotę z paczką znajomych!</div>
-                </div>
-            </div>
-        </div>
+    <!-- INTEGRACJA PODKŁADU MUZYCZNEGO (PHONK / SIGMA BEAT) -->
+    <div class="audio-dock">
+        <span>🎵 Podkład Magiczny (Karkonosze Flow):</span>
+        <audio controls loop>
+            <!-- Legalny, darmowy i działający strumień muzyki instrumentalnej synthwave/phonk-ambient -->
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            Twoja przeglądarka nie obsługuje audio.
+        </audio>
     </div>
 
     <script>
-        // Prawdziwe, działające linki zewnętrzne (Google Maps, oficjalne portale rezerwacyjne i strony)
-        const corporateLeague = [
-            { name: "Wonder Home", url: "https://www.wonderhome.pl", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=80&auto=format&fit=crop&q=60" },
-            { name: "Smażalnia VIP", url: "https://www.google.com/maps/search/Sma%C5%BCalnia+ryb+Karpacz", img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=80&auto=format&fit=crop&q=60" },
-            { name: "Karczma Górska", url: "https://www.google.com/maps/search/Karczma+G%C3%B3rska+Karpacz", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=80&auto=format&fit=crop&q=60" },
-            { name: "Pizzeria Napoli", url: "https://www.google.com/maps/search/Pizzeria+Karpacz", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=80&auto=format&fit=crop&q=60" },
-            { name: "Kawiarnia Relaks", url: "https://www.google.com/maps/search/Kawiarnia+Karpacz", img: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=80&auto=format&fit=crop&q=60" },
-            { name: "Wyciąg Turysta", url: "https://kopa.com.pl", img: "https://images.unsplash.com/photo-1482867996988-2faec3cbb4f9?w=80&auto=format&fit=crop&q=60" }
+        // Realne podmioty z branży i profesjonalne ikony brandingowe ze zbiorów Unsplash
+        const businessDatabase = [
+            { name: "Wonder Home", url: "https://www.wonderhome.pl", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60&auto=format&fit=crop&q=60" },
+            { name: "Karczma Karkonoska", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=60&auto=format&fit=crop&q=60" },
+            { name: "Aparthotel Śnieżka", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60&auto=format&fit=crop&q=60" },
+            { name: "Kopa Pass", url: "https://kopa.com.pl", logo: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=60&auto=format&fit=crop&q=60" },
+            { name: "Ski School", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60&auto=format&fit=crop&q=60" },
+            { name: "Coffee Shop", url: "https://www.google.com/maps", logo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=60&auto=format&fit=crop&q=60" }
         ];
 
-        // Oficjalne i informacyjne linki do realnych atrakcji turystycznych w regionie
-        const touristAttractions = [
-            { title: "Śnieżka 🏔️", url: "https://kpnmab.pl", desc: "Zdobądź najwyższy szczyt Karkonoszy! \nObiad: Karczma Górska 🍖\nWieczór: Relaks na deptaku." },
-            { title: "Śnycerstwo i Wang ⛩️", url: "https://www.wang.com.pl", desc: "Odwiedź legendarną, norweską Świątynię Wang przeniesioną w Karkonosze w XIX wieku." },
-            { title: "Sztolnie Kowary ⛏️", url: "https://www.sztolniekowary.pl", desc: "Odkryj tajemnicze, podziemne trasy dawnej kopalni uranu i bogactw naturalnych." },
-            { title: "Park Miniatur 🗺️", url: "https://www.park-miniatur.com", desc: "Zobacz najpiękniejsze zabytki Dolnego Śląska odwzorowane w skali 1:25 w Kowarach." },
-            { title: "Zaporę w Zagórzu 🌊", url: "https://pl.wikipedia.org/wiki/Zapora_wodna_w_Zag%C3%B3rzu_%C5%9Al%C4%85skim", desc: "Malowniczy spacer wzdłuż potężnej zapory wodnej z pięknym widokiem na okoliczne wzgórza." },
-            { title: "Zamek Chojnik 🏰", url: "https://www.chojnik.pl", desc: "Wspinaczka na pełne legend ruiny średniowiecznego zamku obronnego na szczycie granitowej góry." }
+        // Wykaz Voucherów na Kole Fortuny (wartości podkręcające akcję)
+        const voucherPrizes = [
+            "Hotel Gołębiewski 500zł",
+            "Pobyt Wonder Home",
+            "Kolacja w Karczmie",
+            "Kopa Pass - Ski",
+            "Voucher Premium 350zł",
+            "Gadżety PolskieOkienka"
         ];
 
-        let isSpinningBusiness = false;
-        let isSpinningTourist = false;
-        let lastBusinessWinnerUrl = "";
+        // Przykładowa pula aktywnych widzów do wylosowania na żywo
+        const mockViewers = ["@ZUZANNA_KRZECZYK", "@MARCIN_KOWARY", "@SIGMA_TRAVELER", "@ANNA_KARKONOSZE", "@MATEO_REELS"];
 
-        function openCity(cityName) {
+        let countdownInterval;
+
+        function openPlatform(cityName) {
             document.getElementById('map-view').style.display = 'none';
             document.getElementById('dashboard-view').style.display = 'block';
-            document.getElementById('current-city-name').innerText = cityName;
+            document.getElementById('top-title-text').innerText = `TABLICA REKLAMOWA ${cityName.toUpperCase()}`;
             
-            const randomVisitors = Math.floor(Math.random() * (16000 - 8000) + 8000).toLocaleString('pl-PL');
-            document.getElementById('visitor-counter').innerText = randomVisitors;
-            
-            generateBoard();
-            drawBusinessWheel();
-            drawTouristWheel();
-            window.scrollTo(0, 0);
+            buildGrid();
+            renderVoucherWheel();
+            startLiveTimer();
         }
 
-        function goToMap() {
+        function returnToMap() {
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('map-view').style.display = 'flex';
-            window.scrollTo(0, 0);
+            document.getElementById('top-title-text').innerText = "TABLICA REKLAMOWA KORONY KARKONOSZY";
+            clearInterval(countdownInterval);
         }
 
-        function generateBoard() {
-            const board = document.getElementById('board-container');
-            board.innerHTML = ""; 
-            
-            let cellCounter = 1;
-            let totalSlots = 0;
-            let takenSlots = 0;
+        // GENEROWANIE PLANU ARCHITEKTONICZNEGO OKIENEK
+        function buildGrid() {
+            const container = document.getElementById('board-container');
+            container.innerHTML = "";
+            let cellIndex = 1;
 
             for (let row = 0; row < 10; row++) {
                 for (let col = 0; col < 10; col++) {
+                    // Budowanie strefy centralnego złotego ekranu 4x4
                     if (row >= 3 && row <= 6 && col >= 3 && col <= 6) {
                         if (row === 3 && col === 3) {
-                            const banner = document.createElement('a');
-                            banner.className = 'center-banner';
-                            banner.id = 'main-live-banner';
-                            banner.href = "javascript:void(0);";
-                            banner.target = "_blank";
-                            banner.innerHTML = '<div class="title">GŁÓWNY BANER</div><div class="status" id="banner-status-text">Czeka na<br>losowanie...</div>';
-                            board.appendChild(banner);
+                            const centerBox = document.createElement('div');
+                            centerBox.className = 'center-banner';
+                            centerBox.innerHTML = `
+                                <div class="gold-crown">Główna Nagroda Reklamodawcy</div>
+                                <div class="jackpot-box">
+                                    <div class="jackpot-title">MILION ZŁOTYCH</div>
+                                    <div class="jackpot-value">LOSOWANIE MIESIĘCZNE</div>
+                                </div>
+                                <div class="live-countdown" id="live-clock">00:00:04:00</div>
+                            `;
+                            container.appendChild(centerBox);
                         }
                     } else {
-                        totalSlots++;
-                        const linkWrapper = document.createElement('a');
-                        linkWrapper.className = 'cell-link';
-                        const cell = document.createElement('div');
-                        
-                        if (cellCounter % 3 === 0) {
-                            takenSlots++;
-                            const firmData = corporateLeague[cellCounter % corporateLeague.length];
-                            cell.className = 'cell taken';
-                            cell.style.backgroundImage = `url('${firmData.img}')`;
-                            
-                            cell.innerHTML = `
-                                <div class="overlay">
-                                    <div class="company-logo">${firmData.name}</div>
-                                    <div class="badge">Zajęte</div>
-                                </div>
-                            `;
-                            
-                            linkWrapper.href = firmData.url;
-                            linkWrapper.target = "_blank";
+                        const link = document.createElement('a');
+                        link.className = 'cell-link';
+                        const item = document.createElement('div');
+
+                        if (cellIndex % 3 === 0) {
+                            const data = businessDatabase[cellIndex % businessDatabase.length];
+                            item.className = 'cell taken';
+                            item.style.backgroundImage = `url('${data.logo}')`;
+                            item.innerHTML = `<div class="company-title">${data.name}</div>`;
+                            link.href = data.url;
+                            link.target = "_blank";
                         } else {
-                            const isPremium = cellCounter % 7 === 0;
-                            cell.className = 'cell' + (isPremium ? ' premium' : '');
-                            cell.innerHTML = isPremium ? 'Premium<br>GRATIS' : 'Zwykłe<br>GRATIS';
-                            
-                            linkWrapper.href = "javascript:void(0);";
-                            cell.onclick = function() {
-                                alert("🔥 Zareklamuj swój obiekt! Dodaj własne LOGO i ZDJĘCIE na 30 dni zupełnie ZA DARMO. Przekierujemy ruch turystów prosto na Twoją stronę www.");
-                            };
+                            const premiumNode = cellIndex % 7 === 0;
+                            item.className = 'cell' + (premiumNode ? ' premium' : '');
+                            item.innerHTML = premiumNode ? 'PREMIUM' : 'STANDARD';
+                            link.href = "javascript:void(0);";
+                            link.onclick = () => alert("Zarezerwuj to okienko reklamowe na stronie głównej!");
                         }
-                        
-                        linkWrapper.appendChild(cell);
-                        board.appendChild(linkWrapper);
-                        cellCounter++;
+
+                        link.appendChild(item);
+                        container.appendChild(link);
+                        cellIndex++;
                     }
                 }
             }
-            document.getElementById('free-slots-counter').innerText = `${totalSlots - takenSlots} / ${totalSlots}`;
         }
 
-        // RYSOWANIE KOŁA LIGI FIRM
-        const businessCanvas = document.getElementById('wheelCanvas');
-        const bCtx = businessCanvas.getContext('2d');
-        const bColors = ['#ff4500', '#2ecc71', '#3498db', '#f1c40f', '#9b59b6', '#e67e22'];
-        const bSegments = corporateLeague.length;
-        const bDegPerSeg = 360 / bSegments;
-
-        function drawBusinessWheel() {
-            bCtx.clearRect(0, 0, 180, 180);
-            for (let i = 0; i < bSegments; i++) {
-                const startAngle = (i * bDegPerSeg * Math.PI) / 180;
-                const endAngle = ((i + 1) * bDegPerSeg * Math.PI) / 180;
-                
-                bCtx.beginPath();
-                bCtx.fillStyle = bColors[i % bColors.length];
-                bCtx.moveTo(90, 90);
-                bCtx.arc(90, 90, 90, startAngle, endAngle);
-                bCtx.fill();
-                
-                bCtx.save();
-                bCtx.translate(90, 90);
-                bCtx.rotate(startAngle + (bDegPerSeg * Math.PI) / 360);
-                bCtx.fillStyle = "#ffffff";
-                bCtx.font = "bold 7px sans-serif";
-                bCtx.textAlign = "right";
-                bCtx.fillText(corporateLeague[i].name, 82, 2);
-                bCtx.restore();
-            }
-        }
-
-        // RYSOWANIE KOŁA ATRAKCJI TURYSTYCZNYCH
-        const touristCanvas = document.getElementById('touristWheelCanvas');
-        const tCtx = touristCanvas.getContext('2d');
-        const tColors = ['#00c6ff', '#0072ff', '#11998e', '#38ef7d', '#ff9966', '#ff5e62'];
-        const tSegments = touristAttractions.length;
-        const tDegPerSeg = 360 / tSegments;
-
-        function drawTouristWheel() {
-            tCtx.clearRect(0, 0, 180, 180);
-            for (let i = 0; i < tSegments; i++) {
-                const startAngle = (i * tDegPerSeg * Math.PI) / 180;
-                const endAngle = ((i + 1) * tDegPerSeg * Math.PI) / 180;
-                
-                tCtx.beginPath();
-                tCtx.fillStyle = tColors[i % tColors.length];
-                tCtx.moveTo(90, 90);
-                tCtx.arc(90, 90, 90, startAngle, endAngle);
-                tCtx.fill();
-                
-                tCtx.save();
-                tCtx.translate(90, 90);
-                tCtx.rotate(startAngle + (tDegPerSeg * Math.PI) / 360);
-                tCtx.fillStyle = "#ffffff";
-                tCtx.font = "bold 6.5px sans-serif";
-                tCtx.textAlign = "right";
-                bCtx.shadowColor = "rgba(0,0,0,0.5)";
-                bCtx.shadowBlur = 2;
-                tCtx.fillText(touristAttractions[i].title, 82, 2);
-                tCtx.restore();
-            }
-        }
-
-        // AKCJA: Kręcenie kołem firm
-        function spinBusinessWheel() {
-            if (isSpinningBusiness) return;
-            isSpinningBusiness = true;
-            document.getElementById('spinBusinessBtn').disabled = true;
-            
-            const winnerIndex = Math.floor(Math.random() * bSegments);
-            const extraDegrees = 270 - (winnerIndex * bDegPerSeg) - (bDegPerSeg / 2);
-            const totalRotation = 3600 + extraDegrees;
-            
-            const wheelElement = document.getElementById('wheelCanvas');
-            wheelElement.style.transform = `rotate(${totalRotation}deg)`;
-            
-            document.getElementById('banner-status-text').innerHTML = "Losowanie<br>w toku... ✨";
-            
-            setTimeout(() => {
-                const winner = corporateLeague[winnerIndex];
-                const mainBanner = document.getElementById('main-live-banner');
-                
-                // Ustawienie wygranego na środkowym banerze oraz podpięcie jego realnego linku
-                mainBanner.style.background = "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)";
-                mainBanner.href = winner.url;
-                document.getElementById('banner-status-text').innerHTML = `<span style="font-size:8px; color:#fff; font-weight:normal;">KLIKNIJ I SPRAWDŹ:</span><br>${winner.name}`;
-                
-                alert(`🎉 LIGA FIRM:\nGłówny baner reklamowy na środku planszy wygrywa:\n\n👉 ${winner.name} 👈\n\nOd teraz baner na środku planszy przekierowuje prosto na oficjalną stronę zwycięzcy!`);
-                
-                isSpinningBusiness = false;
-                document.getElementById('spinBusinessBtn').disabled = false;
-                wheelElement.style.transition = "none";
-                wheelElement.style.transform = `rotate(${totalRotation % 360}deg)`;
-                setTimeout(() => { wheelElement.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)"; }, 50);
-            }, 4000);
-        }
-
-        // AKCJA: Kręcenie kołem atrakcji (Planer wycieczek)
-        function spinTouristWheel() {
-            if (isSpinningTourist) return;
-            isSpinningTourist = true;
-            document.getElementById('spinTouristBtn').disabled = true;
-            
-            const winnerIndex = Math.floor(Math.random() * tSegments);
-            const extraDegrees = 270 - (winnerIndex * tDegPerSeg) - (tDegPerSeg / 2);
-            const totalRotation = 3600 + extraDegrees;
-            
-            const wheelElement = document.getElementById('touristWheelCanvas');
-            wheelElement.style.transform = `rotate(${totalRotation}deg)`;
-            
-            setTimeout(() => {
-                const plan = touristAttractions[winnerIndex];
-                
-                const userChoice = confirm(`🗺️ PLANER WYCIECZEK:\nWylosowano propozycję: ${plan.title}\n\n${plan.desc}\n\nCzy chcesz otworzyć oficjalną stronę informacyjną/biletową tej atrakcji?`);
-                
-                if (userChoice) {
-                    window.open(plan.url, '_blank');
-                }
-                
-                isSpinningTourist = false;
-                document.getElementById('spinTouristBtn').disabled = false;
-                wheelElement.style.transition = "none";
-                wheelElement.style.transform = `rotate(${totalRotation % 360}deg)`;
-                setTimeout(() => { wheelElement.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)"; }, 50);
-            }, 4000);
-        }
-    </script>
-</body>
-</html>
+        // RYSOWANIE LUKSUSOWEGO KOŁA FORTUNY (Złoto i Granat)
+        const canvas = document.getElementById('voucherWheel');
+        const ctx = canvas.getContext('2d');
+        const wheelColors 
