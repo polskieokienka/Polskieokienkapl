@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolskieOkienka.pl - Karpacz</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header-panel {
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 15px 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+        .counter {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+        }
+        @media(min-width: 900px) {
+            .main-container { flex-direction: row; align-items: flex-start; }
+        }
+        .grid-board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 10px;
+            border: 3px solid #444;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        .grid-item {
+            aspect-ratio: 1;
+            background-color: #2d2d2d;
+            border: 1px solid #555;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #aaa;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .grid-item.premium {
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            color: #ffd700;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.4); }
+        }
+        .grid-center {
+            grid-column: span 4;
+            grid-row: span 4;
+            background: linear-gradient(135deg, #b8860b, #ffd700);
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .controls-panel {
+            flex: 1;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+        .wheel-box {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin-bottom: 20px;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #ffd700;
+            background: conic-gradient(
+                #ff4500 0deg 36deg, #2ed573 36deg 72deg, #1e90ff 72deg 108deg, #ffa500 108deg 144deg,
+                #ffd700 144deg 216deg, #9b59b6 216deg 252deg, #34495e 252deg 288deg, #ffd700 288deg 360deg
+            );
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #ffd700;
+            z-index: 10;
+        }
+        .btn {
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
+            transition: transform 0.2s;
+            margin: 5px;
+            width: 80%;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn-viewer { background: linear-gradient(135deg, #2ed573, #26af5f); color: #fff; box-shadow: 0 4px 10px rgba(46, 213, 115, 0.4); }
+        .chat-box {
+            width: 100%;
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 5px;
+            height: 120px;
+            margin-top: 15px;
+            padding: 10px;
+            overflow-y: hidden;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+        .chat-msg { margin-bottom: 5px; color: #888; }
+        .chat-msg .user { color: #1e90ff; font-weight: bold; }
+        .chat-msg .win { color: #2ed573; font-weight: bold; animation: pulse 1s infinite; }
+    </style>
+</head>
+<body>
+
+    <div class="header-panel">
+        <h2>PolskieOkienka.pl - Panel Zarządzania</h2>
+        <div class="counter">Prognozowany Przychód (10 miast): <span id="cash">142 500</span> zł / mc</div>
+    </div>
+
+    <div class="main-container">
+        <!-- TABLICA REKLAMOWA -->
+        <div class="grid-board" id="board">
+            <!-- Centralny Złoty Baner (Zajmuje środek siatki) -->
+            <div class="grid-center" id="mainBanner" style="grid-column: 4 / span 4; grid-row: 4 / span 4;">
+                <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Główny Baner</div>
+                <div id="winnerName" style="font-size: 20px; text-align: center; margin-top: 5px;">Czeka na losowanie...</div>
+            </div>
+        </div>
+
+        <!-- PANEL STEROWANIA I KOŁO FORTUNY -->
+        <div class="controls-panel">
+            <div class="wheel-box">
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="wheel"></div>
+            </div>
+
+            <button class="btn" onclick="spinWheel()">ZAKRĘĆ DLA FIRM (200 zł / 350 zł)</button>
+            <button class="btn btn-viewer" onclick="drawViewer()">LOSUJ NAGRODĘ DLA WIDZA</button>
+
+            <div class="chat-box" id="chat">
+                <div class="chat-msg"><span class="user">@turek_karpacz</span>: Rezerwuję okienko premium!</div>
+                <div class="chat-msg"><span class="user">@goral_99</span>: Kiedy live z losowania biletów?</div>
+                <div class="chat-msg"><span class="user">@aneczka_wroc</span>: Oby wygrał mój ulubiony pensjonat!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generowanie siatki 100 okienek z pominięciem środka na duży baner
+        const board = document.getElementById('board');
+        const companies = [
+            "Hotel Gołębiewski", "Karczma Karkonoska", "Restauracja Wang", "Pizzeria TOP 1", 
+            "Apartamenty Widok", "Wypożyczalnia Nart 24", "Kawiarnia Górska", "Pensjonat Śnieżka",
+            "Ski School Karpacz", "Pamiątki spod Śnieżki", "Cukiernia Karkonosze", "Gofry u Janka"
+        ];
+        
+        let pool = [];
+
+        for (let i = 1; i <= 100; i++) {
+            // Pomijaj pozycje zajęte przez centralny baner (wiersze 4,5,6,7 i kolumny 4,5,6,7)
+            let row = Math.ceil(i / 10);
+            let col = i % 10 === 0 ? 10 : i % 10;
+            
+            if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
+                continue; 
+            }
+
+            const item = document.createElement('div');
+            item.classList.add('grid-item');
+            
+            // Losowe przypisanie pakietu Premium (350zł) dla demonstracji wizualnej
+            if (Math.random() > 0.8) {
+                item.classList.add('premium');
+                let name = companies[Math.floor(Math.random() * companies.length)] + " (PREMIUM)";
+                item.innerText = "350 zł\nPremium";
+                pool.push(name); // Premium trafia dwa razy do bazy koła
+                pool.push(name);
+            } else {
+                item.innerText = "200 zł\nOkienko";
+                pool.push(companies[Math.floor(Math.random() * companies.length)]);
+            }
+            board.appendChild(item);
+        }
+
+        // Funkcja kręcenia kołem
+        let currentRotation = 0;
+        function spinWheel() {
+            if(pool.length === 0) return;
+            const wheel = document.getElementById('wheel');
+            const winnerName = document.getElementById('winnerName');
+            
+            // Losowy obrót (minimum 5 pełnych obrotów + losowy kąt)
+            const addedRotation = Math.floor(Math.random() * 360) + 1800;
+            currentRotation += addedRotation;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            winnerName.innerText = "Losowanie w toku...";
+
+            setTimeout(() => {
+                const luckyWinner = pool[Math.floor(Math.random() * pool.length)];
+                winnerName.innerText = luckyWinner;
+                
+                // Dodanie info na czacie
+                const chat = document.getElementById('chat');
+                chat.innerHTML += `<div class="chat-msg"><span class="win">[SYSTEM]</span> Firma <span class="win">${luckyWinner}</span> wygrywa Złoty Baner!</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 4000);
+        }
+
+        // Funkcja losowania widzów
+        const viewers = ["@mordeczka_karpacz", "@turysta_z_wawy", "@gorska_wiedzma", "@szymon_b", "@wroclawianka"];
+        const prizes = ["Voucher na pizzę w TOP 1", "Darmowy gofr z u Janka", "10% zniżki na nocleg", "Bilet do Parku Miniatur"];
+        
+        function drawViewer() {
+            const chat = document.getElementById('chat');
+            const luckyUser = viewers[Math.floor(Math.random() * viewers.length)];
+            const luckyPrize = prizes[Math.floor(Math.random() * prizes.length)];
+            
+            chat.innerHTML += `<div class="chat-msg"><span class="win">[LIVE WIDZ]</span> Gratulacje ${luckyUser}! Wygrywasz: 🎁 ${luckyPrize}!</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>
