@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POLSKIEOKIENKA.PL - TABLICA: KARPACZ</title>
+    <title>Ogólnopolska Sieć Tablic Reklamowych | Kup Okienko</title>
     <style>
         :root {
             --bg-color: #0f1115;
             --card-bg: #181c24;
-            --accent-premium: #ffd700; /* Złoty dla Premium 350zł */
-            --accent-standard: #4a5d78;  /* Szary dla Standard 200zł */
+            --accent-color: #00ecff;
+            --accent-gold: #ffd700;
             --text-color: #f5f6f8;
             --border-color: #262f3d;
         }
@@ -19,373 +19,323 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 10px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .wrapper {
-            max-width: 450px; /* Idealna szerokość pod ekrany smartfonów */
+            max-width: 1200px;
             width: 100%;
         }
 
-        /* Panel Główny ze Screena */
-        .main-header-panel {
-            border: 3px solid var(--accent-premium);
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 15px;
+        header {
             text-align: center;
-            margin-bottom: 15px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            margin: 40px 0;
         }
 
-        .main-header-panel h1 {
-            font-size: 20px;
-            margin: 0 0 5px 0;
-            letter-spacing: 1px;
-            font-weight: 900;
+        header h1 {
+            font-size: 32px;
+            color: #fff;
+            margin-bottom: 10px;
         }
 
-        .counter-text {
-            color: var(--accent-premium);
-            font-weight: bold;
+        header h1 span {
+            color: var(--accent-color);
         }
 
-        /* Przycisk powrotu do Mapy */
-        .map-btn {
-            width: 100%;
-            background: #1f2633;
-            border: 2px solid #3b485e;
-            color: var(--accent-premium);
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 15px;
-            text-align: left;
-            transition: 0.2s;
-        }
-
-        .map-btn:hover {
-            background: #283446;
-            border-color: var(--accent-premium);
-        }
-
-        /* Widok Mapy (Ukryty na starcie, aktywowany przyciskiem) */
-        .map-view {
-            display: none;
+        /* Ulepszony panel wyboru regionu */
+        .controls-panel {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
             padding: 20px;
-            text-align: center;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 300px;
-            background: #0b0d10;
-            border: 2px dashed #3b485e;
-            border-radius: 8px;
+            border-radius: 12px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            color: #6c7a90;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .region-select-btn {
-            background: var(--accent-premium);
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-weight: bold;
+        .search-box input {
+            background: #0f1115;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 10px 15px;
             border-radius: 6px;
-            cursor: pointer;
+            font-size: 16px;
+            width: 250px;
         }
 
-        /* Siatka Tablicy (Główny widok) */
-        .grid-view {
-            display: block;
+        .search-box input:focus {
+            border-color: var(--accent-color);
+            outline: none;
         }
 
+        .stats-badge {
+            background: rgba(0, 236, 255, 0.1);
+            border: 1px solid var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* Główna Siatka 100 okienek */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 6px;
+            gap: 12px;
             background: #0b0d10;
-            padding: 10px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
         }
 
         .box {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             aspect-ratio: 1 / 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 11px;
             color: #6c7a90;
             text-decoration: none;
             text-align: center;
+            padding: 8px;
             box-sizing: border-box;
-            font-weight: bold;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
         }
 
-        /* Typy okienek */
-        .box.premium-tier {
-            border: 1px solid var(--accent-premium);
-            color: var(--accent-premium);
-        }
-
-        .box.standard-tier {
-            border: 1px solid var(--accent-standard);
-            color: #a0aec0;
-        }
-
-        /* Wykupione kafelki firm */
-        .box.occupied {
-            background: #1c2331;
+        .box:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(0, 236, 255, 0.2);
             color: #fff;
         }
-        
-        .box.occupied .logo-icon {
-            font-size: 16px;
-            margin-bottom: 2px;
+
+        /* Styl dla wykupionego okienka */
+        .box.occupied {
+            background: #1c2331;
+            border-color: #3b485e;
+            color: #fff;
+            font-weight: 600;
         }
 
-        .box.occupied .biz-title {
-            font-size: 7px;
-            text-transform: uppercase;
-            max-width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .box.occupied::after {
+            content: "🔹";
+            font-size: 9px;
+            margin-top: 4px;
         }
 
-        /* ŚRODKOWY DIAMENT (ZŁOTY EKSPONAT) */
+        /* Środkowy Mega-Kafel */
         .box.main-sponsor {
             grid-column: span 4;
             grid-row: span 4;
-            background: linear-gradient(135deg, #150d2a 0%, #2a082c 100%);
-            border: 2px solid var(--accent-premium);
+            background: linear-gradient(135deg, #1e0044 0%, #440047 100%);
+            border: 2px solid var(--accent-gold);
             color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 8px 4px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
         }
 
-        /* PRAWDZIWE KOŁO FORTUNY W CSS */
-        .wheel-container {
-            position: relative;
-            width: 65px;
-            height: 65px;
-            margin: 5px auto;
-        }
-
-        .wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 3px solid var(--accent-premium);
-            background: conic-gradient(
-                #ffd700 0% 16.6%, #ff4500 16.6% 33.2%, 
-                #00ecff 33.2% 49.8%, #10b981 49.8% 66.4%, 
-                #8b5cf6 66.4% 83%, #ec4899 83% 100%
-            );
-            transition: transform 3s cubic-bezier(0.1, 0.8, 0.3, 1);
-        }
-
-        .wheel-pointer {
-            position: absolute;
-            top: -5px;
+        /* Modal zakupowy */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 10px solid #fff;
-            z-index: 10;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            padding: 30px;
+            border-radius: 16px;
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        .spin-btn {
-            background: var(--accent-premium);
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            background: #0f1115;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-color);
             color: #000;
             border: none;
-            font-size: 8px;
             font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
+            font-size: 16px;
+            border-radius: 6px;
             cursor: pointer;
-            text-transform: uppercase;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
         }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <!-- Panel Nagłówka -->
-    <div class="main-header-panel">
-        <h1>POLSKIEOKIENKA.PL -<br>TABLICA: KARPACZ</h1>
-        <div style="font-size: 13px; margin-top: 8px;">Licznik Gości w Sieci: <span class="counter-text">14 205</span> osób dzisiaj</div>
-        <div style="font-size: 13px; margin-top: 4px;">Wolne Okienka w Regionie: <span class="counter-text" id="counter-badge">81 / 100</span></div>
-    </div>
+    <header>
+        <h1 id="dynamic-heading">Tablica Ogłoszeń: <span>Karpacz</span></h1>
+        <p>Zabezpiecz pozycję swojej firmy w regionie. Ruch bezpośredni bez pośredników.</p>
+    </header>
 
-    <!-- Przycisk Mapy (Z pełną logiką przełączania widoków) -->
-    <button class="map-btn" id="toggle-map-btn" onclick="toggleViews()">← WRÓĆ DO MAPY POLSKI</button>
-
-    <!-- WIDOK 1: MAPA (Ukryty na start) -->
-    <div class="map-view" id="map-view">
-        <div class="map-placeholder">
-            📍 [TUTAJ ZNAJDUJE SIĘ TWOJA GŁÓWNA MAPA INTERAKTYWNA POLSKI]
+    <div class="controls-panel">
+        <div class="search-box">
+            <input type="text" id="region-search" placeholder="🔍 Wpisz miasto (np. Karpacz, Szklarska)..." oninput="filterRegions()">
         </div>
-        <button class="region-select-btn" onclick="toggleViews()">WYBIERZ REGION: KARPACZ →</button>
+        <div class="stats-badge" id="counter-badge">🚨 Wolne okienka: 94/100</div>
     </div>
 
-    <!-- WIDOK 2: TABLICA Z OKIENKAMI (Widoczny na start) -->
-    <div class="grid-view" id="grid-view">
-        <div class="grid-container" id="main-grid">
-            <!-- Wygenerowane dynamicznie przez skrypt -->
+    <div class="grid-container" id="main-grid">
         </div>
-    </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeModal()"></div>
+<div class="modal" id="order-modal">
+    <h3 style="margin-top:0; color:var(--accent-color)">📥 Rezerwacja Kafelka</h3>
+    <p>Wybrałeś miejsce reklamowe. Wpisz dane, aby przejść do płatności BLIK/Karta.</p>
+    
+    <label>Nazwa Twojego biznesu:</label>
+    <input type="text" id="biz-name" placeholder="np. Hotel Śnieżka">
+    
+    <label>Adres URL strony lub Facebooka:</label>
+    <input type="text" id="biz-url" placeholder="https://...">
+    
+    <button onclick="executePayment()">💳 OPŁAĆ ABONAMENT (50 ZŁ)</button>
 </div>
 
 <script>
-    // Pełna, poprawna konfiguracja Twoich firm z cenami, ikonami i linkami
-    const tablicaKarpacz = {
-        // Okienka Premium (Złota ramka) - 350 zł
-        1: { type: "premium", price: "350 zł", name: "Wonder Home", url: "https://www.wonderhome.pl", icon: "🏨" },
-        2: { type: "premium", price: "350 zł", name: "CleanExpert", url: "https://polskieokienka.github.io", icon: "✨" },
-        3: { type: "premium", price: "350 zł", name: "Park Miniatur", url: "https://www.parkminiatur.com", icon: "🏰" },
-        
-        // Okienka Standard (Szara ramka) - 200 zł
-        4: { type: "standard", price: "200 zł", name: "Domki Widokowo", url: "https://polskieokienka.github.io", icon: "🏡" },
-        5: { type: "standard", price: "200 zł", name: "Wyspa Fun", url: "https://polskieokienka.github.io", icon: "🏝️" },
-        
-        // Pozostałe ułożone losowo firmy ze screena dla realizmu
-        11: { type: "standard", price: "200 zł", name: "Kolej Linowa", url: "#", icon: "🚠" },
-        12: { type: "standard", price: "200 zł", name: "Hotel Gołęb...", url: "#", icon: "🏨" },
-        25: { type: "standard", price: "200 zł", name: "Schronisko", url: "#", icon: "🏔️" }
+    // Centralna baza danych regionów Polski - czysty obiekt gotowy na rozbudowę
+    const regiony = {
+        "karpacz": {
+            name: "Karpacz i Karkonosze",
+            occupied: {
+                1: { name: "🍺 Browar Sowiduch", url: "#" },
+                2: { name: "🏰 Park Miniatur", url: "#" },
+                5: { name: "🎿 Wyciąg Winter-Pol", url: "#" }
+            }
+        },
+        "szklarska": {
+            name: "Szklarska Poręba",
+            occupied: {
+                3: { name: "🌲 Wodospad Kamieńczyka", url: "#" },
+                8: { name: "🍕 Pizzeria Harnaś", url: "#" }
+            }
+        },
+        "zakopane": {
+            name: "Zakopane i Podhale",
+            occupied: {
+                4: { name: "🚠 Kasprowy Wierch", url: "#" }
+            }
+        }
     };
 
-    // Funkcja budująca siatkę okienek
-    function drawGrid() {
+    let currentRegion = "karpacz";
+
+    function buildGrid(regionKey) {
         const grid = document.getElementById('main-grid');
+        const heading = document.getElementById('dynamic-heading');
+        const data = regiony[regionKey];
+        
+        heading.innerHTML = `Tablica Ogłoszeń: <span>${data.name}</span>`;
         grid.innerHTML = "";
+
         let occupiedCount = 0;
 
+        // Budujemy dokładnie 100 okienek w systemie CSS Grid
         for (let i = 1; i <= 97; i++) {
             
-            // Pozycja 13: PRAWDZIWY, DZIAŁAJĄCY ZŁOTY EKSPONAT
+            // Wrzucamy główny kafel na stałą pozycję (np. jako 13 element siatki)
             if(i === 13) {
-                const megaKafel = document.createElement('div');
-                megaKafel.className = "box main-sponsor";
-                megaKafel.innerHTML = `
-                    <div style="font-size:6px; color:var(--accent-premium); letter-spacing:0.5px;">ZŁOTY BANER - NAGRODA GŁÓWNA</div>
-                    <div style="font-size:9px; font-weight:900;">ZŁOTY EKSPONAT</div>
-                    <div class="wheel-container">
-                        <div class="wheel-pointer"></div>
-                        <div class="wheel" id="fortune-wheel"></div>
-                    </div>
-                    <button class="spin-btn" onclick="spinWheel(event)">LOSUJ BANER</button>
-                    <div style="background:rgba(0,0,0,0.4); padding:2px; border-radius:3px; font-size:8px; color:var(--accent-premium)" id="winner-name">Wonder Home</div>
-                `;
-                grid.appendChild(megaKafel);
-                continue;
+                const mainSponsor = document.createElement('div');
+                mainSponsor.className = "box main-sponsor";
+                mainSponsor.innerHTML = "👑 REKLAMA GŁÓWNA<br><span style='font-size:12px; color:var(--accent-gold);'>Wylosowana Nagroda Miesiąca</span>";
+                grid.appendChild(mainSponsor);
             }
 
             const cell = document.createElement('a');
+            cell.href = "#";
             
-            // Sprawdzamy czy w tym miejscu jest Twoja firma
-            if (tablicaKarpacz[i]) {
-                const firm = tablicaKarpacz[i];
-                occupiedCount++;
-                
+            if(data.occupied[i]) {
                 cell.className = "box occupied";
-                cell.href = firm.url;
-                cell.target = "_blank"; // Otwieranie w nowej karcie
-                
-                if(firm.type === "premium") cell.classList.add("premium-tier");
-                if(firm.type === "standard") cell.classList.add("standard-tier");
-
-                cell.innerHTML = `
-                    <div class="logo-icon">${firm.icon}</div>
-                    <div class="biz-title">${firm.name}</div>
-                `;
+                cell.innerText = data.occupied[i].name;
+                cell.href = data.occupied[i].url;
+                cell.target = "_blank";
+                occupiedCount++;
             } else {
-                // Jeśli puste, naprzemiennie generujemy wolne sloty 350zł Premium i 200zł Standard
-                if (i % 6 === 0) {
-                    cell.className = "box premium-tier";
-                    cell.innerHTML = `350 zł<br><span style="font-size:6px;opacity:0.7">Premium</span>`;
-                } else {
-                    cell.className = "box standard-tier";
-                    cell.innerHTML = `200 zł<br><span style="font-size:6px;opacity:0.7">Standard</span>`;
-                }
-                cell.href = "#";
-                cell.onclick = function(e) { e.preventDefault(); alert("Formularz zakupu okienka zostanie podpięty pod Stripe!"); };
+                cell.className = "box";
+                cell.innerHTML = `Wolne<br><span style="color:var(--accent-color)">Kup slot</span>`;
+                cell.onclick = function(e) {
+                    e.preventDefault();
+                    openModal();
+                };
             }
-            
             grid.appendChild(cell);
         }
 
-        // Aktualizacja licznika na żywo na podstawie faktycznie zajętych okienek
-        document.getElementById('counter-badge').innerText = `${100 - occupiedCount} / 100`;
+        // Aktualizacja licznika wolnych miejsc w locie
+        document.getElementById('counter-badge').innerText = `🚨 Wolne okienka: ${97 - occupiedCount}/100`;
     }
 
-    // Funkcja animująca kręcenie kołem fortuny
-    let isSpinning = false;
-    function spinWheel(event) {
-        event.stopPropagation(); // Blokada przed otwieraniem linku przy kliknięciu przycisku
-        if (isSpinning) return;
-        
-        isSpinning = true;
-        const wheel = document.getElementById('fortune-wheel');
-        const winnerText = document.getElementById('winner-name');
-        
-        // Losowy pełny obrót plus losowy kąt
-        const randomDeg = Math.floor(Math.random() * 360) + 1440; 
-        wheel.style.transform = `rotate(${randomDeg}deg)`;
-        winnerText.innerText = "Losowanie...";
-
-        // Lista firm do wylosowania dla efektu wizualnego
-        const firmy = ["Wonder Home", "CleanExpert", "Park Miniatur", "Domki Widokowo", "Wyspa Fun"];
-
-        setTimeout(() => {
-            isSpinning = false;
-            const finalWinner = firmy[Math.floor(Math.random() * firmy.length)];
-            winnerText.innerText = finalWinner;
-            alert(`🎉 Główny baner na najbliższe 15 minut wylosowała firma: ${finalWinner}!`);
-        }, 3000); // Koło kręci się dokładnie 3 sekundy
-    }
-
-    // Funkcja przełączania pomiędzy Mapą a Siatką Okienek
-    function toggleViews() {
-        const gridView = document.getElementById('grid-view');
-        const mapView = document.getElementById('map-view');
-        const btn = document.getElementById('toggle-map-btn');
-
-        if (gridView.style.display === "none") {
-            gridView.style.display = "block";
-            mapView.style.display = "none";
-            btn.innerText = "← WRÓĆ DO MAPY POLSKI";
-        } else {
-            gridView.style.display = "none";
-            mapView.style.display = "block";
-            btn.innerText = "→ POWRÓĆ DO TABLICY: KARPACZ";
+    function filterRegions() {
+        const input = document.getElementById('region-search').value.toLowerCase();
+        // Szybkie dopasowanie wpisanego tekstu do kluczy w bazie danych
+        for (let key in regiony) {
+            if(regiony[key].name.toLowerCase().includes(input)) {
+                currentRegion = key;
+                buildGrid(currentRegion);
+                break;
+            }
         }
     }
 
-    // Uruchomienie skryptu na starcie
-    drawGrid();
+    function openModal() {
+        document.getElementById('order-modal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('order-modal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function executePayment() {
+        const name = document.getElementById('biz-name').value;
+        const url = document.getElementById('biz-url').value;
+        if(!name || !url) {
+            alert("Uzupełnij pola, wspólniku! Musimy wiedzieć, kto płaci.");
+            return;
+        }
+        // Przekierowanie na zewnętrzny, bezpieczny link Stripe
+        window.location.href = "https://buy.stripe.com/test_link_reklamowy";
+    }
+
+    // Inicjalizacja systemu na starcie
+    buildGrid(currentRegion);
 </script>
 
 </body>
