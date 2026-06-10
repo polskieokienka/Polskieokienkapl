@@ -131,7 +131,7 @@
 
         #pin-wisla        { top: 81%; left: 48%; }
         #pin-zakopane     { top: 90%; left: 58%; }
-        #pin-szczawnica   { top: 86%; left: 67%; }
+        #pin-szccawnica   { top: 86%; left: 67%; }
         #pin-krynica      { top: 84%; left: 77%; }
 
         /* PANEL RETINA BILLBOARD */
@@ -232,7 +232,7 @@
 
         .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 10px; }
         .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-card.tourist-card .wheel-canvas { border-color: #2ed573; }
+        .wheel-canvas.tourist-card .wheel-canvas { border-color: #2ed573; }
         
         .wheel-pointer {
             position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
@@ -285,7 +285,7 @@
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div>
             </a>
             
-            <!-- REGION KARKONOSZE / IZERY (POPRAWIONE LINKI MAŁYMI LITERAMI) -->
+            <!-- REGION KARKONOSZE / IZERY -->
             <a href="#swieradow-zdroj" class="city-pin" id="pin-swieradow">
                 <div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div>
             </a>
@@ -376,7 +376,8 @@
             "karpacz": {
                 companies: [
                     { name: "Wonder Home", url: "https://wonderhome.eu/", logo: "397038002.jpg" },
-                    { name: "Clean Expert", url: "http://www.sprzątanie.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
+                    // POPRAWIONO LINK (zakodowane polskie znaki w domenie)
+                    { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
                     { name: "Widokowo Karpacz", url: "https://www.widokowo-karpacz.pl", logo: "https://img.icons8.com/neon/60/mountain-scenery.png" },
                     { name: "Park Miniatur Kowary", url: "https://park-miniatur.com/", logo: "https://img.icons8.com/neon/60/castle.png" },
                     { name: "Wyspa Fun", url: "https://wyspa.fun/", logo: "https://img.icons8.com/neon/60/islandonwater.png" },
@@ -397,7 +398,7 @@
             "swieradow-zdroj": {
                 companies: [
                     { name: "Interferie Hotel", url: "https://www.interferie.pl", logo: "https://img.icons8.com/neon/60/luxury-hotel.png" },
-                    { name: "Clean Expert", url: "http://www.sprzątanie.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
+                    { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
                     { name: "SKI&SUN Świeradów", url: "https://skisun.pl", logo: "https://img.icons8.com/neon/60/ski-lift.png" }
                 ],
                 attractions: [
@@ -408,7 +409,7 @@
             },
             "szklarska-poreba": {
                 companies: [
-                    { name: "Clean Expert", url: "http://www.sprzątanie.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
+                    { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
                     { name: "Sudety Lift Szrenica", url: "https://sudetylift.com.pl", logo: "https://img.icons8.com/neon/60/ski-lift.png" },
                     { name: "Blue Mountain Resort", url: "https://blue-mountain-resort.pl", logo: "https://img.icons8.com/neon/60/resort.png" }
                 ],
@@ -433,7 +434,6 @@
         let rotCenter = 0, rotPromo = 0, rotTourist = 0, isSpinning = false;
 
         function checkUrlHash() {
-            // ZABEZPIECZENIE: Zamieniamy hash na małe litery (.toLowerCase()), aby zawsze pasował do bazy danych
             const currentHash = window.location.hash.replace('#', '').toLowerCase();
             if (currentHash) {
                 currentRegionKey = currentHash;
