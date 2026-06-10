@@ -177,9 +177,12 @@
         .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
         
+        /* POPRAWKA CSS DLA WYŚWIETLANIA LOGO */
         .grid-item.taken {
-            background-color: #2e3440; background-size: contain;
-            background-repeat: no-repeat; background-position: center center;
+            background-color: #2e3440; 
+            background-size: 100% 100% !important; /* Wymuszenie pełnego rozciągnięcia grafiki w komórce */
+            background-repeat: no-repeat !important; 
+            background-position: center center !important;
             border: 1px solid #ffd700;
         }
         .grid-item.taken .company-label-tag {
@@ -230,7 +233,7 @@
 
         .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 10px; }
         .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-canvas.tourist-card { border-color: #2ed573; }
+        .wheel-card.tourist-card .wheel-canvas { border-color: #2ed573; }
         
         .wheel-pointer {
             position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
@@ -365,7 +368,6 @@
     </div>
 
     <script>
-        // BAZA DANYCH - ZAKTUALIZOWANA O LOGO Z PLIKU DLA WONDER HOME
         const regionDatabase = {
             "karpacz": {
                 companies: [
@@ -395,7 +397,7 @@
                     { name: "SKI&SUN Świeradów", url: "https://skisun.pl", logo: "https://img.icons8.com/neon/60/ski-lift.png" }
                 ],
                 attractions: [
-                    { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 metrów z niesamowitym widokiem i panoramiczną zjeżdżalnią.", link: "https://www.visitswieradow.pl" },
+                    { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 meters z niesamowitym widokiem i panoramiczną zjeżdżalnią.", link: "https://www.visitswieradow.pl" },
                     { name: "Gondola SKI&SUN", desc: "Nowoczesna kolej linowa na Stóg Izerski, idealna dla narciarzy i rowerzystów.", link: "https://skisun.pl" },
                     { name: "Dom Zdrojowy", desc: "Zabytkowy obiekt uzdrowiskowy z najdłuższą na Dolnym Śląsku halą spacerową z modrzewia.", link: "https://uzdrowisko-swieradow.pl" }
                 ]
@@ -526,126 +528,4 @@
                 const end = ((i + 1) * deg * Math.PI) / 180;
 
                 ctx.beginPath();
-                ctx.fillStyle = colors[i % colors.length];
-                ctx.moveTo(r, r);
-                ctx.arc(r, r, r, start, end);
-                ctx.fill();
-
-                ctx.strokeStyle = canvasId === 'touristWheel' ? '#2ed573' : '#ffd700';
-                ctx.lineWidth = 1.2;
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(r, r);
-                ctx.rotate(start + (deg * Math.PI) / 360);
-                ctx.fillStyle = "#fff";
-                
-                if (canvasId === 'centerWheel') {
-                    ctx.font = "bold 4.5px sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.fillText(labelArray[i].substring(0, 14), r * 0.52, 1.5);
-                } else {
-                    ctx.font = "bold 7px sans-serif";
-                    ctx.textAlign = "right";
-                    ctx.shadowColor = "rgba(0,0,0,0.9)";
-                    ctx.shadowBlur = 3;
-                    ctx.fillText(labelArray[i].substring(0, 16), r - 10, 3);
-                }
-                ctx.restore();
-            }
-        }
-
-        function spinCenterWheel() {
-            if (isSpinning || currentCompanies.length === 0) return;
-            isSpinning = true;
-            document.getElementById('btnCenter').disabled = true;
-
-            const segments = currentCompanies.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotCenter += 1440 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            document.getElementById('centerWheel').style.transform = `rotate(${rotCenter}deg)`;
-
-            setTimeout(() => {
-                const winner = currentCompanies[prizeIndex];
-                document.getElementById('winnerName').innerHTML = `🔥 Wygrywa: <strong style="color:#ffd700">${winner.name.toUpperCase()}</strong>`;
-                isSpinning = false;
-                document.getElementById('btnCenter').disabled = false;
-            }, 4000);
-        }
-
-        function spinPromoWheel() {
-            if (isSpinning) return;
-            isSpinning = true;
-            document.getElementById('btnPromo').disabled = true;
-            document.getElementById('promoResult').style.display = 'none';
-
-            const segments = voucherPool.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-            
-            rotPromo += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            document.getElementById('promoWheel').style.transform = `rotate(${rotPromo}deg)`;
-
-            setTimeout(() => {
-                const luckyUser = mockViewers[Math.floor(Math.random() * mockViewers.length)];
-                const reward = voucherPool[prizeIndex];
-                const resBox = document.getElementById('promoResult');
-                resBox.innerHTML = `<strong>${luckyUser}</strong> otrzymuje:<br><span style="color:#ffd700;font-weight:bold;">${reward}</span>`;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnPromo').disabled = false;
-            }, 4500);
-        }
-
-        function spinTouristWheel() {
-            if (isSpinning || currentAttractions.length === 0) return;
-            isSpinning = true;
-            document.getElementById('btnTourist').disabled = true;
-            document.getElementById('touristResult').style.display = 'none';
-
-            const segments = currentAttractions.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotTourist += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            document.getElementById('touristWheel').style.transform = `rotate(${rotTourist}deg)`;
-
-            setTimeout(() => {
-                const attr = currentAttractions[prizeIndex];
-                const resBox = document.getElementById('touristResult');
-                resBox.innerHTML = `
-                    <strong style="color:#2ed573; font-size:11px;">🎯 Atrakcja: ${attr.name}</strong>
-                    <p style="margin:4px 0; color:#ccc; font-size:9px;">${attr.desc}</p>
-                    <a href="${attr.link}" target="_blank">Zobacz oficjalną stronę →</a>
-                `;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnTourist').disabled = false;
-            }, 4500);
-        }
-
-        setInterval(() => {
-            const guestElem = document.getElementById('globalGuests');
-            if(guestElem) {
-                let currentGuests = parseInt(guestElem.innerText.replace(/\s/g, ''));
-                currentGuests += Math.floor(Math.random() * 7) - 3;
-                guestElem.innerText = currentGuests.toLocaleString('pl-PL');
-            }
-        }, 3000);
-
-        let totalSeconds = 240;
-        setInterval(() => {
-            if (totalSeconds <= 0) totalSeconds = 240;
-            totalSeconds--;
-            const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-            const secs = String(totalSeconds % 60).padStart(2, '0');
-            const timerElem = document.getElementById('liveTimer');
-            if(timerElem) timerElem.innerText = `00:00:${mins}:${secs}`;
-        }, 1000);
-    </script>
-</body>
-</html>
+                ctx.fillStyle = colors
