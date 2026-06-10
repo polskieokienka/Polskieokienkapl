@@ -230,7 +230,7 @@
 
         .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 10px; }
         .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-card.tourist-card .wheel-canvas { border-color: #2ed573; }
+        .wheel-canvas.tourist-card { border-color: #2ed573; }
         
         .wheel-pointer {
             position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
@@ -268,7 +268,6 @@
         </div>
     </div>
 
-    <!-- MAPA POLSKI -->
     <div id="map-view">
         <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
         <div class="map-container">
@@ -283,7 +282,6 @@
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div>
             </a>
             
-            <!-- REGION KARKONOSZE / IZERY -->
             <a href="#swieradow-zdroj" class="city-pin" id="pin-swieradow">
                 <div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div>
             </a>
@@ -310,7 +308,6 @@
         </div>
     </div>
 
-    <!-- PANEL REKLAMOWY -->
     <div id="dashboard-view">
         <button class="back-btn" onclick="backToMainMap()">← Wróć do Mapy Polski</button>
 
@@ -321,7 +318,6 @@
                     <div class="grid-wrapper">
                         <div class="grid-board" id="boardGrid">
                             
-                            <!-- Telebim Centralny -->
                             <div class="grid-center" id="mainTelebim">
                                 <div class="banner-crown">Złoty Baner - Nagroda Główna</div>
                                 <div class="banner-main-title">ZŁOTY EKSPONAT</div>
@@ -339,7 +335,6 @@
                         </div>
                     </div>
 
-                    <!-- KOŁA NEONOWE -->
                     <div class="wheels-sidebar">
                         
                         <div class="wheel-card">
@@ -370,11 +365,11 @@
     </div>
 
     <script>
-        // BAZA DANYCH - ZAKTUALIZOWANA O ŚWIERADÓW-ZDRÓJ
+        // BAZA DANYCH - ZAKTUALIZOWANA O LOGO Z PLIKU DLA WONDER HOME
         const regionDatabase = {
             "karpacz": {
                 companies: [
-                    { name: "Wonder Home", url: "https://wonderhome.eu/", logo: "https://img.icons8.com/neon/60/home.png" },
+                    { name: "Wonder Home", url: "https://wonderhome.eu/", logo: "397038002.jpg" },
                     { name: "Clean Expert", url: "http://www.sprzątanie.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
                     { name: "Widokowo Karpacz", url: "https://www.widokowo-karpacz.pl", logo: "https://img.icons8.com/neon/60/mountain-scenery.png" },
                     { name: "Park Miniatur Kowary", url: "https://park-miniatur.com/", logo: "https://img.icons8.com/neon/60/castle.png" },
