@@ -17,6 +17,7 @@
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
+            padding-bottom: 80px; /* Miejsce na pasek ofert */
         }
 
         body::before {
@@ -336,6 +337,62 @@
         .submit-order-btn { width: 100%; padding: 13px; background: linear-gradient(90deg, #00f2fe, #4facfe); border: none; border-radius: 8px; color: #ffffff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 10px; }
         .submit-order-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
 
+        /* NOWOŚĆ: PASEK TOP OFERTY DNIA */
+        .ticker-wrap {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(90deg, #11141b, #1e2530);
+            border-top: 2px solid #ffd700; padding: 10px 0;
+            overflow: hidden; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        }
+        .ticker-title {
+            position: absolute; left: 0; top: 0; bottom: 0; background: #ffd700;
+            color: #000; font-weight: 900; font-size: 11px; display: flex;
+            align-items: center; padding: 0 15px; z-index: 10; text-transform: uppercase;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5); letter-spacing: 0.5px;
+        }
+        .ticker { display: flex; white-space: nowrap; padding-left: 140px; animation: ticker 25s linear infinite; }
+        .ticker:hover { animation-play-state: paused; }
+        .ticker-item {
+            display: inline-block; padding: 0 25px; color: #fff; font-size: 12px;
+            font-weight: bold; border-right: 1px dashed rgba(255,215,0,0.4);
+        }
+        .ticker-item a { color: #ffd700; text-decoration: none; margin-left: 5px; }
+        .ticker-item a:hover { text-decoration: underline; }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* NOWOŚĆ: CZAT ASYSTENT AI */
+        .chat-widget {
+            position: fixed; bottom: 55px; right: 20px; width: 300px;
+            background: rgba(15, 19, 28, 0.98); border: 2px solid #ffd700;
+            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; z-index: 1000;
+            overflow: hidden; transition: all 0.3s ease; transform: translateY(0);
+        }
+        .chat-widget.collapsed { width: 50px; height: 50px; border-radius: 50%; bottom: 55px; overflow: hidden; }
+        .chat-header {
+            background: linear-gradient(135deg, #1e2530, #11141b);
+            padding: 10px; color: #ffd700; font-weight: 900; font-size: 12px;
+            text-transform: uppercase; display: flex; justify-content: space-between;
+            align-items: center; cursor: pointer; border-bottom: 1px solid #2c3e50;
+        }
+        .chat-header span.status-dot { width: 8px; height: 8px; background: #2ed573; border-radius: 50%; display: inline-block; margin-right: 6px; box-shadow: 0 0 8px #2ed573; }
+        .chat-body { padding: 10px; height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 11px; background: #11141b; }
+        .chat-widget.collapsed .chat-body, .chat-widget.collapsed .chat-input-area { display: none; }
+        .msg { padding: 6px 10px; border-radius: 6px; max-width: 85%; line-height: 1.4; word-wrap: break-word; }
+        .msg.bot { background: #1a2332; color: #fff; align-self: flex-start; border-left: 3px solid #ffd700; }
+        .msg.user { background: #2c3e50; color: #ffd700; align-self: flex-end; }
+        .chat-input-area { display: flex; border-top: 1px solid #2c3e50; background: #151922; }
+        .chat-input { flex: 1; padding: 10px; background: none; border: none; color: #fff; font-size: 11px; outline: none; }
+        .chat-btn { background: #ffd700; border: none; color: #000; font-weight: bold; padding: 0 12px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
+        .chat-btn:hover { background: #ff8c00; }
+        .chat-toggle-icon { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; background: #ffd700; color: #000; }
+        .chat-widget.collapsed .chat-toggle-icon { display: flex; }
+        .chat-widget.collapsed .chat-header { display: none; }
+
         @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
         
         @media (max-width: 1024px) {
@@ -408,7 +465,7 @@
                       fill="rgba(255, 215, 0, 0.03)" stroke="#ffd700" stroke-width="2.5" stroke-dasharray="1 3" filter="drop-shadow(0px 0px 15px rgba(255,215,0,0.25))"/>
             </svg>
             
-            <!-- PRZYCISKI PINEZEK Z DIREKTNYM WYWOŁANIEM FUNKCJI -->
+            <!-- PRZYCISKI PINEZEK Z DIRECTNYM WYWOŁANIEM FUNKCJI -->
             <button class="city-pin" id="pin-swinoujscie" onclick="forceCityChange('swinoujscie')">
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div>
             </button>
@@ -533,6 +590,38 @@
         </div>
     </div>
 
+    <!-- SEKCJA 1: PASEK "TOP OFERTY DNIA" -->
+    <div class="ticker-wrap">
+        <div class="ticker-title">⭐ TOP OFERTY</div>
+        <div class="ticker">
+            <div class="ticker-item">Noclegi Karkonosze: <a href="https://wonderhome.eu/" target="_blank">Wonder Home Karpacz</a></div>
+            <div class="ticker-item">Apartamenty Serwis: <a href="http://www.xn--sprztanie-g1a.jelenia.pl" target="_blank">Clean Expert Jelenia Góra</a></div>
+            <div class="ticker-item">Komfortowy Urlop: <a href="https://www.widokowo-karpacz.pl" target="_blank">Widokowo Karpacz</a></div>
+            <div class="ticker-item">Zgłoś Swoją Firmę! <a href="javascript:void(0);" onclick="openOrderModal('ogolny', 0, 'Premium')">Kup Slot Reklamowy</a></div>
+            <!-- Zdwojenie elementów dla płynnej pętli animacji -->
+            <div class="ticker-item">Noclegi Karkonosze: <a href="https://wonderhome.eu/" target="_blank">Wonder Home Karpacz</a></div>
+            <div class="ticker-item">Apartamenty Serwis: <a href="http://www.xn--sprztanie-g1a.jelenia.pl" target="_blank">Clean Expert Jelenia Góra</a></div>
+            <div class="ticker-item">Komfortowy Urlop: <a href="https://www.widokowo-karpacz.pl" target="_blank">Widokowo Karpacz</a></div>
+            <div class="ticker-item">Zgłoś Swoją Firmę! <a href="javascript:void(0);" onclick="openOrderModal('ogolny', 0, 'Premium')">Kup Slot Reklamowy</a></div>
+        </div>
+    </div>
+
+    <!-- SEKCJA 2: ASYSTENT AI W KLIMACIE SIGMA -->
+    <div class="chat-widget collapsed" id="sigmaChat">
+        <div class="chat-toggle-icon" onclick="toggleChat()">💬</div>
+        <div class="chat-header" onclick="toggleChat()">
+            <div><span class="status-dot"></span>Sigma Asystent AI</div>
+            <div style="cursor:pointer; font-size:14px;">−</div>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="msg bot">Siemanko! Jestem Twoim lokalnym asystentem. Szukasz wolnych przestrzeni reklamowych czy sprawdzasz szlaki w Karkonoszach? Śmiało pytaj!</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Napisz wiadomość..." onkeypress="handleChatKey(event)">
+            <button class="chat-btn" onclick="sendChatMessage()">OK</button>
+        </div>
+    </div>
+
     <!-- MODAL REZERWACJI -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-content">
@@ -591,7 +680,7 @@
                 ],
                 attractions: [
                     { name: "Śnieżka (1602m n.p.m.)", desc: "Królowa Karkonoszy z futurystycznym dyskiem Obserwatorium IMGW na szczycie.", link: "https://kpnmab.pl" },
-                    { name: "Śniątynia Wang", desc: "Zabytek architektury nordyckiej z XII wieku, przeniesiony bez użycia gwoździ.", link: "https://www.wang.com.pl" },
+                    { name: "Świątynia Wang", desc: "Zabytek architektury nordyckiej z XII wieku, przeniesiony bez użycia gwoździ.", link: "https://www.wang.com.pl" },
                     { name: "Sztolnie Kowary", desc: "Tajemnicza podziemna trasa turystyczna w dawnej kopalni uranu.", link: "https://www.sztolniekowary.pl" },
                     { name: "Park Miniatur Kowary", desc: "Najpiękniejsze zabytki Dolnego Śląska odwzorowane w skali 1:25.", link: "https://www.park-miniatur.com" },
                     { name: "Wyspa Fun Kowary", desc: "Niezwykłe miejsce letniego relaksu i zabawy u podnóża gór.", link: "https://wyspa.fun" },
@@ -607,7 +696,7 @@
                 attractions: [
                     { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 metrów z panoramiczną zjeżdżalnią.", link: "https://visitskywalk.today/pl/" },
                     { name: "Gondola SKI&SUN", desc: "Nowoczesna kolej linowa na Stóg Izerski, idealna dla narciarzy i rowerzystów.", link: "https://skisun.pl" },
-                    { name: "Dom Zdrojowy", desc: "Zabytkowy obiekt uzdrowiskowy z najdłuższą na Dolństwie halą spacerową.", link: "https://uzdrowisko-swieradow.pl" }
+                    { name: "Dom Zdrojowy", desc: "Zabytkowy obiekt uzdrowiskowy z najdłuższą na Dolnym Śląsku halą spacerową.", link: "https://uzdrowisko-swieradow.pl" }
                 ]
             },
             "szklarska-poreba": {
@@ -640,6 +729,47 @@
         let currentCompanies = [];
         let currentAttractions = [];
         let rotCenter = 0, rotPromo = 0, rotTourist = 0, isSpinning = false;
+
+        // FUNKCJE OBSŁUGI ASYSTENTA CZATU AI
+        function toggleChat() {
+            document.getElementById('sigmaChat').classList.toggle('collapsed');
+        }
+
+        function handleChatKey(event) {
+            if (event.key === 'Enter') sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendMessage(text, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                let reply = "Ciekawa sprawa. Skonfigurujmy odpowiedni slot na tablicy lub dobierzmy pakiet promocyjny, aby wyciągnąć z tego projektu maksimum zasięgu!";
+                const lowText = text.toLowerCase();
+                
+                if (lowText.includes('karpacz') || lowText.includes('nocleg') || lowText.includes('wonder')) {
+                    reply = "W Karpaczu mamy topowy ruch! Wonder Home ma już swój dedykowany slot na naszej głównej tablicy. Chcesz sprawdzić wolne miejsca obok nich?";
+                } else if (lowText.includes('cena') || lowText.includes('koszt') || lowText.includes('slot')) {
+                    reply = "Standardowy slot to jedyne 200 zł, a pozycje Premium wyróżnione złotą ramką kosztują 350 zł. Kliknij dowolny kwadrat na tablicy, aby go zarezerwować!";
+                } else if (lowText.includes('pogoda') || lowText.includes('szlak') || lowText.includes('śnieżka')) {
+                    reply = "W Karkonoszach warunki są stabilne, około +18°C. Na Śnieżkę wejdziesz z Karpacza w niecałe 3 godziny. Przydatne info wrzuciłem też w sekcji asystenta górskiego!";
+                }
+                appendMessage(reply, 'bot');
+            }, 800);
+        }
+
+        function appendMessage(text, sender) {
+            const body = document.getElementById('chatBody');
+            const msg = document.createElement('div');
+            msg.className = `msg ${sender}`;
+            msg.innerText = text;
+            body.appendChild(msg);
+            body.scrollTop = body.scrollHeight;
+        }
 
         // WYMUSZONE PRZEŁĄCZENIE MIASTA PRZEZ KLIKNIĘCIE PINEZKI
         function forceCityChange(cityKey) {
