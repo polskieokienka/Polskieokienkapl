@@ -60,18 +60,28 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.7);
             box-sizing: border-box;
         }
-        #map-view h1 { color: #ffd700; font-size: 15px; margin: 0 0 15px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
+        #map-view h1 { color: #ffd700; font-size: 14px; margin: 0 0 15px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
         
         .map-container {
             position: relative;
             width: 100%;
             aspect-ratio: 1.15 / 1;
-            background: #151922 url('https://upload.wikimedia.org/wikipedia/commons/1/14/Poland_location_map_%28animated_outline%29.svg') no-repeat center center;
-            background-size: 95% auto;
+            background: #11141b;
             border: 2px solid #2c3e50;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+        }
+
+        /* TŁO SVG - ZŁOTA POLSKA */
+        .poland-svg-bg {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* PINEZKI */
@@ -82,57 +92,60 @@
             flex-direction: column;
             align-items: center;
             transform: translate(-50%, -50%);
+            text-decoration: none;
         }
         
         .pin-dot {
-            width: 12px; height: 12px;
+            width: 14px; height: 14px;
             background-color: #ffd700;
             border: 2px solid #fff;
             border-radius: 50%;
-            box-shadow: 0 0 10px #ffd700, 0 0 4px #ff8c00;
+            box-shadow: 0 0 12px #ffd700, 0 0 6px #ff8c00;
             transition: transform 0.2s;
             z-index: 2;
         }
         
         .city-label {
             color: #ffffff;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
             background: rgba(0, 0, 0, 0.9);
-            padding: 2px 5px;
-            border-radius: 3px;
+            padding: 3px 6px;
+            border-radius: 4px;
             border: 1px solid #ffd700;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.8);
             transition: all 0.2s;
             position: absolute;
         }
 
-        .lbl-top { bottom: 16px; left: 50%; transform: translateX(-50%); }
-        .lbl-bottom { top: 16px; left: 50%; transform: translateX(-50%); }
-        .lbl-left { right: 16px; top: 50%; transform: translateY(-50%); }
-        .lbl-right { left: 16px; top: 50%; transform: translateY(-50%); }
+        /* POZYCJONOWANIE ETYKIET */
+        .lbl-top { bottom: 18px; left: 50%; transform: translateX(-50%); }
+        .lbl-bottom { top: 18px; left: 50%; transform: translateX(-50%); }
+        .lbl-left { right: 18px; top: 50%; transform: translateY(-50%); }
+        .lbl-right { left: 18px; top: 50%; transform: translateY(-50%); }
         
-        .lbl-szklarska { bottom: 14px; right: 8px; transform: translateX(-20%); }
-        .lbl-karpacz { top: 14px; left: 50%; transform: translateX(-50%); }
-        .lbl-swieradow { bottom: 14px; left: -10px; transform: translateX(-70%); }
+        .lbl-szklarska { bottom: 18px; right: -20px; transform: translateX(0); }
+        .lbl-karpacz { top: 18px; left: 50%; transform: translateX(-50%); }
+        .lbl-swieradow { bottom: 18px; left: -30px; transform: translateX(0); }
 
         .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
-        .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 10px; box-shadow: 0 0 12px rgba(255,215,0,0.8); z-index: 50; }
+        .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 11px; box-shadow: 0 0 15px rgba(255,215,0,1); z-index: 50; }
 
-        #pin-swinoujscie { top: 14%; left: 10%; }
-        #pin-kolobrzeg   { top: 11%; left: 24%; }
-        #pin-sopot        { top: 13%; left: 47%; }
+        /* ROZSTAWIE PINEZEK NA ZŁOTYM KONTURZE */
+        #pin-swinoujscie { top: 18%; left: 12%; }
+        #pin-kolobrzeg   { top: 13%; left: 27%; }
+        #pin-sopot        { top: 14%; left: 51%; }
         
-        #pin-swieradow    { top: 68%; left: 8%; }
-        #pin-szklarska    { top: 69%; left: 13%; }
-        #pin-karpacz      { top: 76%; left: 18%; }
+        #pin-swieradow    { top: 70%; left: 11%; }
+        #pin-szklarska    { top: 73%; left: 16%; }
+        #pin-karpacz      { top: 78%; left: 21%; }
 
-        #pin-wisla        { top: 81%; left: 48%; }
-        #pin-zakopane     { top: 90%; left: 58%; }
-        #pin-szccawnica   { top: 86%; left: 67%; }
-        #pin-krynica      { top: 84%; left: 77%; }
+        #pin-wisla        { top: 82%; left: 49%; }
+        #pin-zakopane     { top: 89%; left: 59%; }
+        #pin-szccawnica   { top: 86%; left: 68%; }
+        #pin-krynica      { top: 84%; left: 76%; }
 
         /* PANEL RETINA BILLBOARD */
         #dashboard-view { display: none; width: 100%; max-width: 1450px; }
@@ -176,20 +189,6 @@
         }
         .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
-        
-        .grid-item.taken {
-            background-color: #2e3440; 
-            background-size: 100% 100% !important; 
-            background-repeat: no-repeat !important; 
-            background-position: center center !important;
-            border: 1px solid #ffd700;
-        }
-        .grid-item.taken .company-label-tag {
-            position: absolute; bottom: 1px; width: 100%;
-            font-size: 6px; font-weight: 900; color: #ffd700;
-            background: rgba(0,0,0,0.85); text-transform: uppercase;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
 
         /* TELEBIM CENTRALNY */
         .grid-center {
@@ -232,7 +231,6 @@
 
         .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 10px; }
         .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-canvas.tourist-card .wheel-canvas { border-color: #2ed573; }
         
         .wheel-pointer {
             position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
@@ -275,6 +273,15 @@
         <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
         <div class="map-container">
             
+            <!-- ZŁOTY KONTUR POLSKI -->
+            <svg class="poland-svg-bg" viewBox="0 0 600 550" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 120,40 C 160,35 220,38 270,30 C 310,25 330,45 360,50 C 400,55 470,25 500,45 C 530,65 520,110 550,130 C 580,150 560,190 570,230 C 580,270 540,310 550,350 C 560,390 510,430 490,460 C 470,490 420,480 390,520 C 360,560 310,510 270,530 C 230,550 170,500 130,510 C 100,520 80,480 55,470 C 30,460 40,430 50,400 C 60,370 20,350 30,310 C 40,270 70,260 65,220 C 60,180 35,160 50,120 C 65,80 90,50 120,40 Z" 
+                      fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="2 2" opacity="0.3"/>
+                <path d="M 120,40 C 160,35 220,38 270,30 C 310,25 330,45 360,50 C 400,55 470,25 500,45 C 530,65 520,110 550,130 C 580,150 560,190 570,230 C 580,270 540,310 550,350 C 560,390 510,430 490,460 C 470,490 420,480 390,520 C 360,560 310,510 270,530 C 230,550 170,500 130,510 C 100,520 80,480 55,470 C 30,460 40,430 50,400 C 60,370 20,350 30,310 C 40,270 70,260 65,220 C 60,180 35,160 50,120 C 65,80 90,50 120,40 Z" 
+                      fill="rgba(255, 215, 0, 0.03)" stroke="#ffd700" stroke-width="1.5" filter="drop-shadow(0px 0px 10px rgba(255,215,0,0.2))"/>
+            </svg>
+            
+            <!-- PINEZKI -->
             <a href="#swinoujscie" class="city-pin" id="pin-swinoujscie">
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div>
             </a>
@@ -376,7 +383,6 @@
             "karpacz": {
                 companies: [
                     { name: "Wonder Home", url: "https://wonderhome.eu/", logo: "397038002.jpg" },
-                    // POPRAWIONO LINK (zakodowane polskie znaki w domenie)
                     { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl", logo: "https://img.icons8.com/neon/60/vacuum-cleaner.png" },
                     { name: "Widokowo Karpacz", url: "https://www.widokowo-karpacz.pl", logo: "https://img.icons8.com/neon/60/mountain-scenery.png" },
                     { name: "Park Miniatur Kowary", url: "https://park-miniatur.com/", logo: "https://img.icons8.com/neon/60/castle.png" },
@@ -402,7 +408,7 @@
                     { name: "SKI&SUN Świeradów", url: "https://skisun.pl", logo: "https://img.icons8.com/neon/60/ski-lift.png" }
                 ],
                 attractions: [
-                    { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 meters z niesamowitym widokiem i panoramiczną zjeżdżalnią.", link: "https://www.visitswieradow.pl" },
+                    { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 metrów z niesamowitym widokiem i panoramiczną zjeżdżalnią.", link: "https://www.visitswieradow.pl" },
                     { name: "Gondola SKI&SUN", desc: "Nowoczesna kolej linowa na Stóg Izerski, idealna dla narciarzy i rowerzystów.", link: "https://skisun.pl" },
                     { name: "Dom Zdrojowy", desc: "Zabytkowy obiekt uzdrowiskowy z najdłuższą na Dolnym Śląsku halą spacerową z modrzewia.", link: "https://uzdrowisko-swieradow.pl" }
                 ]
@@ -478,6 +484,7 @@
         window.addEventListener('hashchange', checkUrlHash);
         window.addEventListener('load', checkUrlHash);
 
+        // OCZYSZCZONA FUNKCJA - GENERUJE TYLKO CZYSZCZONĄ SIATKĘ REKLAMOWĄ DO WYNAJĘCIA
         function buildCompleteGrid() {
             const grid = document.getElementById('boardGrid');
             const telebim = document.getElementById('mainTelebim');
@@ -497,23 +504,17 @@
                 const item = document.createElement('div');
                 item.classList.add('grid-item');
 
-                if (Math.random() > 0.50 && currentCompanies.length > 0) {
-                    const comp = currentCompanies[Math.floor(Math.random() * currentCompanies.length)];
-                    item.classList.add('taken');
-                    item.style.backgroundImage = `url('${comp.logo}')`;
-                    item.innerHTML = `<div class="company-label-tag">${comp.name}</div>`;
-                    linkNode.href = comp.url;
-                    linkNode.target = "_blank";
+                // Wszystkie okienka są teraz wolnymi slotami reklamowymi, zachęcającymi do zakupu
+                if (Math.random() > 0.85) {
+                    item.classList.add('premium');
+                    item.innerText = "350 zł\nPremium";
                 } else {
-                    if (Math.random() > 0.85) {
-                        item.classList.add('premium');
-                        item.innerText = "350 zł\nPremium";
-                    } else {
-                        item.innerText = "200 zł\nStandard";
-                    }
-                    linkNode.href = "https://polskieokienka.pl/wynajmij?slot=" + i + "&region=" + currentRegionKey;
-                    linkNode.target = "_blank";
+                    item.innerText = "200 zł\nStandard";
                 }
+                
+                linkNode.href = "https://polskieokienka.pl/wynajmij?slot=" + i + "&region=" + currentRegionKey;
+                linkNode.target = "_blank";
+                
                 linkNode.appendChild(item);
                 grid.appendChild(linkNode);
             }
