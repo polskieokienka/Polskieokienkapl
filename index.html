@@ -177,10 +177,9 @@
         .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
         
-        /* POPRAWKA CSS DLA WYŚWIETLANIA LOGO */
         .grid-item.taken {
             background-color: #2e3440; 
-            background-size: 100% 100% !important; /* Wymuszenie pełnego rozciągnięcia grafiki w komórce */
+            background-size: 100% 100% !important; 
             background-repeat: no-repeat !important; 
             background-position: center center !important;
             border: 1px solid #ffd700;
@@ -271,6 +270,7 @@
         </div>
     </div>
 
+    <!-- MAPA POLSKI -->
     <div id="map-view">
         <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
         <div class="map-container">
@@ -285,6 +285,7 @@
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div>
             </a>
             
+            <!-- REGION KARKONOSZE / IZERY (POPRAWIONE LINKI MAŁYMI LITERAMI) -->
             <a href="#swieradow-zdroj" class="city-pin" id="pin-swieradow">
                 <div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div>
             </a>
@@ -301,7 +302,7 @@
             <a href="#zakopane" class="city-pin" id="pin-zakopane">
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div>
             </a>
-            <a href="#szczawnica" class="city-pin" id="pin-szczawnica">
+            <a href="#szccawnica" class="city-pin" id="pin-szczawnica">
                 <div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div>
             </a>
             <a href="#krynica-zdroj" class="city-pin" id="pin-krynica">
@@ -311,6 +312,7 @@
         </div>
     </div>
 
+    <!-- PANEL REKLAMOWY -->
     <div id="dashboard-view">
         <button class="back-btn" onclick="backToMainMap()">← Wróć do Mapy Polski</button>
 
@@ -321,6 +323,7 @@
                     <div class="grid-wrapper">
                         <div class="grid-board" id="boardGrid">
                             
+                            <!-- Telebim Centralny -->
                             <div class="grid-center" id="mainTelebim">
                                 <div class="banner-crown">Złoty Baner - Nagroda Główna</div>
                                 <div class="banner-main-title">ZŁOTY EKSPONAT</div>
@@ -338,6 +341,7 @@
                         </div>
                     </div>
 
+                    <!-- KOŁA NEONOWE -->
                     <div class="wheels-sidebar">
                         
                         <div class="wheel-card">
@@ -429,7 +433,8 @@
         let rotCenter = 0, rotPromo = 0, rotTourist = 0, isSpinning = false;
 
         function checkUrlHash() {
-            const currentHash = window.location.hash.replace('#', '');
+            // ZABEZPIECZENIE: Zamieniamy hash na małe litery (.toLowerCase()), aby zawsze pasował do bazy danych
+            const currentHash = window.location.hash.replace('#', '').toLowerCase();
             if (currentHash) {
                 currentRegionKey = currentHash;
                 const data = regionDatabase[currentHash] || defaultRegionData;
@@ -528,4 +533,126 @@
                 const end = ((i + 1) * deg * Math.PI) / 180;
 
                 ctx.beginPath();
-                ctx.fillStyle = colors
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(r, r);
+                ctx.arc(r, r, r, start, end);
+                ctx.fill();
+
+                ctx.strokeStyle = canvasId === 'touristWheel' ? '#2ed573' : '#ffd700';
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(r, r);
+                ctx.rotate(start + (deg * Math.PI) / 360);
+                ctx.fillStyle = "#fff";
+                
+                if (canvasId === 'centerWheel') {
+                    ctx.font = "bold 4.5px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText(labelArray[i].substring(0, 14), r * 0.52, 1.5);
+                } else {
+                    ctx.font = "bold 7px sans-serif";
+                    ctx.textAlign = "right";
+                    ctx.shadowColor = "rgba(0,0,0,0.9)";
+                    ctx.shadowBlur = 3;
+                    ctx.fillText(labelArray[i].substring(0, 16), r - 10, 3);
+                }
+                ctx.restore();
+            }
+        }
+
+        function spinCenterWheel() {
+            if (isSpinning || currentCompanies.length === 0) return;
+            isSpinning = true;
+            document.getElementById('btnCenter').disabled = true;
+
+            const segments = currentCompanies.length;
+            const prizeIndex = Math.floor(Math.random() * segments);
+            const degPerSeg = 360 / segments;
+
+            rotCenter += 1440 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            document.getElementById('centerWheel').style.transform = `rotate(${rotCenter}deg)`;
+
+            setTimeout(() => {
+                const winner = currentCompanies[prizeIndex];
+                document.getElementById('winnerName').innerHTML = `🔥 Wygrywa: <strong style="color:#ffd700">${winner.name.toUpperCase()}</strong>`;
+                isSpinning = false;
+                document.getElementById('btnCenter').disabled = false;
+            }, 4000);
+        }
+
+        function spinPromoWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('btnPromo').disabled = true;
+            document.getElementById('promoResult').style.display = 'none';
+
+            const segments = voucherPool.length;
+            const prizeIndex = Math.floor(Math.random() * segments);
+            const degPerSeg = 360 / segments;
+            
+            rotPromo += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            document.getElementById('promoWheel').style.transform = `rotate(${rotPromo}deg)`;
+
+            setTimeout(() => {
+                const luckyUser = mockViewers[Math.floor(Math.random() * mockViewers.length)];
+                const reward = voucherPool[prizeIndex];
+                const resBox = document.getElementById('promoResult');
+                resBox.innerHTML = `<strong>${luckyUser}</strong> otrzymuje:<br><span style="color:#ffd700;font-weight:bold;">${reward}</span>`;
+                resBox.style.display = 'block';
+
+                isSpinning = false;
+                document.getElementById('btnPromo').disabled = false;
+            }, 4500);
+        }
+
+        function spinTouristWheel() {
+            if (isSpinning || currentAttractions.length === 0) return;
+            isSpinning = true;
+            document.getElementById('btnTourist').disabled = true;
+            document.getElementById('touristResult').style.display = 'none';
+
+            const segments = currentAttractions.length;
+            const prizeIndex = Math.floor(Math.random() * segments);
+            const degPerSeg = 360 / segments;
+
+            rotTourist += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            document.getElementById('touristWheel').style.transform = `rotate(${rotTourist}deg)`;
+
+            setTimeout(() => {
+                const attr = currentAttractions[prizeIndex];
+                const resBox = document.getElementById('touristResult');
+                resBox.innerHTML = `
+                    <strong style="color:#2ed573; font-size:11px;">🎯 Atrakcja: ${attr.name}</strong>
+                    <p style="margin:4px 0; color:#ccc; font-size:9px;">${attr.desc}</p>
+                    <a href="${attr.link}" target="_blank">Zobacz oficjalną stronę →</a>
+                `;
+                resBox.style.display = 'block';
+
+                isSpinning = false;
+                document.getElementById('btnTourist').disabled = false;
+            }, 4500);
+        }
+
+        setInterval(() => {
+            const guestElem = document.getElementById('globalGuests');
+            if(guestElem) {
+                let currentGuests = parseInt(guestElem.innerText.replace(/\s/g, ''));
+                currentGuests += Math.floor(Math.random() * 7) - 3;
+                guestElem.innerText = currentGuests.toLocaleString('pl-PL');
+            }
+        }, 3000);
+
+        let totalSeconds = 240;
+        setInterval(() => {
+            if (totalSeconds <= 0) totalSeconds = 240;
+            totalSeconds--;
+            const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+            const secs = String(totalSeconds % 60).padStart(2, '0');
+            const timerElem = document.getElementById('liveTimer');
+            if(timerElem) timerElem.innerText = `00:00:${mins}:${secs}`;
+        }, 1000);
+    </script>
+</body>
+</html>
