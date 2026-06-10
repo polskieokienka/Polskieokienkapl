@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -18,7 +17,6 @@
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
-            padding-bottom: 70px;
         }
 
         body::before {
@@ -48,7 +46,7 @@
         .stat-item { color: #fff; }
         .stat-item span { color: #ffd700; font-size: 15px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
 
-        /* SEKCJA MAPY - RESPONSYWNA I BEZ KOLIZJI */
+        /* SEKCJA MAPY */
         #map-view {
             display: flex;
             flex-direction: column;
@@ -76,7 +74,7 @@
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
         }
 
-        /* INTELIGENTNE PINEZKI - KROPKA I ETYKIETA JAKO JEDNOŚĆ */
+        /* PINEZKI */
         .city-pin {
             position: absolute;
             z-index: 10;
@@ -111,39 +109,38 @@
             position: absolute;
         }
 
-        /* REWOLUCJA: ROZSTRZELENIE KIERUNKOWE ETYKIET ABY SIĘ NIE DOTYKAŁY */
+        /* POZYCJONOWANIE ETYKIET */
         .lbl-top { bottom: 16px; left: 50%; transform: translateX(-50%); }
         .lbl-bottom { top: 16px; left: 50%; transform: translateX(-50%); }
         .lbl-left { right: 16px; top: 50%; transform: translateY(-50%); }
         .lbl-right { left: 16px; top: 50%; transform: translateY(-50%); }
         
-        /* Specjalne skośne odgięcia dla ścisku w Karkonoszach */
-        .lbl-szklarska { bottom: 14px; right: 8px; transform: translateX(-20%); }
+        /* Region Karkonosze / Izery - zero nakładania */
+        .lbl-szklarska { bottom: 14px; right: 8px; transform: translateX(-10%); }
         .lbl-karpacz { top: 14px; left: 50%; transform: translateX(-50%); }
-        .lbl-milkow { bottom: 14px; left: 10px; transform: translateX(10%); }
+        .lbl-swieradow { bottom: 14px; left: 10px; transform: translateX(5%); }
 
         .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
         .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 10px; box-shadow: 0 0 12px rgba(255,215,0,0.8); z-index: 50; }
 
-        /* PRECYZYJNE KOORDYNATY (%) */
+        /* KOORDYNATY (%) */
         #pin-swinoujscie { top: 14%; left: 10%; }
         #pin-kolobrzeg   { top: 11%; left: 24%; }
         #pin-sopot        { top: 13%; left: 47%; }
         
-        /* Karkonosze - idealne rozstawienie trójkąta */
-        #pin-szklarska    { top: 69%; left: 13%; }
-        #pin-karpacz      { top: 76%; left: 18%; }
-        #pin-milkow       { top: 71%; left: 24%; }
+        /* Rozstawienie trójkąta: Szklarska, Karpacz, Świeradów */
+        #pin-szklarska    { top: 71%; left: 14%; }
+        #pin-karpacz      { top: 76%; left: 19%; }
+        #pin-swieradow    { top: 68%; left: 8%; }
 
-        /* Południe i reszta */
         #pin-wisla        { top: 81%; left: 48%; }
         #pin-zakopane     { top: 90%; left: 58%; }
-        #pin-szczawnica   { top: 86%; left: 67%; }
+        #pin-szcczawnica  { top: 86%; left: 67%; }
         #pin-krynica      { top: 84%; left: 77%; }
 
 
-        /* PANEL RETINA BILLBOARD */
-        #dashboard-view { display: none; width: 100%; max-width: 1450px; }
+        /* PANEL BILLBOARDU */
+        #dashboard-view { display: none; width: 100%; max-width: 1450px; padding-bottom: 20px; }
         
         .back-btn {
             background: #2c3e50; color: #ffd700; border: 1px solid #ffd700;
@@ -186,14 +183,14 @@
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
         
         .grid-item.taken {
-            background-color: #ffffff; background-size: 80% auto;
+            background-color: #2e3440; background-size: contain;
             background-repeat: no-repeat; background-position: center center;
-            border: 1px solid #eaeded;
+            border: 1px solid #ffd700;
         }
         .grid-item.taken .company-label-tag {
             position: absolute; bottom: 1px; width: 100%;
-            font-size: 6px; font-weight: 900; color: #fff;
-            background: rgba(0,0,0,0.8); text-transform: uppercase;
+            font-size: 6px; font-weight: 900; color: #ffd700;
+            background: rgba(0,0,0,0.85); text-transform: uppercase;
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
 
@@ -223,7 +220,7 @@
             padding: 2px 6px; border-radius: 10px; cursor: pointer; text-transform: uppercase;
         }
 
-        /* SEKCJA KÓŁ BOCZNYCH */
+        /* SIDEBAR KÓŁ */
         .wheels-sidebar { display: flex; flex-direction: column; gap: 15px; flex: 0.8; width: 100%; }
         @media(min-width: 600px) and (max-width: 1199px) { .wheels-sidebar { flex-direction: row; } }
 
@@ -263,16 +260,6 @@
         .wheel-card.tourist-card .result-display { border-color: #2ed573; }
         .result-display a { color: #1e90ff; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
 
-        /* AUDIO DOCK */
-        .audio-dock {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(15,17,21,0.96); border-top: 1px solid #ffd700;
-            padding: 6px 15px; display: flex; justify-content: center; align-items: center;
-            gap: 10px; z-index: 100; box-sizing: border-box;
-        }
-        .audio-dock span { font-size: 10px; color: #ffd700; font-weight: bold; text-transform: uppercase; }
-        .audio-dock audio { height: 24px; max-width: 180px; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -301,15 +288,15 @@
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div>
             </a>
             
-            <!-- REGION KARKONOSZE: SPECJALNE ODGIĘCIA -->
+            <!-- REGION SUDETY / IZERY: PODMIANA I IDEALNY ROZSTAW -->
             <a href="#szklarska-poreba" class="city-pin" id="pin-szklarska">
                 <div class="pin-dot"></div><div class="city-label lbl-szklarska">Szklarska Poręba</div>
             </a>
             <a href="#karpacz" class="city-pin" id="pin-karpacz">
                 <div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div>
             </a>
-            <a href="#milkow" class="city-pin" id="pin-milkow">
-                <div class="pin-dot"></div><div class="city-label lbl-milkow">Miłków</div>
+            <a href="#swieradow-zdroj" class="city-pin" id="pin-swieradow">
+                <div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div>
             </a>
             
             <a href="#wisla" class="city-pin" id="pin-wisla">
@@ -318,7 +305,7 @@
             <a href="#zakopane" class="city-pin" id="pin-zakopane">
                 <div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div>
             </a>
-            <a href="#szczawnica" class="city-pin" id="pin-szczawnica">
+            <a href="#szczawnica" class="city-pin" id="pin-szcczawnica">
                 <div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div>
             </a>
             <a href="#krynica-zdroj" class="city-pin" id="pin-krynica">
@@ -357,7 +344,7 @@
                         </div>
                     </div>
 
-                    <!-- KOŁA NEONOWE -->
+                    <!-- Side Wheels -->
                     <div class="wheels-sidebar">
                         
                         <div class="wheel-card">
@@ -371,12 +358,12 @@
                         </div>
 
                         <div class="wheel-card tourist-card">
-                            <h3>🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień</h3>
+                            <h3>🗺️ Koło 2: Atrakcje w Pobliżu</h3>
                             <div class="wheel-box">
                                 <div class="wheel-pointer"></div>
                                 <canvas class="wheel-canvas" id="touristWheel" width="170" height="170"></canvas>
                             </div>
-                            <button class="btn btn-tourist" id="btnTourist" onclick="spinTouristWheel()">Wylosuj Moje Atrakcje</button>
+                            <button class="btn btn-tourist" id="btnTourist" onclick="spinTouristWheel()">Wylosuj Atrakcje</button>
                             <div class="result-display" id="touristResult"></div>
                         </div>
 
@@ -387,120 +374,117 @@
         </div>
     </div>
 
-    <div class="audio-dock">
-        <span>🎵 Podkład: Karkonosze Ambient Chillout:</span>
-        <audio controls loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
     <script>
-        // BAZA PRAWDZIWYCH FIRM Z PODZIAŁEM NA REGIONY
+        // BAZA DANYCH PREMIUM - DOPRACOWANE LOGOTYPY I ROZBUDOWANE ATRAKCJE W POBLIŻU
         const regionDatabase = {
             "karpacz": {
                 companies: [
-                    { name: "Wonder Home", url: "https://www.wonderhome.pl", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60" },
-                    { name: "Hotel Gołębiewski", url: "https://www.golebiewski.pl/karpacz", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60" },
-                    { name: "Schronisko Samotnia", url: "https://www.samotnia.com.pl", logo: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=60" },
-                    { name: "Wyciąg na Kopę", url: "https://kopa.com.pl", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60" },
-                    { name: "Karkonoskie Tajemnice", url: "https://www.karkonoskietajemnice.pl", logo: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=60" },
-                    { name: "Pensjonat Karkonosze", url: "https://www.karpacz.pl", logo: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=60" }
+                    { name: "Wonder Home", url: "https://www.wonderhome.pl", logo: "https://img.icons8.com/neon/60/home.png" },
+                    { name: "Hotel Gołębiewski", url: "https://www.golebiewski.pl/karpacz", logo: "https://img.icons8.com/neon/60/luxury-hotel.png" },
+                    { name: "Schronisko Samotnia", url: "https://www.samotnia.com.pl", logo: "https://img.icons8.com/neon/60/mountain.png" },
+                    { name: "Kolej Linowa Kopa", url: "https://kopa.com.pl", logo: "https://img.icons8.com/neon/60/ski-lift.png" },
+                    { name: "Karkonoskie Tajemnice", url: "https://www.karkonoskietajemnice.pl", logo: "https://img.icons8.com/neon/60/wizard.png" }
                 ],
                 attractions: [
-                    { name: "Śnieżka 1602m", desc: "Najwyższy szczyt Karkonoszy. Odwiedź Obserwatorium Wysokogórskie IMGW.", link: "https://kpnmab.pl" },
-                    { name: "Świątynia Wang", desc: "XII-wieczny, drewniany kościółek norweski przeniesiony w całości w 1842 roku.", link: "https://www.wang.com.pl" },
-                    { name: "Sztolnie Kowary", desc: "Podziemna trasa turystyczna w dawnej kopalni uranu i bogactw Karkonoszy.", link: "https://www.sztolniekowary.com" },
-                    { name: "Wodospad Kamieńczyka", desc: "Najwyższy wodospad w polskich Karkonoszach, spektakularny wąwóz skalny.", link: "https://kpnmab.pl" },
-                    { name: "Chojnik Castle", desc: "Średniowieczny zamek na szczycie góry Chojnik z niesamowitą legendą o Kunegundzie.", link: "https://www.chojnik.pl" },
-                    { name: "Dziki Wodospad", desc: "Urokliwa zapora wodna na Łomnicy w Karpaczu Górnym, tuż obok stacji na Kopę.", link: "https://www.karpacz.pl" },
-                    { name: "Śnieżne Kotły", desc: "Dwa potężne kotły polodowcowe z zapierającą dech w piersiach panoramą Kotliny.", link: "https://kpnmab.pl" },
-                    { name: "Termy Cieplickie", desc: "Kompleks basenów termalnych i uzdrowiskowych u podnóża gór.", link: "https://www.termycieplickie.pl" }
+                    { name: "Śnieżka (1602m n.p.m.)", desc: "Królowa Karkonoszy z futurystycznym dyskiem Obserwatorium IMGW na szczycie.", link: "https://kpnmab.pl" },
+                    { name: "Świątynia Wang", desc: "Zabytek architektury nordyckiej z XII wieku, przeniesiony bez użycia gwoździ.", link: "https://www.wang.com.pl" },
+                    { name: "Sztolnie Kowary", desc: "Tajemnicza podziemna trasa turystyczna w dawnej kopalni uranu w bliskim sąsiedztwie.", link: "https://www.sztolniekowary.com" },
+                    { name: "Park Miniatur Kowary", desc: "Wszystkie najpiękniejsze zabytki Dolnego Śląska odwzorowane w skali 1:25 tuż obok Karpacza.", link: "https://www.park-miniatur.com" },
+                    { name: "Wodospad Kamieńczyka", desc: "Najwyższy wodospad Karkonoszy, schowany w spektakularnym kanionie skalnym.", link: "https://kpnmab.pl" },
+                    { name: "Wodospad Podgórnej", desc: "Trzeci najwyższy wodospad w Przesiece, kultowe miejsce spotkań karkonoskich morsów.", link: "https://www.podgorzyn.pl" },
+                    { name: "Zamek Chojnik", desc: "Średniowieczna warownia na skalistym urwisku z widokiem na całą Kotlinę Jeleniogórską.", link: "https://www.chojnik.pl" },
+                    { name: "Kolorowe Jeziorka", desc: "Cud natury w pobliskich Rudawach Janowickich - purpurowe, zielone i błękitne stawy.", link: "https://www.kolorowejeziorka.pl" },
+                    { name: "Dziki Wodospad", desc: "Urokliwa zapora wodna na rzece Łomnica, zlokalizowana w Karpaczu Górnym.", link: "https://www.karpacz.pl" },
+                    { name: "Termy Cieplickie", desc: "Aquapark z wodami termalnymi i strefą spa u podnóża pasma górskiego.", link: "https://www.termycieplickie.pl" }
                 ]
             },
             "szklarska-poreba": {
                 companies: [
-                    { name: "Sudety Lift", url: "https://sudetylift.com.pl", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60" },
-                    { name: "Blue Mountain Resort", url: "https://blue-mountain-resort.pl", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60" },
-                    { name: "Huta Szkła Julia", url: "https://hutajulia.com", logo: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=60" },
-                    { name: "Norweska Dolina", url: "https://norweskadolina.pl", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60" }
+                    { name: "Sudety Lift Szrenica", url: "https://sudetylift.com.pl", logo: "https://img.icons8.com/neon/60/ski-lift.png" },
+                    { name: "Blue Mountain Resort", url: "https://blue-mountain-resort.pl", logo: "https://img.icons8.com/neon/60/resort.png" },
+                    { name: "Huta Szkła Julia", url: "https://hutajulia.com", logo: "https://img.icons8.com/neon/60/glass.png" }
                 ],
                 attractions: [
-                    { name: "Wodospad Szklarki", desc: "Drugi co do wielkości wodospad, malowniczo położony w Enklawie KPN.", link: "https://kpnmab.pl" },
-                    { name: "Szrenica 1362m", desc: "Główny szczyt narciarski i turystyczny nad Szklarską Porębą.", link: "https://sudetylift.com.pl" },
-                    { name: "Zakręt Śmierci", desc: "Ostry, niemal 360-stopniowy zakręt drogowy ze wspaniałym punktem widokowym.", link: "https://www.szklarskaporeba.pl" },
-                    { name: "Krucze Skały", desc: "Potężna grupa skalna na brzegu rzeki Kamienna, idealna dla wspinaczy.", link: "https://www.szklarskaporeba.pl" },
-                    { name: "Jakuszyce", desc: "Najlepszy w Polsce ośrodek narciarstwa biegowego i letnich tras rowerowych.", link: "https://www.bieg-piastow.pl" }
+                    { name: "Wodospad Szklarki", desc: "Przepiękna kaskada z urokliwym schroniskiem Kochanówka na dnie wąwozu.", link: "https://kpnmab.pl" },
+                    { name: "Szrenica (1362m n.p.m.)", desc: "Potężny szczyt górujący nad miastem z rozbudowaną siecią nartostrad.", link: "https://sudetylift.com.pl" },
+                    { name: "Śnieżne Kotły", desc: "Monumentalne kotły polodowcowe z pionowymi ścianami o wysokości do 200 metrów.", link: "https://kpnmab.pl" },
+                    { name: "Zakręt Śmierci", desc: "Legendarny, niebezpieczny zakręt na trasie do Świeradowa ze skalną panoramą.", link: "https://www.szklarskaporeba.pl" },
+                    { name: "Polana Jakuszycka", desc: "Europejskie centrum narciarstwa biegowego i fantastycznych letnich tras rowerowych.", link: "https://www.bieg-piastow.pl" },
+                    { name: "Krucze Skały", desc: "Dwa potężne bastiony skalne idealne do wspinaczki i tyrolek nad rzeką Kamienna.", link: "https://www.szklarskaporeba.pl" }
                 ]
             },
-            "milków": {
+            "swieradow-zdroj": {
                 companies: [
-                    { name: "Pałac Miłków", url: "https://www.palacmilkow.pl", logo: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=60" },
-                    { name: "Chata na Głowie", url: "https://www.chatanaglowie.pl", logo: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=60" }
+                    { name: "Kolej Gondolowa SKI&SUN", url: "https://skisun.pl", logo: "https://img.icons8.com/neon/60/cable-car.png" },
+                    { name: "Uzdrowisko Świeradów", url: "https://uzdrowisko-swieradow.pl", logo: "https://img.icons8.com/neon/60/spa.png" },
+                    { name: "Park Hotel Spa", url: "https://www.parkhotel.pl", logo: "https://img.icons8.com/neon/60/luxury-hotel.png" }
                 ],
                 attractions: [
-                    { name: "Chata na Głowie", desc: "Niezwykły dom postawiony całkowicie do góry nogami. Zakręci Ci się w głowie!", link: "https://www.chatanaglowie.pl" },
-                    { name: "Zabytkowy Kościół", desc: "Kościół św. Jadwigi w Miłkowie z unikalnymi pręgierzami i historią.", link: "https://www.milkow.pl" },
-                    { name: "Smażalnia Miłków", desc: "Tradycyjne stawy rybne i świeży karkonoski pstrąg prosto z wody.", link: "https://www.google.com" }
+                    { name: "Sky Walk Świeradów", desc: "Potężna wieża widokowa o wysokości 62 metrów ze spacerem w chmurach i siatką kroczącą.", link: "https://www.skisun.pl" },
+                    { name: "Kolej Gondolowa", desc: "Nowoczesny wagonik wywożący turystów na grzbiet Stogu Izerskiego przez cały rok.", link: "https://skisun.pl" },
+                    { name: "Dom Zdrojowy z 1899r.", desc: "Najdłuższa na Dolnym Śląsku, modrzewiowa hala spacerowa z pijalnią wód mineralnych.", link: "https://uzdrowisko-swieradow.pl" },
+                    { name: "Schronisko Chatka Górzystów", desc: "Kultowe schronisko na Hali Izerskiej, słynące z gigantycznych naleśników z jagodami.", desc: "https://www.swieradowzdroj.pl" },
+                    { name: "Singletrack Glacensis/Izery", desc: "Setki kilometrów naturalnych, jednokierunkowych ścieżek rowerowych w lasach.", link: "https://www.swieradowzdroj.pl" },
+                    { name: "Sępia Góra", desc: "Mistyczny punkt widokowy na szczycie wzniesienia z formacjami skalnymi i panoramą Izorów.", link: "https://www.swieradowzdroj.pl" }
                 ]
             },
             "swinoujscie": {
                 companies: [
-                    { name: "Baltic Park Molo", url: "https://www.balticparkmolo.pl", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60" },
-                    { name: "Flota Świnoujście", url: "https://mksflota.swinoujscie.pl", logo: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=60" }
+                    { name: "Baltic Park Molo", url: "https://www.balticparkmolo.pl", logo: "https://img.icons8.com/neon/60/beach.png" },
+                    { name: "Żegluga Świnoujska", url: "https://www.swinoujscie.pl", logo: "https://img.icons8.com/neon/60/ferry.png" }
                 ],
                 attractions: [
-                    { name: "Stawa Młyny", desc: "Słynny znak nawigacyjny w kształcie wiatraka, symbol Świnoujścia.", link: "https://www.swinoujscie.pl" },
-                    { name: "Latarnia Morska", desc: "Najwyższa latarnia nad Bałtykiem i jedna z najwyższych na świecie.", link: "https://www.swinoujscie.pl" },
-                    { name: "Podziemne Miasto", desc: "Sieć bunkrów połączonych kilometrami korytarzy na wyspie Wolin.", link: "https://www.swinoujscie.pl" }
+                    { name: "Stawa Młyny", desc: "Charakterystyczny wiatrak na końcu falochronu, oficjalny symbol nawigacyjny.", link: "https://www.swinoujscie.pl" },
+                    { name: "Latarnia Morska Świnoujście", desc: "Najwyższa latarnia nad polskim Bałtykiem, ponad 300 stopni na szczyt.", link: "https://www.swinoujscie.pl" },
+                    { name: "Fort Gerharda", desc: "Jeden z najlepiej zachowanych XIX-wiecznych pruskich fortów nadbrzeżnych.", link: "https://www.fortgerharda.pl" }
                 ]
             },
             "kolobrzeg": {
                 companies: [
-                    { name: "Arka Medical Spa", url: "https://www.arka-mega.pl", logo: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=60" },
-                    { name: "Sanatorium Baltic", url: "https://www.baltyk.kolobrzeg.pl", logo: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=60" }
+                    { name: "Arka Medical Spa", url: "https://www.arka-mega.pl", logo: "https://img.icons8.com/neon/60/spa.png" },
+                    { name: "Medyk Kołobrzeg", url: "https://www.kolobrzeg.pl", logo: "https://img.icons8.com/neon/60/medical-heart.png" }
                 ],
                 attractions: [
-                    { name: "Molo w Kołobrzegu", desc: "Długi, piękny betonowy pomost spacerowy z kawiarnią na końcu.", link: "https://www.kolobrzeg.pl" },
-                    { name: "Muzeum Oręża", desc: "Potężna kolekcja militariów, czołgów i samolotów na świeżym powietrzu.", link: "https://www.muzeum.kolobrzeg.pl" }
+                    { name: "Molo w Kołobrzegu", desc: "Imponujący żelbetowy pomost spacerowy o długości 220 metrów.", link: "https://www.kolobrzeg.pl" },
+                    { name: "Muzeum Oręża Polskiego", desc: "Ogromna ekspozycja pojazdów wojskowych, samolotów i broni na wolnym powietrzu.", link: "https://www.muzeum.kolobrzeg.pl" }
                 ]
             },
             "sopot": {
                 companies: [
-                    { name: "Grand Hotel Sopot", url: "https://www.sofitelgrandsopot.com", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60" },
-                    { name: "Zatoka Sztuki", url: "https://www.sopot.pl", logo: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=60" }
+                    { name: "Sofitel Grand Sopot", url: "https://www.sofitelgrandsopot.com", logo: "https://img.icons8.com/neon/60/luxury-hotel.png" },
+                    { name: "Kąpielisko Morskie Sopot", url: "https://www.sopot.pl", logo: "https://img.icons8.com/neon/60/beach.png" }
                 ],
                 attractions: [
-                    { name: "Molo w Sopocie", desc: "Najdłuższe drewniane molo w Europie, wizytówka polskiego wybrzeża.", link: "https://www.sopot.pl" },
-                    { name: "Krzywy Domek", desc: "Unikalna, bajkowa architektura przy słynnym deptaku Monte Cassino.", link: "https://www.krzywydomek.info" }
+                    { name: "Molo im. Jana Pawła II", desc: "Najdłuższy drewniany pomost spacerowy w Europie - ponad pół kilometra w morze.", link: "https://www.sopot.pl" },
+                    { name: "Krzywy Domek", desc: "Deformacja architektoniczna przy deptaku Monte Cassino inspirowana rysunkami Szancera.", link: "https://krzywydomek.info" }
                 ]
             },
             "zakopane": {
                 companies: [
-                    { name: "Nosalowy Dwór", url: "https://www.nosalowy-dwor.eu", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60" },
-                    { name: "Kolej Kasprowy", url: "https://www.pkl.pl", logo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=60" }
+                    { name: "Kasprowy PKL", url: "https://www.pkl.pl", logo: "https://img.icons8.com/neon/60/cable-car.png" },
+                    { name: "Nosalowy Dwór", url: "https://www.nosalowy-dwor.eu", logo: "https://img.icons8.com/neon/60/resort.png" }
                 ],
                 attractions: [
-                    { name: "Kasprowy Wierch", desc: "Wjedź słynną koleją linową prosto do serca Wysokich Tatr.", link: "https://www.pkl.pl" },
-                    { name: "Morskie Oko", desc: "Największe i najbardziej spektakularne jezioro w Tatrach.", link: "https://tpn.gov.pl" },
-                    { name: "Gubałówka", desc: "Niezrównany punkt widokowy na całą panoramę Tatr i Zakopane.", link: "https://www.pkl.pl" }
+                    { name: "Kasprowy Wierch (1987m)", desc: "Wjazd legendarną napowietrzną koleją prosto w alpejski klimat Tatr Wysokich.", link: "https://www.pkl.pl" },
+                    { name: "Dolina Kościeliska", desc: "Jedna z najpiękniejszych dolin tatrzańskich ze wspaniałymi jaskiniami do zwiedzania.", link: "https://tpn.gov.pl" },
+                    { name: "Gubałówka", desc: "Dostępny dla każdego taras widokowy z najsłynniejszym profilem całego pasma Giewontu.", link: "https://www.pkl.pl" }
                 ]
             }
         };
 
-        // Fallback dla pozostałych regionów, żeby kod się nie wysypał
         const defaultRegionData = {
             companies: [
-                { name: "Lokalny Hotel", url: "https://www.google.com", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60" },
-                { name: "Karczma Regionalna", url: "https://www.google.com", logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=60" }
+                { name: "Premium Biznes", url: "https://www.google.com", logo: "https://img.icons8.com/neon/60/star.png" },
+                { name: "Partner Lokalny", url: "https://www.google.com", logo: "https://img.icons8.com/neon/60/handshake.png" }
             ],
             attractions: [
-                { name: "Centrum Miasta", desc: "Zabytkowy rynek, kawiarnie i lokalne ścieżki rowerowe.", link: "https://www.google.com" },
-                { name: "Punkt Widokowy", desc: "Świetne miejsce na panoramiczne zdjęcie całego regionu.", link: "https://www.google.com" }
+                { name: "Regionalne Ścieżki", desc: "Trasy rowerowo-piesze promujące najpiękniejsze zakątki okolicy.", link: "https://www.google.com" },
+                { name: "Rynek i Centrum", desc: "Zabytkowa architektura, urokliwe knajpki i punkty rzemieślnicze.", link: "https://www.google.com" }
             ]
         };
 
         const voucherPool = ["15% Rabatu", "Darmowa Kawa", "Zniżka -20%", "Bon 50 PLN", "Wejście Free", "Gadżet Sieci"];
-        const mockViewers = ["@klient_karpacz", "@mordeczka_99", "@baca_z_gór", "@rodzina_na_urlopie", "@zwiedzacz_pl"];
+        const mockViewers = ["@klient_karpacz", "@mordeczka_99", "@baca_z_gór", "@rodzina_na_urlopie", "@izery_travel"];
         
         let currentRegionKey = "";
         let currentCompanies = [];
@@ -511,7 +495,6 @@
             const currentHash = window.location.hash.replace('#', '');
             if (currentHash) {
                 currentRegionKey = currentHash;
-                // Jeśli region istnieje w bazie to ładuj, jak nie to daj domyślne
                 const data = regionDatabase[currentHash] || defaultRegionData;
                 currentCompanies = data.companies;
                 currentAttractions = data.attractions;
@@ -530,7 +513,6 @@
             
             buildCompleteGrid();
             
-            // Losuj domyślnego zwycięzcę z nowej, prawdziwej bazy firm
             document.getElementById('winnerName').innerText = currentCompanies[0].name;
 
             initWheel('centerWheel', currentCompanies.map(c => c.name), ['#ffd700', '#11141b', '#ff8c00', '#1a1d24']);
@@ -572,7 +554,6 @@
                 const item = document.createElement('div');
                 item.classList.add('grid-item');
 
-                // Rozmieszczaj tylko PRAWDZIWE firmy z wybranego regionu
                 if (Math.random() > 0.65 && currentCompanies.length > 0) {
                     const comp = currentCompanies[Math.floor(Math.random() * currentCompanies.length)];
                     item.classList.add('taken');
@@ -628,9 +609,9 @@
                     ctx.textAlign = "center";
                     ctx.fillText(labelArray[i].substring(0, 12), r * 0.5, 2);
                 } else {
-                    ctx.font = "bold 8px sans-serif";
+                    ctx.font = "bold 7px sans-serif";
                     ctx.textAlign = "right";
-                    ctx.shadowColor = "rgba(0,0,0,0.8)";
+                    ctx.shadowColor = "rgba(0,0,0,0.9)";
                     ctx.shadowBlur = 3;
                     ctx.fillText(labelArray[i].substring(0, 16), r - 10, 3);
                 }
@@ -702,7 +683,7 @@
                 resBox.innerHTML = `
                     <strong style="color:#2ed573; font-size:11px;">🎯 Atrakcja: ${attr.name}</strong>
                     <p style="margin:4px 0; color:#ccc; font-size:9px;">${attr.desc}</p>
-                    <a href="${attr.link}" target="_blank">Sprawdź szczegóły →</a>
+                    <a href="${attr.link}" target="_blank">Zobacz oficjalną stronę →</a>
                 `;
                 resBox.style.display = 'block';
 
