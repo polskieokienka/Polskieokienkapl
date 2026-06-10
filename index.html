@@ -120,7 +120,7 @@
             position: absolute;
         }
 
-        /* PRECYZYJNE POZYCJONOWANIE ETYKIET */
+        /* POZYCJONOWANIE ETYKIET */
         .lbl-top { bottom: 18px; left: 50%; transform: translateX(-50%); }
         .lbl-bottom { top: 18px; left: 50%; transform: translateX(-50%); }
         .lbl-left { right: 18px; top: 50%; transform: translateY(-50%); }
@@ -133,15 +133,13 @@
         .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
         .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 11px; box-shadow: 0 0 15px rgba(255,215,0,1); z-index: 50; }
 
-        /* ROZSTAWIE PINEZEK NA ZŁOTYM KONTURZE */
+        /* ROZSTAWIENIE PINEZEK */
         #pin-swinoujscie { top: 18%; left: 12%; }
         #pin-kolobrzeg   { top: 13%; left: 27%; }
         #pin-sopot        { top: 14%; left: 51%; }
-        
         #pin-swieradow    { top: 70%; left: 11%; }
         #pin-szklarska    { top: 73%; left: 16%; }
         #pin-karpacz      { top: 78%; left: 21%; }
-
         #pin-wisla        { top: 82%; left: 49%; }
         #pin-zakopane     { top: 89%; left: 59%; }
         #pin-szccawnica   { top: 86%; left: 68%; }
@@ -166,7 +164,6 @@
 
         .billboard-inner { background-color: #1a1d24; border: 2px solid #2c3e50; padding: 12px; border-radius: 2px; }
         .layout-grid { display: flex; flex-direction: column; gap: 15px; }
-        @media(min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
 
         .grid-wrapper { flex: 1.4; width: 100%; overflow-x: auto; }
 
@@ -218,7 +215,6 @@
 
         /* SEKCJA KÓŁ BOCZNYCH */
         .wheels-sidebar { display: flex; flex-direction: column; gap: 15px; flex: 0.8; width: 100%; }
-        @media(min-width: 600px) and (max-width: 1199px) { .wheels-sidebar { flex-direction: row; } }
 
         .wheel-card {
             background: rgba(20,24,33,0.96); padding: 12px; border-radius: 8px; border: 2px solid #2c3e50;
@@ -252,60 +248,4 @@
             border: 1px solid #ffd700; border-radius: 4px; padding: 6px; margin-top: 8px;
             box-sizing: border-box; text-align: center; font-size: 10px; animation: fadeIn 0.3s ease;
         }
-        .wheel-card.tourist-card .result-display { border-color: #2ed573; }
-        .result-display a { color: #1e90ff; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-
-    <div class="header-panel">
-        <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
-        <div class="stats-container">
-            <div class="stat-item">Licznik Gości w Sieci: <span id="globalGuests">14 205</span> osób dzisiaj</div>
-            <div class="stat-item">Wolne Okienka w Regionie: <span id="regionFreeSlots">84</span> / 100</div>
-        </div>
-    </div>
-
-    <div id="map-view">
-        <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
-        <div class="map-container">
-            
-            <svg class="poland-svg-bg" viewBox="0 0 600 550" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 120,40 C 160,35 220,38 270,30 C 310,25 330,45 360,50 C 400,55 470,25 500,45 C 530,65 520,110 550,130 C 580,150 560,190 570,230 C 580,270 540,310 550,350 C 560,390 510,430 490,460 C 470,490 420,480 390,520 C 360,560 310,510 270,530 C 230,550 170,500 130,510 C 100,520 80,480 55,470 C 30,460 40,430 50,400 C 60,370 20,350 30,310 C 40,270 70,260 65,220 C 60,180 35,160 50,120 C 65,80 90,50 120,40 Z" 
-                      fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="2 2" opacity="0.3"/>
-                <path d="M 120,40 C 160,35 220,38 270,30 C 310,25 330,45 360,50 C 400,55 470,25 500,45 C 530,65 520,110 550,130 C 580,150 560,190 570,230 C 580,270 540,310 550,350 C 560,390 510,430 490,460 C 470,490 420,480 390,520 C 360,560 310,510 270,530 C 230,550 170,500 130,510 C 100,520 80,480 55,470 C 30,460 40,430 50,400 C 60,370 20,350 30,310 C 40,270 70,260 65,220 C 60,180 35,160 50,120 C 65,80 90,50 120,40 Z" 
-                      fill="rgba(255, 215, 0, 0.03)" stroke="#ffd700" stroke-width="1.5" filter="drop-shadow(0px 0px 10px rgba(255,215,0,0.2))"/>
-            </svg>
-            
-            <a href="#swinoujscie" class="city-pin" id="pin-swinoujscie">
-                <div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div>
-            </a>
-            <a href="#kolobrzeg" class="city-pin" id="pin-kolobrzeg">
-                <div class="pin-dot"></div><div class="city-label lbl-top">Kołobrzeg</div>
-            </a>
-            <a href="#sopot" class="city-pin" id="pin-sopot">
-                <div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div>
-            </a>
-            
-            <a href="#swieradow-zdroj" class="city-pin" id="pin-swieradow">
-                <div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div>
-            </a>
-            <a href="#szklarska-poreba" class="city-pin" id="pin-szklarska">
-                <div class="pin-dot"></div><div class="city-label lbl-szklarska">Szklarska Poręba</div>
-            </a>
-            <a href="#karpacz" class="city-pin" id="pin-karpacz">
-                <div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div>
-            </a>
-            
-            <a href="#wisla" class="city-pin" id="pin-wisla">
-                <div class="pin-dot"></div><div class="city-label lbl-left">Wisła</div>
-            </a>
-            <a href="#zakopane" class="city-pin" id="pin-zakopane">
-                <div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div>
-            </a>
-            <a href="#szccawnica" class="city-pin" id="pin-szczawnica">
-                <div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div>
-            </a>
-            <a href="#kry
+        .wheel-card.tourist-card .result-display { border
