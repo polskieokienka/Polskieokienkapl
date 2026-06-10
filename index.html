@@ -133,17 +133,17 @@
         .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
         .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 11px; box-shadow: 0 0 15px rgba(255,215,0,1); z-index: 50; }
 
-        /* ROZSTAWIENIE PINEZEK */
-        #pin-swinoujscie { top: 18%; left: 12%; }
-        #pin-kolobrzeg   { top: 13%; left: 27%; }
-        #pin-sopot        { top: 14%; left: 51%; }
-        #pin-swieradow    { top: 70%; left: 11%; }
-        #pin-szklarska    { top: 73%; left: 16%; }
-        #pin-karpacz      { top: 78%; left: 21%; }
-        #pin-wisla        { top: 82%; left: 49%; }
-        #pin-zakopane     { top: 89%; left: 59%; }
-        #pin-szccawnica   { top: 86%; left: 68%; }
-        #pin-krynica      { top: 84%; left: 76%; }
+        /* ROZSTAWIENIE PINEZEK ZGODNIE Z MAPĄ */
+        #pin-swinoujscie { top: 23%; left: 15%; }
+        #pin-kolobrzeg   { top: 15%; left: 27%; }
+        #pin-sopot        { top: 16%; left: 48%; }
+        #pin-swieradow    { top: 62%; left: 10%; }
+        #pin-szklarska    { top: 64%; left: 15%; }
+        #pin-karpacz      { top: 67%; left: 22%; }
+        #pin-wisla        { top: 68%; left: 47%; }
+        #pin-zakopane     { top: 74%; left: 57%; }
+        #pin-szccawnica   { top: 72%; left: 66%; }
+        #pin-krynica      { top: 69%; left: 74%; }
 
         /* PANEL RETINA BILLBOARD */
         #dashboard-view { display: none; width: 100%; max-width: 1450px; }
@@ -186,6 +186,14 @@
         }
         .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
+
+        /* SPECJALNY PODGLĄD DLA WONDER HOME */
+        .grid-item.wonder-home-slot {
+            background: #ffffff url('397038002.jpg') no-repeat center center;
+            background-size: contain;
+            color: transparent;
+            border: 2px solid #ffd700;
+        }
 
         /* TELEBIM CENTRALNY */
         .grid-center {
@@ -251,7 +259,7 @@
         .wheel-card.tourist-card .result-display { border-color: #2ed573; }
         .result-display a { color: #1e90ff; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
 
-        /* STYLIZACJA MODALA (GLASSMORPHISM) */
+        /* STYLIZACJA MODALA */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 15, 30, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -270,13 +278,4 @@
         .modal-overlay.active .modal-content { transform: translateY(0); }
         .close-modal-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #8fa0dd; font-size: 28px; cursor: pointer; transition: color 0.2s; }
         .close-modal-btn:hover { color: #00f2fe; }
-        .modal-header h2 { font-size: 22px; margin-bottom: 5px; background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .modal-header p { font-size: 14px; color: #a0aec0; margin-bottom: 25px; }
-        .form-group { margin-bottom: 18px; text-align: left; }
-        .form-group label { display: block; font-size: 13px; color: #cbd5e0; margin-bottom: 6px; font-weight: 500; }
-        .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; background: rgba(10, 15, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #ffffff; font-size: 14px; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #00f2fe; box-shadow: 0 0 8px rgba(0, 242, 254, 0.3); }
-        .submit-order-btn { width: 100%; padding: 13px; background: linear-gradient(90deg, #00f2fe, #4facfe); border: none; border-radius: 8px; color: #ffffff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 10px; }
-        .submit-order-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
-
-        /*
+        .modal-header h2 { font-size: 22px; margin-bottom: 5px; background: linear-gradient(90deg, #00f2
