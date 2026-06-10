@@ -133,7 +133,7 @@
         .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
         .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 11px; box-shadow: 0 0 15px rgba(255,215,0,1); z-index: 50; }
 
-        /* ROZSTAWIENIE PINEZEK ZGODNIE Z MAPĄ */
+        /* ROZSTAWIENIE PINEZEK */
         #pin-swinoujscie { top: 23%; left: 15%; }
         #pin-kolobrzeg   { top: 15%; left: 27%; }
         #pin-sopot        { top: 16%; left: 48%; }
@@ -144,7 +144,8 @@
         #pin-zakopane     { top: 74%; left: 57%; }
         #pin-szccawnica   { top: 72%; left: 66%; }
         #pin-krynica      { top: 69%; left: 74%; }
-/* STREFA TURYSTY - NOWE ELEMENTY */
+
+        /* STREFA TURYSTY */
         .tourist-zone {
             width: 100%;
             max-width: 1400px;
@@ -187,6 +188,7 @@
 
         .trail-select { width: 100%; padding: 8px; background: #11141b; border: 1px solid #2c3e50; border-radius: 4px; color: #fff; font-size: 12px; margin-bottom: 10px; }
         .trail-result { font-size: 11px; color: #ccc; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; min-height: 40px; }
+
         /* PANEL RETINA BILLBOARD */
         #dashboard-view { display: none; width: 100%; max-width: 1450px; }
         
@@ -229,7 +231,7 @@
         .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
 
-        /* SPECJALNY PODGLĄD DLA WONDER HOME */
+        /* WONDER HOME SLOT */
         .grid-item.wonder-home-slot {
             background: #ffffff url('397038002.jpg') no-repeat center center;
             background-size: contain;
@@ -350,6 +352,7 @@
             .wheel-card { width: 100%; max-width: 320px; }
             .modal-content { padding: 20px; width: 95%; }
             .modal-header h2 { font-size: 18px; }
+            .tourist-zone { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -436,6 +439,48 @@
         </div>
     </div>
 
+    <div class="tourist-zone" id="touristInfoZone">
+        
+        <div class="tourist-panel">
+            <h3>☀️ Pogoda i Karkonosze</h3>
+            <div class="weather-info">
+                <div>
+                    <div style="font-size: 11px; color: #aaa;">Aktualnie w regionie:</div>
+                    <div style="color: #fff; font-weight: bold; font-size: 13px;">Karpacz / Karkonosze</div>
+                </div>
+                <div class="weather-temp">+18°C</div>
+            </div>
+            <div class="trail-status">🟢 GOPR: Szlaki są otwarte. Warunki dobre.</div>
+        </div>
+
+        <div class="tourist-panel">
+            <h3>🚌 Szybki Rozkład Jazdy (Kluczowe Połączenia)</h3>
+            <div class="bus-list">
+                <div class="bus-item">
+                    <span>Kowary → Karpacz Górny (PKS/Bus)</span>
+                    <span class="bus-time">07:15, 09:40, 12:10, 15:35</span>
+                </div>
+                <div class="bus-item">
+                    <span>Karpacz → Jelenia Góra przez Kowary</span>
+                    <span class="bus-time">08:20, 10:50, 14:15, 17:40</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tourist-panel">
+            <h3>🥾 Asystent Górski: Zaplanuj Trasę</h3>
+            <select class="trail-select" id="trailPicker" onchange="calculateTrail()">
+                <option value="">-- Wybierz dokąd idziesz --</option>
+                <option value="sniezka">Z Karpacza (Wang) ➔ Śnieżka</option>
+                <option value="samotnia">Z Karpacza ➔ Schronisko Samotnia</option>
+                <option value="skywalk">Ze Świeradowa ➔ Wieża Sky Walk</option>
+                <option value="szrenica">Ze Szklarskiej Poręby ➔ Szrenica</option>
+            </select>
+            <div class="trail-result" id="trailCalcResult">Wybierz trasę z listy powyżej, aby zobaczyć czas przejścia i stopień trudności.</div>
+        </div>
+
+    </div>
+
     <div id="dashboard-view">
         <button class="back-btn" onclick="backToMainMap()">← Wróć do Mapy Polski</button>
 
@@ -492,370 +537,4 @@
 
                 <div class="form-group">
                     <label for="clientName">Nazwa firmy / Imię i Nazwisko *</label>
-                    <input type="text" id="clientName" required placeholder="Np. Moja Firma Sp. z o.o.">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientEmail">Adres E-mail *</label>
-                    <input type="email" id="clientEmail" required placeholder="name@company.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientPhone">Numer telefonu *</label>
-                    <input type="tel" id="clientPhone" required placeholder="+48 000 000 000">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientWebsite">Link do Twojej strony (opcjonalnie)</label>
-                    <input type="url" id="clientWebsite" placeholder="https://twojastrona.pl">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientNotes">Uwagi do zamówienia / Dodatkowe życzenia</label>
-                    <textarea id="clientNotes" rows="3" placeholder="Wpisz informacje o banerze..."></textarea>
-                </div>
-
-                <button type="submit" class="submit-order-btn">Wyślij Zgłoszenie Rezerwacji</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        const regionDatabase = {
-            "karpacz": {
-                companies: [
-                    { name: "Wonder Home", url: "https://wonderhome.eu/" },
-                    { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl" },
-                    { name: "Widokowo Karpacz", url: "https://www.widokowo-karpacz.pl" },
-                    { name: "Hotel Gołębiewski", url: "https://www.golebiewski.pl/karpacz" },
-                    { name: "Schronisko Samotnia", url: "https://www.samotnia.com.pl" },
-                    { name: "Kolej Linowa Kopa", url: "https://kopa.com.pl" }
-                ],
-                attractions: [
-                    { name: "Śnieżka (1602m n.p.m.)", desc: "Królowa Karkonoszy z futurystycznym dyskiem Obserwatorium IMGW na szczycie.", link: "https://kpnmab.pl" },
-                    { name: "Świątynia Wang", desc: "Zabytek architektury nordyckiej z XII wieku, przeniesiony bez użycia gwoździ.", link: "https://www.wang.com.pl" },
-                    { name: "Sztolnie Kowary", desc: "Tajemnicza podziemna trasa turystyczna w dawnej kopalni uranu.", link: "https://www.sztolniekowary.pl" },
-                    { name: "Park Miniatur Kowary", desc: "Najpiękniejsze zabytki Dolnego Śląska odwzorowane w skali 1:25.", link: "https://www.park-miniatur.com" },
-                    { name: "Wyspa Fun Kowary", desc: "Niezwykłe miejsce letniego relaksu i zabawy u podnóża gór.", link: "https://wyspa.fun" },
-                    { name: "Dziki Wodospad", desc: "Malownicza zapora przeciwrumszowa w Karpaczu Górnym, idealna na zdjęcia.", link: "https://www.karpacz.pl" }
-                ]
-            },
-            "swieradow-zdroj": {
-                companies: [
-                    { name: "Interferie Hotel", url: "https://www.interferie.pl" },
-                    { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl" },
-                    { name: "SKI&SUN Świeradów", url: "https://skisun.pl" }
-                ],
-                attractions: [
-                    { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 metrów z panoramiczną zjeżdżalnią.", link: "https://visitskywalk.today/pl/" },
-                    { name: "Gondola SKI&SUN", desc: "Nowoczesna kolej linowa na Stóg Izerski, idealna dla narciarzy i rowerzystów.", link: "https://skisun.pl" },
-                    { name: "Dom Zdrojowy", desc: "Zabytkowy obiekt uzdrowiskowy z najdłuższą na Dolństwie halą spacerową.", link: "https://uzdrowisko-swieradow.pl" }
-                ]
-            },
-            "szklarska-poreba": {
-                companies: [
-                    { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl" },
-                    { name: "Sudety Lift Szrenica", url: "https://sudetylift.com.pl" },
-                    { name: "Blue Mountain Resort", url: "https://blue-mountain-resort.pl" }
-                ],
-                attractions: [
-                    { name: "Wodospad Szklarki", desc: "Przepiękna kaskada z urokliwym schroniskiem Kochanówka na dnie wąwozu.", link: "https://kpnmab.pl" },
-                    { name: "Szrenica (1362m n.p.m.)", desc: "Potężny szczyt górujący nad miastem z rozbudowaną siecią nartostrad.", link: "https://sudetylift.com.pl" }
-                ]
-            }
-        };
-
-        const defaultRegionData = {
-            companies: [
-                { name: "Premium Biznes", url: "https://www.google.com" },
-                { name: "Twoja Reklama", url: "https://www.google.com" }
-            ],
-            attractions: [
-                { name: "Rynek i Centrum", desc: "Zabytkowa architektura i lokalne punkty rzemieślnicze.", link: "https://www.google.com" }
-            ]
-        };
-
-        const voucherPool = ["15% Rabatu", "Darmowa Kawa", "Zniżka -20%", "Bon 50 PLN", "Wejście Free", "Gadżet Sieci"];
-        const mockViewers = ["@klient_karpacz", "@mordeczka_99", "@baca_z_gór", "@rodzina_na_urlopie", "@izery_travel"];
-        
-        let currentRegionKey = "";
-        let currentCompanies = [];
-        let currentAttractions = [];
-        let rotCenter = 0, rotPromo = 0, rotTourist = 0, isSpinning = false;
-
-        function checkUrlHash() {
-            const currentHash = window.location.hash.replace('#', '').toLowerCase();
-            if (currentHash) {
-                currentRegionKey = currentHash;
-                const data = regionDatabase[currentHash] || defaultRegionData;
-                currentCompanies = data.companies;
-                currentAttractions = data.attractions;
-
-                loadCityPlatform(currentHash.toUpperCase().replace('-', ' '));
-            } else {
-                showMainMap();
-            }
-        }
-
-        function loadCityPlatform(cityName) {
-            document.getElementById('mainTitleHeader').innerText = `PolskieOkienka.pl - Tablica: ${cityName}`;
-            document.getElementById('map-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-            
-            buildCompleteGrid();
-            
-            if(currentCompanies.length > 0) {
-                document.getElementById('winnerName').innerText = currentCompanies[0].name;
-                initWheel('centerWheel', currentCompanies.map(c => c.name), ['#ffd700', '#11141b', '#ff8c00', '#1a1d24']);
-            }
-            initWheel('promoWheel', voucherPool, ['#1a1d24', '#c0392b', '#2c3e50', '#d35400', '#2e3440']);
-            if(currentAttractions.length > 0) {
-                initWheel('touristWheel', currentAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24']);
-            }
-            window.scrollTo(0, 0);
-        }
-
-        function showMainMap() {
-            document.getElementById('mainTitleHeader').innerText = "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów";
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('map-view').style.display = 'flex';
-        }
-
-        function backToMainMap() {
-            window.location.hash = '';
-        }
-
-        window.addEventListener('hashchange', checkUrlHash);
-        window.addEventListener('load', checkUrlHash);
-
-        function buildCompleteGrid() {
-            const grid = document.getElementById('boardGrid');
-            const telebim = document.getElementById('mainTelebim');
-            if(!grid || !telebim) return;
-            
-            grid.innerHTML = ""; 
-
-            for (let i = 1; i <= 100; i++) {
-                let row = Math.ceil(i / 10);
-                let col = i % 10 === 0 ? 10 : i % 10;
-                
-                if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
-                    if (row === 4 && col === 4) {
-                        grid.appendChild(telebim);
-                    }
-                    continue;
-                }
-
-                const linkNode = document.createElement('a');
-                linkNode.className = 'cell-link';
-                
-                const item = document.createElement('div');
-                item.classList.add('grid-item');
-
-                // Podpięcie logotypu Wonder Home w Karpaczu (np. slot nr 12)
-                if (currentRegionKey === 'karpacz' && i === 12) {
-                    item.classList.add('wonder-home-slot');
-                    linkNode.href = "https://wonderhome.eu/";
-                    linkNode.target = "_blank";
-                } else {
-                    linkNode.href = "javascript:void(0);";
-                    let type = "Standard";
-                    if (Math.random() > 0.85) {
-                        item.classList.add('premium');
-                        item.innerText = "350 zł\nPremium";
-                        type = "Premium";
-                    } else {
-                        item.innerText = "200 zł\nStandard";
-                    }
-                    linkNode.setAttribute('onclick', `openOrderModal('${currentRegionKey}', ${i}, '${type}')`);
-                }
-                
-                linkNode.appendChild(item);
-                grid.appendChild(linkNode);
-            }
-        }
-
-        function initWheel(canvasId, labelArray, colors) {
-            const canvas = document.getElementById(canvasId);
-            if(!canvas || labelArray.length === 0) return;
-            const ctx = canvas.getContext('2d');
-            const segments = labelArray.length;
-            const deg = 360 / segments;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const r = canvas.width / 2;
-
-            for (let i = 0; i < segments; i++) {
-                const start = (i * deg * Math.PI) / 180;
-                const end = ((i + 1) * deg * Math.PI) / 180;
-
-                ctx.beginPath();
-                ctx.fillStyle = colors[i % colors.length];
-                ctx.moveTo(r, r);
-                ctx.arc(r, r, r, start, end);
-                ctx.fill();
-
-                ctx.strokeStyle = canvasId === 'touristWheel' ? '#2ed573' : '#ffd700';
-                ctx.lineWidth = 1.2;
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(r, r);
-                ctx.rotate(start + (deg * Math.PI) / 360);
-                ctx.fillStyle = "#fff";
-                
-                if (canvasId === 'centerWheel') {
-                    ctx.font = "bold 4.5px sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.fillText(labelArray[i].substring(0, 14), r * 0.52, 1.5);
-                } else {
-                    ctx.font = "bold 7px sans-serif";
-                    ctx.textAlign = "right";
-                    ctx.shadowColor = "rgba(0,0,0,0.9)";
-                    ctx.shadowBlur = 3;
-                    ctx.fillText(labelArray[i].substring(0, 16), r - 10, 3);
-                }
-                ctx.restore();
-            }
-        }
-
-        function spinCenterWheel() {
-            if (isSpinning || currentCompanies.length === 0) return;
-            isSpinning = true;
-            document.getElementById('btnCenter').disabled = true;
-
-            const segments = currentCompanies.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotCenter += 1440 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            document.getElementById('centerWheel').style.transform = `rotate(${rotCenter}deg)`;
-
-            setTimeout(() => {
-                const winner = currentCompanies[prizeIndex];
-                document.getElementById('winnerName').innerHTML = `🔥 Wygrywa: <strong style="color:#ffd700">${winner.name.toUpperCase()}</strong>`;
-                isSpinning = false;
-                document.getElementById('btnCenter').disabled = false;
-            }, 4000);
-        }
-
-        function spinPromoWheel() {
-            if (isSpinning) return;
-            isSpinning = true;
-            document.getElementById('btnPromo').disabled = true;
-            document.getElementById('promoResult').style.display = 'none';
-
-            const segments = voucherPool.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-            
-            rotPromo += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            document.getElementById('promoWheel').style.transform = `rotate(${rotPromo}deg)`;
-
-            setTimeout(() => {
-                const luckyUser = mockViewers[Math.floor(Math.random() * mockViewers.length)];
-                const reward = voucherPool[prizeIndex];
-                const resBox = document.getElementById('promoResult');
-                resBox.innerHTML = `<strong>${luckyUser}</strong> otrzymuje:<br><span style="color:#ffd700;font-weight:bold;">${reward}</span>`;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnPromo').disabled = false;
-            }, 4500);
-        }
-
-        function spinTouristWheel() {
-            if (isSpinning || currentAttractions.length === 0) return;
-            isSpinning = true;
-            document.getElementById('btnTourist').disabled = true;
-            document.getElementById('touristResult').style.display = 'none';
-
-            const segments = currentAttractions.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotTourist += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
-            document.getElementById('touristWheel').style.transform = `rotate(${rotTourist}deg)`;
-
-            setTimeout(() => {
-                const attr = currentAttractions[prizeIndex];
-                const resBox = document.getElementById('touristResult');
-                resBox.innerHTML = `
-                    <strong style="color:#2ed573; font-size:11px;">🎯 Atrakcja: ${attr.name}</strong>
-                    <p style="margin:4px 0; color:#ccc; font-size:9px;">${attr.desc}</p>
-                    <a href="${attr.link}" target="_blank">Zobacz oficjalną stronę →</a>
-                `;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnTourist').disabled = false;
-            }, 4500);
-        }
-
-        function openOrderModal(cityId, slotNumber, slotType) {
-            const modal = document.getElementById('orderModal');
-            document.getElementById('formCityId').value = cityId;
-            document.getElementById('formSlotNumber').value = slotNumber;
-            document.getElementById('formSlotType').value = slotType;
-            
-            const cityNameFormatted = cityId.charAt(0).toUpperCase() + cityId.slice(1).replace('-', ' ');
-            document.getElementById('modalSlotDetails').innerHTML = 
-                `Lokalizacja: <strong>${cityNameFormatted}</strong> | Slot: <strong>Nr ${slotNumber} (${slotType})</strong>`;
-            
-            document.getElementById('orderForm').reset();
-            modal.classList.add('active');
-        }
-
-        function closeOrderModal() {
-            document.getElementById('orderModal').classList.remove('active');
-        }
-
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const orderData = {
-                city: document.getElementById('formCityId').value,
-                slotNumber: document.getElementById('formSlotNumber').value,
-                slotType: document.getElementById('formSlotType').value,
-                clientName: document.getElementById('clientName').value,
-                clientEmail: document.getElementById('clientEmail').value,
-                clientPhone: document.getElementById('clientPhone').value,
-                clientWebsite: document.getElementById('clientWebsite').value,
-                clientNotes: document.getElementById('clientNotes').value,
-                timestamp: new Date().toISOString()
-            };
-            alert(`Dziękujemy! Zgłoszenie dla slotu nr ${orderData.slotNumber} w regionie ${orderData.city.toUpperCase()} zostało wysłane.`);
-            closeOrderModal();
-        }
-
-        setInterval(() => {
-            const guestElem = document.getElementById('globalGuests');
-            if(guestElem) {
-                let currentGuests = parseInt(guestElem.innerText.replace(/\s/g, ''));
-                currentGuests += Math.floor(Math.random() * 7) - 3;
-                guestElem.innerText = currentGuests.toLocaleString('pl-PL');
-            }
-        }, 3000);
-
-        let totalSeconds = 240;
-        setInterval(() => {
-            if (totalSeconds <= 0) totalSeconds = 240;
-            totalSeconds--;
-            const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-            const secs = String(totalSeconds % 60).padStart(2, '0');
-            const timerElem = document.getElementById('liveTimer');
-            if(timerElem) timerElem.innerText = `00:00:${mins}:${secs}`;
-        }, 1000);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const modalOverlay = document.getElementById('orderModal');
-            if(closeModalBtn) closeModalBtn.addEventListener('click', closeOrderModal);
-            if(modalOverlay) {
-                modalOverlay.addEventListener('click', (e) => {
-                    if (e.target === modalOverlay) closeOrderModal();
-                });
-            }
-            checkUrlHash();
-        });
-    </script>
-</body>
-</html>
+                    <input type="text" id="clientName" required placeholder="Np. Moja Firma Sp. z o
