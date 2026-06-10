@@ -17,7 +17,7 @@
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
-            padding-bottom: 60px; /* Miejsce na audio dock */
+            padding-bottom: 60px;
         }
 
         body::before {
@@ -47,13 +47,13 @@
         .stat-item { color: #fff; }
         .stat-item span { color: #ffd700; font-size: 18px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
 
-        /* SEKCJA MAPY POLSKI */
+        /* SEKCJA MAPY POLSKI - CALIBRATED FOR NO OVERLAP */
         #map-view {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             background: rgba(15, 19, 28, 0.95);
             padding: 25px;
             border-radius: 12px;
@@ -66,9 +66,9 @@
         .map-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 1.2 / 1;
+            aspect-ratio: 1.25 / 1;
             background: #151922 url('https://upload.wikimedia.org/wikipedia/commons/1/14/Poland_location_map_%28animated_outline%29.svg') no-repeat center center;
-            background-size: 90% auto;
+            background-size: 92% auto;
             border: 3px solid #2c3e50;
             border-radius: 10px;
             overflow: hidden;
@@ -82,8 +82,6 @@
 
         .city-pin {
             position: absolute;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
             z-index: 10;
             display: flex;
             flex-direction: column;
@@ -91,43 +89,69 @@
         }
         
         .pin-dot {
-            width: 16px; height: 16px;
+            width: 14px; height: 14px;
             background-color: #ffd700;
             border: 2px solid #fff;
             border-radius: 50%;
-            box-shadow: 0 0 20px #ffd700, 0 0 10px #ff8c00;
+            box-shadow: 0 0 15px #ffd700, 0 0 5px #ff8c00;
             transition: transform 0.2s, background-color 0.2s;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
         }
         
         .city-label {
             color: #ffffff;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 4px 10px;
-            border-radius: 5px;
-            margin-top: 5px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 3px 8px;
+            border-radius: 4px;
             border: 1px solid #ffd700;
             box-shadow: 0 4px 10px rgba(0,0,0,0.6);
             transition: all 0.2s;
+            position: absolute;
+            transform: translate(-50%, 0);
         }
 
-        .city-link-wrapper:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
-        .city-link-wrapper:hover .city-label { background: #ffd700; color: #000; font-size: 14px; box-shadow: 0 0 15px rgba(255,215,0,0.6); }
+        .city-link-wrapper:hover .pin-dot { transform: translate(-50%, -50%) scale(1.4); background-color: #ff8c00; }
+        .city-link-wrapper:hover .city-label { background: #ffd700; color: #000; font-size: 12px; box-shadow: 0 0 15px rgba(255,215,0,0.8); z-index: 50; }
 
-        /* Pozycjonowanie pinezek */
-        #pin-swinoujscie { top: 14%; left: 9%; }
-        #pin-kolobrzeg   { top: 12%; left: 21%; }
-        #pin-sopot        { top: 12%; left: 47%; }
-        #pin-szklarska    { top: 67%; left: 14%; }
-        #pin-karpacz      { top: 72%; left: 19%; }
-        #pin-milkow       { top: 71%; left: 24%; }
-        #pin-wisla        { top: 81%; left: 49%; }
+        /* PRECYZYJNA SIATKA GEOGRAFICZNA - LIKWIDACJA NACHODZENIA (KARKONOSZE ROZSTRZELONE STRATEGICZNIE) */
+        #pin-swinoujscie { top: 12%; left: 8%; }
+        #pin-swinoujscie .city-label { top: 12px; }
+
+        #pin-kolobrzeg   { top: 10%; left: 20%; }
+        #pin-kolobrzeg .city-label { top: 12px; }
+
+        #pin-sopot        { top: 11%; left: 47%; }
+        #pin-sopot .city-label { top: 12px; }
+
+        /* Dolny Śląsk / Karkonosze - rozciągnięte etykiety w różne strony, aby uniknąć kolizji */
+        #pin-szklarska    { top: 68%; left: 13%; }
+        #pin-szklarska .city-label { bottom: 12px; transform: translate(-85%, 0); } /* W lewo dół */
+
+        #pin-karpacz      { top: 71%; left: 17%; }
+        #pin-karpacz .city-label { top: 12px; transform: translate(-50%, 0); }   /* Prosto w dół */
+
+        #pin-milkow       { top: 70%; left: 22%; }
+        #pin-milkow .city-label { bottom: 12px; transform: translate(5%, 0); }   /* W prawo góra */
+
+        /* Beskidy i Tatry */
+        #pin-wisla        { top: 80%; left: 49%; }
+        #pin-wisla .city-label { top: 12px; }
+
         #pin-zakopane     { top: 89%; left: 59%; }
+        #pin-zakopane .city-label { bottom: 12px; }
+
         #pin-szczawnica   { top: 85%; left: 69%; }
+        #pin-szczawnica .city-label { top: 12px; }
+
         #pin-krynica      { top: 84%; left: 77%; }
+        #pin-krynica .city-label { bottom: 12px; }
+
 
         /* PANEL RETINA BILLBOARD */
         #dashboard-view { display: none; width: 100%; max-width: 1450px; }
@@ -153,7 +177,6 @@
         .layout-grid { display: flex; flex-direction: column; gap: 20px; }
         @media(min-width: 1250px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
 
-        /* Ochrona przed rozjeżdżaniem siatki na mobile */
         .grid-wrapper {
             flex: 1.4;
             width: 100%;
@@ -171,7 +194,7 @@
             border: 2px solid #2c3e50;
             box-sizing: border-box;
             aspect-ratio: 1;
-            min-width: 500px; /* Zapobiega ściskaniu okienek */
+            min-width: 500px;
         }
 
         .cell-link { text-decoration: none; display: block; width: 100%; height: 100%; }
@@ -239,7 +262,7 @@
             padding: 3px 8px; border-radius: 10px; cursor: pointer; text-transform: uppercase;
         }
 
-        /* SEKCJA INTERAKTYWNA (BOCZNA) */
+        /* SEKCJA KÓŁ BOCZNYCH */
         .wheels-sidebar {
             display: flex;
             flex-direction: column;
@@ -259,9 +282,9 @@
         .wheel-card h3 { font-size: 12px; color: #ffd700; margin: 0 0 12px 0; text-transform: uppercase; text-align: center; }
         .wheel-card.tourist-card h3 { color: #2ed573; }
 
-        .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 12px; }
-        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-card.tourist-card .wheel-canvas { border-color: #2ed573; }
+        .wheel-box { position: relative; width: 180px; height: 180px; margin-bottom: 12px; }
+        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffd700; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); box-shadow: 0 0 15px rgba(255,215,0,0.2); }
+        .wheel-card.tourist-card .wheel-canvas { border-color: #2ed573; box-shadow: 0 0 15px rgba(46,213,115,0.2); }
         
         .wheel-pointer {
             position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
@@ -286,7 +309,7 @@
         .wheel-card.tourist-card .result-display { border-color: #2ed573; }
         .result-display a { color: #1e90ff; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
 
-        /* DOLNY PANEL AUDIO */
+        /* AUDIO DOCK */
         .audio-dock {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(15,17,21,0.96); border-top: 1px solid #ffd700;
@@ -301,7 +324,6 @@
 </head>
 <body>
 
-    <!-- LISTWA STATYSTYK -->
     <div class="header-panel">
         <h2>PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
         <div class="stats-container">
@@ -310,7 +332,7 @@
         </div>
     </div>
 
-    <!-- MAPA POLSKI -->
+    <!-- MAPA POLSKI Z KALIBROWANYMI ETYKIETAMI -->
     <div id="map-view">
         <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
         <div class="map-container">
@@ -357,7 +379,6 @@
             <div class="billboard-inner">
                 <div class="layout-grid">
                     
-                    <!-- KONTENER ZABEZPIECZAJĄCY SIATKĘ -->
                     <div class="grid-wrapper">
                         <div class="grid-board" id="boardGrid">
                             
@@ -379,14 +400,14 @@
                         </div>
                     </div>
 
-                    <!-- KOŁA BOCZNE -->
+                    <!-- ULEPSZONE KOŁA NEONOWE -->
                     <div class="wheels-sidebar">
                         
                         <div class="wheel-card">
                             <h3>🎁 Koło 1: Vouchery i Rabaty</h3>
                             <div class="wheel-box">
                                 <div class="wheel-pointer"></div>
-                                <canvas class="wheel-canvas" id="promoWheel" width="170" height="170"></canvas>
+                                <canvas class="wheel-canvas" id="promoWheel" width="180" height="180"></canvas>
                             </div>
                             <button class="btn" id="btnPromo" onclick="spinPromoWheel()">Losuj Rabat Klientowi</button>
                             <div class="result-display" id="promoResult"></div>
@@ -396,7 +417,7 @@
                             <h3>🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień</h3>
                             <div class="wheel-box">
                                 <div class="wheel-pointer"></div>
-                                <canvas class="wheel-canvas" id="touristWheel" width="170" height="170"></canvas>
+                                <canvas class="wheel-canvas" id="touristWheel" width="180" height="180"></canvas>
                             </div>
                             <button class="btn btn-tourist" id="btnTourist" onclick="spinTouristWheel()">Wylosuj Moje Atrakcje</button>
                             <div class="result-display" id="touristResult"></div>
@@ -409,7 +430,6 @@
         </div>
     </div>
 
-    <!-- AUDIO DOCK -->
     <div class="audio-dock">
         <span>🎵 Podkład: Karkonosze Ambient Chillout:</span>
         <audio controls loop>
@@ -418,7 +438,6 @@
     </div>
 
     <script>
-        // Centralna baza firm partnerskich
         const authenticCompanies = [
             { name: "Wonder Home", url: "https://www.wonderhome.pl", logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=60&auto=format&fit=crop&q=60" },
             { name: "Hotel Gołębiewski", url: "https://www.golebiewski.pl/karpacz", logo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=60&auto=format&fit=crop&q=60" },
@@ -429,23 +448,22 @@
         ];
 
         const voucherPool = [
-            "15% Rabatu w Wonder Home",
-            "Darmowa Kawa w Karczmie",
-            "Zniżka -20% na Kopa Pass",
-            "Voucher 50zł Gołębiewski",
-            "Wejściówka do Tajemnic",
-            "Gadżet PolskieOkienka"
+            "15% Rabatu",
+            "Darmowa Kawa",
+            "Zniżka -20%",
+            "Bon 50 PLN",
+            "Wejście Free",
+            "Gadżet Sieci"
         ];
 
         const touristAttractions = [
-            { name: "Śnieżka (1602m)", desc: "Najwyższy szczyt Karkonoszy z Obserwatorium. Podejmij wyzwanie pieszo!", link: "https://kpnmab.pl" },
+            { name: "Śnieżka 1602m", desc: "Najwyższy szczyt Karkonoszy z Obserwatorium. Podejmij wyzwanie pieszo!", link: "https://kpnmab.pl" },
             { name: "Świątynia Wang", desc: "Zjawiskowy, drewniany kościółek skandynawski przeniesiony prosto z Norwegii.", link: "https://www.wang.com.pl" },
             { name: "Dziki Wodospad", desc: "Urokliwy wodospad tuż przy dolnej stacji wyciągu na Kopę. Idealny na zdjęcia.", link: "https://www.karpacz.pl" },
-            { name: "Zapora na Łomnicy", desc: "Malownicza zapora tworząca piękne zalewisko w centrum Karpacza. Super spacer.", link: "https://www.karpacz.pl" },
-            { name: "Karkonoskie Tajemnice", desc: "Podziemna, multimedialna wystawa o Duchu Gór i tajemnicach regionu.", link: "https://www.karkonoskietajemnice.pl" }
+            { name: "Zapora Łomnicy", desc: "Malownicza zapora tworząca piękne zalewisko w centrum Karpacza. Super spacer.", link: "https://www.karpacz.pl" },
+            { name: "Tajemnice", desc: "Podziemna, multimedialna wystawa o Duchu Gór i tajemnicach regionu.", link: "https://www.karkonoskietajemnice.pl" }
         ];
 
-        // Stałe dane miast powiązane z hashami URL
         const cityData = {
             "swinoujscie": { name: "Świnoujście", slots: 42 },
             "kolobrzeg": { name: "Kołobrzeg", slots: 38 },
@@ -463,7 +481,6 @@
         let rotCenter = 0, rotPromo = 0, rotTourist = 0, isSpinning = false;
         let poolIndex = ["Wonder Home"];
 
-        // SYSTEM ZARZĄDZANIA WIDOKAMI I URL (ROUTING)
         function checkUrlHash() {
             const currentHash = window.location.hash.replace('#', '');
             if (currentHash && cityData[currentHash]) {
@@ -482,7 +499,7 @@
             buildCompleteGrid();
             initWheel('centerWheel', poolIndex, ['#ffd700', '#11141b', '#ff8c00', '#1a1d24']);
             initWheel('promoWheel', voucherPool, ['#1a1d24', '#c0392b', '#2c3e50', '#d35400', '#2e3440']);
-            initWheel('touristWheel', touristAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24', '#27ae60']);
+            initWheel('touristWheel', touristAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24']);
             window.scrollTo(0, 0);
         }
 
@@ -493,14 +510,12 @@
         }
 
         function backToMainMap() {
-            window.location.hash = ''; // Czyszczenie hasha wywoła zdarzenie hashchange i wróci do mapy
+            window.location.hash = '';
         }
 
-        // Nasłuchiwanie zmian w pasku adresu (wstecz, dalej, odśwież)
         window.addEventListener('hashchange', checkUrlHash);
         window.addEventListener('load', checkUrlHash);
 
-        // BUDOWANIE SIATKI REKLAMOWEJ
         function buildCompleteGrid() {
             const grid = document.getElementById('boardGrid');
             const telebim = document.getElementById('mainTelebim');
@@ -511,11 +526,8 @@
                 let row = Math.ceil(i / 10);
                 let col = i % 10 === 0 ? 10 : i % 10;
                 
-                // Wycinanie środka pod główny ekran
                 if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
-                    if (row === 4 && col === 4) {
-                        grid.appendChild(telebim);
-                    }
+                    if (row === 4 && col === 4) grid.appendChild(telebim);
                     continue;
                 }
 
@@ -524,16 +536,13 @@
                 const item = document.createElement('div');
                 item.classList.add('grid-item');
 
-                // Pierwsze okienko z definicji zajęte przez lidera
                 if (i === 1) {
                     item.classList.add('taken');
                     item.style.backgroundImage = `url('${authenticCompanies[0].logo}')`;
                     item.innerHTML = `<div class="company-label-tag">${authenticCompanies[0].name}</div>`;
                     linkNode.href = authenticCompanies[0].url;
                     linkNode.target = "_blank";
-                } 
-                // Losowo zajęte pozostałe okienka
-                else if (Math.random() > 0.7) {
+                } else if (Math.random() > 0.7) {
                     const comp = authenticCompanies[Math.floor(Math.random() * authenticCompanies.length)];
                     item.classList.add('taken');
                     item.style.backgroundImage = `url('${comp.logo}')`;
@@ -541,26 +550,22 @@
                     linkNode.href = comp.url;
                     linkNode.target = "_blank";
                     if (!poolIndex.includes(comp.name)) poolIndex.push(comp.name);
-                } 
-                // PROFESJONALNY SYSTEM ZAKUPU DLA WOLNYCH OKIENEK
-                else {
+                } else {
                     if (Math.random() > 0.8) {
                         item.classList.add('premium');
                         item.innerText = "350 zł\nPremium";
                     } else {
                         item.innerText = "200 zł\nStandard";
                     }
-                    // Przekierowanie do formularza sprzedażowego / zakupu okienka zamiast amatorskiego alert()
                     linkNode.href = "https://polskieokienka.pl/wynajmij?slot=" + i + "&hash=" + window.location.hash.replace('#','');
                     linkNode.target = "_blank";
                 }
-
                 linkNode.appendChild(item);
                 grid.appendChild(linkNode);
             }
         }
 
-        // MECHANIKA RENDEROWANIA KÓŁ (CANVAS)
+        /* NOWY SILNIK KÓŁ - TEKST DOPASOWUJE SIĘ DO PROMIENIA I WYCINKA, BRAK UCINANIA W POŁOWIE */
         function initWheel(canvasId, labelArray, colors) {
             const canvas = document.getElementById(canvasId);
             if(!canvas) return;
@@ -581,21 +586,31 @@
                 ctx.fill();
 
                 ctx.strokeStyle = canvasId === 'touristWheel' ? '#2ed573' : '#ffd700';
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
 
+                // Renderowanie tekstu z inteligentnym przesunięciem (promieniowo)
                 ctx.save();
                 ctx.translate(r, r);
                 ctx.rotate(start + (deg * Math.PI) / 360);
                 ctx.fillStyle = "#fff";
-                ctx.font = `bold ${canvasId==='centerWheel'?5:7}px sans-serif`;
-                ctx.textAlign = "right";
-                ctx.fillText(labelArray[i].substring(0, 14), r - 6, 2);
+                
+                // Dostosowanie czcionki do wielkości koła
+                if (canvasId === 'centerWheel') {
+                    ctx.font = "bold 6px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText(labelArray[i], r * 0.5, 2);
+                } else {
+                    ctx.font = "bold 9px sans-serif";
+                    ctx.textAlign = "right";
+                    ctx.shadowColor = "rgba(0,0,0,0.8)";
+                    ctx.shadowBlur = 4;
+                    ctx.fillText(labelArray[i], r - 12, 3);
+                }
                 ctx.restore();
             }
         }
 
-        // OBSŁUGA LOSOWAŃ
         function spinCenterWheel() {
             if (isSpinning) return;
             isSpinning = true;
@@ -669,7 +684,6 @@
             }, 4500);
         }
 
-        // LICZNIKI LIVE
         setInterval(() => {
             const guestElem = document.getElementById('globalGuests');
             if(guestElem) {
