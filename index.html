@@ -170,7 +170,7 @@
         /* INTEGRACJA TURYSTYCZNA */
         .tourist-zone {
             width: 100%; max-width: 1400px; margin: 20px 0 30px 0;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px; box-sizing: border-box;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; box-sizing: border-box;
         }
 
         .tourist-panel {
@@ -197,6 +197,15 @@
         .trail-select { width: 100%; padding: 12px; background: #040507; border: 1px solid #1a1d26; border-radius: 8px; color: #fff; font-size: 12px; margin-bottom: 15px; outline: none; color: var(--gold-primary); font-weight: bold; }
         .trail-select:focus { border-color: var(--gold-primary); }
         .trail-result { font-size: 12px; color: #9ca3af; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; min-height: 45px; border: 1px solid #161821; line-height: 1.5; }
+
+        /* NOWE STYLE DLA LIVE RESORTU */
+        .resort-list { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
+        .resort-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
+        .badge-open { background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-closed { background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .live-pulse { display: inline-block; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; animation: pulse 1.5s infinite; margin-left: auto; }
+
+        @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
 
         /* WIDOK PANELU MATRYCY */
         #dashboard-view { display: block; width: 100%; max-width: 1450px; animation: fadeIn 0.4s ease; }
@@ -435,6 +444,12 @@
         </div>
 
         <div class="tourist-panel">
+            <h3 style="justify-content: space-between;">⛷️ Live Resort Monitor <span class="live-pulse"></span></h3>
+            <div class="resort-list" id="resortLiveDisplay">
+                </div>
+        </div>
+
+        <div class="tourist-panel">
             <h3 id="t-panelBus">🚌 Rozkład Jazdy (Kluczowe Połączenia)</h3>
             <div class="bus-list" id="busListDisplay">
                 <div class="bus-item"><span>Kowary → Karpacz Górny (PKS)</span><span class="bus-time">07:15, 09:40, 12:10, 15:35</span></div>
@@ -445,7 +460,7 @@
         <div class="tourist-panel">
             <h3 id="t-panelTrails">🥾 Asystent Górski: Zaplanuj Trasę</h3>
             <select class="trail-select" id="trailPicker" onchange="calculateTrail()">
-                <option value="" id="t-trailSelectDefault">-- Wybierz dokąd idziesz --</option>
+                <option value="" id="t-trailSelectDefault">-- Wybierz dokąc idziesz --</option>
                 <option value="sniezka">Karpacz (Wang) ➔ Śnieżka</option>
                 <option value="samotnia">Karpacz ➔ Samotnia</option>
                 <option value="skywalk">Świeradów ➔ Sky Walk</option>
@@ -512,17 +527,89 @@
         let selectedPackagePrice = 200;
         let selectedPackageName = "Zwykły";
 
+        // ROZBUDOWANA BAZA DANYCH O ATRAKCJE ZIMOWE ORAZ DOWNHILL/BIKEPARKI
         const cityData = {
-            "Karpacz": { weather: "14°C", region: "Karpacz / Karkonosze", buses: [ { route: "Kowary → Karpacz Górny", times: "07:15, 09:40, 12:10, 15:35" }, { route: "Karpacz → Jelenia Góra", times: "08:20, 10:50, 14:15, 17:40" } ] },
-            "Świnoujście": { weather: "19°C", region: "Świnoujście / Wybrzeże Uznam", buses: [ { route: "Prom Centrum → Wydmowa", times: "06:00, 08:30, 12:00, 18:15" } ] },
-            "Kołobrzeg": { weather: "17°C", region: "Kołobrzeg / Bałtyk", buses: [ { route: "Dworzec → Podczele", times: "07:05, 09:15, 14:20" } ] },
-            "Sopot": { weather: "20°C", region: "Trójmiasto", buses: [ { route: "Sopot Kamienny Potok → Gdańsk", times: "Co 10 minut (SKM)" } ] },
-            "Świeradów-Zdrój": { weather: "15°C", region: "Góry Izerskie", buses: [ { route: "Świeradów → Jelenia Góra", times: "06:40, 11:15, 16:05" } ] },
-            "Szklarska Poręba": { weather: "13°C", region: "Karkonosze Zachodnie", buses: [ { route: "Szklarska → Jelenia Góra", times: "07:00, 09:30, 13:45" } ] },
-            "Wisła": { weather: "16°C", region: "Beskid Śląski", buses: [ { route: "Wisła Malinka → Centrum", times: "08:00, 10:30, 15:20" } ] },
-            "Zakopane": { weather: "12°C", region: "Tatry", buses: [ { route: "Zakopane → Kuźnice", times: "Co 15 minut (Busy)" }, { route: "Zakopane → Morskie Oko", times: "Co 20 minut" } ] },
-            "Szczawnica": { weather: "15°C", region: "Pieniny", buses: [ { route: "Szczawnica → Krościenko", times: "07:30, 10:00, 14:40" } ] },
-            "Krynica-Zdrój": { weather: "14°C", region: "Beskid Sądecki", buses: [ { route: "Krynica Słotwiny → Dworzec", times: "08:10, 12:30, 17:10" } ] }
+            "Karpacz": { 
+                weather: "14°C", 
+                region: "Karpacz / Karkonosze", 
+                buses: [ { route: "Kowary → Karpacz Górny", times: "07:15, 09:40, 12:10, 15:35" }, { route: "Karpacz → Jelenia Góra", times: "08:20, 10:50, 14:15, 17:40" } ],
+                resorts: [
+                    { name: "⛷️ Kompleks Kopa (Nartostrady)", status: true },
+                    { name: "⛷️ Stacja Winterpol Biały Jar", status: true },
+                    { name: "🚲 Trasy Rowerowe Singletrack", status: true },
+                    { name: "🚲 Karpacz Downhill Trail", status: false }
+                ]
+            },
+            "Świeradów-Zdrój": { 
+                weather: "15°C", 
+                region: "Góry Izerskie", 
+                buses: [ { route: "Świeradów → Jelenia Góra", times: "06:40, 11:15, 16:05" } ],
+                resorts: [
+                    { name: "⛷️ Ski Sun Gondola Świeradów", status: true },
+                    { name: "🚲 Bike Park Świeradów (Zjazdowa)", status: true },
+                    { name: "🚲 Izerskie Singletracki (80km)", status: true }
+                ]
+            },
+            "Szklarska Poręba": { 
+                weather: "13°C", 
+                region: "Karkonosze Zachodnie", 
+                buses: [ { route: "Szklarska → Jelenia Góra", times: "07:00, 09:30, 13:45" } ],
+                resorts: [
+                    { name: "⛷️ SkiArena Szrenica (Lolobrygida)", status: true },
+                    { name: "⛷️ Trasy Biegowe Jakuszyce", status: true },
+                    { name: "🚲 A-Line Downhill Szklarska", status: false }
+                ]
+            },
+            "Świnoujście": { 
+                weather: "19°C", 
+                region: "Świnoujście / Wybrzeże Uznam", 
+                buses: [ { route: "Prom Centrum → Wydmowa", times: "06:00, 08:30, 12:00, 18:15" } ],
+                resorts: [ { name: "🚲 Nadmorski Szlak Rowerowy R10", status: true }, { name: "⛵ Marina Jachtowa", status: true } ]
+            },
+            "Kołobrzeg": { 
+                weather: "17°C", 
+                region: "Kołobrzeg / Bałtyk", 
+                buses: [ { route: "Dworzec → Podczele", times: "07:05, 09:15, 14:20" } ],
+                resorts: [ { name: "🚲 Trasa Ku Słońcu (Rowerowa)", status: true } ]
+            },
+            "Sopot": { 
+                weather: "20°C", 
+                region: "Trójmiasto", 
+                buses: [ { route: "Sopot Kamienny Potok → Gdańsk", times: "Co 10 minut (SKM)" } ],
+                resorts: [ { name: "⛷️ Łysa Góra (Wyciąg Orczykowy)", status: false }, { name: "🚲 Trasy Trójmiejskiego PK", status: true } ]
+            },
+            "Wisła": { 
+                weather: "16°C", 
+                region: "Beskid Śląski", 
+                buses: [ { route: "Wisła Malinka → Centrum", times: "08:00, 10:30, 15:20" } ],
+                resorts: [
+                    { name: "⛷️ Skolnity Ski & Bike Park", status: true },
+                    { name: "⛷️ Stacja Nowa Osada", status: true },
+                    { name: "🚲 Bike Park Wisła (Trasy A/B)", status: true }
+                ]
+            },
+            "Zakopane": { 
+                weather: "12°C", 
+                region: "Tatry", 
+                buses: [ { route: "Zakopane → Kuźnice", times: "Co 15 minut (Busy)" }, { route: "Zakopane → Morskie Oko", times: "Co 20 minut" } ],
+                resorts: [
+                    { name: "⛷️ Kasprowy Wierch (Goryczkowa)", status: true },
+                    { name: "⛷️ Polana Szymoszkowa", status: true },
+                    { name: "🚲 Harenda Bikepark Downhill", status: true }
+                ]
+            },
+            "Szczawnica": { 
+                weather: "15°C", 
+                region: "Pieniny", 
+                buses: [ { route: "Szczawnica → Krościenko", times: "07:30, 10:00, 14:40" } ],
+                resorts: [ { name: "⛷️ Palenica Ski", status: true }, { name: "🚲 Droga Pienińska (Rowerowa)", status: true } ]
+            },
+            "Krynica-Zdrój": { 
+                weather: "14°C", 
+                region: "Beskid Sądecki", 
+                buses: [ { route: "Krynica Słotwiny → Dworzec", times: "08:10, 12:30, 17:10" } ],
+                resorts: [ { name: "⛷️ Jaworzyna Krynicka", status: true }, { name: "⛷️ Słotwiny Arena (Wieża)", status: true }, { name: "🚲 Krynica Bike Park", status: true } ]
+            }
         };
 
         const occupiedSlots = {
@@ -569,6 +656,48 @@
                 ctx.fillText(rewards[i].substring(0, 18), radius - 10, 3);
                 ctx.restore();
             }
+        }
+
+        // FUNKCJA GENEROWANIA LIVE MONITORU RESORTÓW
+        function renderResorts(cityName) {
+            const container = document.getElementById('resortLiveDisplay');
+            if(!container) return;
+            container.innerHTML = "";
+
+            const city = cityData[cityName];
+            if(city && city.resorts) {
+                city.resorts.forEach(res => {
+                    const badge = res.status ? `<span class="badge-open">OTWARTA</span>` : `<span class="badge-closed">ZAMKNIĘTA</span>`;
+                    container.innerHTML += `
+                        <div class="resort-item">
+                            <span>${res.name}</span>
+                            ${badge}
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = `<div style="color:#6b7280; font-size:11px; text-align:center;">Brak zdefiniowanych stacji dla tego obszaru.</div>`;
+            }
+        }
+
+        // 🚀 AUTOMATYCZNY LIVE-UPDATER (API SIMULATOR)
+        // Symuluje samoczynne zmiany statusów na żywo co 7 sekund
+        function startLiveResortUpdates() {
+            setInterval(() => {
+                const cities = Object.keys(cityData);
+                cities.forEach(c => {
+                    if(cityData[c].resorts && cityData[c].resorts.length > 0) {
+                        // Losowy wybór trasy do przełączenia statusu (symulacja wiatru/konserwacji)
+                        const randomIdx = Math.floor(Math.random() * cityData[c].resorts.length);
+                        // Zmień stan na przeciwny z małym prawdopodobieństwem lub utrzymaj ruch
+                        if(Math.random() > 0.6) {
+                            cityData[c].resorts[randomIdx].status = !cityData[c].resorts[randomIdx].status;
+                        }
+                    }
+                });
+                // Odśwież widok dla aktualnie wybranego miasta na ekranie
+                renderResorts(currentCity);
+            }, 7000); 
         }
 
         function buildMatrix(cityName) {
@@ -655,6 +784,9 @@
                 cityData[cityName].buses.forEach(b => {
                     busContainer.innerHTML += `<div class="bus-item"><span>${b.route}</span><span class="bus-time">${b.times}</span></div>`;
                 });
+
+                // Wywołaj ładowanie tras narciarskich i bikeparków
+                renderResorts(cityName);
             }
 
             buildMatrix(cityName);
@@ -848,10 +980,10 @@
                 const lowerText = text.toLowerCase();
                 if (lowerText.includes('cena') || lowerText.includes('okienko') || lowerText.includes('kup')) {
                     bMsg.innerText = "Słuchaj no, mordeczka! Okienka stoją po 2975 zł rocznie za bazę reklamową, ale w panelu logistycznym masz pakiety zadań po 200 zł (Zwykły) i 350 zł (Premium). Czysty zysk platformy przekracza 200k! Klikaj w wolne pole na matrycy i rezerwuj!";
-                } else if (lowerText.includes('szlak') || lowerText.includes('gór') || lowerText.includes('śnieżka')) {
-                    bMsg.innerText = "W Karkonoszach warunki eleganckie! Użyj naszego Asystenta Górskiego po prawej stronie pod mapą, wybierz cel i dostaniesz pełny czas oraz status GOPR. Pamiętaj o kurtce!";
+                } else if (lowerText.includes('szlak') || lowerText.includes('gór') || lowerText.includes('śnieżka') || lowerText.includes('rower') || lowerText.includes('bikepark')) {
+                    bMsg.innerText = "Wszystkie trasy zjazdowe, bikeparki i nartostrady aktualizują się automatycznie na żywo! Zerknij do nowego panelu Live Resort Monitor obok pogody – tam bije czerwone światełko live. Dane odświeżają się same!";
                 } else if (lowerText.includes('bus') || lowerText.includes('rozklad') || lowerText.includes('pks')) {
-                    bMsg.innerText = "Rozkład jazdy ładuje się automatycznie dla każdego miasta. Przykładowo z Kowar do Karpacza masz PKS o 07:15 czy 09:40. Wszystko wвидно w panelu 🚌.";
+                    bMsg.innerText = "Rozkład jazdy ładuje się automatycznie dla każdego miasta. Przykładowo z Kowar do Karpacza masz PKS o 07:15 czy 09:40. Wszystko widoczne w panelu 🚌.";
                 } else {
                     bMsg.innerText = "Jasna sprawa, mordeczka! Działamy na pełnych obrotach. Jeśli chcesz sprawdzić tablicę, wybierz miasto na mapie Polski, a jak chcesz kupić okienko – kliknij szare pole na siatce!";
                 }
@@ -864,6 +996,8 @@
         // WYWOŁANIE PO ZAŁADOWANIU STRONY
         document.addEventListener("DOMContentLoaded", function() {
             openDashboard('Karpacz');
+            // Odpalenie automatycznych aktualizacji Live-API
+            startLiveResortUpdates();
         });
     </script>
 </body>
