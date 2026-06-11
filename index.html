@@ -1,44 +1,43 @@
-        #        }
-           <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PolskieOkienka.pl - Ogólnopolska Platforma Reklamowo-Turystyczna</title>
     <style>
+        /* PODSTAWOWE CONFIGI I MOTYW ULTRA PREMIUM */
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa7c11;
+            --bg-darker: #050608;
+            --bg-panel: rgba(15, 17, 24, 0.95);
+            --border-glow: rgba(212, 175, 55, 0.25);
+            --text-main: #f3f4f6;
+        }
+
         body {
-            /* Głębokie czarne tło premium z delikatnym prześwitem eleganckiego zdjęcia w tle */
-            background: #060709 url('https://images.unsplash.com/photo-1605886300408-f404e76a6cf3?w=1600&auto=format&fit=crop&q=80') no-repeat center top fixed;
-            background-size: cover;
-            color: #f3f4f6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top, #161925 0%, #08090d 60%, #020203 100%) no-repeat fixed;
+            color: var(--text-main);
+            font-family: 'Segoe UI', BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
-            padding-bottom: 80px; /* Miejsce na pasek ofert */
+            padding-bottom: 90px;
         }
 
-        /* Luksusowa, ciemna nakładka matowa na tło */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(6, 7, 9, 0.85) 0%, rgba(10, 12, 16, 0.95) 100%);
-            z-index: -1;
-        }
-
-        /* NAGŁÓWEK PREMIUM DZIELONY NA LOGO I JĘZYKI */
+        /* NAGŁÓWEK GŁÓWNY (GLASSMORPHISM + ZŁOTE AKCENTY) */
         .header-panel {
-            background: linear-gradient(135deg, #14171f 0%, #0b0c10 100%);
-            border: 2px solid #d4af37; /* Królewskie złoto */
-            border-radius: 12px;
-            padding: 15px 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+            background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
+            border: 2px solid var(--gold-primary);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12), inset 0 1px 1px rgba(255,255,255,0.05);
             width: 100%;
             max-width: 1400px;
             box-sizing: border-box;
@@ -46,68 +45,71 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .header-left { flex: 1; text-align: left; }
-        .header-panel h2 { 
-            margin: 0 0 6px 0; 
+        .header-left h2 { 
+            margin: 0 0 8px 0; 
             text-transform: uppercase; 
-            letter-spacing: 2px; 
+            letter-spacing: 3px; 
             font-weight: 900; 
             color: #ffffff; 
-            font-size: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            font-size: 24px;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.7);
         }
-        .stats-container { display: flex; gap: 20px; font-size: 13px; font-weight: bold; flex-wrap: wrap; }
-        .stat-item { color: #9ca3af; }
-        .stat-item span { color: #d4af37; font-size: 15px; text-shadow: 0 0 10px rgba(212,175,55,0.4); }
+        
+        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; flex-wrap: wrap; }
+        .stat-item { color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-item span { color: var(--gold-primary); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(212,175,55,0.3); }
 
-        /* WYBÓR JĘZYKA */
+        /* JĘZYKI */
         .lang-selector { 
             display: flex; 
-            gap: 10px; 
-            background: rgba(0,0,0,0.6); 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(212,175,55,0.4); 
+            gap: 12px; 
+            background: rgba(0,0,0,0.5); 
+            padding: 8px 16px; 
+            border-radius: 30px; 
+            border: 1px solid rgba(212,175,55,0.3); 
         }
-        .lang-flag { font-size: 20px; cursor: pointer; transition: transform 0.2s, filter 0.2s; filter: grayscale(50%); }
+        .lang-flag { font-size: 22px; cursor: pointer; transition: transform 0.2s, filter 0.2s; filter: grayscale(40%); }
         .lang-flag:hover { transform: scale(1.25); filter: grayscale(0%); }
-        .lang-flag.active { filter: grayscale(0%); transform: scale(1.15); border-bottom: 2px solid #d4af37; }
+        .lang-flag.active { filter: grayscale(0%); transform: scale(1.15); border-bottom: 2px solid var(--gold-primary); }
 
-        /* SEKCJA MAPY */
+        /* GŁÓWNY WIDOK: MAPA */
         #map-view {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 850px;
-            background: rgba(11, 12, 16, 0.98);
-            padding: 20px;
-            border-radius: 16px;
-            border: 2px solid #d4af37;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.05);
+            max-width: 900px;
+            background: var(--bg-panel);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.85);
             box-sizing: border-box;
+            animation: fadeIn 0.5s ease;
         }
+
         #map-view h1 { 
-            color: #d4af37; 
-            font-size: 15px; 
-            margin: 0 0 20px 0; 
+            color: var(--gold-primary); 
+            font-size: 16px; 
+            margin: 0 0 25px 0; 
             text-transform: uppercase; 
             text-align: center; 
-            letter-spacing: 1px; 
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .map-container {
             position: relative;
             width: 100%;
             aspect-ratio: 1.1 / 1;
-            background: #050608;
-            border: 2px solid #1c1f26;
-            border-radius: 12px;
+            background: #040507;
+            border: 2px solid #171a22;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.95);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.95);
         }
 
         .poland-svg-bg {
@@ -116,7 +118,7 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* PINEZKI */
+        /* NAWIGACJA PINEZEK NA MAPIE */
         .city-pin {
             position: absolute;
             z-index: 10;
@@ -130,29 +132,31 @@
         
         .pin-dot {
             width: 14px; height: 14px;
-            background-color: #d4af37; border: 2px solid #050608; border-radius: 50%;
-            box-shadow: 0 0 15px #d4af37, 0 0 5px #aa7c11;
-            transition: transform 0.2s, background-color 0.2s; z-index: 2;
+            background-color: var(--gold-primary); border: 2px solid #050608; border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-primary), 0 0 5px var(--gold-dark);
+            transition: all 0.2s ease; z-index: 2;
         }
         
         .city-label {
-            color: #ffffff; font-size: 10px; font-weight: 900; text-transform: uppercase; white-space: nowrap;
-            background: rgba(5, 6, 8, 0.95); padding: 4px 8px; border-radius: 6px; border: 1px solid #d4af37;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.9); transition: all 0.2s; position: absolute;
+            color: #ffffff; font-size: 10px; font-weight: 800; text-transform: uppercase; white-space: nowrap;
+            background: rgba(4, 5, 7, 0.95); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--gold-primary);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.8); transition: all 0.2s ease; position: absolute;
             letter-spacing: 0.5px;
         }
 
-        .lbl-top { bottom: 20px; left: 50%; transform: translateX(-50%); }
-        .lbl-bottom { top: 20px; left: 50%; transform: translateX(-50%); }
-        .lbl-left { right: 20px; top: 50%; transform: translateY(-50%); }
-        .lbl-right { left: 20px; top: 50%; transform: translateY(-50%); }
-        .lbl-szklarska { bottom: 20px; right: -20px; transform: translateX(0); }
-        .lbl-karpacz { top: 20px; left: 50%; transform: translateX(-50%); }
-        .lbl-swieradow { bottom: 20px; left: -30px; transform: translateX(0); }
+        /* Pozycjonowanie etykiet miast */
+        .lbl-top { bottom: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-bottom { top: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-left { right: 22px; top: 50%; transform: translateY(-50%); }
+        .lbl-right { left: 22px; top: 50%; transform: translateY(-50%); }
+        .lbl-szklarska { bottom: 22px; right: -25px; transform: translateX(0); }
+        .lbl-karpacz { top: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-swieradow { bottom: 22px; left: -35px; transform: translateX(0); }
 
-        .city-pin:hover .pin-dot { transform: scale(1.5); background-color: #ffffff; box-shadow: 0 0 20px #ffffff; }
-        .city-pin:hover .city-label { background: #d4af37; color: #000000; font-size: 11px; box-shadow: 0 0 20px rgba(212,175,55,0.8); z-index: 50; }
+        .city-pin:hover .pin-dot { transform: scale(1.6); background-color: #ffffff; box-shadow: 0 0 25px #ffffff; }
+        .city-pin:hover .city-label { background: var(--gold-primary); color: #000000; font-weight: 900; box-shadow: 0 0 20px rgba(212,175,55,0.6); z-index: 50; }
 
+        /* Współrzędne miast na mapie */
         #pin-swinoujscie { top: 18%; left: 8%; }
         #pin-kolobrzeg   { top: 12%; left: 23%; }
         #pin-sopot        { top: 10%; left: 50%; }
@@ -164,172 +168,730 @@
         #pin-szccawnica   { top: 89%; left: 72%; }
         #pin-krynica      { top: 86%; left: 81%; }
 
-        /* STREFA TURYSTY */
+        /* INTEGRACJA TURYSTYCZNA (POGODA / AUTOBUSY / TRASY) */
         .tourist-zone {
-            width: 100%; max-width: 1400px; margin: 25px 0;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; box-sizing: border-box;
+            width: 100%; max-width: 1400px; margin: 30px 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px; box-sizing: border-box;
         }
 
         .tourist-panel {
-            background: linear-gradient(135deg, #111318, #0b0c10); border: 1px solid rgba(212,175,55,0.3);
-            border-radius: 12px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.65); box-sizing: border-box;
-            transition: border-color 0.3s;
+            background: linear-gradient(135deg, #12141c, #07080c); border: 1px solid rgba(212,175,55,0.25);
+            border-radius: 14px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); box-sizing: border-box;
+            transition: all 0.3s ease;
         }
-        .tourist-panel:hover { border-color: #d4af37; }
+        .tourist-panel:hover { border-color: var(--gold-primary); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(212,175,55,0.05); }
 
         .tourist-panel h3 {
-            margin: 0 0 14px 0; color: #d4af37; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed rgba(212,175,55,0.2); padding-bottom: 8px;
+            margin: 0 0 16px 0; color: var(--gold-primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(212,175,55,0.2); padding-bottom: 10px;
         }
 
-        .weather-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .weather-temp { font-size: 26px; font-weight: bold; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .weather-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .weather-temp { font-size: 28px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
         
-        /* Szlaki w wersji ekskluzywnej czarno-złotej zamiast jaskrawej zieleni */
-        .trail-status { background: rgba(212, 175, 55, 0.1); color: #d4af37; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; text-align: center; border: 1px solid rgba(212, 175, 55, 0.4); }
+        .trail-status { background: rgba(212, 175, 55, 0.08); color: var(--gold-primary); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; border: 1px solid rgba(212, 175, 55, 0.3); }
 
-        .bus-list { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
-        .bus-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border-left: 3px solid #d4af37; }
-        .bus-time { color: #d4af37; font-weight: bold; }
+        .bus-list { display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
+        .bus-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.01); padding: 10px; border-radius: 8px; border-left: 3px solid var(--gold-primary); border-top: 1px solid rgba(255,255,255,0.02); }
+        .bus-time { color: var(--gold-primary); font-weight: bold; }
 
-        .trail-select { width: 100%; padding: 10px; background: #050608; border: 1px solid #1c1f26; border-radius: 6px; color: #fff; font-size: 12px; margin-bottom: 12px; outline: none; }
-        .trail-select:focus { border-color: #d4af37; }
-        .trail-result { font-size: 12px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; min-height: 40px; border: 1px solid #1c1f26; }
+        .trail-select { width: 100%; padding: 12px; background: #040507; border: 1px solid #1a1d26; border-radius: 8px; color: #fff; font-size: 12px; margin-bottom: 15px; outline: none; color: var(--gold-primary); font-weight: bold; }
+        .trail-select:focus { border-color: var(--gold-primary); }
+        .trail-result { font-size: 12px; color: #9ca3af; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; min-height: 45px; border: 1px solid #161821; line-height: 1.5; }
 
-        /* PANEL RETINA BILLBOARD */
-        #dashboard-view { display: none; width: 100%; max-width: 1450px; }
+        /* DRUGI WIDOK: RADAR RETINA BILLBOARD */
+        #dashboard-view { display: none; width: 100%; max-width: 1450px; animation: fadeIn 0.4s ease; }
         
         .back-btn {
-            background: #0b0c10; color: #d4af37; border: 1px solid #d4af37;
-            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;
-            margin-bottom: 15px; transition: all 0.2s; text-transform: uppercase; font-size: 12px;
-            letter-spacing: 0.5px;
+            background: #07080c; color: var(--gold-primary); border: 1px solid var(--gold-primary);
+            padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;
+            margin-bottom: 20px; transition: all 0.2s ease; text-transform: uppercase; font-size: 12px;
+            letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .back-btn:hover { background: #d4af37; color: #000000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        .back-btn:hover { background: var(--gold-primary); color: #000000; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
 
-        /* ZŁOTA RAMA BILLBOARDU */
+        /* PRAWDZIWA ZŁOTA RAMA (EFEKT CHROMU METALEGO) */
         .billboard-frame {
-            background: linear-gradient(135deg, #aa7c11 0%, #d4af37 25%, #f3e5ab 50%, #d4af37 75%, #a67c1e 100%);
-            padding: 12px; border-radius: 14px; box-shadow: 0 30px 70px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,255,255,0.4);
-            border: 2px solid #8a640f; box-sizing: border-box; width: 100%;
+            background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
+            padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95), inset 0 0 15px rgba(255,255,255,0.3);
+            border: 2px solid #73540b; box-sizing: border-box; width: 100%;
         }
 
-        .billboard-inner { background-color: #0b0c10; border: 2px solid #1c1f26; padding: 15px; border-radius: 8px; }
-        .layout-grid { display: flex; flex-direction: column; gap: 20px; }
-        .grid-wrapper { flex: 1.4; width: 100%; overflow-x: auto; }
+        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
+        .layout-grid { display: flex; flex-direction: column; gap: 25px; }
+        .grid-wrapper { flex: 1.5; width: 100%; overflow-x: auto; padding-bottom: 5px; }
 
+        /* POTĘŻNA SIATKA MATRYCY 10x10 */
         .grid-board {
             display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
-            gap: 5px; background-color: #050608; padding: 10px; border-radius: 8px;
-            border: 2px solid #1c1f26; box-sizing: border-box; aspect-ratio: 1; min-width: 460px;
+            gap: 6px; background-color: #030405; padding: 12px; border-radius: 10px;
+            border: 2px solid #14161f; box-sizing: border-box; aspect-ratio: 1; min-width: 520px;
         }
 
         .cell-link { text-decoration: none; display: block; width: 100%; height: 100%; }
 
         .grid-item {
             width: 100%; height: 100%;
-            background: linear-gradient(135deg, #161920 0%, #0b0c10 100%);
-            border: 1px solid #232834; border-radius: 4px;
+            background: linear-gradient(135deg, #131620 0%, #07080b 100%);
+            border: 1px solid #1f2433; border-radius: 5px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 7px; font-weight: bold; color: #9ca3af; text-align: center;
-            cursor: pointer; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-            box-sizing: border-box; position: relative;
+            font-size: 8px; font-weight: bold; color: #6b7280; text-align: center;
+            cursor: pointer; transition: all 0.15s ease; box-sizing: border-box; position: relative;
         }
-        .cell-link:hover .grid-item { transform: scale(1.08); z-index: 5; border-color: #d4af37; box-shadow: 0 0 12px rgba(212,175,55,0.3); color: #ffffff; }
-        .grid-item.premium { border: 1px solid #d4af37; color: #d4af37; background: linear-gradient(135deg, #221a06 0%, #0b0c10 100%); }
+        .cell-link:hover .grid-item { transform: scale(1.1); z-index: 5; border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212,175,55,0.4); color: #ffffff; }
+        
+        /* Klasy symulujące prestiż okienek */
+        .grid-item.premium { border: 1px solid var(--gold-primary); color: var(--gold-primary); background: linear-gradient(135deg, #1f1805 0%, #07080c 100%); }
+        .grid-item.occupied { border-color: #3b82f6; color: #93c5fd; }
 
-        .grid-item.wonder-home-slot {
-            background: #ffffff url('397038002.jpg') no-repeat center center;
-            background-size: contain; color: transparent; border: 2px solid #d4af37;
-        }
-
-        /* TELEBIM CENTRALNY */
+        /* TELEBIM REKLAMOWY CENTRALNY (4x4 PANEL OPERACYJNY) */
         .grid-center {
             grid-column: 4 / span 4; grid-row: 4 / span 4;
-            background: linear-gradient(135deg, #050608 0%, #111318 100%);
-            border: 2px solid #d4af37; border-radius: 8px; padding: 10px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, #030406 0%, #0e1118 100%);
+            border: 2px solid var(--gold-primary); border-radius: 10px; padding: 12px;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(0,0,0,0.9);
             display: flex; flex-direction: column; justify-content: space-between;
             align-items: center; text-align: center; box-sizing: border-box; position: relative; z-index: 2;
         }
-        .banner-crown { color: #d4af37; font-size: 8px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed #d4af37; padding-bottom: 4px; letter-spacing: 0.5px;}
-        .banner-main-title { font-size: 12px; font-weight: 900; color: #d4af37; text-shadow: 0 0 8px rgba(212,175,55,0.5); letter-spacing: 0.5px; }
-        #winnerName { font-size: 10px; color: #ffffff; font-weight: bold; background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 4px; border-radius: 4px; width: 95%; }
-        .live-countdown { background: #b91c1c; color: #ffffff; font-family: monospace; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); }
+        .banner-crown { color: var(--gold-primary); font-size: 9px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed var(--gold-primary); padding-bottom: 5px; letter-spacing: 1px;}
+        .banner-main-title { font-size: 13px; font-weight: 900; color: var(--gold-primary); text-shadow: 0 0 10px rgba(212,175,55,0.4); letter-spacing: 0.5px; margin: 2px 0; }
+        #winnerName { font-size: 10px; color: #ffffff; font-weight: bold; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); padding: 5px; border-radius: 4px; width: 95%; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .live-countdown { background: #dc2626; color: #ffffff; font-family: monospace; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 8px rgba(220,38,38,0.4); }
 
-        .center-wheel-box { position: relative; width: 75px; height: 75px; margin: 2px 0; }
-        #centerWheel { width: 100%; height: 100%; border-radius: 50%; border: 1px solid #d4af37; }
-        .center-pointer {
-            position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
-            border-top: 8px solid #d4af37; z-index: 10;
-        }
+        .center-wheel-box { position: relative; width: 80px; height: 80px; margin: 2px 0; }
+        #centerWheel { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--gold-primary); transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        
         .btn-center-spin {
-            background: linear-gradient(135deg, #d4af37 0%, #a67c1e 100%); color: #000000; font-size: 8px; font-weight: 900; border: none;
-            padding: 3px 8px; border-radius: 10px; cursor: pointer; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); color: #000000; font-size: 9px; font-weight: 900; border: none;
+            padding: 4px 10px; border-radius: 12px; cursor: pointer; text-transform: uppercase; box-shadow: 0 3px 8px rgba(0,0,0,0.6); transition: all 0.1s;
         }
+        .btn-center-spin:hover { transform: scale(1.05); }
 
-        /* SIDEBAR KOŁA */
-        .wheels-sidebar { display: flex; flex-direction: column; gap: 20px; flex: 0.8; width: 100%; }
+        /* SKALOWALNE PANELU KÓŁ FORTUNY (SIDEBAR) */
+        .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; }
 
         .wheel-card {
-            background: rgba(11,12,16,0.98); padding: 15px; border-radius: 12px; border: 2px solid #1c1f26;
+            background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
             display: flex; flex-direction: column; align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7); flex: 1; box-sizing: border-box;
-            transition: border-color 0.3s;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8); flex: 1; box-sizing: border-box;
+            transition: all 0.3s ease;
         }
-        .wheel-card:hover { border-color: #d4af37; }
-        .wheel-card h3 { font-size: 12px; color: #d4af37; margin: 0 0 12px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
+        .wheel-card:hover { border-color: var(--gold-primary); box-shadow: 0 15px 40px rgba(212,175,55,0.03); }
+        .wheel-card h3 { font-size: 13px; color: var(--gold-primary); margin: 0 0 16px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
 
-        /* Usunąłem zielone odcienie z Koła 2, żeby cała strona trzymała spójny czarno-złoty luksusowy design */
-        .wheel-card.tourist-card { border-color: #1c1f26; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
-        .wheel-card.tourist-card:hover { border-color: #d4af37; }
-        .wheel-card.tourist-card h3 { color: #d4af37; }
-
-        .wheel-box { position: relative; width: 170px; height: 170px; margin-bottom: 12px; }
-        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #d4af37; }
+        .wheel-box { position: relative; width: 180px; height: 180px; margin-bottom: 15px; }
+        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--gold-primary); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); box-shadow: 0 0 20px rgba(0,0,0,0.8); }
         
         .wheel-pointer {
-            position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
-            border-top: 15px solid #d4af37; z-index: 20;
+            position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent;
+            border-top: 18px solid var(--gold-primary); z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-        .wheel-card.tourist-card .wheel-pointer { border-top-color: #d4af37; }
 
         .btn {
-            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #a67c1e 100%); color: #000000;
-            border: none; padding: 10px 16px; font-size: 11px; font-weight: 900;
-            border-radius: 20px; cursor: pointer; width: 100%; text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.2); transition: all 0.2s;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%); color: #000000;
+            border: none; padding: 12px 20px; font-size: 11px; font-weight: 900;
+            border-radius: 25px; cursor: pointer; width: 100%; text-transform: uppercase;
+            box-shadow: 0 5px 20px rgba(212,175,55,0.2); transition: all 0.2s ease;
             letter-spacing: 0.5px;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.4); }
-        .btn-tourist { background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #a67c1e 100%); color: #000000; }
-        .btn:disabled, .btn-center-spin:disabled { background: #1c1f26 !important; color: #4b5563 !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
+        .btn:disabled, .btn-center-spin:disabled { background: #161822 !important; color: #4b5563 !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; border: 1px solid #232736 !important; }
 
         .result-display {
             display: none; width: 100%; background: rgba(255,255,255,0.02);
-            border: 1px solid #d4af37; border-radius: 6px; padding: 8px; margin-top: 10px;
-            box-sizing: border-box; text-align: center; font-size: 11px; animation: fadeIn 0.3s ease;
+            border: 1px solid var(--gold-primary); border-radius: 8px; padding: 10px; margin-top: 12px;
+            box-sizing: border-box; text-align: center; font-size: 11px; animation: fadeIn 0.3s ease; line-height: 1.4;
         }
-        .wheel-card.tourist-card .result-display { border-color: #d4af37; }
-        .result-display a { color: #d4af37; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
+        .result-display a { color: var(--gold-primary); font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
 
-        /* MODAL */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 8, 0.85); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center; z-index: 2000;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        /* DOLNY PASEK REKLAMOWY (TICKER) */
+        .ticker-wrap {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: linear-gradient(90deg, #030405, #0d0f17);
+            border-top: 2px solid var(--gold-primary); padding: 14px 0; overflow: hidden; z-index: 999;
+            box-shadow: 0 -8px 25px rgba(0,0,0,0.6);
         }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .ticker-title {
+            position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold-primary); color: #000000;
+            font-weight: 900; font-size: 11px; display: flex; align-items: center; padding: 0 24px; z-index: 10; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .ticker { display: flex; white-space: nowrap; padding-left: 150px; animation: ticker 28s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 30px; color: #ffffff; font-size: 13px; font-weight: bold; border-right: 1px dashed rgba(212,175,55,0.3); }
+        .ticker-item a { color: var(--gold-primary); text-decoration: none; margin-left: 6px; border-bottom: 1px solid transparent; }
+        .ticker-item a:hover { border-color: var(--gold-primary); }
+
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* CZAT ASYSTENT AI SYSTEMOWY */
+        .chat-widget {
+            position: fixed; bottom: 75px; right: 25px; width: 330px; background: rgba(8, 9, 14, 0.98);
+            border: 2px solid var(--gold-primary); border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.85);
+            display: flex; flex-direction: column; z-index: 1000; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .chat-widget.collapsed { width: 55px; height: 55px; border-radius: 50%; bottom: 75px; }
+        .chat-header {
+            background: linear-gradient(135deg, #0f111a, #030406); padding: 14px; color: var(--gold-primary);
+            font-weight: 900; font-size: 12px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid #161822;
+        }
+        .chat-header span.status-dot { width: 8px; height: 8px; background: var(--gold-primary); border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px var(--gold-primary); }
+        .chat-body { padding: 14px; height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 12px; background: #030406; }
+        .chat-widget.collapsed .chat-body, .chat-widget.collapsed .chat-input-area { display: none; }
+        .msg { padding: 10px 14px; border-radius: 10px; max-width: 85%; line-height: 1.4; word-wrap: break-word; font-weight: 500; }
+        .msg.bot { background: #0e1118; color: #ffffff; align-self: flex-start; border-left: 3px solid var(--gold-primary); border-top: 1px solid rgba(255,255,255,0.02); }
+        .msg.user { background: rgba(212,175,55,0.12); color: var(--gold-primary); align-self: flex-end; border: 1px solid rgba(212,175,55,0.25); }
         
-        .modal-content {
-            background: linear-gradient(135deg, #111318, #050608);
-            border: 1px solid #d4af37; border-radius: 16px;
-            width: 90%; max-width: 500px; padding: 30px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212,175,55,0.1);
-            position: relative; transform: translateY(-30px); transition: transform 0.3s ease; color: #ffffff;
+        .chat-input-area { display: flex; border-top: 1px solid #161822; background: #0e1118; }
+        .chat-input { flex: 1; padding: 14px; background: none; border: none; color: #fff; font-size: 12px; outline: none; }
+        .chat-input::placeholder { color: #4b5563; }
+        .chat-btn { background: var(--gold-primary); border: none; color: #000000; font-weight: 900; padding: 0 18px; cursor: pointer; font-size: 12px; text-transform: uppercase; transition: background 0.2s; }
+        .chat-btn:hover { background: var(--gold-light); }
+        
+        .chat-toggle-icon { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; font-size: 24px; background: var(--gold-primary); color: #000000; cursor: pointer; }
+        .chat-widget.collapsed .chat-toggle-icon { display: flex; }
+        .chat-widget.collapsed .chat-header { display: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* RESPONSYWNOŚĆ RETINA */
+        @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
+        @media (max-width: 1199px) { 
+            .layout-grid { flex-direction: column; align-items: center; gap: 30px; } 
+            .wheels-sidebar { flex-direction: row; width: 100%; gap: 20px; justify-content: center; } 
+            .wheel-card { max-width: 350px; }
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        .close-modal-btn { position: absolute; top: 15                                     const desc = document.getEl
+        @media (max-width: 768px) { 
+            .header-panel { flex-direction: column; text-align: center; padding: 15px; } 
+            .header-left { text-align: center; } 
+            .tourist-zone { grid-template-columns: 1fr; } 
+            .wheels-sidebar { flex-direction: column; align-items: center; }
+            .wheel-card { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTERFEJS JĘZYKOWY I STATUSY SYSTEMU -->
+    <div class="header-panel">
+        <div class="header-left">
+            <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
+            <div class="stats-container">
+                <div class="stat-item"><span id="t-visitorCount">Licznik Gości:</span> <span id="globalGuests">14 205</span></div>
+                <div class="stat-item"><span id="t-freeSlots">Wolne Okienka:</span> <span id="regionFreeSlots">84</span> / 100</div>
+            </div>
+        </div>
+        <div class="lang-selector">
+            <span class="lang-flag active" id="lang-pl" onclick="changeLanguage('pl')">🇵🇱</span>
+            <span class="lang-flag" id="lang-de" onclick="changeLanguage('de')">🇩🇪</span>
+            <span class="lang-flag" id="lang-en" onclick="changeLanguage('en')">🇬🇧</span>
+            <span class="lang-flag" id="lang-cs" onclick="changeLanguage('cs')">🇨🇿</span>
+        </div>
+    </div>
+
+    <!-- PANEL 1: INTERAKTIVNA MAPA POLSKI -->
+    <div id="map-view">
+        <h1 id="t-mapSubtitle">Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
+        <div class="map-container">
+            <svg class="poland-svg-bg" viewBox="0 0 650 600" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 125,95 C 130,90 145,80 155,83 C 170,85 178,92 195,85 C 210,80 220,55 240,55 C 265,55 280,68 310,60 C 330,55 332,40 355,42 C 375,44 390,62 415,55 C 440,48 450,22 475,25 C 500,28 505,48 525,58 C 550,70 575,55 595,78 C 610,95 602,115 620,130 C 630,140 642,162 635,180 C 625,205 632,230 622,255 C 612,280 628,310 615,335 C 602,360 578,375 570,402 C 562,430 580,455 565,485 C 550,515 522,510 505,538 C 492,560 488,585 465,595 C 445,602 430,580 410,585 C 390,590 375,600 355,590 C 335,580 330,555 310,550 C 290,545 272,558 250,552 C 228,546 215,520 195,522 C 175,524 160,540 140,532 C 125,525 128,500 115,490 C 102,480 85,485 72,472 C 60,460 65,438 52,425 C 40,412 18,405 18,385 C 18,365 35,355 35,335 C 35,315 22,298 28,278 C 34,258 55,252 55,232 C 55,212 40,195 48,175 C 56,155 75,150 85,130 C 95,110 110,115 125,95 Z" 
+                    fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="3 5"/>
+            </svg>
+            <button class="city-pin" id="pin-swinoujscie" onclick="openDashboard('Świnoujście')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div></button>
+            <button class="city-pin" id="pin-kolobrzeg" onclick="openDashboard('Kołobrzeg')"><div class="pin-dot"></div><div class="city-label lbl-top">Kołobrzeg</div></button>
+            <button class="city-pin" id="pin-sopot" onclick="openDashboard('Sopot')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div></button>
+            <button class="city-pin" id="pin-swieradow" onclick="openDashboard('Świeradów-Zdrój')"><div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div></button>
+            <button class="city-pin" id="pin-szklarska" onclick="openDashboard('Szklarska Poręba')"><div class="pin-dot"></div><div class="city-label lbl-szklarska">Szklarska Poręba</div></button>
+            <button class="city-pin" id="pin-karpacz" onclick="openDashboard('Karpacz')"><div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div></button>
+            <button class="city-pin" id="pin-wisla" onclick="openDashboard('Wisła')"><div class="pin-dot"></div><div class="city-label lbl-left">Wisła</div></button>
+            <button class="city-pin" id="pin-zakopane" onclick="openDashboard('Zakopane')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div></button>
+            <button class="city-pin" id="pin-szccawnica" onclick="openDashboard('Szczawnica')"><div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div></button>
+            <button class="city-pin" id="pin-krynica" onclick="openDashboard('Krynica-Zdrój')"><div class="pin-dot"></div><div class="city-label lbl-right">Krynica-Zdrój</div></button>
+        </div>
+    </div>
+
+    <!-- ZINTEGROWANE MODUŁY LOKALNE DLA REGIONU (Domyślnie Karkonosze) -->
+    <div class="tourist-zone" id="touristInfoZone">
+        <div class="tourist-panel">
+            <h3 id="t-panelWeather">☀️ Pogoda i Bezpieczeństwo</h3>
+            <div class="weather-info">
+                <div>
+                    <div style="font-size: 11px; color: #6b7280;" id="t-currRegion">Aktualnie w regionie:</div>
+                    <div style="color: #fff; font-weight: bold; font-size: 14px;">Karpacz / Karkonosze</div>
+                </div>
+                <div class="weather-temp">+18°C</div>
+            </div>
+            <div class="trail-status" id="t-goprStatus">🟢 GOPR: Szlaki są otwarte. Warunki dobre.</div>
+        </div>
+
+        <div class="tourist-panel">
+            <h3 id="t-panelBus">🚌 Rozkład Jazdy (Kluczowe Połączenia)</h3>
+            <div class="bus-list">
+                <div class="bus-item"><span>Kowary → Karpacz Górny (PKS)</span><span class="bus-time">07:15, 09:40, 12:10, 15:35</span></div>
+                <div class="bus-item"><span>Karpacz → Jelenia Góra (przez Kowary)</span><span class="bus-time">08:20, 10:50, 14:15, 17:40</span></div>
+            </div>
+        </div>
+
+        <div class="tourist-panel">
+            <h3 id="t-panelTrails">🥾 Asystent Górski: Zaplanuj Trasę</h3>
+            <select class="trail-select" id="trailPicker" onchange="calculateTrail()">
+                <option value="" id="t-trailSelectDefault">-- Wybierz dokąd idziesz --</option>
+                <option value="sniezka">Karpacz (Wang) ➔ Śnieżka</option>
+                <option value="samotnia">Karpacz ➔ Samotnia</option>
+                <option value="skywalk">Świeradów ➔ Sky Walk</option>
+                <option value="szrenica">Szklarska Poręba ➔ Szrenica</option>
+            </select>
+            <div class="trail-result" id="trailCalcResult">Wybierz cel wędrówki z menu powyżej, aby automatycznie obliczyć szacowany czas drogi oraz trudność podejścia.</div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: RADAR RETINA BILLBOARD (UKRYTY DO CZASU KLIKNIĘCIA MIASTA) -->
+    <div id="dashboard-view">
+        <button class="back-btn" onclick="closeDashboard()" id="t-backBtn">⬅ Powrót do Mapy Polski</button>
+        
+        <div class="billboard-frame">
+            <div class="billboard-inner">
+                <div class="layout-grid">
+                    
+                    <!-- MATRYCA OKIENEK -->
+                    <div class="grid-wrapper">
+                        <div class="grid-board" id="boardMatrix">
+                            <!-- Wygenerowane przez JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- PRECYZYJNY SIDEBAR SYSTEMU LOSOWAŃ (KOŁA) -->
+                    <div class="wheels-sidebar">
+                        
+                        <!-- KOŁO DLA TURYSTÓW -->
+                        <div class="wheel-card">
+                            <h3 id="t-wheelTouristTitle">🎁 Koło Szczęścia Turysty</h3>
+                            <div class="wheel-box">
+                                <div class="wheel-pointer"></div>
+                                <canvas class="wheel-canvas" id="canvasTourist" width="180" height="180"></canvas>
+                            </div>
+                            <button class="btn" id="btnTourist" onclick="spin('tourist')">Losuj Rabat / Atrakcję</button>
+                            <div class="result-display" id="resTourist"></div>
+                        </div>
+
+                        <!-- KOŁO DLA BIZNESU -->
+                        <div class="wheel-card">
+                            <h3 id="t-wheelBusinessTitle">💼 Biznesowe Koło Okienek</h3>
+                            <div class="wheel-box">
+                                <div class="wheel-pointer"></div>
+                                <canvas class="wheel-canvas" id="canvasBusiness" width="180" height="180"></canvas>
+                            </div>
+                            <button class="btn" id="btnBusiness" onclick="spin('business')">Losuj Darmową Reklamę</button>
+                            <div class="result-display" id="resBusiness"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SYSTEM REKLAMOWY TICKER DNIA -->
+    <div class="ticker-wrap">
+        <div class="ticker-title" id="t-tickerLabel">⭐ TOP OFERTY</div>
+        <div class="ticker">
+            <div class="ticker-item">Noclegi Karkonosze: <a href="https://wonderhome.eu/" target="_blank">Wonder Home Karpacz</a></div>
+            <div class="ticker-item">Apartamenty Serwis: <a href="http://www.xn--sprztanie-g1a.jelenia.pl" target="_blank">Clean Expert Jelenia Góra</a></div>
+            <div class="ticker-item">Noclegi Karkonosze: <a href="https://wonderhome.eu/" target="_blank">Wonder Home Karpacz</a></div>
+            <div class="ticker-item">Apartamenty Serwis: <a href="http://www.xn--sprztanie-g1a.jelenia.pl" target="_blank">Clean Expert Jelenia Góra</a></div>
+        </div>
+    </div>
+
+    <!-- PANEL ASYSTENTA CZAT AI (WBUDOWANA LOGIKA) -->
+    <div class="chat-widget collapsed" id="sigmaChat">
+        <div class="chat-toggle-icon" onclick="toggleChat()">💬</div>
+        <div class="chat-header" onclick="toggleChat()">
+            <div><span class="status-dot"></span>Sigma Asystent AI</div>
+            <div>−</div>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="msg bot" id="t-chatWelcome">Siemanko! Jestem Twoim inteligentnym asystentem na platformie PolskieOkienka.pl. Pytaj śmiało o reklamy, okienka, szlaki lub busy! Mów mi mordeczka! 😊</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Napisz coś..." onkeypress="handleChatKey(event)">
+            <button class="chat-btn" onclick="sendChatMessage()">OK</button>
+        </div>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT SYSTEMU PRODUKCYJNEGO -->
+    <script>
+        let currentCity = "";
+        let currentLang = "pl";
+
+        // Tłumaczenia interfejsu (Pełny pakiet 4 języków)
+        const translations = {
+            pl: {
+                title: "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów",
+                visitor: "Licznik Gości:",
+                freeSlots: "Wolne Okienka:",
+                subtitle: "Wybierz miasto, aby wejść na lokalną tablicę reklamową",
+                weatherTitle: "☀️ Pogoda i Bezpieczeństwo",
+                busTitle: "🚌 Rozkład Jazdy (Kluczowe Połączenia)",
+                trailTitle: "🥾 Asystent Górski: Zaplanuj Trasę",
+                trailDefault: "-- Wybierz dokąd idziesz --",
+                trailResultText: "Wybierz cel wędrówki z menu powyżej, aby automatycznie obliczyć szacowany czas drogi oraz trudność podejścia.",
+                backBtn: "⬅ Powrót do Mapy Polski",
+                topOffers: "⭐ TOP OFERTY",
+                wheelT: "🎁 Koło Szczęścia Turysty",
+                wheelB: "💼 Biznesowe Koło Okienek",
+                btnT: "Losuj Rabat / Atrakcję",
+                btnB: "Losuj Darmową Reklamę",
+                chatWelcome: "Siemanko! Jestem Twoim inteligentnym asystentem na platformie PolskieOkienka.pl. Pytaj śmiało o reklamy, okienka, szlaki lub busy! Mów mi mordeczka! 😊",
+                chatPlaceholder: "Napisz coś...",
+                gopr: "🟢 GOPR: Szlaki są otwarte. Warunki dobre.",
+                currReg: "Aktualnie w regionie:"
+            },
+            de: {
+                title: "PolskieOkienka.pl - Nationales Werbe-Netzwerk",
+                visitor: "Besucherzähler:",
+                freeSlots: "Freie Fenster:",
+                subtitle: "Wählen Sie eine Stadt, um die lokale Werbetafel anzuzeigen",
+                weatherTitle: "☀️ Wetter & Sicherheit",
+                busTitle: "🚌 Fahrplan (Wichtige Verbindungen)",
+                trailTitle: "🥾 Bergassistent: Route planen",
+                trailDefault: "-- Wählen Sie Ihr Ziel --",
+                trailResultText: "Wählen Sie oben ein Ziel aus, um die Gehzeit und den Schwierigkeitsgrad zu berechnen.",
+                backBtn: "⬅ Zurück zur Polen-Karte",
+                topOffers: "⭐ TOP ANGEBOTE",
+                wheelT: "🎁 Touristen-Glücksrad",
+                wheelB: "💼 Business-Glücksrad",
+                btnT: "Rabatt / Attraktion ziehen",
+                btnB: "Gratis-Werbung gewinnen",
+                chatWelcome: "Hallo! Ich bin Ihr KI-Assistent auf PolskieOkienka.pl. Fragen Sie mich nach Werbung, Fenstern, Wanderwegen oder Bussen!",
+                chatPlaceholder: "Schreibe etwas...",
+                gopr: "🟢 Bergrettung: Wege offen. Gute Bedingungen.",
+                currReg: "Aktuell in der Region:"
+            },
+            en: {
+                title: "PolskieOkienka.pl - National Display Network",
+                visitor: "Visitor Counter:",
+                freeSlots: "Free Slots:",
+                subtitle: "Select a city to enter the local advertising board",
+                weatherTitle: "☀️ Weather & Safety",
+                busTitle: "🚌 Bus Schedule (Key Connections)",
+                trailTitle: "🥾 Mountain Assistant: Plan a Route",
+                trailDefault: "-- Select where you are going --",
+                trailResultText: "Select a destination from the menu above to calculate the estimated time and difficulty.",
+                backBtn: "⬅ Back to Map of Poland",
+                topOffers: "⭐ TOP OFFERS",
+                wheelT: "🎁 Tourist Lucky Wheel",
+                wheelB: "💼 Business Fortune Wheel",
+                btnT: "Spin Discount / Attraction",
+                btnB: "Spin Free Advertising",
+                chatWelcome: "Hey there! I'm your AI assistant at PolskieOkienka.pl. Feel free to ask about ads, slots, trails, or buses!",
+                chatPlaceholder: "Type something...",
+                gopr: "🟢 Mountain Rescue: Trails open. Good conditions.",
+                currReg: "Currently in the region:"
+            },
+            cs: {
+                title: "PolskieOkienka.pl - Celostátní Reklamní Síť",
+                visitor: "Počítadlo Hostů:",
+                freeSlots: "Volná Okénka:",
+                subtitle: "Vyberte město pro vstup na lokální reklamní tabuli",
+                weatherTitle: "☀️ Počasí a Bezpečnost",
+                busTitle: "🚌 Jízdní řád (Klíčové spoje)",
+                trailTitle: "🥾 Horský Asistent: Plánování Trasy",
+                trailDefault: "-- Vyberte kam jdete --",
+                trailResultText: "Vyberte cíl z nabídky výše pro výpočet odhadovaného času a náročnosti.",
+                backBtn: "⬅ Zpět na mapu Polska",
+                topOffers: "⭐ TOP NABÍDKY",
+                wheelT: "🎁 Kolo Štěstí Turisty",
+                wheelB: "💼 Bizarní Firemní Kolo",
+                btnT: "Roztočit Slevu / Atrakci",
+                btnB: "Roztočit Reklamu Zdarma",
+                chatWelcome: "Ahoj! Jsem tvůj inteligentní asistent na PolskieOkienka.pl. Neváhej se zeptat na reklamy, okénka, trasy nebo autobusy!",
+                chatPlaceholder: "Napište něco...",
+                gopr: "🟢 Horská služba: Trasy otevřeny. Dobré podmínky.",
+                currReg: "Aktuálně v regionu:"
+            }
+        };
+
+        // ZMIANA JĘZYKA STRONY
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            const t = translations[lang];
+            document.getElementById('mainTitleHeader').innerText = t.title;
+            document.getElementById('t-visitorCount').innerText = t.visitor;
+            document.getElementById('t-freeSlots').innerText = t.freeSlots;
+            if(document.getElementById('t-mapSubtitle')) document.getElementById('t-mapSubtitle').innerText = t.subtitle;
+            document.getElementById('t-panelWeather').innerText = t.weatherTitle;
+            document.getElementById('t-panelBus').innerText = t.busTitle;
+            document.getElementById('t-panelTrails').innerText = t.trailTitle;
+            document.getElementById('t-trailSelectDefault').innerText = t.trailDefault;
+            document.getElementById('t-backBtn').innerText = t.backBtn;
+            document.getElementById('t-tickerLabel').innerText = t.topOffers;
+            document.getElementById('t-wheelTouristTitle').innerText = t.wheelT;
+            document.getElementById('t-wheelBusinessTitle').innerText = t.wheelB;
+            document.getElementById('btnTourist').innerText = t.btnT;
+            document.getElementById('btnBusiness').innerText = t.btnB;
+            document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+            document.getElementById('t-chatWelcome').innerText = t.chatWelcome;
+            document.getElementById('t-goprStatus').innerText = t.gopr;
+            document.getElementById('t-currRegion').innerText = t.currReg;
+            
+            calculateTrail();
+        }
+
+        // ASYSTENT GÓRSKI - ANALIZA TRAS
+        function calculateTrail() {
+            const picker = document.getElementById('trailPicker').value;
+            const res = document.getElementById('trailCalcResult');
+            
+            if (!picker) {
+                res.innerText = translations[currentLang].trailResultText;
+                return;
+            }
+
+            const data = {
+                sniezka: { pl: "Czas: 2h 45min. Trudność: Średnia. Podejście czerwonym szlakiem spod Świątyni Wang.", de: "Zeit: 2h 45min. Schwierigkeit: Mittel. Roter Weg ab Wang-Kirche.", en: "Time: 2h 45min. Difficulty: Moderate. Red trail from Wang Church.", cs: "Čas: 2h 45min. Náročnost: Střední. Červená trasa od kostela Wang." },
+                samotnia: { pl: "Czas: 1h 30min. Trudność: Łatwa, idealna dla rodzin. Piękne schronisko nad kotłem Małego Stawu.", de: "Zeit: 1h 30min. Schwierigkeit: Leicht. Wunderschöne Baude am Teich.", en: "Time: 1h 30min. Difficulty: Easy. Beautiful mountain hut by the pond.", cs: "Čas: 1h 30min. Náročnost: Lehká. Krásná bouda u rybníka Mały Staw." },
+                skywalk: { pl: "Czas podejścia: 40min lub wjazd koleją. Trudność: Bardzo łatwa. Wieża widokowa w Świeradowie.", de: "Gehzeit: 40 Min. Schwierigkeit: Sehr leicht. Aussichtsturm in Bad Flinsberg.", en: "Walk time: 40min. Difficulty: Very easy. Observation tower in Świeradów.", cs: "Čas výstupu: 40min. Náročnost: Velmi lehká. Vyhlídková věž ve Świeradowě." },
+                szrenica: { pl: "Czas: 2h 15min. Trudność: Średnia. Szlak prowadzi obok malowniczego Wodospadu Kamieńczyka.", de: "Zeit: 2h 15min. Schwierigkeit: Mittel. Weg führt am Zackelfall vorbei.", en: "Time: 2h 15min. Difficulty: Moderate. Trail passes by Kamieńczyk Waterfall.", cs: "Čas: 2h 15min. Náročnost: Střední. Stezka vede kolem vodopádu Kamieńczyk." }
+            };
+
+            res.innerText = data[picker][currentLang];
+        }
+
+        // PRZEŁĄCZANIE WIDOKÓW (MAPA <-> RETINA BILLBOARD)
+        function openDashboard(cityName) {
+            currentCity = cityName;
+            document.getElementById('map-view').style.display = 'none';
+            document.getElementById('touristInfoZone').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            
+            buildBillboardMatrix();
+            initWheels();
+        }
+
+        function closeDashboard() {
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('map-view').style.display = 'flex';
+            document.getElementById('touristInfoZone').style.display = 'grid';
+        }
+
+        // GENEROWANIE SIATKI RADARU RETINA (100 OKIENEK)
+        function buildBillboardMatrix() {
+            const matrix = document.getElementById('boardMatrix');
+            matrix.innerHTML = ""; // Czyszczenie
+            
+            let idCounter = 1;
+
+            for (let r = 0; r < 10; r++) {
+                for (let c = 0; c < 10; c++) {
+                    
+                    // Konstrukcja wielkiego telebimu 4x4 na środku
+                    if (r >= 3 && r <= 6 && c >= 3 && c <= 6) {
+                        if (r === 3 && c === 3) {
+                            const centerEl = document.createElement('div');
+                            centerEl.className = "grid-center";
+                            centerEl.innerHTML = `
+                                <div class="banner-crown">LIVE AUCTION</div>
+                                <div class="banner-main-title">OKIENKO GŁÓWNE</div>
+                                <div id="winnerName">Licytacja trwa...</div>
+                                <div class="center-wheel-box">
+                                    <div class="center-pointer"></div>
+                                    <canvas id="centerWheel" width="80" height="80"></canvas>
+                                </div>
+                                <button class="btn-center-spin" id="btnCenter" onclick="spinCenterWheel()">LICYTUJ</button>
+                                <div class="live-countdown" id="liveTimer">00:45</div>
+                            `;
+                            matrix.appendChild(centerEl);
+                        }
+                        continue;
+                    }
+
+                    // Standardowe luksusowe okienka reklamowe
+                    const link = document.createElement('a');
+                    link.href = "https://wonderhome.eu/";
+                    link.target = "_blank";
+                    link.className = "cell-link";
+
+                    const item = document.createElement('div');
+                    item.className = "grid-item";
+                    
+                    // Dodanie losowego prestiżu wizualnego dla demonstracji bogactwa
+                    if (idCounter % 7 === 0) {
+                        item.className += " premium";
+                        item.innerHTML = `<span>Noclegi</span><span style="color:#fff;font-size:6px;">WNDR</span>`;
+                    } else if (idCounter % 11 === 0) {
+                        item.className += " occupied";
+                        item.innerHTML = `<span>Clean</span><span style="color:#fff;font-size:6px;">EXPRT</span>`;
+                    } else {
+                        item.innerText = `#${idCounter}`;
+                    }
+
+                    link.appendChild(item);
+                    matrix.appendChild(link);
+                    idCounter++;
+                }
+            }
+            startCenterCountdown();
+            drawCenterWheel();
+        }
+
+        // LICZNIK CZASU LICYTACJI CENTRUM
+        let timerVal = 45;
+        let intervalId = null;
+        function startCenterCountdown() {
+            if(intervalId) clearInterval(intervalId);
+            timerVal = 45;
+            const timerEl = document.getElementById('liveTimer');
+            intervalId = setInterval(() => {
+                timerVal--;
+                if(timerVal <= 0) {
+                    timerVal = 45;
+                    // Symulacja wygrania licytacji przez kogoś z regionu
+                    const mockWinners = ["Wonder Home Karpacz", "Clean Expert", "Hotel Gwarant", "Karkonosze Szklarska"];
+                    document.getElementById('winnerName').innerText = mockWinners[Math.floor(Math.random()*mockWinners.length)];
+                }
+                timerEl.innerText = `00:${timerVal < 10 ? '0' + timerVal : timerVal}`;
+            }, 1000);
+        }
+
+        // KOŁA FORTUNY - SILNIK GRAFICZNY HTML5 CANVAS
+        const optionsTourist = ["Rabat -10% Nocleg", "Darmowa Kawa", "Przewodnik Gratis", "Bilet Muzeum -20%", "Gadżet Regionalny", "Spróbuj Ponownie"];
+        const optionsBusiness = ["Baner 24h Gratis", "Okienko Premium -50%", "Artykuł Sponsorowany", "Pakiet Social Media", "Wyróżnienie na Mapie", "Brak wygranej"];
+        const optionsCenter = ["100 PLN", "50 PLN", "300 PLN", "Bonus x2", "Pakiet VIP", "Wygrana!"];
+
+        function drawWheel(canvasId, options) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numSegments = options.length;
+            const radius = canvas.width / 2;
+            const anglePerSegment = (2 * Math.PI) / numSegments;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numSegments; i++) {
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 2, i * anglePerSegment, (i + 1) * anglePerSegment);
+                ctx.fillStyle = i % 2 === 0 ? '#0b0c10' : '#161922';
+                ctx.fill();
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Dodanie tekstu segmentu
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(i * anglePerSegment + anglePerSegment / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = i % 2 === 0 ? '#d4af37' : '#ffffff';
+                ctx.font = "bold 8px Arial";
+                ctx.fillText(options[i].substring(0, 15), radius - 10, 3);
+                ctx.restore();
+            }
+        }
+
+        function initWheels() {
+            drawWheel('canvasTourist', optionsTourist);
+            drawWheel('canvasBusiness', optionsBusiness);
+        }
+
+        function drawCenterWheel() {
+            drawWheel('centerWheel', optionsCenter);
+        }
+
+        // MECHANIKA OBROTU KÓŁ
+        function spin(type) {
+            const isTourist = type === 'tourist';
+            const canvas = document.getElementById(isTourist ? 'canvasTourist' : 'canvasBusiness');
+            const btn = document.getElementById(isTourist ? 'btnTourist' : 'btnBusiness');
+            const resDisplay = document.getElementById(isTourist ? 'resTourist' : 'resBusiness');
+            const options = isTourist ? optionsTourist : optionsBusiness;
+
+            btn.disabled = true;
+            resDisplay.style.display = 'none';
+
+            const deg = Math.floor(3000 + Math.random() * 3000);
+            canvas.style.transform = `rotate(${deg}deg)`;
+
+            setTimeout(() => {
+                const actualDeg = deg % 360;
+                const segmentAngle = 360 / options.length;
+                // Wyliczenie nagrody (koło kręci się w prawo, wskaźnik jest na górze czyli 270 stopni)
+                const winningIndex = Math.floor(((360 - actualDeg + 270) % 360) / segmentAngle);
+                const prize = options[winningIndex];
+
+                resDisplay.style.display = 'block';
+                if(type === 'business') {
+                    resDisplay.innerHTML = `🎉 Wygrana: <strong>${prize}</strong>!< br><a href='http://www.xn--sprztanie-g1a.jelenia.pl' target='_blank'>Odbierz nagrodę biznesową</a>`;
+                } else {
+                    resDisplay.innerHTML = `🎉 Wygrana: <strong>${prize}</strong>!<br><a href='https://wonderhome.eu/' target='_blank'>Zrealizuj kupon w Karpaczu</a>`;
+                }
+                btn.disabled = false;
+            }, 4000);
+        }
+
+        function spinCenterWheel() {
+            const canvas = document.getElementById('centerWheel');
+            const btn = document.getElementById('btnCenter');
+            btn.disabled = true;
+
+            const deg = Math.floor(2000 + Math.random() * 2000);
+            canvas.style.transform = `rotate(${deg}deg)`;
+
+            setTimeout(() => {
+                btn.disabled = false;
+                alert("Twój los został zarejestrowany w systemie aukcyjnym Retina!");
+            }, 3000);
+        }
+
+        // WBUDOWANY CZAT ASYSTENT AI SIGMA
+        function toggleChat() {
+            document.getElementById('sigmaChat').classList.toggle('collapsed');
+        }
+
+        function handleChatKey(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const body = document.getElementById('chatBody');
+
+            // Dodaj wiadomość użytkownika
+            const userMsg = document.createElement('div');
+            userMsg.className = "msg user";
+            userMsg.innerText = text;
+            body.appendChild(userMsg);
+
+            input.value = "";
+            body.scrollTop = body.scrollHeight;
+
+            // Logika automatycznych inteligentnych odpowiedzi front-endowych
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = "msg bot";
+                
+                let reply = "Ciekawa sprawa, mordeczka! Rozwijamy ten projekt na pełnej petardzie. Jeśli pytasz o wolne okienka, kliknij wybrane miasto na mapie i sprawdź aktualny stan matrycy 10x10!";
+                const lower = text.toLowerCase();
+
+                if (lower.includes("cena") || lower.includes("koszt") || lower.includes("reklama")) {
+                    reply = "Słuchaj, mordeczka! Ceny okienek standardowych zaczynają się już od paru groszy za dobę, a okienka Premium w luksusowej złotej ramie licytujemy na żywo w centrum matrycy!";
+                } else if (lower.includes("karpacz") || lower.includes("kowary") || lower.includes("szrenica") || lower.includes("bus")) {
+                    reply = "W regionie Karkonoszy wszystko gra! Pogoda sprawdzona (+18°C), busy z Kowar do Karpacza kursują stabilnie, a najlepsze apartamenty obsługuje ekipa z Wonder Home oraz Clean Expert!";
+                } else if (lower.includes("koło") || lower.includes("losuj")) {
+                    reply = "Żeby zakręcić kołem, wybierz najpierw dowolne miasto z mapy Polski (np. Karpacz lub Sopot), zjedź na prawą stronę i kliknij złoty przycisk losowania!";
+                }
+
+                botMsg.innerText = reply;
+                body.appendChild(botMsg);
+                body.scrollTop = body.scrollHeight;
+            }, 600);
+        }
+    </script>
+</body>
+</html>
