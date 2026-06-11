@@ -337,7 +337,7 @@
         .submit-order-btn { width: 100%; padding: 13px; background: linear-gradient(90deg, #00f2fe, #4facfe); border: none; border-radius: 8px; color: #ffffff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 10px; }
         .submit-order-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
 
-        /* NOWOŚĆ: PASEK TOP OFERTY DNIA */
+        /* PASEK TOP OFERTY DNIA */
         .ticker-wrap {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: linear-gradient(90deg, #11141b, #1e2530);
@@ -364,7 +364,7 @@
             100% { transform: translate3d(-50%, 0, 0); }
         }
 
-        /* NOWOŚĆ: CZAT ASYSTENT AI */
+        /* CZAT ASYSTENT AI */
         .chat-widget {
             position: fixed; bottom: 55px; right: 20px; width: 300px;
             background: rgba(15, 19, 28, 0.98); border: 2px solid #ffd700;
@@ -393,6 +393,42 @@
         .chat-widget.collapsed .chat-toggle-icon { display: flex; }
         .chat-widget.collapsed .chat-header { display: none; }
 
+        /* NOWOŚĆ: MODUŁ I PRZYCISK JĘZYKA MIGOWEGO (PJM) */
+        .pjm-widget {
+            position: fixed; bottom: 55px; left: 20px; width: 50px; height: 50px;
+            background: linear-gradient(135deg, #1e90ff, #0056b3); border: 2px solid #fff;
+            border-radius: 50%; box-shadow: 0 8px 25px rgba(30,144,255,0.5);
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            animation: pulsePJM 2s infinite;
+        }
+        .pjm-widget:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(30,144,255,0.7); }
+        .pjm-icon { font-size: 24px; color: #ffffff; pointer-events: none; }
+
+        /* MODAL WIDEO TŁUMACZA PJM */
+        .pjm-panel {
+            position: fixed; bottom: 115px; left: 20px; width: 280px;
+            background: rgba(15, 19, 28, 0.98); border: 2px solid #1e90ff;
+            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            display: none; flex-direction: column; z-index: 1001; overflow: hidden;
+            animation: fadeIn 0.3s ease;
+        }
+        .pjm-panel.active { display: flex; }
+        .pjm-header {
+            background: linear-gradient(135deg, #1e90ff, #11141b); padding: 8px 12px;
+            color: #fff; font-weight: bold; font-size: 11px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #2c3e50;
+        }
+        .pjm-video-box { width: 100%; aspect-ratio: 4/3; background: #000; position: relative; }
+        .pjm-video-box video { width: 100%; height: 100%; object-fit: cover; }
+        .pjm-desc { padding: 10px; font-size: 11px; color: #ccc; line-height: 1.4; background: #11141b; text-align: center; }
+
+        @keyframes pulsePJM {
+            0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(30, 144, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0); }
+        }
+
         @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
         
         @media (max-width: 1024px) {
@@ -415,6 +451,7 @@
             .modal-content { padding: 20px; width: 95%; }
             .modal-header h2 { font-size: 18px; }
             .tourist-zone { grid-template-columns: 1fr; }
+            .pjm-panel { bottom: auto; top: 70px; left: 5%; width: 90%; }
         }
 
         @media (max-width: 480px) {
@@ -590,7 +627,7 @@
         </div>
     </div>
 
-    <!-- SEKCJA 1: PASEK "TOP OFERTY DNIA" -->
+    <!-- PASEK "TOP OFERTY DNIA" -->
     <div class="ticker-wrap">
         <div class="ticker-title">⭐ TOP OFERTY</div>
         <div class="ticker">
@@ -606,7 +643,7 @@
         </div>
     </div>
 
-    <!-- SEKCJA 2: ASYSTENT AI W KLIMACIE SIGMA -->
+    <!-- ASYSTENT AI W KLIMACIE SIGMA -->
     <div class="chat-widget collapsed" id="sigmaChat">
         <div class="chat-toggle-icon" onclick="toggleChat()">💬</div>
         <div class="chat-header" onclick="toggleChat()">
@@ -619,6 +656,29 @@
         <div class="chat-input-area">
             <input type="text" class="chat-input" id="chatInput" placeholder="Napisz wiadomość..." onkeypress="handleChatKey(event)">
             <button class="chat-btn" onclick="sendChatMessage()">OK</button>
+        </div>
+    </div>
+
+    <!-- NOWOŚĆ: PULSUJĄCY PRZYCISK PJM -->
+    <div class="pjm-widget" onclick="togglePJM()" title="Włącz tłumacza języka migowego">
+        <div class="pjm-icon">🤟</div>
+    </div>
+
+    <!-- NOWOŚĆ: MODUŁ TŁUMACZA WIDEO PJM -->
+    <div class="pjm-panel" id="pjmPanel">
+        <div class="pjm-header">
+            <div>Polski Język Migowy (PJM)</div>
+            <div style="cursor:pointer; font-size:16px; font-weight:bold;" onclick="togglePJM()">×</div>
+        </div>
+        <div class="pjm-video-box">
+            <!-- Wklej tutaj link do swojego wideo z tłumaczem lub awatarem -->
+            <video id="pjmVideo" loop muted playsinline controls>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-signing-in-sign-language-41614-large.mp4" type="video/mp4">
+                Twoja przeglądarka nie obsługuje odtwarzacza wideo.
+            </video>
+        </div>
+        <div class="pjm-desc" id="pjmDesc">
+            Wirtualny tłumacz PJM. Wybierz sekcję na stronie, a tłumacz wyjaśni jej zawartość.
         </div>
     </div>
 
@@ -771,6 +831,38 @@
             body.scrollTop = body.scrollHeight;
         }
 
+        // FUNKCJE OBSŁUGI WIDGETU JĘZYKA MIGOWEGO (PJM)
+        function togglePJM() {
+            const panel = document.getElementById('pjmPanel');
+            const video = document.getElementById('pjmVideo');
+            panel.classList.toggle('active');
+            
+            if (panel.classList.contains('active')) {
+                video.play().catch(e => console.log("Autoplay zablokowany, czekam na interakcję użytkownika."));
+                updatePJMContext("main_map");
+            } else {
+                video.pause();
+            }
+        }
+
+        function updatePJMContext(context) {
+            const desc = document.getElementById('pjmDesc');
+            const video = document.getElementById('pjmVideo');
+            
+            // Kontekstowa zmiana opisów oraz opcjonalna zmiana plików wideo (jeśli posiadasz oddzielne nagrania dla różnych podstron)
+            switch(context) {
+                case "main_map":
+                    desc.innerHTML = "👋 <strong>Tłumacz PJM:</strong> Witamy na PolskieOkienka.pl. Wybierz interesujące Cię miasto na mapie Polski (np. Karpacz lub Świeradów), aby otworzyć lokalną tablicę reklamową.";
+                    break;
+                case "dashboard":
+                    desc.innerHTML = "📊 <strong>Tłumacz PJM:</strong> Otworzyłeś tablicę reklamową miasta. Widzisz siatkę 100 slotów reklamowych. Możesz kliknąć wolne okienko, aby je wynająć.";
+                    break;
+                case "modal_order":
+                    desc.innerHTML = "📝 <strong>Tłumacz PJM:</strong> Formularz rezerwacji. Wprowadź nazwę swojej firmy, adres e-mail oraz telefon, aby przesłać zgłoszenie rezerwacji wybranego okienka.";
+                    break;
+            }
+        }
+
         // WYMUSZONE PRZEŁĄCZENIE MIASTA PRZEZ KLIKNIĘCIE PINEZKI
         function forceCityChange(cityKey) {
             window.location.hash = cityKey;
@@ -812,6 +904,9 @@
             if(currentAttractions.length > 0) {
                 initWheel('touristWheel', currentAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24']);
             }
+            
+            // Aktualizacja kontekstu migowego
+            updatePJMContext("dashboard");
             window.scrollTo(0, 0);
         }
 
@@ -820,6 +915,7 @@
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('map-view').style.display = 'flex';
             document.getElementById('touristInfoZone').style.display = 'grid';
+            updatePJMContext("main_map");
         }
 
         function backToMainMap() {
@@ -1003,10 +1099,19 @@
             
             document.getElementById('orderForm').reset();
             modal.classList.add('active');
+
+            // Aktualizacja kontekstu migowego
+            updatePJMContext("modal_order");
         }
 
         function closeOrderModal() {
             document.getElementById('orderModal').classList.remove('active');
+            // Powrót do kontekstu tablicy
+            if(document.getElementById('dashboard-view').style.display === 'block') {
+                updatePJMContext("dashboard");
+            } else {
+                updatePJMContext("main_map");
+            }
         }
 
         function handleFormSubmit(event) {
