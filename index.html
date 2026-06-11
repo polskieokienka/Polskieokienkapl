@@ -91,7 +91,7 @@
             opacity: 0.85;
         }
 
-        /* GEO-PINEZKI NA MAPIE */
+        /* GEO-PINEZKI NA MAPIE (WSPÓŁRZĘDNE DOPASOWANE DO PROPORCJI WEKTORA) */
         .city-pin { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); background: none; border: none; padding: 0; margin: 0; cursor: pointer; outline: none; }
         .pin-dot { width: 12px; height: 12px; background-color: #bda260; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 12px #bda260; transition: transform 0.2s; z-index: 2; }
         .city-label { color: #ffffff; font-size: 10px; font-weight: bold; text-transform: uppercase; white-space: nowrap; background: #08090d; padding: 4px 8px; border-radius: 4px; border: 1px solid #bda260; position: absolute; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
@@ -157,7 +157,7 @@
         .center-wheel-box { position: relative; width: 140px; height: 140px; margin: 15px 0; }
         #centerWheel { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #bda260; }
         
-        /* SIDEBAR Z KOŁAMI FORTUNY (REPLIKA INTERFEJSU) */
+        /* SIDEBAR Z KOŁAMI FORTUNY */
         .wheels-sidebar { display: flex; flex-direction: column; gap: 20px; flex: 0.8; min-width: 300px; }
         .wheel-card { background-color: #141722; padding: 25px 20px; border-radius: 6px; border: 2px solid #bda260; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
         .wheel-card h3 { font-size: 13px; color: #bda260; margin: 0 0 20px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; font-weight: bold; }
@@ -245,7 +245,7 @@
                 <path class="poland-path" d="M 94,115 C 110,112 125,125 140,118 C 152,112 160,95 178,98 C 190,100 198,112 212,108 C 228,102 232,85 252,88 C 270,90 280,110 300,108 C 315,106 322,92 338,98 C 348,102 352,115 365,115 C 385,115 410,75 435,78 C 450,80 458,98 472,98 C 485,98 492,85 508,92 C 520,98 522,115 538,122 C 550,128 565,120 575,135 C 582,145 572,160 582,175 C 590,188 610,192 612,208 C 615,225 595,240 602,258 C 608,272 628,285 622,302 C 615,320 592,328 588,348 C 585,365 598,382 590,398 C 582,415 560,420 555,438 C 550,455 568,475 555,490 C 545,502 525,492 515,508 C 505,522 505,545 490,555 C 480,562 468,548 455,552 C 440,558 428,575 412,572 C 398,570 392,550 378,548 C 362,545 350,558 335,552 C 322,548 318,530 302,532 C 288,535 278,552 262,548 C 248,545 242,525 228,525 C 215,525 208,540 195,538 C 180,535 175,515 160,515 C 148,515 142,530 130,525 C 118,520 120,498 108,492 C 95,485 78,492 68,480 C 60,470 70,452 62,440 C 55,430 38,428 35,412 C 32,395 50,380 45,362 C 40,348 22,342 22,325 C 22,310 40,300 42,282 C 45,265 32,250 38,235 C 42,220 58,218 62,202 C 65,188 52,175 60,160 C 68,145 88,152 94,135 Z" />
             </svg>
             
-            <!-- PINEZKI ZMAPOWANE DO REGIONÓW -->
+            <!-- PINEZKI ZMAPOWANE DO REALNYCH REGIONÓW -->
             <button class="city-pin" id="pin-swinoujscie" onclick="navigateToBillboard('Świnoujście')">
                 <div class="pin-dot"></div>
                 <div class="city-label lbl-top">Świnoujście</div>
@@ -420,7 +420,7 @@
             }
         }
 
-        // PROSTOPADŁE RYSOWANIE TEKSTÓW NA KOŁACH (DOKŁADNE ZGODNIE ZE SCREENEM)
+        // PROSTOPADŁE RYSOWANIE TEKSTÓW NA KOŁACH
         function drawPremiumWheel(canvasId, items) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
