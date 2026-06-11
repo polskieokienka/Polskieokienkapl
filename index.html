@@ -1,517 +1,130 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieOkienka.pl - Ogólnopolska Platforma Reklamowo-Turystyczna</title>
-    <style>
-        body {
-            background-color: #08090d;
-            color: #ffffff;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-            padding-bottom: 80px;
-        }
+<!-- STYLIZACJA PASKA (Wklej to do sekcji CSS lub na górze strony) -->
+<style>
+  /* Kontener główny paska */
+  .wonder-ticker-container {
+    width: 100%;
+    background: #111111; /* Elegancka, głęboka czerń */
+    color: #ffffff;
+    overflow: hidden;
+    padding: 14px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-top: 2px solid #bfa15f; /* Delikatny złoty/beżowy akcent na krawędzi */
+    border-bottom: 2px solid #bfa15f;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: 0.5px;
+  }
 
-        /* NAGŁÓWEK PREMIUM ZGODNY ZE SCREENSHOTEM */
-        .header-panel {
-            background-color: #141722;
-            border: 2px solid #bda260;
-            border-radius: 6px;
-            padding: 15px 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 1400px;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+  /* Okno przesuwu */
+  .wonder-ticker-wrap {
+    display: flex;
+    width: 100%;
+  }
 
-        .header-left { flex: 1; text-align: left; }
-        .header-panel h2 { margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; color: #ffffff; font-size: 20px; }
-        .stats-container { display: flex; gap: 20px; font-size: 13px; font-weight: bold; flex-wrap: wrap; }
-        .stat-item { color: #cccccc; }
-        .stat-item span { color: #bda260; font-size: 15px; }
+  /* Animacja płynnego ruchu */
+  .wonder-ticker-move {
+    display: flex;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: wonderMarquee 35s linear infinite;
+  }
 
-        .lang-selector { display: flex; gap: 8px; background: rgba(0,0,0,0.5); padding: 5px 12px; border-radius: 20px; border: 1px solid #bda260; }
-        .lang-flag { font-size: 20px; cursor: pointer; }
+  /* Zatrzymanie paska po najechaniu myszką (żeby klient mógł spokojnie przeczytać lub spisać cenę) */
+  .wonder-ticker-container:hover .wonder-ticker-move {
+    animation-play-state: paused;
+  }
 
-        /* SEKCJA MAPY - REALISTYCZNY KSZTAŁT POLSKI */
-        #map-view {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 850px;
-            background-color: #141722;
-            padding: 25px;
-            border-radius: 6px;
-            border: 2px solid #bda260;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.8);
-            box-sizing: border-box;
-            margin-top: 10px;
-        }
-        #map-view h1 { color: #bda260; font-size: 16px; margin: 0 0 25px 0; text-transform: uppercase; text-align: center; letter-spacing: 1px; }
-        
-        .map-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1.05 / 1;
-            background: #08090d;
-            border: 2px solid #141722;
-            border-radius: 4px;
-            overflow: hidden;
-        }
+  /* Stylizacja tekstu i elementów wewnętrznych */
+  .wonder-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 40px;
+    font-size: 15px;
+    font-weight: 500;
+  }
 
-        /* Prawdziwe, precyzyjne wektory granic Polski */
-        .poland-svg-bg { 
-            position: absolute; 
-            top: 2%; 
-            left: 2%; 
-            width: 96%; 
-            height: 96%; 
-            z-index: 1; 
-            pointer-events: none; 
-        }
-        .poland-path {
-            fill: #141722;
-            stroke: #bda260;
-            stroke-width: 1.5;
-            stroke-linejoin: round;
-            opacity: 0.85;
-        }
+  /* Wyróżnienia poszczególnych marek/sekcji */
+  .brand-wonder { color: #bfa15f; font-weight: 800; } /* Złoty Wonder */
+  .brand-top10 { color: #ff4d4d; font-weight: 800; } /* Czerwony Alert na ofertę */
+  .brand-clean { color: #00d2ff; font-weight: 800; } /* Świeży błękit dla Clean Ekspert */
+  .brand-promo { color: #2ecc71; font-weight: 800; } /* Zielony dla promocji */
 
-        /* GEO-PINEZKI NA MAPIE (WSPÓŁRZĘDNE DOPASOWANE DO PROPORCJI WEKTORA) */
-        .city-pin { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); background: none; border: none; padding: 0; margin: 0; cursor: pointer; outline: none; }
-        .pin-dot { width: 12px; height: 12px; background-color: #bda260; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 12px #bda260; transition: transform 0.2s; z-index: 2; }
-        .city-label { color: #ffffff; font-size: 10px; font-weight: bold; text-transform: uppercase; white-space: nowrap; background: #08090d; padding: 4px 8px; border-radius: 4px; border: 1px solid #bda260; position: absolute; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+  /* Separator między komunikatami */
+  .ticker-separator {
+    color: #555555;
+    padding: 0 20px;
+    font-weight: 300;
+  }
 
-        .lbl-top { bottom: 18px; left: 50%; transform: translateX(-50%); }
-        .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ffffff; }
-        .city-pin:hover .city-label { background: #bda260; color: #08090d; border-color: #ffffff; }
+  /* Reguła animacji przesuwającej tekst od prawej do lewej */
+  @keyframes wonderMarquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+  }
 
-        /* Dokładne pozycjonowanie geograficzne na mapie SVG */
-        #pin-swinoujscie { top: 18%; left: 6.5%; }
-        #pin-kolobrzeg   { top: 12.5%; left: 19%; }
-        #pin-sopot        { top: 12%; left: 47%; }
-        #pin-karpacz      { top: 79.5%; left: 18.5%; }
+  /* Dopasowanie do ekranów smartfonów (nieco mniejszy font, żeby nie przytłaczał) */
+  @media (max-width: 768px) {
+    .wonder-ticker-item {
+      font-size: 13px;
+      padding: 0 25px;
+    }
+    .wonder-ticker-move {
+      animation-duration: 25s; /* Na małych ekranach tekst ma krótszą drogę, więc lekko przyspieszamy */
+    }
+  }
+</style>
 
-        /* PANEL BILLBOARD (UKRYTY NA START) */
-        #dashboard-view { display: none; flex-direction: column; width: 100%; max-width: 1450px; gap: 15px; margin-top: 10px; }
-        .back-btn { background: #08090d; color: #bda260; border: 2px solid #bda260; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 5px; transition: 0.2s; text-transform: uppercase; font-size: 12px; }
-        .back-btn:hover { background: #bda260; color: #08090d; }
+<!-- STRUKTURA PASKA (Wklej to w miejscu na stronie, gdzie ma się wyświetlać pasek) -->
+<div class="wonder-ticker-container">
+  <div class="wonder-ticker-wrap">
+    
+    <!-- Dublujemy zawartość wewnątrz .wonder-ticker-move dla idealnie płynnej pętli bez przerw -->
+    <div class="wonder-ticker-move">
+      
+      <!-- Komunikat 1: Wonder Home -->
+      <div class="wonder-ticker-item">
+        <span class="brand-wonder">🏠 WONDER HOME</span>&nbsp;– Kompleksowe zarządzanie i wynajem apartamentów w Karkonoszach
+      </div>
+      <div class="ticker-separator">|</div>
 
-        .billboard-frame { background-color: #08090d; padding: 10px; box-sizing: border-box; width: 100%; }
-        .billboard-inner { background-color: #08090d; width: 100%; }
-        
-        .layout-main-flex { display: flex; flex-direction: row; gap: 20px; flex-wrap: wrap; width: 100%; }
-        .grid-wrapper { flex: 1.5; min-width: 320px; }
+      <!-- Komunikat 2: Oferta TOP 10 (Biznesowa pod wynajem okienka) -->
+      <div class="wonder-ticker-item">
+        <span class="brand-top10">📈 TOP 10 WYNAJĘCIA:</span>&nbsp;Umieść swój apartament na pasku głównym – tylko <span style="text-decoration: underline;">300 zł tygodniowo netto</span>!
+      </div>
+      <div class="ticker-separator">|</div>
 
-        /* SIATKA 100 OKIENEK */
-        .grid-board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; background-color: #141722; padding: 12px; border-radius: 6px; border: 2px solid #bda260; box-sizing: border-box; width: 100%; }
-        .cell-link { text-decoration: none; display: block; width: 100%; height: 100%; }
-        
-        .grid-item {
-            aspect-ratio: 1 / 1; width: 100%;
-            background-color: #08090d;
-            border: 1px solid rgba(189, 162, 96, 0.3); border-radius: 4px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 9px; font-weight: bold; color: #ffffff; text-align: center;
-            cursor: pointer; transition: all 0.2s ease; box-sizing: border-box; padding: 2px;
-        }
-        .cell-link:hover .grid-item { transform: scale(1.06); border-color: #bda260; box-shadow: 0 0 10px rgba(189, 162, 96, 0.4); }
-        
-        .grid-item.standard-slot { border-left: 2px solid #bda260; }
-        .grid-item.premium-slot { border: 2px solid #bda260; color: #bda260; background-color: #141722; }
-        .grid-item.empty-active-slot { background-color: #ffffff; color: #000000; font-weight: 900; border: 2px solid #bda260; }
-        
-        .grid-item span.price-tag { font-size: 10px; display: block; }
-        .grid-item span.type-tag { font-size: 7px; text-transform: uppercase; opacity: 0.7; }
+      <!-- Komunikat 3: Clean Ekspert -->
+      <div class="wonder-ticker-item">
+        <span class="brand-clean">🧼 CLEAN EKSPERT</span>&nbsp;– Profesjonalne sprzątanie apartamentów, perfekcyjna czystość i logistyka
+      </div>
+      <div class="ticker-separator">|</div>
 
-        /* PANEL NAGRODY MIESIĘCZNEJ */
-        .telebim-premium-card {
-            background-color: #141722;
-            border: 2px solid #bda260; border-radius: 6px; padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; justify-content: space-between;
-            align-items: center; text-align: center; box-sizing: border-box; width: 100%; margin-bottom: 20px;
-        }
+      <!-- Komunikat 4: Aktualna promocja / Top Oferta -->
+      <div class="wonder-ticker-item">
+        <span class="brand-promo">🔥 TOP OFERTA TYGODNIA:</span>&nbsp;Apartament Widokowy – zarezerwuj najbliższy weekend 10% taniej!
+      </div>
+      
+      <!-- POWTÓRZENIE BLOKU (Wymagane do płynnego zapętlenia efektu marquee) -->
+      <div class="ticker-separator">|</div>
+      
+      <div class="wonder-ticker-item">
+        <span class="brand-wonder">🏠 WONDER HOME</span>&nbsp;– Kompleksowe zarządzanie i wynajem apartamentów w Karkonoszach
+      </div>
+      <div class="ticker-separator">|</div>
 
-        .banner-crown { color: #bda260; font-size: 12px; font-weight: bold; text-transform: uppercase; width: 100%; border-bottom: 1px dashed rgba(189, 162, 96, 0.3); padding-bottom: 8px; letter-spacing: 0.5px; }
-        .banner-main-title { font-size: 20px; font-weight: 900; color: #ffffff; margin: 15px 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
-        .banner-sub-title { font-size: 11px; color: #bda260; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
-        
-        #winnerName { font-size: 13px; color: #fff; font-weight: bold; background: #08090d; padding: 10px 15px; border-radius: 4px; width: 90%; border: 1px solid #bda260; }
-        .live-countdown { background: #e53e3e; color: #fff; font-family: monospace; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 3px; margin-top: 12px; }
+      <div class="wonder-ticker-item">
+        <span class="brand-top10">📈 TOP 10 WYNAJĘCIA:</span>&nbsp;Umieść swój apartament na pasku głównym – tylko 300 zł tygodniowo netto!
+      </div>
+      <div class="ticker-separator">|</div>
 
-        .center-wheel-box { position: relative; width: 140px; height: 140px; margin: 15px 0; }
-        #centerWheel { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #bda260; }
-        
-        /* SIDEBAR Z KOŁAMI FORTUNY */
-        .wheels-sidebar { display: flex; flex-direction: column; gap: 20px; flex: 0.8; min-width: 300px; }
-        .wheel-card { background-color: #141722; padding: 25px 20px; border-radius: 6px; border: 2px solid #bda260; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
-        .wheel-card h3 { font-size: 13px; color: #bda260; margin: 0 0 20px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; font-weight: bold; }
+      <div class="wonder-ticker-item">
+        <span class="brand-clean">🧼 CLEAN EKSPERT</span>&nbsp;– Profesjonalne sprzątanie apartamentów, perfekcyjna czystość i logistyka
+      </div>
+      <div class="ticker-separator">|</div>
 
-        .wheel-box { position: relative; width: 220px; height: 220px; margin-bottom: 20px; }
-        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid #bda260; transition: transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-pointer { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid #bda260; z-index: 20; }
+      <div class="wonder-ticker-item">
+        <span class="brand-promo">🔥 TOP OFERTA TYGODNIA:</span>&nbsp;Apartament Widokowy – zarezerwuj najbliższy weekend 10% taniej!
+      </div>
 
-        /* PRZYCISKI (MATOWE ZŁOTO, CIEMNY TEKST ZE SCREENA) */
-        .btn {
-            background: linear-gradient(135deg, #bda260 0%, #8e7541 100%); 
-            color: #0e1017;
-            border: none; padding: 14px 20px; font-size: 13px; font-weight: 800;
-            border-radius: 4px; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 1px;
-            transition: all 0.2s ease;
-        }
-        .btn:hover { filter: brightness(1.1); box-shadow: 0 4px 15px rgba(189, 162, 96, 0.3); }
-        .btn:disabled { background: #2d3139 !important; color: #4a5568 !important; cursor: not-allowed; }
-
-        .result-display { display: none; width: 100%; background: #08090d; border: 1px solid #bda260; border-radius: 4px; padding: 10px; margin-top: 10px; box-sizing: border-box; text-align: center; font-size: 12px; }
-        .result-display a { color: #bda260; font-weight: bold; text-decoration: underline; }
-
-        /* DOLNY PASEK BIEGACZA REKLAMOWEGO */
-        .wonder-ticker-container {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background-color: #08090d; color: #ffffff; overflow: hidden; padding: 12px 0;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
-            border-top: 2px solid #bda260; z-index: 9999;
-            font-family: Arial, sans-serif; letter-spacing: 0.5px;
-        }
-        .wonder-ticker-wrap { display: flex; width: 100%; }
-        .wonder-ticker-move { display: flex; white-space: nowrap; padding-left: 100%; animation: wonderMarquee 40s linear infinite; }
-        .wonder-ticker-container:hover .wonder-ticker-move { animation-play-state: paused; }
-        .wonder-ticker-item { display: inline-flex; align-items: center; padding: 0 35px; font-size: 13px; font-weight: 500; }
-        
-        .brand-wonder { color: #bda260; font-weight: 800; }
-        .brand-top10 { color: #e53e3e; font-weight: 800; }
-        .brand-clean { color: #4fd1c5; font-weight: 800; }
-        .brand-promo { color: #48bb78; font-weight: 800; }
-        .ticker-separator { color: #4a5568; padding: 0 15px; }
-
-        @keyframes wonderMarquee {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        /* MODAL REZERWACJI */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 9, 13, 0.85); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background-color: #141722; border: 2px solid #bda260; border-radius: 6px; width: 90%; max-width: 480px; padding: 25px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); position: relative; }
-        .close-modal-btn { position: absolute; top: 12px; right: 18px; background: none; border: none; color: #a0aec0; font-size: 24px; cursor: pointer; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; color: #bda260; margin-bottom: 6px; font-weight: bold; text-transform: uppercase; }
-        .form-group input { width: 100%; padding: 10px; background: #08090d; border: 1px solid rgba(189, 162, 96, 0.4); border-radius: 4px; color: #ffffff; font-size: 13px; box-sizing: border-box; }
-
-        @media (max-width: 992px) { .grid-board { grid-template-columns: repeat(5, 1fr); } }
-        @media (max-width: 768px) { .layout-main-flex { flex-direction: column; } }
-    </style>
-</head>
-<body>
-
-    <!-- NAGŁÓWEK -->
-    <div class="header-panel">
-        <div class="header-left">
-            <h2>PolskieOkienka.pl</h2>
-            <div class="stats-container">
-                <div class="stat-item">Odsłony dzisiaj: <span id="stat-views">14 251</span></div>
-                <div class="stat-item">Aktywne apartamenty: <span id="stat-hotels">342</span></div>
-                <div class="stat-item">Wydane nagrody: <span id="stat-rewards">1 108</span></div>
-            </div>
-        </div>
-        <div class="lang-selector">
-            <span class="lang-flag" onclick="alert('Zmieniono język na Polski')">🇵🇱</span>
-            <span class="lang-flag" onclick="alert('Language changed to English')">🇬🇧</span>
-            <span class="lang-flag" onclick="alert('Sprache auf Deutsch geändert')">🇩🇪</span>
-        </div>
     </div>
-
-    <!-- SEKCJA 1: GEOGRAFICZNA MAPA POLSKI -->
-    <div id="map-view">
-        <h1>Wybierz region, aby zobaczyć Tablicę Okienek</h1>
-        <div class="map-container">
-            <!-- Prawdziwy, precyzyjny obrys granic Rzeczypospolitej Polskiej -->
-            <svg class="poland-svg-bg" viewBox="0 0 650 600" xmlns="http://www.w3.org/2000/svg">
-                <path class="poland-path" d="M 94,115 C 110,112 125,125 140,118 C 152,112 160,95 178,98 C 190,100 198,112 212,108 C 228,102 232,85 252,88 C 270,90 280,110 300,108 C 315,106 322,92 338,98 C 348,102 352,115 365,115 C 385,115 410,75 435,78 C 450,80 458,98 472,98 C 485,98 492,85 508,92 C 520,98 522,115 538,122 C 550,128 565,120 575,135 C 582,145 572,160 582,175 C 590,188 610,192 612,208 C 615,225 595,240 602,258 C 608,272 628,285 622,302 C 615,320 592,328 588,348 C 585,365 598,382 590,398 C 582,415 560,420 555,438 C 550,455 568,475 555,490 C 545,502 525,492 515,508 C 505,522 505,545 490,555 C 480,562 468,548 455,552 C 440,558 428,575 412,572 C 398,570 392,550 378,548 C 362,545 350,558 335,552 C 322,548 318,530 302,532 C 288,535 278,552 262,548 C 248,545 242,525 228,525 C 215,525 208,540 195,538 C 180,535 175,515 160,515 C 148,515 142,530 130,525 C 118,520 120,498 108,492 C 95,485 78,492 68,480 C 60,470 70,452 62,440 C 55,430 38,428 35,412 C 32,395 50,380 45,362 C 40,348 22,342 22,325 C 22,310 40,300 42,282 C 45,265 32,250 38,235 C 42,220 58,218 62,202 C 65,188 52,175 60,160 C 68,145 88,152 94,135 Z" />
-            </svg>
-            
-            <!-- PINEZKI ZMAPOWANE DO REALNYCH REGIONÓW -->
-            <button class="city-pin" id="pin-swinoujscie" onclick="navigateToBillboard('Świnoujście')">
-                <div class="pin-dot"></div>
-                <div class="city-label lbl-top">Świnoujście</div>
-            </button>
-            <button class="city-pin" id="pin-kolobrzeg" onclick="navigateToBillboard('Kołobrzeg')">
-                <div class="pin-dot"></div>
-                <div class="city-label lbl-top">Kołobrzeg</div>
-            </button>
-            <button class="city-pin" id="pin-sopot" onclick="navigateToBillboard('Sopot')">
-                <div class="pin-dot"></div>
-                <div class="city-label lbl-top">Sopot</div>
-            </button>
-            <button class="city-pin" id="pin-karpacz" onclick="navigateToBillboard('Karpacz')">
-                <div class="pin-dot"></div>
-                <div class="city-label lbl-top">Karpacz</div>
-            </button>
-        </div>
-    </div>
-
-    <!-- SEKCJA 2: PANEL BILLBOARD (AKTYWOWANY Z MAPY) -->
-    <div id="dashboard-view">
-        <button class="back-btn" onclick="backToMap()">← Powrót do mapy głównej</button>
-        
-        <div class="billboard-frame">
-            <div class="billboard-inner">
-                <div class="layout-main-flex">
-                    
-                    <!-- SIATKA 100 OKIENEK (10x10) -->
-                    <div class="grid-wrapper">
-                        <div class="grid-board" id="advertisingGrid">
-                            <!-- JS wygeneruje tu 100 okienek -->
-                        </div>
-                    </div>
-                    
-                    <!-- SIDEBAR Z NAGRODĄ MIESIĘCZNĄ I KOŁAMI -->
-                    <div class="wheels-sidebar">
-                        
-                        <!-- JEDNO WIELKIE OKNO - NAGRODA MIESIĘCZNA -->
-                        <div class="telebim-premium-card">
-                            <div class="banner-crown">🏆 Wielkie Okno Subskrybenckie</div>
-                            <h4 class="banner-main-title" id="billboard-region-title">WONDER HOME</h4>
-                            <div class="banner-sub-title">Miesięczna Nagroda Główna</div>
-                            
-                            <div class="center-wheel-box">
-                                <canvas id="centerWheel" width="140" height="140"></canvas>
-                            </div>
-                            
-                            <div id="winnerName">Losowanie nagrody za subskrypcje: 30.06.2026</div>
-                            <div class="live-countdown">DO LOSOWANIA ZAKOŃCZENIA: 18d : 04h : 12m</div>
-                        </div>
-
-                        <!-- Koło 1: Vouchery i Rabaty -->
-                        <div class="wheel-card">
-                            <h3>🎁 Koło 1: Vouchery i Rabaty</h3>
-                            <div class="wheel-box">
-                                <div class="wheel-pointer"></div>
-                                <canvas id="wheel1" class="wheel-canvas" width="220" height="220"></canvas>
-                            </div>
-                            <button class="btn" id="spinBtn1" onclick="spinWheel(1)">Losuj nagrodę</button>
-                            <div id="result1" class="result-display"></div>
-                        </div>
-
-                        <!-- Koło 2: Atrakcje -->
-                        <div class="wheel-card">
-                            <h3>🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień</h3>
-                            <div class="wheel-box">
-                                <div class="wheel-pointer"></div>
-                                <canvas id="wheel2" class="wheel-canvas" width="220" height="220"></canvas>
-                            </div>
-                            <button class="btn" id="spinBtn2" onclick="spinWheel(2)">Wylosuj moje atrakcje</button>
-                            <div id="result2" class="result-display"></div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DOLNY PASEK REKLAMOWY -->
-    <div class="wonder-ticker-container">
-        <div class="wonder-ticker-wrap">
-            <div class="wonder-ticker-move">
-                <div class="wonder-ticker-item"><span class="brand-wonder">🏠 WONDER HOME</span>&nbsp;– Kompleksowe zarządzanie i wynajem apartamentów w Karkonoszach</div>
-                <div class="ticker-separator">|</div>
-                <div class="wonder-ticker-item"><span class="brand-top10">📈 TOP 10 WYNAJĘCIA:</span>&nbsp;Umieść swój apartament na pasku głównym – tylko <span style="text-decoration: underline;">300 zł tygodniowo netto</span>!</div>
-                <div class="ticker-separator">|</div>
-                <div class="wonder-ticker-item"><span class="brand-clean">🧼 CLEAN EKSPERT</span>&nbsp;– Profesjonalne sprzątanie apartamentów, perfekcyjna czystość i logistyka</div>
-                <div class="ticker-separator">|</div>
-                <div class="wonder-ticker-item"><span class="brand-promo">🔥 TOP OFERTA TYGODNIA:</span>&nbsp;Apartament Widokowy – zarezerwuj najbliższy weekend 10% taniej!</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL REZERWACJI -->
-    <div class="modal-overlay" id="orderModal">
-        <div class="modal-content">
-            <button class="close-modal-btn" onclick="closeModal()">×</button>
-            <h3 style="color: #bda260; margin-top: 0; text-transform: uppercase;" id="modalTitle">Rezerwacja Okienka</h3>
-            <form onsubmit="alert('Zgłoszenie rezerwacyjne wysłane pomyślnie!'); closeModal();">
-                <div class="form-group">
-                    <label>Nazwa firmy / Apartamentu</label>
-                    <input type="text" required placeholder="np. Luksusowy Apartament Wonder">
-                </div>
-                <div class="form-group">
-                    <label>Adres e-mail</label>
-                    <input type="email" required placeholder="kontakt@twojadomena.pl">
-                </div>
-                <div class="form-group">
-                    <label>Link przekierowania (URL)</label>
-                    <input type="url" required placeholder="https://">
-                </div>
-                <button type="submit" class="btn">Zgłoś rezerwację (Netto)</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        const wheel1Items = ["Zniżka -20%", "Bon 50 PLN", "Free Entry", "Bonus Gadżet", "-15% Rabatu", "Free Coffee"];
-        const wheel2Items = ["Sztolnie Kowary", "Śnieżka (1602m)", "Świątynia Wang", "Karpacz Deptak", "Zamek Chojnik"];
-        const centerWheelItems = ["Wonder Home", "Sub Nagroda", "Clean Ekspert"];
-        
-        const wheelSegmentColors = ["#141722", "#08090d", "#1c202e", "#0d1017"];
-        const goldAccent = "#bda260";
-
-        function navigateToBillboard(regionName) {
-            document.getElementById('map-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'flex';
-            document.getElementById('billboard-region-title').innerText = regionName === "Karpacz" ? "Wonder Home" : regionName;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function backToMap() {
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('map-view').style.display = 'flex';
-        }
-
-        // GENEROWANIE SIATKI - DOKŁADNIE 100 OKIENEK
-        function generateGrid() {
-            const gridContainer = document.getElementById('advertisingGrid');
-            gridContainer.innerHTML = '';
-            
-            for (let i = 1; i <= 100; i++) {
-                const isPremium = i % 8 === 0;
-                const isEmptyActive = i === 15 || i === 52;
-                
-                const link = document.createElement('a');
-                link.href = "#";
-                link.className = "cell-link";
-                link.onclick = (e) => {
-                    e.preventDefault();
-                    openModal(`Okienko nr ${i} (${isPremium ? "Premium - 350 zł netto" : "Standard - 200 zł netto"})`);
-                };
-
-                const item = document.createElement('div');
-                item.className = "grid-item";
-                
-                if (isEmptyActive) {
-                    item.classList.add("empty-active-slot");
-                    item.innerHTML = `<span class="price-tag" style="color:#000;">WOLNE</span><span class="type-tag" style="color:#000; font-weight:900;">REZERWUJ</span>`;
-                } else if (isPremium) {
-                    item.classList.add("premium-slot");
-                    item.innerHTML = `<span class="price-tag">350 zł</span><span class="type-tag">Premium</span>`;
-                } else {
-                    item.classList.add("standard-slot");
-                    item.innerHTML = `<span class="price-tag">200 zł</span><span class="type-tag">Slot ${i}</span>`;
-                }
-                
-                link.appendChild(item);
-                gridContainer.appendChild(link);
-            }
-        }
-
-        // PROSTOPADŁE RYSOWANIE TEKSTÓW NA KOŁACH
-        function drawPremiumWheel(canvasId, items) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const numSegments = items.length;
-            const radius = canvas.width / 2;
-            const segmentAngle = (2 * Math.PI) / numSegments;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < numSegments; i++) {
-                const angle = i * segmentAngle;
-                
-                ctx.beginPath();
-                ctx.moveTo(radius, radius);
-                ctx.arc(radius, radius, radius - 4, angle, angle + segmentAngle);
-                ctx.closePath();
-                
-                ctx.fillStyle = wheelSegmentColors[i % wheelSegmentColors.length];
-                ctx.fill();
-                ctx.strokeStyle = goldAccent;
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(radius, radius);
-                const midAngle = angle + segmentAngle / 2;
-                ctx.rotate(midAngle);
-
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 10px sans-serif";
-                ctx.textBaseline = "middle";
-                ctx.textAlign = "right";
-
-                const textX = radius - 15;
-                let checkAngle = midAngle % (2 * Math.PI);
-                if (checkAngle > Math.PI / 2 && checkAngle < (3 * Math.PI) / 2) {
-                    ctx.translate(textX - 35, 0);
-                    ctx.rotate(Math.PI);
-                    ctx.textAlign = "left";
-                    ctx.fillText(items[i], 0, 0);
-                } else {
-                    ctx.fillText(items[i], textX, 0);
-                }
-                ctx.restore();
-            }
-        }
-
-        let isSpinning = { 1: false, 2: false };
-        function spinWheel(wheelNum) {
-            if (isSpinning[wheelNum]) return;
-            isSpinning[wheelNum] = true;
-
-            const canvas = document.getElementById(`wheel${wheelNum}`);
-            const btn = document.getElementById(`spinBtn${wheelNum}`);
-            const resultDiv = document.getElementById(`result${wheelNum}`);
-            
-            btn.disabled = true;
-            resultDiv.style.display = "none";
-
-            const randomDegrees = Math.floor(Math.random() * 360) + 1440;
-            canvas.style.transform = `rotate(${randomDegrees}deg)`;
-
-            setTimeout(() => {
-                isSpinning[wheelNum] = false;
-                btn.disabled = false;
-                
-                const items = wheelNum === 1 ? wheel1Items : wheel2Items;
-                const segmentAngle = 360 / items.length;
-                const actualDegrees = randomDegrees % 360;
-                const index = Math.floor(((360 - actualDegrees + 270) % 360) / segmentAngle) % items.length;
-
-                resultDiv.innerHTML = `🌟 Wylosowano: <strong>${items[index]}</strong><br><a href="#" onclick="alert('Kod gotowy!')">Odbierz</a>`;
-                resultDiv.style.display = "block";
-            }, 4500);
-        }
-
-        function openModal(typeText) {
-            document.getElementById('modalTitle').innerText = `Rezerwacja: ${typeText}`;
-            document.getElementById('orderModal').classList.add('active');
-        }
-        function closeModal() {
-            document.getElementById('orderModal').classList.remove('active');
-        }
-
-        window.onload = function() {
-            generateGrid();
-            drawPremiumWheel('wheel1', wheel1Items);
-            drawPremiumWheel('wheel2', wheel2Items);
-            drawPremiumWheel('centerWheel', centerWheelItems);
-        };
-    </script>
-</body>
-</html>
+  </div>
+</div>
