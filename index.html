@@ -1,130 +1,408 @@
-<!-- STYLIZACJA PASKA (Wklej to do sekcji CSS lub na górze strony) -->
-<style>
-  /* Kontener główny paska */
-  .wonder-ticker-container {
-    width: 100%;
-    background: #111111; /* Elegancka, głęboka czerń */
-    color: #ffffff;
-    overflow: hidden;
-    padding: 14px 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    border-top: 2px solid #bfa15f; /* Delikatny złoty/beżowy akcent na krawędzi */
-    border-bottom: 2px solid #bfa15f;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    letter-spacing: 0.5px;
-  }
-
-  /* Okno przesuwu */
-  .wonder-ticker-wrap {
-    display: flex;
-    width: 100%;
-  }
-
-  /* Animacja płynnego ruchu */
-  .wonder-ticker-move {
-    display: flex;
-    white-space: nowrap;
-    padding-left: 100%;
-    animation: wonderMarquee 35s linear infinite;
-  }
-
-  /* Zatrzymanie paska po najechaniu myszką (żeby klient mógł spokojnie przeczytać lub spisać cenę) */
-  .wonder-ticker-container:hover .wonder-ticker-move {
-    animation-play-state: paused;
-  }
-
-  /* Stylizacja tekstu i elementów wewnętrznych */
-  .wonder-ticker-item {
-    display: inline-flex;
-    align-items: center;
-    padding: 0 40px;
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  /* Wyróżnienia poszczególnych marek/sekcji */
-  .brand-wonder { color: #bfa15f; font-weight: 800; } /* Złoty Wonder */
-  .brand-top10 { color: #ff4d4d; font-weight: 800; } /* Czerwony Alert na ofertę */
-  .brand-clean { color: #00d2ff; font-weight: 800; } /* Świeży błękit dla Clean Ekspert */
-  .brand-promo { color: #2ecc71; font-weight: 800; } /* Zielony dla promocji */
-
-  /* Separator między komunikatami */
-  .ticker-separator {
-    color: #555555;
-    padding: 0 20px;
-    font-weight: 300;
-  }
-
-  /* Reguła animacji przesuwającej tekst od prawej do lewej */
-  @keyframes wonderMarquee {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-100%, 0, 0); }
-  }
-
-  /* Dopasowanie do ekranów smartfonów (nieco mniejszy font, żeby nie przytłaczał) */
-  @media (max-width: 768px) {
-    .wonder-ticker-item {
-      font-size: 13px;
-      padding: 0 25px;
-    }
-    .wonder-ticker-move {
-      animation-duration: 25s; /* Na małych ekranach tekst ma krótszą drogę, więc lekko przyspieszamy */
-    }
-  }
-</style>
-
-<!-- STRUKTURA PASKA (Wklej to w miejscu na stronie, gdzie ma się wyświetlać pasek) -->
-<div class="wonder-ticker-container">
-  <div class="wonder-ticker-wrap">
-    
-    <!-- Dublujemy zawartość wewnątrz .wonder-ticker-move dla idealnie płynnej pętli bez przerw -->
-    <div class="wonder-ticker-move">
-      
-      <!-- Komunikat 1: Wonder Home -->
-      <div class="wonder-ticker-item">
-        <span class="brand-wonder">🏠 WONDER HOME</span>&nbsp;– Kompleksowe zarządzanie i wynajem apartamentów w Karkonoszach
-      </div>
-      <div class="ticker-separator">|</div>
-
-      <!-- Komunikat 2: Oferta TOP 10 (Biznesowa pod wynajem okienka) -->
-      <div class="wonder-ticker-item">
-        <span class="brand-top10">📈 TOP 10 WYNAJĘCIA:</span>&nbsp;Umieść swój apartament na pasku głównym – tylko <span style="text-decoration: underline;">300 zł tygodniowo netto</span>!
-      </div>
-      <div class="ticker-separator">|</div>
-
-      <!-- Komunikat 3: Clean Ekspert -->
-      <div class="wonder-ticker-item">
-        <span class="brand-clean">🧼 CLEAN EKSPERT</span>&nbsp;– Profesjonalne sprzątanie apartamentów, perfekcyjna czystość i logistyka
-      </div>
-      <div class="ticker-separator">|</div>
-
-      <!-- Komunikat 4: Aktualna promocja / Top Oferta -->
-      <div class="wonder-ticker-item">
-        <span class="brand-promo">🔥 TOP OFERTA TYGODNIA:</span>&nbsp;Apartament Widokowy – zarezerwuj najbliższy weekend 10% taniej!
-      </div>
-      
-      <!-- POWTÓRZENIE BLOKU (Wymagane do płynnego zapętlenia efektu marquee) -->
-      <div class="ticker-separator">|</div>
-      
-      <div class="wonder-ticker-item">
-        <span class="brand-wonder">🏠 WONDER HOME</span>&nbsp;– Kompleksowe zarządzanie i wynajem apartamentów w Karkonoszach
-      </div>
-      <div class="ticker-separator">|</div>
-
-      <div class="wonder-ticker-item">
-        <span class="brand-top10">📈 TOP 10 WYNAJĘCIA:</span>&nbsp;Umieść swój apartament na pasku głównym – tylko 300 zł tygodniowo netto!
-      </div>
-      <div class="ticker-separator">|</div>
-
-      <div class="wonder-ticker-item">
-        <span class="brand-clean">🧼 CLEAN EKSPERT</span>&nbsp;– Profesjonalne sprzątanie apartamentów, perfekcyjna czystość i logistyka
-      </div>
-      <div class="ticker-separator">|</div>
-
-      <div class="wonder-ticker-item">
-        <span class="brand-promo">🔥 TOP OFERTA TYGODNIA:</span>&nbsp;Apartament Widokowy – zarezerwuj najbliższy weekend 10% taniej!
-      </div>
-
+<div class="pjm-desc" id="t-pjmDesc">Witaj! Nasza platforma wspiera osoby niesłyszące. Kliknij ikonę, aby asystent PJM przetłumaczył najważniejsze komunikaty na stronie.</div>
     </div>
-  </div>
-</div>
+
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal()">×</button>
+            <h3 style="color: #ffd700; margin-top: 0; text-transform: uppercase;" id="modalTitle">Kupno Slotu Reklamowego</h3>
+            <form onsubmit="alert('Zgłoszenie rezerwacyjne wysłane pomyślnie! Skontaktujemy się z Tobą w celu weryfikacji płatności.'); closeModal(); return false;">
+                <div class="form-group">
+                    <label id="t-modalFormName">Nazwa Twojej Firmy / Apartamentu</label>
+                    <input type="text" required placeholder="np. Wonder Home Apartments">
+                </div>
+                <div class="form-group">
+                    <label>Adres E-mail</label>
+                    <input type="email" required placeholder="kontakt@twojadomena.pl">
+                </div>
+                <div class="form-group">
+                    <label id="t-modalFormLink">Link Przekierowania (URL)</label>
+                    <input type="url" required placeholder="https://">
+                </div>
+                <button type="submit" class="submit-order-btn" id="t-modalSubmitBtn">Zgłoś i Zapłać (Netto)</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // SŁOWNIK TŁUMACZEŃ (PL, DE, EN, CS)
+        const translations = {
+            pl: {
+                mainTitle: "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów",
+                visitorCount: "Licznik Gości:",
+                freeSlots: "Wolne Okienka:",
+                mapSubtitle: "Wybierz miasto, aby wejść na lokalną tablicę reklamową",
+                panelWeather: "☀️ Pogoda i Karkonosze",
+                currRegion: "Aktualnie w regionie:",
+                goprStatus: "🟢 GOPR: Szlaki są otwarte. Warunki dobre.",
+                panelBus: "🚌 Rozkład Jazdy (Kluczowe Połączenia)",
+                panelTrails: "🥾 Asystent Górski: Zaplanuj Trasę",
+                trailDefault: "-- Wybierz dokąd idziesz --",
+                backBtn: "← Wróć do Mapy Polski",
+                wheelPromo: "🎁 Koło 1: Vouchery i Rabaty",
+                wheelTourist: "🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień",
+                tickerLabel: "⭐ TOP OFERTA",
+                chatWelcome: "Siemanko! Jestem Twoim lokalnym asystentem AI. Zapytaj mnie o noclegi w Wonder Home, sprzątanie apartamentów przez Clean Expert lub pogodę!",
+                pjmDesc: "Witaj! Nasza platforma wspiera osoby niesłyszące. Kliknij ikonę, aby asystent PJM przetłumaczył komunikaty.",
+                modalTitle: "Kupno Slotu Reklamowego",
+                modalFormName: "Nazwa Twojej Firmy / Apartamentu",
+                modalFormLink: "Link Przekierowania (URL)",
+                modalSubmit: "Zgłoś i Zapłać (Netto)"
+            },
+            de: {
+                mainTitle: "PolskieOkienka.pl - Polnisches Werbe-Netzwerk",
+                visitorCount: "Besucherzähler:",
+                freeSlots: "Freie Fenster:",
+                mapSubtitle: "Wählen Sie eine Stadt, um die lokale Werbetafel anzuzeigen",
+                panelWeather: "☀️ Wetter & Riesengebirge",
+                currRegion: "Aktuell in der Region:",
+                goprStatus: "🟢 GOPR: Die Wege sind geöffnet. Gute Bedingungen.",
+                panelBus: "🚌 Fahrplan (Wichtige Verbindungen)",
+                panelTrails: "🥾 Bergassistent: Route planen",
+                trailDefault: "-- Wählen Sie Ihr Ziel --",
+                backBtn: "← Zurück zur Polenkarte",
+                wheelPromo: "🎁 Rad 1: Gutscheine & Rabatte",
+                wheelTourist: "🗺️ Rad 2: Planen Sie Ihren Tag",
+                tickerLabel: "⭐ TOP ANGEBOTE",
+                chatWelcome: "Hallo! Ich bin Ihr lokaler KI-Assistent. Fragen Sie mich nach Unterkünften oder dem Wetter!",
+                pjmDesc: "Willkommen! Unsere Plattform unterstützt gehörlose Menschen mittels Gebärdensprache.",
+                modalTitle: "Werbeplatz Kaufen",
+                modalFormName: "Name Ihres Unternehmens / Apartments",
+                modalFormLink: "Weiterleitungs-Link (URL)",
+                modalSubmit: "Registrieren und Bezahlen"
+            },
+            en: {
+                mainTitle: "PolskieOkienka.pl - National Billboard Network",
+                visitorCount: "Visitor Counter:",
+                freeSlots: "Free Slots:",
+                mapSubtitle: "Select a city to enter the local advertising board",
+                panelWeather: "☀️ Weather & Karkonosze",
+                currRegion: "Currently in region:",
+                goprStatus: "🟢 GOPR: Trails are open. Good conditions.",
+                panelBus: "🚌 Timetable (Key Connections)",
+                panelTrails: "🥾 Mountain Assistant: Plan Route",
+                trailDefault: "-- Choose where you want to go --",
+                backBtn: "← Back to Map of Poland",
+                wheelPromo: "🎁 Wheel 1: Vouchers & Discounts",
+                wheelTourist: "🗺️ Wheel 2: Plan Today's Activities",
+                tickerLabel: "⭐ TOP OFFERS",
+                chatWelcome: "Hello! I am your local AI assistant. Ask me about accommodation, apartment cleaning, or local weather!",
+                pjmDesc: "Welcome! Our platform supports deaf people through Sign Language animation.",
+                modalTitle: "Buy Advertising Slot",
+                modalFormName: "Your Company / Apartment Name",
+                modalFormLink: "Redirection URL",
+                modalSubmit: "Submit & Pay (Netto)"
+            },
+            cs: {
+                mainTitle: "PolskieOkienka.pl - Celostátní Reklamní Síť",
+                visitorCount: "Počítadlo návštěv:",
+                freeSlots: "Volná Okna:",
+                mapSubtitle: "Vyberte město pro vstup na lokální reklamní tabuli",
+                panelWeather: "☀️ Počasí a Krkonoše",
+                currRegion: "Aktuálně v regionu:",
+                goprStatus: "🟢 GOPR: Horská služba hlásí: Trasy otevřeny.",
+                panelBus: "🚌 Jízdní řád (Klíčové spoje)",
+                panelTrails: "🥾 Horský asistent: Plánování trasy",
+                trailDefault: "-- Vyberte kam máte namířeno --",
+                backBtn: "← Zpět na mapu Polska",
+                wheelPromo: "🎁 Kolo 1: Vouchery a Slevy",
+                wheelTourist: "🗺️ Kolo 2: Naplánujte si dnešek",
+                tickerLabel: "⭐ TOP NABÍDKY",
+                chatWelcome: "Ahoj! Jsem tvůj lokální AI asistent. Zeptej se mě na ubytování v Krkonoších nebo na počasí!",
+                pjmDesc: "Vítejte! Naše platforma podporuje neslyšící osoby prostřednictvím znakového jazyka.",
+                modalTitle: "Koupit Reklamní Slot",
+                modalFormName: "Název Vaší Firmy / Apartmánu",
+                modalFormLink: "Odkaz na přesměrování (URL)",
+                modalSubmit: "Odeslat a Zaplatit"
+            }
+        };
+
+        let currentLang = 'pl';
+        let currentCity = 'karpacz';
+
+        // ELEMENTY KÓŁ FORTUNY
+        const itemsPromo = ["Zniżka -20%", "Bon 50 PLN", "Free Entry", "Bonus Gadżet", "-15% Rabatu", "Free Coffee"];
+        const itemsTourist = ["Sztolnie Kowary", "Śnieżka (1602m)", "Świątynia Wang", "Karpacz Deptak", "Zamek Chojnik", "Zapora Łomnica"];
+        const itemsCenter = ["Wonder Home", "Sub Nagroda", "Clean Ekspert", "Bonus Slot"];
+        
+        const wheelColors = ["#1a2332", "#11141b", "#222a3a", "#0a0c12"];
+        const goldAccent = "#ffd700";
+
+        // ZMIANA JĘZYKA STRONY
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            // Podmiana tekstów w DOM
+            document.getElementById('mainTitleHeader').innerText = translations[lang].mainTitle;
+            document.getElementById('t-visitorCount').innerText = translations[lang].visitorCount;
+            document.getElementById('t-freeSlots').innerText = translations[lang].freeSlots;
+            document.getElementById('t-mapSubtitle').innerText = translations[lang].mapSubtitle;
+            document.getElementById('t-panelWeather').innerText = translations[lang].panelWeather;
+            document.getElementById('t-currRegion').innerText = translations[lang].currRegion;
+            document.getElementById('t-goprStatus').innerText = translations[lang].goprStatus;
+            document.getElementById('t-panelBus').innerText = translations[lang].panelBus;
+            document.getElementById('t-panelTrails').innerText = translations[lang].panelTrails;
+            document.getElementById('t-trailSelectDefault').innerText = translations[lang].trailDefault;
+            document.getElementById('t-backBtn').innerText = translations[lang].backBtn;
+            document.getElementById('t-wheelPromoTitle').innerText = translations[lang].wheelPromo;
+            document.getElementById('t-wheelTouristTitle').innerText = translations[lang].wheelTourist;
+            document.getElementById('t-tickerLabel').innerText = translations[lang].tickerLabel;
+            document.getElementById('t-pjmDesc').innerText = translations[lang].pjmDesc;
+            document.getElementById('modalTitle').innerText = translations[lang].modalTitle;
+            document.getElementById('t-modalFormName').innerText = translations[lang].modalFormName;
+            document.getElementById('t-modalFormLink').innerText = translations[lang].modalFormLink;
+            document.getElementById('t-modalSubmitBtn').innerText = translations[lang].modalSubmit;
+            
+            // Czyszczenie i powitanie w czacie
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML = `<div class="msg bot">${translations[lang].chatWelcome}</div>`;
+        }
+
+        // PRZEŁĄCZNIK WIDOKU (MAPA / BILLBOARD)
+        function forceCityChange(cityKey) {
+            currentCity = cityKey;
+            document.getElementById('map-view').style.display = 'none';
+            document.getElementById('touristInfoZone').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            
+            // Aktualizacja nagłówka regionalnego w Telebimie
+            document.getElementById('t-goldTitle').innerText = cityKey.replace('-', ' ').toUpperCase();
+            
+            generateDynamicGrid();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToMainMap() {
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('map-view').style.display = 'flex';
+            document.getElementById('touristInfoZone').style.display = 'grid';
+        }
+
+        // GENEROWANIE SIATKI 100 OKIENEK + INTEGRACJA TELEBIMU CENTRALNEGO
+        function generateDynamicGrid() {
+            const grid = document.getElementById('boardGrid');
+            grid.innerHTML = '';
+
+            // Wyciągamy z pamięci podręcznej strukturę Telebimu Centralnego
+            const telebimHTML = document.getElementById('mainTelebim').outerHTML;
+
+            for (let row = 1; row <= 100; row++) {
+                // Warunek sprawdzający, czy trafiliśmy na współrzędne 4x4 na środku tablicy
+                if (row === 34) {
+                    const centerContainer = document.createElement('div');
+                    centerContainer.style.gridColumn = "span 4";
+                    centerContainer.style.gridRow = "span 4";
+                    centerContainer.innerHTML = telebimHTML;
+                    // Wyciągamy ukryty ID, żeby zapobiec duplikacji w DOM i nadajemy mu aktywność
+                    centerContainer.querySelector('#mainTelebim').style.display = "flex";
+                    grid.appendChild(centerContainer);
+                    
+                    // Przeskakujemy indeksy, które zajmuje Telebim Centralny (pole 4x4)
+                    row += 3; 
+                    continue; 
+                }
+
+                // Generowanie standardowych i premium slotów dookoła
+                const cellIndex = row > 34 ? row + 36 : row; // offset indeksowania po wstawieniu telebimu
+                if (cellIndex > 100) break;
+
+                const link = document.createElement('a');
+                link.href = "#";
+                link.className = "cell-link";
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    openOrderModal('slot', cellIndex, cellIndex % 7 === 0 ? 'Premium' : 'Standard');
+                };
+
+                const item = document.createElement('div');
+                item.className = "grid-item";
+
+                // Wyróżnienie partnera Wonder Home w Karpaczu na określonym slocie
+                if (currentCity === 'karpacz' && cellIndex === 12) {
+                    item.classList.add('wonder-home-slot');
+                    item.title = "Wonder Home Karpacz - Noclegi Premium";
+                    item.style.color = "transparent";
+                } else if (cellIndex % 7 === 0) {
+                    item.classList.add('premium');
+                    item.innerHTML = `<span>300 zł</span><span style="font-size:5px;opacity:0.6;">PROMO</span>`;
+                } else {
+                    item.innerHTML = `<span>Slot</span><span>${cellIndex}</span>`;
+                }
+
+                link.appendChild(item);
+                grid.appendChild(link);
+            }
+
+            // Przeładuj rysowanie canvasów wewnątrz wygenerowanego właśnie telebimu
+            setTimeout(() => {
+                renderVectorWheel(document.querySelectorAll('#centerWheel')[1], itemsCenter, true);
+                renderVectorWheel(document.getElementById('promoWheel'), itemsPromo, false);
+                renderVectorWheel(document.getElementById('touristWheel'), itemsTourist, false);
+            }, 50);
+        }
+
+        // PROSTOPADŁE RYSOWANIE TEKSTÓW NA CANVASECH KÓŁ FORTUNY
+        function renderVectorWheel(canvas, itemList, isCenter) {
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const segments = itemList.length;
+            const radius = canvas.width / 2;
+            const angleStep = (2 * Math.PI) / segments;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < segments; i++) {
+                const startAngle = i * angleStep;
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 2, startAngle, startAngle + angleStep);
+                ctx.closePath();
+
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = isCenter ? "#ffd700" : (canvas.id === 'touristWheel' ? '#2ed573' : '#ffd700');
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Dodawanie etykiet tekstowych obróconych do środka
+                ctx.save();
+                ctx.translate(radius, radius);
+                const middleAngle = startAngle + angleStep / 2;
+                ctx.rotate(middleAngle);
+
+                ctx.fillStyle = "#ffffff";
+                ctx.font = isCenter ? "bold 7px sans-serif" : "bold 9px sans-serif";
+                ctx.textBaseline = "middle";
+                ctx.textAlign = "right";
+
+                // Korekcja odbicia lustrzanego dla czytelności tekstu w pionie
+                let normAngle = middleAngle % (2 * Math.PI);
+                if (normAngle > Math.PI / 2 && normAngle < (3 * Math.PI) / 2) {
+                    ctx.translate(radius - 22, 0);
+                    ctx.rotate(Math.PI);
+                    ctx.textAlign = "left";
+                    ctx.fillText(itemList[i], 0, 0);
+                } else {
+                    ctx.fillText(itemList[i], radius - 10, 0);
+                }
+                ctx.restore();
+            }
+        }
+
+        // PROCESY LOSOWANIA KÓŁ (ANIMACJA CSS + MATEMATYKA KĄTÓW)
+        let spinningStates = { promo: false, tourist: false, center: false };
+
+        function executeSpin(canvasId, btnId, resultId, items, stateKey) {
+            if (spinningStates[stateKey]) return;
+            spinningStates[stateKey] = true;
+
+            const canvas = document.getElementById(canvasId) || document.querySelectorAll(`#${canvasId}`)[1];
+            const btn = document.getElementById(btnId);
+            const result = document.getElementById(resultId);
+
+            if (btn) btn.disabled = true;
+            if (result) result.style.display = "none";
+
+            const deg = Math.floor(Math.random() * 360) + 1800; // Minimum 5 pełnych obrotów
+            canvas.style.transform = `rotate(${deg}deg)`;
+
+            setTimeout(() => {
+                spinningStates[stateKey] = false;
+                if (btn) btn.disabled = false;
+
+                const step = 360 / items.length;
+                const rest = deg % 360;
+                // Obliczanie wybranego segmentu względem wskaźnika u góry (270 stopni)
+                const targetIdx = Math.floor(((360 - rest + 270) % 360) / step) % items.length;
+
+                if (result) {
+                    result.innerHTML = `🏆 Wynik: <strong>${items[targetIdx]}</strong><br><a href="javascript:void(0);" onclick="alert('Kupon przypisany do przeglądarki!')">Odbierz bonus</a>`;
+                    result.style.display = "block";
+                } else {
+                    // Dla koła centralnego podstawiamy pod licznik wygranego
+                    const winnerField = document.querySelectorAll('#winnerName')[1] || document.getElementById('winnerName');
+                    winnerField.innerHTML = `Wylosowano: <strong>${items[targetIdx]}</strong>!`;
+                }
+            }, 4500);
+        }
+
+        function spinPromoWheel() { executeSpin('promoWheel', 'btnPromo', 'promoResult', itemsPromo, 'promo'); }
+        function spinTouristWheel() { executeSpin('touristWheel', 'btnTourist', 'touristResult', itemsTourist, 'tourist'); }
+        function spinCenterWheel() { executeSpin('centerWheel', 'btnCenter', null, itemsCenter, 'center'); }
+
+        // ASYSTENT GÓRSKI (KALKULATOR TRAS)
+        function calculateTrail() {
+            const picker = document.getElementById('trailPicker');
+            const result = document.getElementById('trailCalcResult');
+            
+            const data = {
+                sniezka: "Czas: 3h 45m | Dystans: 9.8 km | Suma podejść: 820m. Szlak czerwony przez Kocioł Łomniczki zamknięty zimą. Zalecany czarny przez Kopę.",
+                samotnia: "Czas: 1h 50m | Dystans: 4.5 km | Idealna trasa rodzinna. Schronisko Samotnia otwarte, serwuje kultowy żurek górski.",
+                skywalk: "Czas: 40m spaceru z centrum Świeradowa | Dystans: 2.1 km | Wieża widokowa czynna od 09:00 do 19:00. Bilet wstępu płatny na miejscu.",
+                szrenica: "Czas: 2h 20m | Dystans: 6.2 km | Szlak prowadzi obok Wodospadu Kamieńczyka (wstęp biletowany). Warunki na graniach wietrzne."
+            };
+
+            result.innerHTML = data[picker.value] || "...";
+        }
+
+        // SYSTEM OBSŁUGI MODALA (FORMULARZ)
+        function openOrderModal(type, index, tier) {
+            document.getElementById('modalTitle').innerText = `${translations[currentLang].modalTitle} [${tier} - Slot ${index}]`;
+            document.getElementById('orderModal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('orderModal').classList.remove('active');
+        }
+
+        // CZAT ASYSTENT AI - INTERAKCJA
+        function toggleChat() { document.getElementById('sigmaChat').classList.toggle('collapsed'); }
+        function handleChatKey(e) { if (e.key === 'Enter') sendChatMessage(); }
+        
+        function sendChatMessage() {
+            const inp = document.getElementById('chatInput');
+            const txt = inp.value.trim();
+            if (!txt) return;
+
+            const body = document.getElementById('chatBody');
+            body.innerHTML += `<div class="msg user">${txt}</div>`;
+            inp.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            // Logika odpowiedzi asystenta
+            setTimeout(() => {
+                let reply = "Ciekawa sprawa! Jako sztuczna inteligencja polecam sprawdzić noclegi u partnera platformy: Wonder Home w Karpaczu oraz profesjonalny serwis czystości Clean Expert!";
+                const q = txt.toLowerCase();
+                
+                if (q.includes('pogod') || q.includes('szlak')) reply = "Aktualnie w Karkonoszach mamy +18°C. Szlaki GOPR są otwarte, ale w wyższych partiach gór może wiać silny wiatr. Zawsze bierz kurtkę!";
+                if (q.includes('cena') || q.includes('koszt') || q.includes('reklam')) reply = "Cena podstawowego okienka to 200 zł netto, wyróżnienia na dolnym pasku to 300 zł tygodniowo. Kliknij w wolny slot, aby zarezerwować!";
+                
+                body.innerHTML += `<div class="msg bot">${reply}</div>`;
+                body.scrollTop = body.scrollHeight;
+            }, 800);
+        }
+
+        // WIDGET JĘZYKA MIGOWEGO PJM
+        function togglePJM() {
+            const panel = document.getElementById('pjmPanel');
+            panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // ODPOWIEDZIALNY START SYSTEMU
+        window.onload = function() {
+            changeLanguage('pl');
+            // Proste odliczanie czasu na żywo w Telebimie Głównym
+            setInterval(() => {
+                const timer = document.getElementById('liveTimer') || document.querySelectorAll('#liveTimer')[1];
+                if(timer) {
+                    let parts = timer.innerText.split(':');
+                    let secs = parseInt(parts[3]) - 1;
+                    if(secs < 0) { secs = 59; }
+                    parts[3] = secs.toString().padStart(2, '0');
+                    timer.innerText = parts.join(':');
+                }
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
