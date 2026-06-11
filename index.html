@@ -28,24 +28,35 @@
             z-index: -1;
         }
 
-        /* NAGŁÓWEK PREMIUM */
+        /* NAGŁÓWEK PREMIUM DZIELONY NA LOGO I JĘZYKI */
         .header-panel {
             background: linear-gradient(135deg, #1e2530, #11141b);
             border: 2px solid #ffd700;
             border-radius: 10px;
             padding: 12px 20px;
-            text-align: center;
             margin-bottom: 15px;
             box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
             width: 100%;
             max-width: 1400px;
             box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
+        .header-left { flex: 1; text-align: left; }
         .header-panel h2 { margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; color: #eaeded; font-size: 18px; }
-        .stats-container { display: flex; justify-content: center; gap: 20px; font-size: 13px; font-weight: bold; flex-wrap: wrap; }
+        .stats-container { display: flex; gap: 20px; font-size: 13px; font-weight: bold; flex-wrap: wrap; }
         .stat-item { color: #fff; }
         .stat-item span { color: #ffd700; font-size: 15px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+
+        /* WYBÓR JĘZYKA */
+        .lang-selector { display: flex; gap: 8px; background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 20px; border: 1px solid rgba(255,215,0,0.3); }
+        .lang-flag { font-size: 20px; cursor: pointer; transition: transform 0.2s, filter 0.2s; filter: grayscale(40%); }
+        .lang-flag:hover { transform: scale(1.2); filter: grayscale(0%); }
+        .lang-flag.active { filter: grayscale(0%); transform: scale(1.1); border-bottom: 2px solid #ffd700; }
 
         /* SEKCJA MAPY */
         #map-view {
@@ -74,18 +85,13 @@
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
         }
 
-        /* DOKŁADNE POLSKIE GRANICE SVG */
         .poland-svg-bg {
             position: absolute;
-            top: 2%;
-            left: 2%;
-            width: 96%;
-            height: 96%;
-            z-index: 1;
-            pointer-events: none;
+            top: 2%; left: 2%; width: 96%; height: 96%;
+            z-index: 1; pointer-events: none;
         }
 
-        /* PINEZKI JAKO PRZYCISKI */
+        /* PINEZKI */
         .city-pin {
             position: absolute;
             z-index: 10;
@@ -93,45 +99,27 @@
             flex-direction: column;
             align-items: center;
             transform: translate(-50%, -50%);
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            cursor: pointer;
-            outline: none;
+            background: none; border: none; padding: 0; margin: 0;
+            cursor: pointer; outline: none;
         }
         
         .pin-dot {
             width: 14px; height: 14px;
-            background-color: #ffd700;
-            border: 2px solid #fff;
-            border-radius: 50%;
+            background-color: #ffd700; border: 2px solid #fff; border-radius: 50%;
             box-shadow: 0 0 12px #ffd700, 0 0 6px #ff8c00;
-            transition: transform 0.2s;
-            z-index: 2;
+            transition: transform 0.2s; z-index: 2;
         }
         
         .city-label {
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            white-space: nowrap;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 3px 6px;
-            border-radius: 4px;
-            border: 1px solid #ffd700;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.8);
-            transition: all 0.2s;
-            position: absolute;
+            color: #ffffff; font-size: 10px; font-weight: 900; text-transform: uppercase; white-space: nowrap;
+            background: rgba(0, 0, 0, 0.9); padding: 3px 6px; border-radius: 4px; border: 1px solid #ffd700;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.8); transition: all 0.2s; position: absolute;
         }
 
-        /* POZYCJONOWANIE ETYKIET */
         .lbl-top { bottom: 18px; left: 50%; transform: translateX(-50%); }
         .lbl-bottom { top: 18px; left: 50%; transform: translateX(-50%); }
         .lbl-left { right: 18px; top: 50%; transform: translateY(-50%); }
         .lbl-right { left: 18px; top: 50%; transform: translateY(-50%); }
-        
         .lbl-szklarska { bottom: 18px; right: -20px; transform: translateX(0); }
         .lbl-karpacz { top: 18px; left: 50%; transform: translateX(-50%); }
         .lbl-swieradow { bottom: 18px; left: -30px; transform: translateX(0); }
@@ -139,7 +127,6 @@
         .city-pin:hover .pin-dot { transform: scale(1.4); background-color: #ff8c00; }
         .city-pin:hover .city-label { background: #ffd700; color: #000; font-size: 11px; box-shadow: 0 0 15px rgba(255,215,0,1); z-index: 50; }
 
-        /* ROZSTAWIENIE PINEZEK DOPASOWANE DO NOWEJ MAPY */
         #pin-swinoujscie { top: 18%; left: 8%; }
         #pin-kolobrzeg   { top: 12%; left: 23%; }
         #pin-sopot        { top: 10%; left: 50%; }
@@ -153,35 +140,18 @@
 
         /* STREFA TURYSTY */
         .tourist-zone {
-            width: 100%;
-            max-width: 1400px;
-            margin: 20px 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            box-sizing: border-box;
+            width: 100%; max-width: 1400px; margin: 20px 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; box-sizing: border-box;
         }
 
         .tourist-panel {
-            background: linear-gradient(135deg, #151922, #1a1d24);
-            border: 1px solid #ffd700;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            box-sizing: border-box;
+            background: linear-gradient(135deg, #151922, #1a1d24); border: 1px solid #ffd700;
+            border-radius: 8px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); box-sizing: border-box;
         }
 
         .tourist-panel h3 {
-            margin: 0 0 12px 0;
-            color: #ffd700;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px dashed rgba(255,215,0,0.3);
-            padding-bottom: 6px;
+            margin: 0 0 12px 0; color: #ffd700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;
+            display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed rgba(255,215,0,0.3); padding-bottom: 6px;
         }
 
         .weather-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -207,14 +177,12 @@
 
         .billboard-frame {
             background: linear-gradient(135deg, #bdc3c7 0%, #eaeded 25%, #95a5a6 50%, #eaeded 75%, #7f8c8d 100%);
-            padding: 12px; border-radius: 6px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.6);
+            padding: 12px; border-radius: 6px; box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.6);
             border: 3px solid #7f8c8d; box-sizing: border-box; width: 100%;
         }
 
         .billboard-inner { background-color: #1a1d24; border: 2px solid #2c3e50; padding: 12px; border-radius: 2px; }
         .layout-grid { display: flex; flex-direction: column; gap: 15px; }
-
         .grid-wrapper { flex: 1.4; width: 100%; overflow-x: auto; }
 
         .grid-board {
@@ -237,12 +205,9 @@
         .cell-link:hover .grid-item { transform: scale(1.06); z-index: 5; border-color: #ffd700; }
         .grid-item.premium { border: 1px solid #ffd700; color: #ffd700; }
 
-        /* WONDER HOME SLOT */
         .grid-item.wonder-home-slot {
             background: #ffffff url('397038002.jpg') no-repeat center center;
-            background-size: contain;
-            color: transparent;
-            border: 2px solid #ffd700;
+            background-size: contain; color: transparent; border: 2px solid #ffd700;
         }
 
         /* TELEBIM CENTRALNY */
@@ -271,7 +236,7 @@
             padding: 2px 6px; border-radius: 10px; cursor: pointer; text-transform: uppercase;
         }
 
-        /* SEKCJA KÓŁ BOCZNYCH */
+        /* SIDEBAR KOŁA */
         .wheels-sidebar { display: flex; flex-direction: column; gap: 15px; flex: 0.8; width: 100%; }
 
         .wheel-card {
@@ -309,10 +274,10 @@
         .wheel-card.tourist-card .result-display { border-color: #2ed573; }
         .result-display a { color: #1e90ff; font-weight: bold; text-decoration: underline; display: inline-block; margin-top: 4px; }
 
-        /* STYLIZACJA MODALA */
+        /* MODAL */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 15, 30, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            background: rgba(10, 15, 30, 0.75); backdrop-filter: blur(8px);
             display: flex; justify-content: center; align-items: center; z-index: 2000;
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
@@ -322,64 +287,44 @@
             background: linear-gradient(135deg, rgba(20, 25, 45, 0.95), rgba(30, 40, 70, 0.95));
             border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 16px;
             width: 90%; max-width: 500px; padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             position: relative; transform: translateY(-30px); transition: transform 0.3s ease; color: #ffffff;
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
-        .close-modal-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #8fa0dd; font-size: 28px; cursor: pointer; transition: color 0.2s; }
-        .close-modal-btn:hover { color: #00f2fe; }
-        .modal-header h2 { font-size: 22px; margin-bottom: 5px; background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .modal-header p { font-size: 14px; color: #a0aec0; margin-bottom: 25px; }
+        .close-modal-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #8fa0dd; font-size: 28px; cursor: pointer; }
+        
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; font-size: 13px; color: #cbd5e0; margin-bottom: 6px; font-weight: 500; }
-        .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; background: rgba(10, 15, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #ffffff; font-size: 14px; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #00f2fe; box-shadow: 0 0 8px rgba(0, 242, 254, 0.3); }
-        .submit-order-btn { width: 100%; padding: 13px; background: linear-gradient(90deg, #00f2fe, #4facfe); border: none; border-radius: 8px; color: #ffffff; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 10px; }
-        .submit-order-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
+        .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; background: rgba(10, 15, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #ffffff; font-size: 14px; box-sizing: border-box; }
+        .submit-order-btn { width: 100%; padding: 13px; background: linear-gradient(90deg, #00f2fe, #4facfe); border: none; border-radius: 8px; color: #ffffff; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
 
-        /* PASEK TOP OFERTY DNIA */
+        /* TICKER DNIA */
         .ticker-wrap {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(90deg, #11141b, #1e2530);
-            border-top: 2px solid #ffd700; padding: 10px 0;
-            overflow: hidden; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+            position: fixed; bottom: 0; left: 0; width: 100%; background: linear-gradient(90deg, #11141b, #1e2530);
+            border-top: 2px solid #ffd700; padding: 10px 0; overflow: hidden; z-index: 999;
         }
         .ticker-title {
-            position: absolute; left: 0; top: 0; bottom: 0; background: #ffd700;
-            color: #000; font-weight: 900; font-size: 11px; display: flex;
-            align-items: center; padding: 0 15px; z-index: 10; text-transform: uppercase;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.5); letter-spacing: 0.5px;
+            position: absolute; left: 0; top: 0; bottom: 0; background: #ffd700; color: #000;
+            font-weight: 900; font-size: 11px; display: flex; align-items: center; padding: 0 15px; z-index: 10; text-transform: uppercase;
         }
         .ticker { display: flex; white-space: nowrap; padding-left: 140px; animation: ticker 25s linear infinite; }
-        .ticker:hover { animation-play-state: paused; }
-        .ticker-item {
-            display: inline-block; padding: 0 25px; color: #fff; font-size: 12px;
-            font-weight: bold; border-right: 1px dashed rgba(255,215,0,0.4);
-        }
+        .ticker-item { display: inline-block; padding: 0 25px; color: #fff; font-size: 12px; font-weight: bold; border-right: 1px dashed rgba(255,215,0,0.4); }
         .ticker-item a { color: #ffd700; text-decoration: none; margin-left: 5px; }
-        .ticker-item a:hover { text-decoration: underline; }
 
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
-        }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
         /* CZAT ASYSTENT AI */
         .chat-widget {
-            position: fixed; bottom: 55px; right: 20px; width: 300px;
-            background: rgba(15, 19, 28, 0.98); border: 2px solid #ffd700;
-            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            display: flex; flex-direction: column; z-index: 1000;
-            overflow: hidden; transition: all 0.3s ease; transform: translateY(0);
+            position: fixed; bottom: 55px; right: 20px; width: 300px; background: rgba(15, 19, 28, 0.98);
+            border: 2px solid #ffd700; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; z-index: 1000; overflow: hidden; transition: all 0.3s ease;
         }
-        .chat-widget.collapsed { width: 50px; height: 50px; border-radius: 50%; bottom: 55px; overflow: hidden; }
+        .chat-widget.collapsed { width: 50px; height: 50px; border-radius: 50%; bottom: 55px; }
         .chat-header {
-            background: linear-gradient(135deg, #1e2530, #11141b);
-            padding: 10px; color: #ffd700; font-weight: 900; font-size: 12px;
-            text-transform: uppercase; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; border-bottom: 1px solid #2c3e50;
+            background: linear-gradient(135deg, #1e2530, #11141b); padding: 10px; color: #ffd700;
+            font-weight: 900; font-size: 12px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
         }
-        .chat-header span.status-dot { width: 8px; height: 8px; background: #2ed573; border-radius: 50%; display: inline-block; margin-right: 6px; box-shadow: 0 0 8px #2ed573; }
+        .chat-header span.status-dot { width: 8px; height: 8px; background: #2ed573; border-radius: 50%; display: inline-block; margin-right: 6px; }
         .chat-body { padding: 10px; height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 11px; background: #11141b; }
         .chat-widget.collapsed .chat-body, .chat-widget.collapsed .chat-input-area { display: none; }
         .msg { padding: 6px 10px; border-radius: 6px; max-width: 85%; line-height: 1.4; word-wrap: break-word; }
@@ -387,418 +332,493 @@
         .msg.user { background: #2c3e50; color: #ffd700; align-self: flex-end; }
         .chat-input-area { display: flex; border-top: 1px solid #2c3e50; background: #151922; }
         .chat-input { flex: 1; padding: 10px; background: none; border: none; color: #fff; font-size: 11px; outline: none; }
-        .chat-btn { background: #ffd700; border: none; color: #000; font-weight: bold; padding: 0 12px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
-        .chat-btn:hover { background: #ff8c00; }
-        .chat-toggle-icon { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; background: #ffd700; color: #000; }
+        .chat-btn { background: #ffd700; border: none; color: #000; font-weight: bold; padding: 0 12px; cursor: pointer; font-size: 11px; }
+        .chat-toggle-icon { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; font-size: 22px; background: #ffd700; color: #000; }
         .chat-widget.collapsed .chat-toggle-icon { display: flex; }
         .chat-widget.collapsed .chat-header { display: none; }
 
-        /* NOWOŚĆ: MODUŁ I PRZYCISK JĘZYKA MIGOWEGO (PJM) */
+        /* WIDGET PJM */
         .pjm-widget {
             position: fixed; bottom: 55px; left: 20px; width: 50px; height: 50px;
-            background: linear-gradient(135deg, #1e90ff, #0056b3); border: 2px solid #fff;
-            border-radius: 50%; box-shadow: 0 8px 25px rgba(30,144,255,0.5);
-            display: flex; justify-content: center; align-items: center; z-index: 1000;
-            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-            animation: pulsePJM 2s infinite;
+            background: linear-gradient(135deg, #1e90ff, #0056b3); border: 2px solid #fff; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; z-index: 1000; cursor: pointer; animation: pulsePJM 2s infinite;
         }
-        .pjm-widget:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(30,144,255,0.7); }
-        .pjm-icon { font-size: 24px; color: #ffffff; pointer-events: none; }
-
-        /* MODAL WIDEO TŁUMACZA PJM */
         .pjm-panel {
-            position: fixed; bottom: 115px; left: 20px; width: 280px;
-            background: rgba(15, 19, 28, 0.98); border: 2px solid #1e90ff;
-            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            display: none; flex-direction: column; z-index: 1001; overflow: hidden;
-            animation: fadeIn 0.3s ease;
+            position: fixed; bottom: 115px; left: 20px; width: 280px; background: rgba(15, 19, 28, 0.98);
+            border: 2px solid #1e90ff; border-radius: 12px; display: none; flex-direction: column; z-index: 1001; overflow: hidden;
         }
         .pjm-panel.active { display: flex; }
-        .pjm-header {
-            background: linear-gradient(135deg, #1e90ff, #11141b); padding: 8px 12px;
-            color: #fff; font-weight: bold; font-size: 11px; display: flex;
-            justify-content: space-between; align-items: center; border-bottom: 1px solid #2c3e50;
-        }
-        .pjm-video-box { width: 100%; aspect-ratio: 4/3; background: #000; position: relative; }
+        .pjm-header { background: linear-gradient(135deg, #1e90ff, #11141b); padding: 8px 12px; color: #fff; font-weight: bold; font-size: 11px; display: flex; justify-content: space-between; align-items: center; }
+        .pjm-video-box { width: 100%; aspect-ratio: 4/3; background: #000; }
         .pjm-video-box video { width: 100%; height: 100%; object-fit: cover; }
         .pjm-desc { padding: 10px; font-size: 11px; color: #ccc; line-height: 1.4; background: #11141b; text-align: center; }
 
-        @keyframes pulsePJM {
-            0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.7); }
-            70% { box-shadow: 0 0 0 12px rgba(30, 144, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0); }
-        }
-
-        @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
-        
-        @media (max-width: 1024px) {
-            .layout-grid { flex-direction: column; align-items: center; gap: 25px; }
-            .grid-wrapper { max-width: 100%; }
-            .wheels-sidebar { flex-direction: row; width: 100%; gap: 15px; }
-            .wheel-card { flex: 1; min-width: 250px; }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 5px; }
-            .header-panel { padding: 10px; margin-bottom: 10px; }
-            .header-panel h2 { font-size: 15px; }
-            .stats-container { gap: 10px; font-size: 11px; }
-            #map-view { padding: 10px; }
-            #map-view h1 { font-size: 11px; margin-bottom: 10px; }
-            .city-label { font-size: 8px; padding: 2px 4px; }
-            .wheels-sidebar { flex-direction: column; align-items: center; }
-            .wheel-card { width: 100%; max-width: 320px; }
-            .modal-content { padding: 20px; width: 95%; }
-            .modal-header h2 { font-size: 18px; }
-            .tourist-zone { grid-template-columns: 1fr; }
-            .pjm-panel { bottom: auto; top: 70px; left: 5%; width: 90%; }
-        }
-
-        @media (max-width: 480px) {
-            .grid-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .grid-board { min-width: 550px; }
-            .billboard-frame { padding: 6px; }
-            .billboard-inner { padding: 6px; }
-            .back-btn { width: 100%; text-align: center; padding: 10px; }
-        }
-
+        @keyframes pulsePJM { 0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(30, 144, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+        @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
+        @media (max-width: 1024px) { .layout-grid { flex-direction: column; align-items: center; gap: 25px; } .wheels-sidebar { flex-direction: row; width: 100%; gap: 15px; } }
+        @media (max-width: 768px) { .header-panel { flex-direction: column; text-align: center; } .header-left { text-align: center; } .tourist-zone { grid-template-columns: 1fr; } .pjm-panel { bottom: auto; top: 70px; left: 5%; width: 90%; } }
     </style>
 </head>
 <body>
 
-    <!-- TELEBIM CENTRALNY BUFFER -->
+    <!-- CACHOWANY TELEBIM CENTRALNY -->
     <div style="display:none;">
         <div class="grid-center" id="mainTelebim">
-            <div class="banner-crown">Złoty Baner - Nagroda Główna</div>
-            <div class="banner-main-title">ZŁOTY EKSPONAT</div>
-            
+            <div class="banner-crown" id="t-goldBanner">Złoty Baner - Nagroda Główna</div>
+            <div class="banner-main-title" id="t-goldTitle">ZŁOTY EKSPONAT</div>
             <div class="center-wheel-box">
                 <div class="center-pointer"></div>
                 <canvas id="centerWheel" width="85" height="85"></canvas>
             </div>
-            <button class="btn-center-spin" id="btnCenter" onclick="spinCenterWheel()">Losuj Baner</button>
-
-            <div id="winnerName">Ładowanie...</div>
+            <button class="btn-center-spin" id="btnCenter" onclick="spinCenterWheel()">Draw</button>
+            <div id="winnerName">...</div>
             <div class="live-countdown" id="liveTimer">00:00:04:00</div>
         </div>
     </div>
 
+    <!-- NAGŁÓWEK Z PANELU JĘZYKÓW -->
     <div class="header-panel">
-        <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
-        <div class="stats-container">
-            <div class="stat-item">Licznik Gości w Sieci: <span id="globalGuests">14 205</span> osób dzisiaj</div>
-            <div class="stat-item">Wolne Okienka w Regionie: <span id="regionFreeSlots">84</span> / 100</div>
+        <div class="header-left">
+            <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
+            <div class="stats-container">
+                <div class="stat-item"><span id="t-visitorCount">Licznik Gości:</span> <span id="globalGuests">14 205</span></div>
+                <div class="stat-item"><span id="t-freeSlots">Wolne Okienka:</span> <span id="regionFreeSlots">84</span> / 100</div>
+            </div>
+        </div>
+        <!-- PRZEŁĄCZNIK JĘZYKÓW (FLAGI) -->
+        <div class="lang-selector">
+            <span class="lang-flag active" id="lang-pl" onclick="changeLanguage('pl')">🇵🇱</span>
+            <span class="lang-flag" id="lang-de" onclick="changeLanguage('de')">🇩🇪</span>
+            <span class="lang-flag" id="lang-en" onclick="changeLanguage('en')">🇬🇧</span>
+            <span class="lang-flag" id="lang-cs" onclick="changeLanguage('cs')">🇨🇿</span>
         </div>
     </div>
 
-    <!-- MAPA POLSKI Z REALISTYCZNYM OBRYSEM GRANIC -->
+    <!-- MAPA -->
     <div id="map-view">
-        <h1>Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
+        <h1 id="t-mapSubtitle">Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
         <div class="map-container">
-            
             <svg class="poland-svg-bg" viewBox="0 0 650 600" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 125,95 C 130,90 145,80 155,83 C 170,85 178,92 195,85 C 210,80 220,55 240,55 C 265,55 280,68 310,60 C 330,55 332,40 355,42 C 375,44 390,62 415,55 C 440,48 450,22 475,25 C 500,28 505,48 525,58 C 550,70 575,55 595,78 C 610,95 602,115 620,130 C 630,140 642,162 635,180 C 625,205 632,230 622,255 C 612,280 628,310 615,335 C 602,360 578,375 570,402 C 562,430 580,455 565,485 C 550,515 522,510 505,538 C 492,560 488,585 465,595 C 445,602 430,580 410,585 C 390,590 375,600 355,590 C 335,580 330,555 310,550 C 290,545 272,558 250,552 C 228,546 215,520 195,522 C 175,524 160,540 140,532 C 125,525 128,500 115,490 C 102,480 85,485 72,472 C 60,460 65,438 52,425 C 40,412 18,405 18,385 C 18,365 35,355 35,335 C 35,315 22,298 28,278 C 34,258 55,252 55,232 C 55,212 40,195 48,175 C 56,155 75,150 85,130 C 95,110 110,115 125,95 Z" 
-                      fill="rgba(255, 215, 0, 0.03)" stroke="#ffd700" stroke-width="2.5" stroke-dasharray="1 3" filter="drop-shadow(0px 0px 15px rgba(255,215,0,0.25))"/>
+                      fill="rgba(255, 215, 0, 0.03)" stroke="#ffd700" stroke-width="2.5" stroke-dasharray="1 3"/>
             </svg>
-            
-            <!-- PRZYCISKI PINEZEK Z DIRECTNYM WYWOŁANIEM FUNKCJI -->
-            <button class="city-pin" id="pin-swinoujscie" onclick="forceCityChange('swinoujscie')">
-                <div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div>
-            </button>
-            <button class="city-pin" id="pin-kolobrzeg" onclick="forceCityChange('kolobrzeg')">
-                <div class="pin-dot"></div><div class="city-label lbl-top">Kołobrzeg</div>
-            </button>
-            <button class="city-pin" id="pin-sopot" onclick="forceCityChange('sopot')">
-                <div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div>
-            </button>
-            
-            <button class="city-pin" id="pin-swieradow" onclick="forceCityChange('swieradow-zdroj')">
-                <div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div>
-            </button>
-            <button class="city-pin" id="pin-szklarska" onclick="forceCityChange('szklarska-poreba')">
-                <div class="pin-dot"></div><div class="city-label lbl-szklarska">Szklarska Poręba</div>
-            </button>
-            <button class="city-pin" id="pin-karpacz" onclick="forceCityChange('karpacz')">
-                <div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div>
-            </button>
-            
-            <button class="city-pin" id="pin-wisla" onclick="forceCityChange('wisla')">
-                <div class="pin-dot"></div><div class="city-label lbl-left">Wisła</div>
-            </button>
-            <button class="city-pin" id="pin-zakopane" onclick="forceCityChange('zakopane')">
-                <div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div>
-            </button>
-            <button class="city-pin" id="pin-szccawnica" onclick="forceCityChange('szccawnica')">
-                <div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div>
-            </button>
-            <button class="city-pin" id="pin-krynica" onclick="forceCityChange('krynica-zdroj')">
-                <div class="pin-dot"></div><div class="city-label lbl-right">Krynica-Zdrój</div>
-            </button>
-
+            <button class="city-pin" id="pin-swinoujscie" onclick="forceCityChange('swinoujscie')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div></button>
+            <button class="city-pin" id="pin-kolobrzeg" onclick="forceCityChange('kolobrzeg')"><div class="pin-dot"></div><div class="city-label lbl-top">Kołobrzeg</div></button>
+            <button class="city-pin" id="pin-sopot" onclick="forceCityChange('sopot')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div></button>
+            <button class="city-pin" id="pin-swieradow" onclick="forceCityChange('swieradow-zdroj')"><div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div></button>
+            <button class="city-pin" id="pin-szklarska" onclick="forceCityChange('szklarska-poreba')"><div class="pin-dot"></div><div class="city-label lbl-szklarska">Szklarska Poręba</div></button>
+            <button class="city-pin" id="pin-karpacz" onclick="forceCityChange('karpacz')"><div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div></button>
+            <button class="city-pin" id="pin-wisla" onclick="forceCityChange('wisla')"><div class="pin-dot"></div><div class="city-label lbl-left">Wisła</div></button>
+            <button class="city-pin" id="pin-zakopane" onclick="forceCityChange('zakopane')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div></button>
+            <button class="city-pin" id="pin-szccawnica" onclick="forceCityChange('szccawnica')"><div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div></button>
+            <button class="city-pin" id="pin-krynica" onclick="forceCityChange('krynica-zdroj')"><div class="pin-dot"></div><div class="city-label lbl-right">Krynica-Zdrój</div></button>
         </div>
     </div>
 
-    <!-- STREFA PRAKTYCZNA DLA TURYSTY -->
+    <!-- TURYSTYKA -->
     <div class="tourist-zone" id="touristInfoZone">
-        
-        <!-- POGODA -->
         <div class="tourist-panel">
-            <h3>☀️ Pogoda i Karkonosze</h3>
+            <h3 id="t-panelWeather">☀️ Pogoda i Karkonosze</h3>
             <div class="weather-info">
                 <div>
-                    <div style="font-size: 11px; color: #aaa;">Aktualnie w regionie:</div>
+                    <div style="font-size: 11px; color: #aaa;" id="t-currRegion">Aktualnie w regionie:</div>
                     <div style="color: #fff; font-weight: bold; font-size: 13px;">Karpacz / Karkonosze</div>
                 </div>
                 <div class="weather-temp">+18°C</div>
             </div>
-            <div class="trail-status">🟢 GOPR: Szlaki są otwarte. Warunki dobre.</div>
+            <div class="trail-status" id="t-goprStatus">🟢 GOPR: Szlaki są otwarte. Warunki dobre.</div>
         </div>
 
-        <!-- ROZKŁAD JAZDY -->
         <div class="tourist-panel">
-            <h3>🚌 Szybki Rozkład Jazdy (Kluczowe Połączenia)</h3>
+            <h3 id="t-panelBus">🚌 Rozkład Jazdy (Kluczowe Połączenia)</h3>
             <div class="bus-list">
-                <div class="bus-item">
-                    <span>Kowary → Karpacz Górny (PKS/Bus)</span>
-                    <span class="bus-time">07:15, 09:40, 12:10, 15:35</span>
-                </div>
-                <div class="bus-item">
-                    <span>Karpacz → Jelenia Góra przez Kowary</span>
-                    <span class="bus-time">08:20, 10:50, 14:15, 17:40</span>
-                </div>
+                <div class="bus-item"><span>Kowary → Karpacz Górny (PKS)</span><span class="bus-time">07:15, 09:40, 12:10, 15:35</span></div>
+                <div class="bus-item"><span>Karpacz → Jelenia Góra (przez Kowary)</span><span class="bus-time">08:20, 10:50, 14:15, 17:40</span></div>
             </div>
         </div>
 
-        <!-- KALKULATOR SZLAKÓW -->
         <div class="tourist-panel">
-            <h3>🥾 Asystent Górski: Zaplanuj Trasę</h3>
+            <h3 id="t-panelTrails">🥾 Asystent Górski: Zaplanuj Trasę</h3>
             <select class="trail-select" id="trailPicker" onchange="calculateTrail()">
-                <option value="">-- Wybierz dokąd idziesz --</option>
-                <option value="sniezka">Z Karpacza (Wang) ➔ Śnieżka</option>
-                <option value="samotnia">Z Karpacza ➔ Schronisko Samotnia</option>
-                <option value="skywalk">Ze Świeradowa ➔ Wieża Sky Walk</option>
-                <option value="szrenica">Ze Szklarskiej Poręby ➔ Szrenica</option>
+                <option value="" id="t-trailSelectDefault">-- Wybierz dokąd idziesz --</option>
+                <option value="sniezka">Karpacz (Wang) ➔ Śnieżka</option>
+                <option value="samotnia">Karpacz ➔ Samotnia</option>
+                <option value="skywalk">Świeradów ➔ Sky Walk</option>
+                <option value="szrenica">Szklarska Poręba ➔ Szrenica</option>
             </select>
-            <div class="trail-result" id="trailCalcResult">Wybierz trasę z listy powyżej, aby zobaczyć czas przejścia i stopień trudności.</div>
+            <div class="trail-result" id="trailCalcResult">...</div>
         </div>
-
     </div>
 
     <!-- PANEL BILLBOARDU -->
     <div id="dashboard-view">
-        <button class="back-btn" onclick="backToMainMap()">← Wróć do Mapy Polski</button>
-
+        <button class="back-btn" id="t-backBtn" onclick="backToMainMap()">← Wróć do Mapy Polski</button>
         <div class="billboard-frame">
             <div class="billboard-inner">
                 <div class="layout-grid">
+                    <div class="grid-wrapper"><div class="grid-board" id="boardGrid"></div></div>
                     
-                    <div class="grid-wrapper">
-                        <div class="grid-board" id="boardGrid"></div>
-                    </div>
-
-                    <!-- SIDEBAR KOŁA -->
                     <div class="wheels-sidebar">
-                        
                         <div class="wheel-card">
-                            <h3>🎁 Koło 1: Vouchery i Rabaty</h3>
+                            <h3 id="t-wheelPromoTitle">🎁 Koło 1: Vouchery i Rabaty</h3>
                             <div class="wheel-box">
                                 <div class="wheel-pointer"></div>
                                 <canvas class="wheel-canvas" id="promoWheel" width="170" height="170"></canvas>
                             </div>
-                            <button class="btn" id="btnPromo" onclick="spinPromoWheel()">Losuj Rabat Klientowi</button>
+                            <button class="btn" id="btnPromo" onclick="spinPromoWheel()">Draw</button>
                             <div class="result-display" id="promoResult"></div>
                         </div>
 
                         <div class="wheel-card tourist-card">
-                            <h3>🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień</h3>
+                            <h3 id="t-wheelTouristTitle">🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień</h3>
                             <div class="wheel-box">
                                 <div class="wheel-pointer"></div>
                                 <canvas class="wheel-canvas" id="touristWheel" width="170" height="170"></canvas>
                             </div>
-                            <button class="btn btn-tourist" id="btnTourist" onclick="spinTouristWheel()">Wylosuj Moje Atrakcje</button>
+                            <button class="btn btn-tourist" id="btnTourist" onclick="spinTouristWheel()">Draw</button>
                             <div class="result-display" id="touristResult"></div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PASEK "TOP OFERTY DNIA" -->
+    <!-- TICKER DNIA -->
     <div class="ticker-wrap">
-        <div class="ticker-title">⭐ TOP OFERTY</div>
+        <div class="ticker-title" id="t-tickerLabel">⭐ TOP OFERTY</div>
         <div class="ticker">
             <div class="ticker-item">Noclegi Karkonosze: <a href="https://wonderhome.eu/" target="_blank">Wonder Home Karpacz</a></div>
             <div class="ticker-item">Apartamenty Serwis: <a href="http://www.xn--sprztanie-g1a.jelenia.pl" target="_blank">Clean Expert Jelenia Góra</a></div>
-            <div class="ticker-item">Komfortowy Urlop: <a href="https://www.widokowo-karpacz.pl" target="_blank">Widokowo Karpacz</a></div>
-            <div class="ticker-item">Zgłoś Swoją Firmę! <a href="javascript:void(0);" onclick="openOrderModal('ogolny', 0, 'Premium')">Kup Slot Reklamowy</a></div>
-            <!-- Zdwojenie elementów dla płynnej pętli animacji -->
+            <div class="ticker-item">Zgłoś Swoją Firmę! <a href="javascript:void(0);" onclick="openOrderModal('ogolny', 0, 'Premium')">Kup Slot</a></div>
             <div class="ticker-item">Noclegi Karkonosze: <a href="https://wonderhome.eu/" target="_blank">Wonder Home Karpacz</a></div>
             <div class="ticker-item">Apartamenty Serwis: <a href="http://www.xn--sprztanie-g1a.jelenia.pl" target="_blank">Clean Expert Jelenia Góra</a></div>
-            <div class="ticker-item">Komfortowy Urlop: <a href="https://www.widokowo-karpacz.pl" target="_blank">Widokowo Karpacz</a></div>
-            <div class="ticker-item">Zgłoś Swoją Firmę! <a href="javascript:void(0);" onclick="openOrderModal('ogolny', 0, 'Premium')">Kup Slot Reklamowy</a></div>
         </div>
     </div>
 
-    <!-- ASYSTENT AI W KLIMACIE SIGMA -->
+    <!-- SIGMA CHAT AI -->
     <div class="chat-widget collapsed" id="sigmaChat">
         <div class="chat-toggle-icon" onclick="toggleChat()">💬</div>
         <div class="chat-header" onclick="toggleChat()">
             <div><span class="status-dot"></span>Sigma Asystent AI</div>
-            <div style="cursor:pointer; font-size:14px;">−</div>
+            <div>−</div>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="msg bot">Siemanko! Jestem Twoim lokalnym asystentem. Szukasz wolnych przestrzeni reklamowych czy sprawdzasz szlaki w Karkonoszach? Śmiało pytaj!</div>
+            <div class="msg bot" id="t-chatWelcome">Siemanko! Jestem Twoim lokalnym asystentem...</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Napisz wiadomość..." onkeypress="handleChatKey(event)">
+            <input type="text" class="chat-input" id="chatInput" placeholder="..." onkeypress="handleChatKey(event)">
             <button class="chat-btn" onclick="sendChatMessage()">OK</button>
         </div>
     </div>
 
-    <!-- NOWOŚĆ: PULSUJĄCY PRZYCISK PJM -->
-    <div class="pjm-widget" onclick="togglePJM()" title="Włącz tłumacza języka migowego">
-        <div class="pjm-icon">🤟</div>
-    </div>
-
-    <!-- NOWOŚĆ: MODUŁ TŁUMACZA WIDEO PJM -->
+    <!-- WIDGET JĘZYKA MIGOWEGO -->
+    <div class="pjm-widget" onclick="togglePJM()"><div class="pjm-icon">🤟</div></div>
     <div class="pjm-panel" id="pjmPanel">
         <div class="pjm-header">
             <div>Polski Język Migowy (PJM)</div>
             <div style="cursor:pointer; font-size:16px; font-weight:bold;" onclick="togglePJM()">×</div>
         </div>
         <div class="pjm-video-box">
-            <!-- Wklej tutaj link do swojego wideo z tłumaczem lub awatarem -->
             <video id="pjmVideo" loop muted playsinline controls>
                 <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-signing-in-sign-language-41614-large.mp4" type="video/mp4">
-                Twoja przeglądarka nie obsługuje odtwarzacza wideo.
             </video>
         </div>
-        <div class="pjm-desc" id="pjmDesc">
-            Wirtualny tłumacz PJM. Wybierz sekcję na stronie, a tłumacz wyjaśni jej zawartość.
-        </div>
+        <div class="pjm-desc" id="pjmDesc">...</div>
     </div>
 
     <!-- MODAL REZERWACJI -->
     <div id="orderModal" class="modal-overlay">
         <div class="modal-content">
             <button id="closeModalBtn" class="close-modal-btn">&times;</button>
-            
             <div class="modal-header">
-                <h2>Rezerwacja Przestrzeni</h2>
-                <p id="modalSlotDetails">Konfiguracja slotu dla wybranego miasta</p>
+                <h2 id="t-modalTitle">Rezerwacja Przestrzeni</h2>
+                <p id="modalSlotDetails">...</p>
             </div>
-
             <form id="orderForm" onsubmit="handleFormSubmit(event)">
-                <input type="hidden" id="formCityId">
-                <input type="hidden" id="formSlotNumber">
-                <input type="hidden" id="formSlotType">
-
-                <div class="form-group">
-                    <label for="clientName">Nazwa firmy / Imię i Nazwisko *</label>
-                    <input type="text" id="clientName" required placeholder="Np. Moja Firma Sp. z o.o.">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientEmail">Adres E-mail *</label>
-                    <input type="email" id="clientEmail" required placeholder="name@company.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientPhone">Numer telefonu *</label>
-                    <input type="tel" id="clientPhone" required placeholder="+48 000 000 000">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientWebsite">Link do Twojej strony (opcjonalnie)</label>
-                    <input type="url" id="clientWebsite" placeholder="https://twojastrona.pl">
-                </div>
-
-                <div class="form-group">
-                    <label for="clientNotes">Uwagi do zamówienia / Dodatkowe życzenia</label>
-                    <textarea id="clientNotes" rows="3" placeholder="Wpisz informacje o banerze..."></textarea>
-                </div>
-
-                <button type="submit" class="submit-order-btn">Wyślij Zgłoszenie Rezerwacji</button>
+                <input type="hidden" id="formCityId"><input type="hidden" id="formSlotNumber"><input type="hidden" id="formSlotType">
+                <div class="form-group"><label id="t-labelName">Nazwa firmy / Nazwisko *</label><input type="text" id="clientName" required></div>
+                <div class="form-group"><label id="t-labelEmail">Adres E-mail *</label><input type="email" id="clientEmail" required></div>
+                <div class="form-group"><label id="t-labelPhone">Numer telefonu *</label><input type="tel" id="clientPhone" required></div>
+                <div class="form-group"><label id="t-labelWeb">Link do strony</label><input type="url" id="clientWebsite"></div>
+                <div class="form-group"><label id="t-labelNotes">Uwagi do zamówienia</label><textarea id="clientNotes" rows="2"></textarea></div>
+                <button type="submit" class="submit-order-btn" id="t-btnSubmitOrder">Wyślij Zgłoszenie</button>
             </form>
         </div>
     </div>
 
     <script>
+        // BAZA TRANSLACJI (TŁUMACZENIA INTERFEJSU)
+        const translations = {
+            pl: {
+                title: "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów",
+                titleCity: "PolskieOkienka.pl - Tablica: ",
+                visitorCount: "Licznik Gości w Sieci:",
+                freeSlots: "Wolne Okienka w Regionie:",
+                mapSubtitle: "Wybierz miasto, aby wejść na lokalną tablicę reklamową",
+                panelWeather: "☀️ Pogoda i Karkonosze",
+                currRegion: "Aktualnie w regionie:",
+                goprStatus: "🟢 GOPR: Szlaki są otwarte. Warunki dobre.",
+                panelBus: "🚌 Szybki Rozkład Jazdy (Kluczowe Połączenia)",
+                panelTrails: "🥾 Asystent Górski: Zaplanuj Trasę",
+                trailSelectDefault: "-- Wybierz dokąd idziesz --",
+                trailDefaultResult: "Wybierz trasę z listy powyżej, aby zobaczyć szczegóły.",
+                backBtn: "← Wróć do Mapy Polski",
+                wheelPromoTitle: "🎁 Koło 1: Vouchery i Rabaty",
+                wheelTouristTitle: "🗺️ Koło 2: Zaplanuj Dzisiejszy Dzień",
+                btnSpin: "Losuj",
+                btnSpinTourist: "Wylosuj Moje Atrakcje",
+                tickerLabel: "⭐ TOP OFERTY",
+                chatWelcome: "Siemanko! Jestem Twoim lokalnym asystentem. Szukasz wolnych przestrzeni czy sprawdzasz szlaki? Pytaj!",
+                chatPlaceholder: "Napisz wiadomość...",
+                goldBanner: "Złoty Baner - Nagroda Główna",
+                goldTitle: "ZŁOTY EKSPONAT",
+                btnCenter: "Losuj Baner",
+                modalTitle: "Rezerwacja Przestrzeni",
+                labelName: "Nazwa firmy / Imię i Nazwisko *",
+                labelEmail: "Adres E-mail *",
+                labelPhone: "Numer telefonu *",
+                labelWeb: "Link do Twojej strony (opcjonalnie)",
+                labelNotes: "Uwagi do zamówienia / Dodatkowe życzenia",
+                btnSubmitOrder: "Wyślij Zgłoszenie Rezerwacji",
+                slotPricePremium: "350 zł\nPremium",
+                slotPriceStandard: "200 zł\nStandard",
+                pjm_main_map: "👋 <strong>Tłumacz PJM:</strong> Witamy na PolskieOkienka.pl. Wybierz miasto na mapie, aby wejść na lokalną tablicę.",
+                pjm_dashboard: "📊 <strong>Tłumacz PJM:</strong> Przeglądasz tablicę reklamową. Kliknij wolne okienko, aby je wynająć.",
+                pjm_modal_order: "📝 <strong>Tłumacz PJM:</strong> Formularz rezerwacji. Podaj swoje dane, aby zamówić reklamę."
+            },
+            de: {
+                title: "PolskieOkienka.pl - Polnisches Werbe-Netzwerk",
+                titleCity: "PolskieOkienka.pl - Reklametafel: ",
+                visitorCount: "Besucher online heute:",
+                freeSlots: "Freie Werbeplätze in der Region:",
+                mapSubtitle: "Wählen Sie eine Stadt, um die lokale Werbetafel anzuzeigen",
+                panelWeather: "☀️ Wetter & Riesengebirge",
+                currRegion: "Aktuelle Region:",
+                goprStatus: "🟢 Bergrettung: Wanderwege geöffnet. Gute Bedingungen.",
+                panelBus: "🚌 Busfahrplan (Wichtige Verbindungen)",
+                panelTrails: "🥾 Bergassistent: Route planen",
+                trailSelectDefault: "-- Wählen Sie Ihr Ziel --",
+                trailDefaultResult: "Wählen Sie eine Route aus der Liste oben, um Details zu sehen.",
+                backBtn: "← Zurück zur Polenkarte",
+                wheelPromoTitle: "🎁 Rad 1: Gutscheine & Rabatte",
+                wheelTouristTitle: "🗺️ Rad 2: Tagesplanung (Attraktionen)",
+                btnSpin: "Drehen",
+                btnSpinTourist: "Meine Attraktion wählen",
+                tickerLabel: "⭐ TOP ANGEBOTE",
+                chatWelcome: "Hallo! Ich bin Ihr lokaler KI-Assistent. Suchen Sie Werbeplätze oder Bergwege? Fragen Sie mich!",
+                chatPlaceholder: "Schreiben Sie eine Nachricht...",
+                goldBanner: "Goldenes Banner - Hauptpreis",
+                goldTitle: "GOLDENES EXPONAT",
+                btnCenter: "Banner auslosen",
+                modalTitle: "Platzreservierung",
+                labelName: "Firmenname / Name *",
+                labelEmail: "E-Mail-Adresse *",
+                labelPhone: "Telefonnummer *",
+                labelWeb: "Webseite (optional)",
+                labelNotes: "Bestellhinweise / Wünsche",
+                btnSubmitOrder: "Reservierungsanfrage senden",
+                slotPricePremium: "85 €\nPremium",
+                slotPriceStandard: "50 €\nStandard",
+                pjm_main_map: "👋 <strong>PJM Dolmetscher:</strong> Willkommen. Wählen Sie eine Stadt auf der Karte.",
+                pjm_dashboard: "📊 <strong>PJM Dolmetscher:</strong> Werbetafel. Klicken Sie auf ein freies Feld, um es zu mieten.",
+                pjm_modal_order: "📝 <strong>PJM Dolmetscher:</strong> Buchungsformular. Geben Sie Ihre Daten ein."
+            },
+            en: {
+                title: "PolskieOkienka.pl - Nationwide Screen Network",
+                titleCity: "PolskieOkienka.pl - Board: ",
+                visitorCount: "Visitors Online Today:",
+                freeSlots: "Available Slots in Region:",
+                mapSubtitle: "Select a city to enter the local advertising board",
+                panelWeather: "☀️ Weather & Karkonosze Mountains",
+                currRegion: "Current region:",
+                goprStatus: "🟢 Mountain Rescue: Trails are open. Good conditions.",
+                panelBus: "🚌 Bus Schedule (Key Connections)",
+                panelTrails: "🥾 Mountain Assistant: Plan Route",
+                trailSelectDefault: "-- Choose where you are going --",
+                trailDefaultResult: "Select a route from the list above to see details.",
+                backBtn: "← Back to Poland Map",
+                wheelPromoTitle: "🎁 Wheel 1: Vouchers & Discounts",
+                wheelTouristTitle: "🗺️ Wheel 2: Plan Your Day Out",
+                btnSpin: "Spin",
+                btnSpinTourist: "Spin My Attractions",
+                tickerLabel: "⭐ TOP DEALS",
+                chatWelcome: "Yo! I'm your local AI assistant. Looking for advertising slots or checking hiking trails? Ask away!",
+                chatPlaceholder: "Type a message...",
+                goldBanner: "Gold Banner - Grand Prize",
+                goldTitle: "GOLD DISPLAY",
+                btnCenter: "Spin Banner",
+                modalTitle: "Slot Reservation",
+                labelName: "Company Name / Full Name *",
+                labelEmail: "Email Address *",
+                labelPhone: "Phone Number *",
+                labelWeb: "Website Link (optional)",
+                labelNotes: "Order Notes / Special Requests",
+                btnSubmitOrder: "Submit Reservation Request",
+                slotPricePremium: "$90\nPremium",
+                slotPriceStandard: "$50\nStandard",
+                pjm_main_map: "👋 <strong>Sign Language:</strong> Welcome. Select a city on the map to proceed.",
+                pjm_dashboard: "📊 <strong>Sign Language:</strong> Grid view. Click any empty slot to book.",
+                pjm_modal_order: "📝 <strong>Sign Language:</strong> Order form. Fill out details to submit."
+            },
+            cs: {
+                title: "PolskieOkienka.pl - Celostátní Reklamní Síť",
+                titleCity: "PolskieOkienka.pl - Tabule: ",
+                visitorCount: "Dnešní návštěvníci online:",
+                freeSlots: "Volná okénka v regionu:",
+                mapSubtitle: "Vyberte město pro vstup na místní reklamní tabuli",
+                panelWeather: "☀️ Počasí a Krkonoše",
+                currRegion: "Aktuální region:",
+                goprStatus: "🟢 Horská služba: Trasy jsou otevřené. Dobré podmínky.",
+                panelBus: "🚌 Autobusové jízdní řády (Klíčové spoje)",
+                panelTrails: "🥾 Horský asistent: Plánování trasy",
+                trailSelectDefault: "-- Vyberte kam jdete --",
+                trailDefaultResult: "Vyberte trasu ze seznamu výše pro podrobnosti.",
+                backBtn: "← Zpět na mapu Polska",
+                wheelPromoTitle: "🎁 Kolo 1: Poukaz & Slevy",
+                wheelTouristTitle: "🗺️ Kolo 2: Naplánujte si dnešek",
+                btnSpin: "Roztočit",
+                btnSpinTourist: "Vylosovat atrakce",
+                tickerLabel: "⭐ TOP NABÍDKY",
+                chatWelcome: "Ahoj! Jsem tvůj lokální AI asistent. Hledáš volné reklamní plochy nebo kontroluješ trasy? Ptej se!",
+                chatPlaceholder: "Napište zprávu...",
+                goldBanner: "Zlatý banner - Hlavní cena",
+                goldTitle: "ZLATÝ EXPONÁT",
+                btnCenter: "Losovat Banner",
+                modalTitle: "Rezervace Slotu",
+                labelName: "Název firmy / Jméno *",
+                labelEmail: "E-mailová adresa *",
+                labelPhone: "Telefonní číslo *",
+                labelWeb: "Odkaz na web (volitelné)",
+                labelNotes: "Poznámky k objednávce",
+                btnSubmitOrder: "Odeslat rezervaci",
+                slotPricePremium: "2100 Kč\nPremium",
+                slotPriceStandard: "1200 Kč\nStandard",
+                pjm_main_map: "👋 <strong>Znakový jazyk:</strong> Vítejte. Vyberte město na mapě.",
+                pjm_dashboard: "📊 <strong>Znakový jazyk:</strong> Reklamní tabule. Kliknutím na volné políčko si ho pronajmete.",
+                pjm_modal_order: "📝 <strong>Znakový jazyk:</strong> Rezervační formulář. Zadejte údaje."
+            }
+        };
+
+        let currentLang = 'pl';
+
+        // FUNKCJA ZMIANY JĘZYKA
+        function changeLanguage(langCode) {
+            currentLang = langCode;
+            
+            // Aktualizacja aktywnych flag w CSS
+            document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
+            document.getElementById(`lang-${langCode}`).classList.add('active');
+
+            const t = translations[langCode];
+
+            // Przetłumaczenie elementów statycznych
+            if (window.location.hash) {
+                const cityName = window.location.hash.replace('#', '').toUpperCase().replace('-', ' ');
+                document.getElementById('mainTitleHeader').innerText = t.titleCity + cityName;
+            } else {
+                document.getElementById('mainTitleHeader').innerText = t.title;
+            }
+
+            document.getElementById('t-visitorCount').innerText = t.visitorCount;
+            document.getElementById('t-freeSlots').innerText = t.freeSlots;
+            document.getElementById('t-mapSubtitle').innerText = t.mapSubtitle;
+            document.getElementById('t-panelWeather').innerText = t.panelWeather;
+            document.getElementById('t-currRegion').innerText = t.currRegion;
+            document.getElementById('t-goprStatus').innerText = t.goprStatus;
+            document.getElementById('t-panelBus').innerText = t.panelBus;
+            document.getElementById('t-panelTrails').innerText = t.panelTrails;
+            document.getElementById('t-trailSelectDefault').innerText = t.trailSelectDefault;
+            document.getElementById('t-backBtn').innerText = t.backBtn;
+            document.getElementById('t-wheelPromoTitle').innerText = t.wheelPromoTitle;
+            document.getElementById('t-wheelTouristTitle').innerText = t.wheelTouristTitle;
+            document.getElementById('btnPromo').innerText = t.btnSpin;
+            document.getElementById('btnTourist').innerText = t.btnSpinTourist;
+            document.getElementById('t-tickerLabel').innerText = t.tickerLabel;
+            document.getElementById('t-chatWelcome').innerText = t.chatWelcome;
+            document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+            document.getElementById('t-goldBanner').innerText = t.goldBanner;
+            document.getElementById('t-goldTitle').innerText = t.goldTitle;
+            document.getElementById('btnCenter').innerText = t.btnSpin;
+            document.getElementById('t-modalTitle').innerText = t.modalTitle;
+            document.getElementById('t-labelName').innerText = t.labelName;
+            document.getElementById('t-labelEmail').innerText = t.labelEmail;
+            document.getElementById('t-labelPhone').innerText = t.labelPhone;
+            document.getElementById('t-labelWeb').innerText = t.labelWeb;
+            document.getElementById('t-labelNotes').innerText = t.labelNotes;
+            document.getElementById('t-btnSubmitOrder').innerText = t.btnSubmitOrder;
+
+            // Odświeżenie danych dynamicznych (siatka, koła)
+            if (document.getElementById('dashboard-view').style.display === 'block') {
+                buildCompleteGrid();
+                initWheel('promoWheel', voucherPool, ['#1a1d24', '#c0392b', '#2c3e50', '#d35400', '#2e3440']);
+                if (currentAttractions.length > 0) {
+                    initWheel('touristWheel', currentAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24']);
+                }
+            }
+            calculateTrail();
+            
+            // Kontekst dla migowego
+            if (document.getElementById('pjmPanel').classList.contains('active')) {
+                const currentContext = document.getElementById('dashboard-view').style.display === 'block' ? 'dashboard' : 'main_map';
+                updatePJMContext(currentContext);
+            }
+        }
+
+        // BAZA REGIONÓW
         const regionDatabase = {
             "karpacz": {
                 companies: [
                     { name: "Wonder Home", url: "https://wonderhome.eu/" },
                     { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl" },
-                    { name: "Widokowo Karpacz", url: "https://www.widokowo-karpacz.pl" },
-                    { name: "Hotel Gołębiewski", url: "https://www.golebiewski.pl/karpacz" },
-                    { name: "Schronisko Samotnia", url: "https://www.samotnia.com.pl" },
-                    { name: "Kolej Linowa Kopa", url: "https://kopa.com.pl" }
+                    { name: "Widokowo Karpacz", url: "https://www.widokowo-karpacz.pl" }
                 ],
                 attractions: [
-                    { name: "Śnieżka (1602m n.p.m.)", desc: "Królowa Karkonoszy z futurystycznym dyskiem Obserwatorium IMGW na szczycie.", link: "https://kpnmab.pl" },
-                    { name: "Świątynia Wang", desc: "Zabytek architektury nordyckiej z XII wieku, przeniesiony bez użycia gwoździ.", link: "https://www.wang.com.pl" },
-                    { name: "Sztolnie Kowary", desc: "Tajemnicza podziemna trasa turystyczna w dawnej kopalni uranu.", link: "https://www.sztolniekowary.pl" },
-                    { name: "Park Miniatur Kowary", desc: "Najpiękniejsze zabytki Dolnego Śląska odwzorowane w skali 1:25.", link: "https://www.park-miniatur.com" },
-                    { name: "Wyspa Fun Kowary", desc: "Niezwykłe miejsce letniego relaksu i zabawy u podnóża gór.", link: "https://wyspa.fun" },
-                    { name: "Dziki Wodospad", desc: "Malownicza zapora przeciwrumszowa w Karpaczu Górnym, idealna na zdjęcia.", link: "https://www.karpacz.pl" }
+                    { name: "Śnieżka (1602m)", desc: "Królowa Karkonoszy / Queen of Karkonosze", link: "https://kpnmab.pl" },
+                    { name: "Świątynia Wang", desc: "XII-wieczny zabytkowy kościół / Vang Stave Church", link: "https://www.wang.com.pl" },
+                    { name: "Sztolnie Kowary", desc: "Podziemna trasa turystyczna / Underground Uranium Mine", link: "https://www.sztolniekowary.pl" }
                 ]
             },
             "swieradow-zdroj": {
                 companies: [
-                    { name: "Interferie Hotel", url: "https://www.interferie.pl" },
                     { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl" },
                     { name: "SKI&SUN Świeradów", url: "https://skisun.pl" }
                 ],
                 attractions: [
-                    { name: "Wieża Sky Walk", desc: "Ścieżka w chmurach o wysokości 62 metrów z panoramiczną zjeżdżalnią.", link: "https://visitskywalk.today/pl/" },
-                    { name: "Gondola SKI&SUN", desc: "Nowoczesna kolej linowa na Stóg Izerski, idealna dla narciarzy i rowerzystów.", link: "https://skisun.pl" },
-                    { name: "Dom Zdrojowy", desc: "Zabytkowy obiekt uzdrowiskowy z najdłuższą na Dolnym Śląsku halą spacerową.", link: "https://uzdrowisko-swieradow.pl" }
+                    { name: "Sky Walk", desc: "Ścieżka w chmurach / Walk in the clouds", link: "https://visitskywalk.today" },
+                    { name: "Dom Zdrojowy", desc: "Zabytkowa pijalnia wód / Spa House", link: "https://uzdrowisko-swieradow.pl" }
                 ]
             },
             "szklarska-poreba": {
                 companies: [
                     { name: "Clean Expert", url: "http://www.xn--sprztanie-g1a.jelenia.pl" },
-                    { name: "Sudety Lift Szrenica", url: "https://sudetylift.com.pl" },
-                    { name: "Blue Mountain Resort", url: "https://blue-mountain-resort.pl" }
+                    { name: "Sudety Lift", url: "https://sudetylift.com.pl" }
                 ],
                 attractions: [
-                    { name: "Wodospad Szklarki", desc: "Przepiękna kaskada z urokliwym schroniskiem Kochanówka na dnie wąwozu.", link: "https://kpnmab.pl" },
-                    { name: "Szrenica (1362m n.p.m.)", desc: "Potężny szczyt górujący nad miastem z rozbudowaną siecią nartostrad.", link: "https://sudetylift.com.pl" }
+                    { name: "Wodospad Szklarki", desc: "Malowniczy wodospad / Szklarka Waterfall", link: "https://kpnmab.pl" },
+                    { name: "Szrenica", desc: "Szczyt i schronisko / Szrenica Mountain", link: "https://sudetylift.com.pl" }
                 ]
             }
         };
 
         const defaultRegionData = {
-            companies: [
-                { name: "Premium Biznes", url: "https://www.google.com" },
-                { name: "Twoja Reklama", url: "https://www.google.com" }
-            ],
-            attractions: [
-                { name: "Rynek i Centrum", desc: "Zabytkowa architektura i lokalne punkty rzemieślnicze.", link: "https://www.google.com" }
-            ]
+            companies: [{ name: "Premium Biznes", url: "#" }],
+            attractions: [{ name: "Centrum / Center", desc: "Local Points", link: "#" }]
         };
 
-        const voucherPool = ["15% Rabatu", "Darmowa Kawa", "Zniżka -20%", "Bon 50 PLN", "Wejście Free", "Gadżet Sieci"];
-        const mockViewers = ["@klient_karpacz", "@mordeczka_99", "@baca_z_gór", "@rodzina_na_urlopie", "@izery_travel"];
+        const voucherPool = ["-15% Rabatu", "Free Coffee", "Zniżka -20%", "Bon 50 PLN", "Free Entry", "Bonus Gadget"];
+        const mockViewers = ["@user_karpacz", "@mordeczka_99", "@baca_gory", "@travel_fan"];
         
         let currentRegionKey = "";
         let currentCompanies = [];
         let currentAttractions = [];
         let rotCenter = 0, rotPromo = 0, rotTourist = 0, isSpinning = false;
 
-        // FUNKCJE OBSŁUGI ASYSTENTA CZATU AI
-        function toggleChat() {
-            document.getElementById('sigmaChat').classList.toggle('collapsed');
-        }
-
-        function handleChatKey(event) {
-            if (event.key === 'Enter') sendChatMessage();
-        }
-
+        // CZAT AI
+        function toggleChat() { document.getElementById('sigmaChat').classList.toggle('collapsed'); }
+        function handleChatKey(event) { if (event.key === 'Enter') sendChatMessage(); }
+        
         function sendChatMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
@@ -808,16 +828,11 @@
             input.value = '';
 
             setTimeout(() => {
-                let reply = "Ciekawa sprawa. Skonfigurujmy odpowiedni slot na tablicy lub dobierzmy pakiet promocyjny, aby wyciągnąć z tego projektu maksimum zasięgu!";
-                const lowText = text.toLowerCase();
+                let reply = "I am processing your request. Choose a slot or roll the wheel to extract maximum utility from this project!";
+                if(currentLang === 'pl') reply = "Ciekawa sprawa. Skonfigurujmy odpowiedni slot na tablicy, aby wyciągnąć maksimum zasięgu!";
+                if(currentLang === 'de') reply = "Interessant. Konfigurieren wir einen Slot, um maximale Reichweite zu erzielen!";
+                if(currentLang === 'cs') reply = "Zajímavé. Nakonfigurujme reklamní slot pro maximální zásah!";
                 
-                if (lowText.includes('karpacz') || lowText.includes('nocleg') || lowText.includes('wonder')) {
-                    reply = "W Karpaczu mamy topowy ruch! Wonder Home ma już swój dedykowany slot na naszej głównej tablicy. Chcesz sprawdzić wolne miejsca obok nich?";
-                } else if (lowText.includes('cena') || lowText.includes('koszt') || lowText.includes('slot')) {
-                    reply = "Standardowy slot to jedyne 200 zł, a pozycje Premium wyróżnione złotą ramką kosztują 350 zł. Kliknij dowolny kwadrat na tablicy, aby go zarezerwować!";
-                } else if (lowText.includes('pogoda') || lowText.includes('szlak') || lowText.includes('śnieżka')) {
-                    reply = "W Karkonoszach warunki są stabilne, około +18°C. Na Śnieżkę wejdziesz z Karpacza w niecałe 3 godziny. Przydatne info wrzuciłem też w sekcji asystenta górskiego!";
-                }
                 appendMessage(reply, 'bot');
             }, 800);
         }
@@ -831,15 +846,15 @@
             body.scrollTop = body.scrollHeight;
         }
 
-        // FUNKCJE OBSŁUGI WIDGETU JĘZYKA MIGOWEGO (PJM)
+        // KONTROLER JĘZYKA MIGOWEGO (PJM)
         function togglePJM() {
             const panel = document.getElementById('pjmPanel');
             const video = document.getElementById('pjmVideo');
             panel.classList.toggle('active');
-            
             if (panel.classList.contains('active')) {
-                video.play().catch(e => console.log("Autoplay zablokowany, czekam na interakcję użytkownika."));
-                updatePJMContext("main_map");
+                video.play().catch(e => {});
+                const currentContext = document.getElementById('dashboard-view').style.display === 'block' ? 'dashboard' : 'main_map';
+                updatePJMContext(currentContext);
             } else {
                 video.pause();
             }
@@ -847,23 +862,13 @@
 
         function updatePJMContext(context) {
             const desc = document.getElementById('pjmDesc');
-            const video = document.getElementById('pjmVideo');
-            
-            // Kontekstowa zmiana opisów oraz opcjonalna zmiana plików wideo (jeśli posiadasz oddzielne nagrania dla różnych podstron)
-            switch(context) {
-                case "main_map":
-                    desc.innerHTML = "👋 <strong>Tłumacz PJM:</strong> Witamy na PolskieOkienka.pl. Wybierz interesujące Cię miasto na mapie Polski (np. Karpacz lub Świeradów), aby otworzyć lokalną tablicę reklamową.";
-                    break;
-                case "dashboard":
-                    desc.innerHTML = "📊 <strong>Tłumacz PJM:</strong> Otworzyłeś tablicę reklamową miasta. Widzisz siatkę 100 slotów reklamowych. Możesz kliknąć wolne okienko, aby je wynająć.";
-                    break;
-                case "modal_order":
-                    desc.innerHTML = "📝 <strong>Tłumacz PJM:</strong> Formularz rezerwacji. Wprowadź nazwę swojej firmy, adres e-mail oraz telefon, aby przesłać zgłoszenie rezerwacji wybranego okienka.";
-                    break;
-            }
+            const t = translations[currentLang];
+            if(context === "main_map") desc.innerHTML = t.pjm_main_map;
+            if(context === "dashboard") desc.innerHTML = t.pjm_dashboard;
+            if(context === "modal_order") desc.innerHTML = t.pjm_modal_order;
         }
 
-        // WYMUSZONE PRZEŁĄCZENIE MIASTA PRZEZ KLIKNIĘCIE PINEZKI
+        // WYBÓR MIAST
         function forceCityChange(cityKey) {
             window.location.hash = cityKey;
             renderActiveView(cityKey);
@@ -871,11 +876,8 @@
 
         function checkUrlHash() {
             const currentHash = window.location.hash.replace('#', '').toLowerCase();
-            if (currentHash) {
-                renderActiveView(currentHash);
-            } else {
-                showMainMap();
-            }
+            if (currentHash) renderActiveView(currentHash);
+            else showMainMap();
         }
 
         function renderActiveView(targetKey) {
@@ -883,13 +885,11 @@
             const data = regionDatabase[targetKey] || defaultRegionData;
             currentCompanies = data.companies;
             currentAttractions = data.attractions;
-
-            const cityNameFormatted = targetKey.toUpperCase().replace('-', ' ');
-            loadCityPlatform(cityNameFormatted);
+            loadCityPlatform(targetKey.toUpperCase().replace('-', ' '));
         }
 
         function loadCityPlatform(cityName) {
-            document.getElementById('mainTitleHeader').innerText = `PolskieOkienka.pl - Tablica: ${cityName}`;
+            document.getElementById('mainTitleHeader').innerText = translations[currentLang].titleCity + cityName;
             document.getElementById('map-view').style.display = 'none';
             document.getElementById('touristInfoZone').style.display = 'none';
             document.getElementById('dashboard-view').style.display = 'block';
@@ -904,14 +904,12 @@
             if(currentAttractions.length > 0) {
                 initWheel('touristWheel', currentAttractions.map(a => a.name), ['#27ae60', '#11141b', '#2980b9', '#1a1d24']);
             }
-            
-            // Aktualizacja kontekstu migowego
             updatePJMContext("dashboard");
             window.scrollTo(0, 0);
         }
 
         function showMainMap() {
-            document.getElementById('mainTitleHeader').innerText = "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów";
+            document.getElementById('mainTitleHeader').innerText = translations[currentLang].title;
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('map-view').style.display = 'flex';
             document.getElementById('touristInfoZone').style.display = 'grid';
@@ -925,27 +923,25 @@
 
         window.addEventListener('hashchange', checkUrlHash);
 
+        // GENEROWANIE SIATKI SLOTÓW
         function buildCompleteGrid() {
             const grid = document.getElementById('boardGrid');
             const telebim = document.getElementById('mainTelebim');
             if(!grid || !telebim) return;
-            
             grid.innerHTML = ""; 
+
+            const t = translations[currentLang];
 
             for (let i = 1; i <= 100; i++) {
                 let row = Math.ceil(i / 10);
                 let col = i % 10 === 0 ? 10 : i % 10;
-                
                 if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
-                    if (row === 4 && col === 4) {
-                        grid.appendChild(telebim);
-                    }
+                    if (row === 4 && col === 4) grid.appendChild(telebim);
                     continue;
                 }
 
                 const linkNode = document.createElement('a');
                 linkNode.className = 'cell-link';
-                
                 const item = document.createElement('div');
                 item.classList.add('grid-item');
 
@@ -958,22 +954,22 @@
                     let type = "Standard";
                     if (Math.random() > 0.85) {
                         item.classList.add('premium');
-                        item.innerText = "350 zł\nPremium";
+                        item.innerText = t.slotPricePremium;
                         type = "Premium";
                     } else {
-                        item.innerText = "200 zł\nStandard";
+                        item.innerText = t.slotPriceStandard;
                     }
                     linkNode.setAttribute('onclick', `openOrderModal('${currentRegionKey}', ${i}, '${type}')`);
                 }
-                
                 linkNode.appendChild(item);
                 grid.appendChild(linkNode);
             }
         }
 
+        // SILNIK KÓŁ LOSUJĄCYCH (CANVAS)
         function initWheel(canvasId, labelArray, colors) {
             const canvas = document.getElementById(canvasId);
-            if(!canvas || labelArray.length === 0) return;
+            if(!canvas) return;
             const ctx = canvas.getContext('2d');
             const segments = labelArray.length;
             const deg = 360 / segments;
@@ -981,176 +977,127 @@
             const r = canvas.width / 2;
 
             for (let i = 0; i < segments; i++) {
-                const start = (i * deg * Math.PI) / 180;
-                const end = ((i + 1) * deg * Math.PI) / 180;
-
                 ctx.beginPath();
                 ctx.fillStyle = colors[i % colors.length];
                 ctx.moveTo(r, r);
-                ctx.arc(r, r, r, start, end);
+                ctx.arc(r, r, r, (i * deg * Math.PI) / 180, ((i + 1) * deg * Math.PI) / 180);
                 ctx.fill();
-
-                ctx.strokeStyle = canvasId === 'touristWheel' ? '#2ed573' : '#ffd700';
-                ctx.lineWidth = 1.2;
-                ctx.stroke();
+                ctx.strokeStyle = '#ffd700'; ctx.stroke();
 
                 ctx.save();
                 ctx.translate(r, r);
-                ctx.rotate(start + (deg * Math.PI) / 360);
+                ctx.rotate((i * deg * Math.PI) / 180 + (deg * Math.PI) / 360);
                 ctx.fillStyle = "#fff";
-                
-                if (canvasId === 'centerWheel') {
-                    ctx.font = "bold 4.5px sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.fillText(labelArray[i].substring(0, 14), r * 0.52, 1.5);
-                } else {
-                    ctx.font = "bold 7px sans-serif";
-                    ctx.textAlign = "right";
-                    ctx.shadowColor = "rgba(0,0,0,0.9)";
-                    ctx.shadowBlur = 3;
-                    ctx.fillText(labelArray[i].substring(0, 16), r - 10, 3);
-                }
+                ctx.font = "bold 6.5px sans-serif";
+                ctx.textAlign = "right";
+                ctx.fillText(labelArray[i].substring(0, 15), r - 8, 2);
                 ctx.restore();
             }
         }
 
         function spinCenterWheel() {
             if (isSpinning || currentCompanies.length === 0) return;
-            isSpinning = true;
-            document.getElementById('btnCenter').disabled = true;
-
-            const segments = currentCompanies.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotCenter += 1440 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            isSpinning = true; document.getElementById('btnCenter').disabled = true;
+            const idx = Math.floor(Math.random() * currentCompanies.length);
+            rotCenter += 1440 + (270 - (idx * (360/currentCompanies.length)) - (180/currentCompanies.length));
             document.getElementById('centerWheel').style.transform = `rotate(${rotCenter}deg)`;
-
             setTimeout(() => {
-                const winner = currentCompanies[prizeIndex];
-                document.getElementById('winnerName').innerHTML = `🔥 Wygrywa: <strong style="color:#ffd700">${winner.name.toUpperCase()}</strong>`;
-                isSpinning = false;
-                document.getElementById('btnCenter').disabled = false;
+                document.getElementById('winnerName').innerHTML = `🔥 Win: <strong style="color:#ffd700">${currentCompanies[idx].name}</strong>`;
+                isSpinning = false; document.getElementById('btnCenter').disabled = false;
             }, 4000);
         }
 
         function spinPromoWheel() {
             if (isSpinning) return;
-            isSpinning = true;
-            document.getElementById('btnPromo').disabled = true;
-            document.getElementById('promoResult').style.display = 'none';
-
-            const segments = voucherPool.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-            
-            rotPromo += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            isSpinning = true; document.getElementById('btnPromo').disabled = true;
+            const idx = Math.floor(Math.random() * voucherPool.length);
+            rotPromo += 1800 + (270 - (idx * (360/voucherPool.length)) - (180/voucherPool.length));
             document.getElementById('promoWheel').style.transform = `rotate(${rotPromo}deg)`;
-
             setTimeout(() => {
-                const luckyUser = mockViewers[Math.floor(Math.random() * mockViewers.length)];
-                const reward = voucherPool[prizeIndex];
-                const resBox = document.getElementById('promoResult');
-                resBox.innerHTML = `<strong>${luckyUser}</strong> otrzymuje:<br><span style="color:#ffd700;font-weight:bold;">${reward}</span>`;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnPromo').disabled = false;
+                document.getElementById('promoResult').innerHTML = `🎯 <strong>${voucherPool[idx]}</strong>`;
+                document.getElementById('promoResult').style.display = 'block';
+                isSpinning = false; document.getElementById('btnPromo').disabled = false;
             }, 4500);
         }
 
         function spinTouristWheel() {
             if (isSpinning || currentAttractions.length === 0) return;
-            isSpinning = true;
-            document.getElementById('btnTourist').disabled = true;
-            document.getElementById('touristResult').style.display = 'none';
-
-            const segments = currentAttractions.length;
-            const prizeIndex = Math.floor(Math.random() * segments);
-            const degPerSeg = 360 / segments;
-
-            rotTourist += 1800 + (270 - (prizeIndex * degPerSeg) - (degPerSeg / 2));
+            isSpinning = true; document.getElementById('btnTourist').disabled = true;
+            const idx = Math.floor(Math.random() * currentAttractions.length);
+            rotTourist += 1800 + (270 - (idx * (360/currentAttractions.length)) - (180/currentAttractions.length));
             document.getElementById('touristWheel').style.transform = `rotate(${rotTourist}deg)`;
-
             setTimeout(() => {
-                const attr = currentAttractions[prizeIndex];
-                const resBox = document.getElementById('touristResult');
-                resBox.innerHTML = `
-                    <strong style="color:#2ed573; font-size:11px;">🎯 Atrakcja: ${attr.name}</strong>
-                    <p style="margin:4px 0; color:#ccc; font-size:9px;">${attr.desc}</p>
-                    <a href="${attr.link}" target="_blank">Zobacz oficjalną stronę →</a>
-                `;
-                resBox.style.display = 'block';
-
-                isSpinning = false;
-                document.getElementById('btnTourist').disabled = false;
+                const attr = currentAttractions[idx];
+                document.getElementById('touristResult').innerHTML = `📍 <strong>${attr.name}</strong><br><small>${attr.desc}</small>`;
+                document.getElementById('touristResult').style.display = 'block';
+                isSpinning = false; document.getElementById('btnTourist').disabled = false;
             }, 4500);
         }
 
+        // FORMULARZ REZERWACJI MODAL
         function openOrderModal(cityId, slotNumber, slotType) {
             const modal = document.getElementById('orderModal');
             document.getElementById('formCityId').value = cityId;
             document.getElementById('formSlotNumber').value = slotNumber;
             document.getElementById('formSlotType').value = slotType;
-            
-            const cityNameFormatted = cityId.charAt(0).toUpperCase() + cityId.slice(1).replace('-', ' ');
-            document.getElementById('modalSlotDetails').innerHTML = 
-                `Lokalizacja: <strong>${cityNameFormatted}</strong> | Slot: <strong>Nr ${slotNumber} (${slotType})</strong>`;
-            
-            document.getElementById('orderForm').reset();
+            document.getElementById('modalSlotDetails').innerHTML = `City: <strong>${cityId.toUpperCase()}</strong> | Slot: <strong>#${slotNumber} (${slotType})</strong>`;
             modal.classList.add('active');
-
-            // Aktualizacja kontekstu migowego
             updatePJMContext("modal_order");
         }
 
         function closeOrderModal() {
             document.getElementById('orderModal').classList.remove('active');
-            // Powrót do kontekstu tablicy
-            if(document.getElementById('dashboard-view').style.display === 'block') {
-                updatePJMContext("dashboard");
-            } else {
-                updatePJMContext("main_map");
-            }
+            updatePJMContext(document.getElementById('dashboard-view').style.display === 'block' ? "dashboard" : "main_map");
         }
 
         function handleFormSubmit(event) {
             event.preventDefault();
-            const orderData = {
-                city: document.getElementById('formCityId').value,
-                slotNumber: document.getElementById('formSlotNumber').value,
-                slotType: document.getElementById('formSlotType').value,
-                clientName: document.getElementById('clientName').value,
-                clientEmail: document.getElementById('clientEmail').value,
-                clientPhone: document.getElementById('clientPhone').value,
-                clientWebsite: document.getElementById('clientWebsite').value,
-                clientNotes: document.getElementById('clientNotes').value,
-                timestamp: new Date().toISOString()
-            };
-            alert(`Dziękujemy! Zgłoszenie dla slotu nr ${orderData.slotNumber} w regionie ${orderData.city.toUpperCase()} zostało wysłane.`);
+            alert(`Zgłoszenie wysłane / Request sent! Slot #${document.getElementById('formSlotNumber').value}`);
             closeOrderModal();
         }
 
+        // KALKULATOR TRAS
         function calculateTrail() {
             const picker = document.getElementById('trailPicker');
             const resultBox = document.getElementById('trailCalcResult');
             if(!picker || !resultBox) return;
 
             const trailData = {
-                "sniezka": "⏱️ <strong>Czas:</strong> ok. 2h 45min | 📈 <strong>Trudność:</strong> Średnia<br>💡 <em>Porada:</em> Trasa brukowana, idealna na wejście, ale przygotuj się na silny wiatr na szczycie!",
-                "samotnia": "⏱️ <strong>Czas:</strong> ok. 1h 15min | 📈 <strong>Trudność:</strong> Łatwa<br>💡 <em>Porada:</em> Jedno z najpiękniejszych schronisk w Polsce nad Małym Stawem. Świetne dla rodzin z dziećmi.",
-                "skywalk": "⏱️ <strong>Czas:</strong> ok. 45min spacerem z centrum | 📈 <strong>Trudność:</strong> Łatwa<br>💡 <em>Porada:</em> Możesz też podjechać bliżej na parking. Na górze czeka niesamowity spacer w chmurach!",
-                "szrenica": "⏱️ <strong>Czas:</strong> ok. 2h 30min (lub wjazd wyciągiem) | 📈 <strong>Trudność:</strong> Średnia<br>💡 <em>Porada:</em> Po drodze miniesz schronisko Kamieńczyk i spektakularny wodospad."
+                pl: {
+                    sniezka: "⏱️ <strong>Czas:</strong> ok. 2h 45min | Trasa średnia. Przygotuj się na silny wiatr na szczycie!",
+                    samotnia: "⏱️ <strong>Czas:</strong> ok. 1h 15min | Trasa łatwa. Przepiękne schronisko nad Małym Stawem.",
+                    skywalk: "⏱️ <strong>Czas:</strong> ok. 45min spacerem | Niesamowita ścieżka w chmurach w Świeradowie.",
+                    szrenica: "⏱️ <strong>Czas:</strong> ok. 2h 30min | Średnia trudność, po drodze wodospad Kamieńczyk."
+                },
+                de: {
+                    sniezka: "⏱️ <strong>Zeit:</strong> ca. 2 Std. 45 Min. | Mittlere Route. Oben starker Wind möglich!",
+                    samotnia: "⏱️ <strong>Zeit:</strong> ca. 1 Std. 15 Min. | Leichte Route. Schöne Hütte am Teich.",
+                    skywalk: "⏱️ <strong>Zeit:</strong> ca. 45 Min. Fußweg | Erstaunlicher Baumwipfelpfad in Bad Flinsberg.",
+                    szrenica: "⏱️ <strong>Zeit:</strong> ca. 2 Std. 30 Min. | Mittlere Route, vorbei am Zackelfall."
+                },
+                en: {
+                    sniezka: "⏱️ <strong>Time:</strong> approx. 2h 45min | Medium trail. Be ready for strong winds at the summit!",
+                    samotnia: "⏱️ <strong>Time:</strong> approx. 1h 15min | Easy trail. Beautiful mountain hut by the pond.",
+                    skywalk: "⏱️ <strong>Time:</strong> approx. 45min walk | Amazing skywalk tower in Swieradow.",
+                    szrenica: "⏱️ <strong>Time:</strong> approx. 2h 30min | Medium difficulty, passes Kamienczyk waterfall."
+                },
+                cs: {
+                    sniezka: "⏱️ <strong>Čas:</strong> cca 2h 45min | Střední trasa. Připravte se na silný vítr na vrcholu!",
+                    samotnia: "⏱️ <strong>Čas:</strong> cca 1h 15min | Snadná trasa. Nádherná chata u Malého Stawu.",
+                    skywalk: "⏱️ <strong>Čas:</strong> cca 45min chůze | Úžasná stezka v oblacích ve Swieradowě.",
+                    szrenica: "⏱️ <strong>Čas:</strong> cca 2h 30min | Střední obtížnost, cestou vodopád Kamieńczyk."
+                }
             };
 
             const selected = picker.value;
-            if(selected && trailData[selected]) {
-                resultBox.innerHTML = trailData[selected];
+            if(selected && trailData[currentLang][selected]) {
+                resultBox.innerHTML = trailData[currentLang][selected];
             } else {
-                resultBox.innerHTML = "Wybierz trasę z listy powyżej, aby zobaczyć czas przejścia i stopień trudności.";
+                resultBox.innerHTML = translations[currentLang].trailDefaultResult;
             }
         }
 
+        // LICZNIKI I START
         setInterval(() => {
             const guestElem = document.getElementById('globalGuests');
             if(guestElem) {
@@ -1162,24 +1109,19 @@
 
         let totalSeconds = 240;
         setInterval(() => {
-            if (totalSeconds <= 0) totalSeconds = 240;
-            totalSeconds--;
+            if (totalSeconds <= 0) totalSeconds = 240; totalSeconds--;
             const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
             const secs = String(totalSeconds % 60).padStart(2, '0');
-            const timerElem = document.getElementById('liveTimer');
-            if(timerElem) timerElem.innerText = `00:00:${mins}:${secs}`;
+            if(document.getElementById('liveTimer')) document.getElementById('liveTimer').innerText = `00:00:${mins}:${secs}`;
         }, 1000);
 
         document.addEventListener('DOMContentLoaded', () => {
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const modalOverlay = document.getElementById('orderModal');
-            if(closeModalBtn) closeModalBtn.addEventListener('click', closeOrderModal);
-            if(modalOverlay) {
-                modalOverlay.addEventListener('click', (e) => {
-                    if (e.target === modalOverlay) closeOrderModal();
-                });
-            }
+            document.getElementById('closeModalBtn').addEventListener('click', closeOrderModal);
+            document.getElementById('orderModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('orderModal')) closeOrderModal();
+            });
             checkUrlHash();
+            changeLanguage('pl'); // Start domyślny w PL
         });
     </script>
 </body>
