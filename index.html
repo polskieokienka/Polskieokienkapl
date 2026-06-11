@@ -29,6 +29,177 @@
             box-sizing: border-box;
             padding-bottom: 90px;
         }
+        <!-- Sekcja Licznika i Przycisków Map -->
+<div class="dashboard-widget">
+    
+    <!-- Licznik gości online -->
+    <div class="online-counter">
+        <span class="pulse-dot"></span>
+        <p>Goście online na stronie: <strong id="visitors-count">12</strong></p>
+    </div>
+
+    <hr class="widget-divider">
+
+    <!-- Przyciski z mapami szlaków -->
+    <div class="map-buttons-container">
+        <h3>Interaktywne Mapy Szlaków Rowerowych (MTB)</h3>
+        <p>Wybierz platformę, aby zobaczyć górskie trasy rowerowe w regionie:</p>
+        
+        <div class="button-group">
+            <!-- Link do Trailforks (Kowary/Karkonosze) -->
+            <a href="https://www.trailforks.com/region/kowary/" target="_blank" class="map-btn trailforks-btn">
+                <i class="map-icon">🚲</i> Otwórz mapę Trailforks
+            </a>
+
+            <!-- Link do Komoot (Trasy wokół Kowar/Karpacza) -->
+            <a href="https://www.komoot.com/guide/2628529/mtb-trails-around-kowary" target="_blank" class="map-btn komoot-btn">
+                <i class="map-icon">🗺️</i> Otwórz mapę Komoot
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stylowanie CSS -->
+<style>
+.dashboard-widget {
+    background: #1e1e24; /* Ciemne, nowoczesne tło */
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+/* Licznik Online */
+.online-counter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.1rem;
+}
+
+.online-counter p {
+    margin: 0;
+}
+
+/* Pulsująca zielona kropka */
+.pulse-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 8px rgba(46, 204, 113, 0);
+    }
+    100% {
+        transform: scale(0.9);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
+
+.widget-divider {
+    border: 0;
+    height: 1px;
+    background: #333;
+    margin: 20px 0;
+}
+
+/* Sekcja Przycisków */
+.map-buttons-container h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #f39c12; /* Akcent kolorystyczny */
+}
+
+.map-buttons-container p {
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin-bottom: 15px;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Style przycisków */
+.map-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: transform 0.2s, background-color 0.2s;
+    text-align: center;
+}
+
+.map-btn:hover {
+    transform: translateY(-2px);
+}
+
+.trailforks-btn {
+    background-color: #ff5722; /* Pomarańcz Trailforks */
+}
+
+.trailforks-btn:hover {
+    background-color: #e64a19;
+}
+
+.komoot-btn {
+    background-color: #61892f; /* Zielony Komoot */
+}
+
+.komoot-btn:hover {
+    background-color: #4b6b24;
+}
+
+.map-icon {
+    font-style: normal;
+    font-size: 1.2rem;
+}
+</style>
+
+<!-- Skrypt JavaScript dla dynamicznego licznika -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const visitorElement = document.getElementById("visitors-count");
+    
+    // Początkowa losowa liczba osób online między 8 a 19
+    let currentVisitors = Math.floor(Math.random() * (19 - 8 + 1)) + 8;
+    visitorElement.textContent = currentVisitors;
+
+    // Funkcja aktualizująca licznik co kilka sekund, żeby symulować ruch
+    setInterval(function() {
+        // Losujemy zmianę: -2, -1, 0, 1, lub 2
+        const change = Math.floor(Math.random() * 5) - 2;
+        currentVisitors += change;
+
+        // Trzymamy licznik w sensownych widłach (np. minimum 5 osób na stronie)
+        if (currentVisitors < 5) currentVisitors = 5;
+        if (currentVisitors > 25) currentVisitors = 25;
+
+        visitorElement.textContent = currentVisitors;
+    }, 4000); // Aktualizacja co 4 sekundy
+});
+</script>
 
         /* NAGŁÓWEK GŁÓWNY */
         .header-panel {
