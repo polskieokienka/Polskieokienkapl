@@ -14,6 +14,7 @@
             --bg-panel: rgba(15, 17, 24, 0.95);
             --border-glow: rgba(212, 175, 55, 0.25);
             --text-main: #f3f4f6;
+            --green-live: #2ecc71;
         }
 
         body {
@@ -29,177 +30,6 @@
             box-sizing: border-box;
             padding-bottom: 90px;
         }
-        <!-- Sekcja Licznika i Przycisków Map -->
-<div class="dashboard-widget">
-    
-    <!-- Licznik gości online -->
-    <div class="online-counter">
-        <span class="pulse-dot"></span>
-        <p>Goście online na stronie: <strong id="visitors-count">12</strong></p>
-    </div>
-
-    <hr class="widget-divider">
-
-    <!-- Przyciski z mapami szlaków -->
-    <div class="map-buttons-container">
-        <h3>Interaktywne Mapy Szlaków Rowerowych (MTB)</h3>
-        <p>Wybierz platformę, aby zobaczyć górskie trasy rowerowe w regionie:</p>
-        
-        <div class="button-group">
-            <!-- Link do Trailforks (Kowary/Karkonosze) -->
-            <a href="https://www.trailforks.com/region/kowary/" target="_blank" class="map-btn trailforks-btn">
-                <i class="map-icon">🚲</i> Otwórz mapę Trailforks
-            </a>
-
-            <!-- Link do Komoot (Trasy wokół Kowar/Karpacza) -->
-            <a href="https://www.komoot.com/guide/2628529/mtb-trails-around-kowary" target="_blank" class="map-btn komoot-btn">
-                <i class="map-icon">🗺️</i> Otwórz mapę Komoot
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- Stylowanie CSS -->
-<style>
-.dashboard-widget {
-    background: #1e1e24; /* Ciemne, nowoczesne tło */
-    color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 500px;
-    margin: 20px auto;
-}
-
-/* Licznik Online */
-.online-counter {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.1rem;
-}
-
-.online-counter p {
-    margin: 0;
-}
-
-/* Pulsująca zielona kropka */
-.pulse-dot {
-    width: 12px;
-    height: 12px;
-    background-color: #2ecc71;
-    border-radius: 50%;
-    display: inline-block;
-    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-    animation: pulse 1.6s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(0.9);
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-    }
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 8px rgba(46, 204, 113, 0);
-    }
-    100% {
-        transform: scale(0.9);
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-    }
-}
-
-.widget-divider {
-    border: 0;
-    height: 1px;
-    background: #333;
-    margin: 20px 0;
-}
-
-/* Sekcja Przycisków */
-.map-buttons-container h3 {
-    margin-top: 0;
-    font-size: 1.2rem;
-    color: #f39c12; /* Akcent kolorystyczny */
-}
-
-.map-buttons-container p {
-    font-size: 0.9rem;
-    color: #cccccc;
-    margin-bottom: 15px;
-}
-
-.button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Style przycisków */
-.map-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: transform 0.2s, background-color 0.2s;
-    text-align: center;
-}
-
-.map-btn:hover {
-    transform: translateY(-2px);
-}
-
-.trailforks-btn {
-    background-color: #ff5722; /* Pomarańcz Trailforks */
-}
-
-.trailforks-btn:hover {
-    background-color: #e64a19;
-}
-
-.komoot-btn {
-    background-color: #61892f; /* Zielony Komoot */
-}
-
-.komoot-btn:hover {
-    background-color: #4b6b24;
-}
-
-.map-icon {
-    font-style: normal;
-    font-size: 1.2rem;
-}
-</style>
-
-<!-- Skrypt JavaScript dla dynamicznego licznika -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const visitorElement = document.getElementById("visitors-count");
-    
-    // Początkowa losowa liczba osób online między 8 a 19
-    let currentVisitors = Math.floor(Math.random() * (19 - 8 + 1)) + 8;
-    visitorElement.textContent = currentVisitors;
-
-    // Funkcja aktualizująca licznik co kilka sekund, żeby symulować ruch
-    setInterval(function() {
-        // Losujemy zmianę: -2, -1, 0, 1, lub 2
-        const change = Math.floor(Math.random() * 5) - 2;
-        currentVisitors += change;
-
-        // Trzymamy licznik w sensownych widłach (np. minimum 5 osób na stronie)
-        if (currentVisitors < 5) currentVisitors = 5;
-        if (currentVisitors > 25) currentVisitors = 25;
-
-        visitorElement.textContent = currentVisitors;
-    }, 4000); // Aktualizacja co 4 sekundy
-});
-</script>
 
         /* NAGŁÓWEK GŁÓWNY */
         .header-panel {
@@ -229,9 +59,25 @@ document.addEventListener("DOMContentLoaded", function() {
             text-shadow: 0 3px 6px rgba(0,0,0,0.7);
         }
         
-        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; flex-wrap: wrap; }
-        .stat-item { color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); }
-        .stat-item span { color: var(--gold-primary); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(212,175,55,0.3); }
+        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; flex-wrap: wrap; align-items: center; }
+        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(212,175,55,0.3); }
+        .stat-item span.live-value { color: var(--green-live); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(46,204,113,0.4); }
+
+        /* PULSUJĄCA DIODA LIVE */
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--green-live);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+            animation: live-pulse-anim 1.6s infinite;
+        }
+        @keyframes live-pulse-anim {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
 
         /* JĘZYKI */
         .lang-selector { 
@@ -290,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
             z-index: 1; pointer-events: none;
         }
 
-        /* PINEZKI */
+        /* PINEZKI NA MAPIE */
         .city-pin {
             position: absolute;
             z-index: 10;
@@ -347,29 +193,44 @@ document.addEventListener("DOMContentLoaded", function() {
         .tourist-panel {
             background: linear-gradient(135deg, #12141c, #07080c); border: 1px solid rgba(212,175,55,0.25);
             border-radius: 14px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;
         }
         .tourist-panel:hover { border-color: var(--gold-primary); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(212,175,55,0.05); }
 
         .tourist-panel h3 {
-            margin: 0 0 16px 0; color: var(--gold-primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+            margin: 0 0 14px 0; color: var(--gold-primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
             display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(212,175,55,0.2); padding-bottom: 10px;
         }
 
         .weather-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
         .weather-temp { font-size: 28px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
         
-        .trail-status { background: rgba(212, 175, 55, 0.08); color: var(--gold-primary); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; border: 1px solid rgba(212, 175, 55, 0.3); }
+        .trail-status { background: rgba(212, 175, 55, 0.08); color: var(--gold-primary); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; border: 1px solid rgba(212, 175, 55, 0.3); margin-top: auto; }
 
-        .bus-list { display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
-        .bus-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.01); padding: 10px; border-radius: 8px; border-left: 3px solid var(--gold-primary); border-top: 1px solid rgba(255,255,255,0.02); }
-        .bus-time { color: var(--gold-primary); font-weight: bold; }
+        .bus-list { display: flex; flex-direction: column; gap: 10px; font-size: 12px; margin-bottom: 15px; }
+        .bus-item-link {
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(135deg, #1f2436, #131722); color: #fff; text-decoration: none;
+            padding: 12px; border-radius: 8px; border-left: 4px solid #3498db; font-weight: bold;
+            transition: all 0.2s; border-top: 1px solid rgba(255,255,255,0.03);
+        }
+        .bus-item-link:hover { background: #2980b9; color: #fff; transform: translateX(3px); }
 
         .trail-select { width: 100%; padding: 12px; background: #040507; border: 1px solid #1a1d26; border-radius: 8px; color: #fff; font-size: 12px; margin-bottom: 15px; outline: none; color: var(--gold-primary); font-weight: bold; }
         .trail-select:focus { border-color: var(--gold-primary); }
-        .trail-result { font-size: 12px; color: #9ca3af; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; min-height: 45px; border: 1px solid #161821; line-height: 1.5; }
+        .trail-result { font-size: 12px; color: #9ca3af; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; min-height: 45px; border: 1px solid #161821; line-height: 1.5; margin-bottom: 15px; }
 
-        /* NOWE STYLE DLA LIVE RESORTU */
+        /* PRZYCISK MAPY MTB / SZLAKÓW */
+        .bike-map-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000000; text-decoration: none; font-weight: 900; font-size: 12px;
+            padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.2); transition: all 0.2s;
+        }
+        .bike-map-btn:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(212,175,55,0.4); }
+
+        /* LIVE RESORT MONITOR (STACJE / BIKEPARKI / TRASY) */
         .resort-list { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
         .resort-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
         .badge-open { background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(34, 197, 94, 0.3); }
@@ -474,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .btn-buy-confirm { background: var(--gold-primary); color: #000; border: none; padding: 14px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
         .btn-buy-cancel { background: #232736; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
 
-        /* SIDEBAR Z KOŁAMI */
+        /* SIDEBAR Z KOŁAMI LOSUJĄCYMI */
         .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; box-sizing: border-box; }
         .wheel-card {
             background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
@@ -501,7 +362,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .result-display { display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--gold-primary); border-radius: 8px; padding: 10px; margin-top: 12px; box-sizing: border-box; text-align: center; font-size: 11px; }
         .result-display a { color: var(--gold-primary); font-weight: bold; }
 
-        /* DOLNY PASEK REKLAMOWY */
+        /* DOLNY PASEK REKLAMOWY TICKER */
         .ticker-wrap {
             position: fixed; bottom: 0; left: 0; width: 100%; background: linear-gradient(90deg, #030405, #0d0f17);
             border-top: 2px solid var(--gold-primary); padding: 14px 0; overflow: hidden; z-index: 999;
@@ -513,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-        /* ASYSTENT AI CZAT */
+        /* ASYSTENT AI CZAT SIGMA */
         .chat-widget { position: fixed; bottom: 75px; right: 25px; width: 330px; background: rgba(8, 9, 14, 0.98); border: 2px solid var(--gold-primary); border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.85); display: flex; flex-direction: column; z-index: 1000; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .chat-widget.collapsed { width: 55px; height: 55px; border-radius: 50%; bottom: 75px; }
         .chat-header { background: linear-gradient(135deg, #0f111a, #030406); padding: 14px; color: var(--gold-primary); font-weight: 900; font-size: 12px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid #161822; }
@@ -540,8 +401,12 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="header-left">
             <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
             <div class="stats-container">
-                <div class="stat-item"><span id="t-visitorCount">Licznik Gości:</span> <span>14 205</span></div>
-                <div class="stat-item"><span id="t-freeSlots">Wolne Okienka:</span> <span id="regionFreeSlots">84</span> / 100</div>
+                <div class="stat-item">
+                    <div class="pulse-dot"></div>
+                    <span id="t-visitorCount">Goście Online:</span> 
+                    <span class="live-value" id="headerLiveCounter">14</span>
+                </div>
+                <div class="stat-item"><span id="t-freeSlots">Wolne Okienka:</span> <span class="stat-value" id="regionFreeSlots">84</span> / 100</div>
             </div>
         </div>
         <div class="lang-selector">
@@ -602,6 +467,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
     <div class="tourist-zone" id="touristInfoZone">
+        
         <div class="tourist-panel">
             <h3 id="t-panelWeather">☀️ Pogoda i Bezpieczeństwo</h3>
             <div class="weather-info">
@@ -622,22 +488,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
         <div class="tourist-panel">
             <h3 id="t-panelBus">🚌 Rozkład Jazdy (Kluczowe Połączenia)</h3>
-            <div class="bus-list" id="busListDisplay">
-                <div class="bus-item"><span>Kowary → Karpacz Górny (PKS)</span><span class="bus-time">07:15, 09:40, 12:10, 15:35</span></div>
-                <div class="bus-item"><span>Karpacz → Jelenia Góra (przez Kowary)</span><span class="bus-time">08:20, 10:50, 14:15, 17:40</span></div>
+            <div class="bus-list">
+                <p style="color: #9ca3af; font-size: 11px; margin: 0 0 10px 0;">Godziny połączeń zmieniają się dynamicznie. Sprawdź na żywo oficjalne rozkłady regionalne:</p>
+                <a href="https://powiatjeleniogorski.pl/powiatowa-komunikacja-autobusowa" target="_blank" class="bus-item-link">
+                    🗺️ Rozkład Powiatowy (Kowary - Jelenia Góra - Karpacz)
+                </a>
+                <a href="https://www.e-podroznik.pl" target="_blank" class="bus-item-link" style="border-left-color: #8e44ad; margin-top: 5px;">
+                    🔍 Wyszukaj inne połączenie na E-Podróżnik
+                </a>
             </div>
         </div>
 
         <div class="tourist-panel">
-            <h3 id="t-panelTrails">🥾 Asystent Górski: Zaplanuj Trasę</h3>
+            <h3 id="t-panelTrails">🥾 Asystent Górski i Trasy MTB</h3>
             <select class="trail-select" id="trailPicker" onchange="calculateTrail()">
-                <option value="" id="t-trailSelectDefault">-- Wybierz dokąc idziesz --</option>
+                <option value="" id="t-trailSelectDefault">-- Wybierz dokąd idziesz (Pieszo) --</option>
                 <option value="sniezka">Karpacz (Wang) ➔ Śnieżka</option>
                 <option value="samotnia">Karpacz ➔ Samotnia</option>
                 <option value="skywalk">Świeradów ➔ Sky Walk</option>
                 <option value="szrenica">Szklarska Poręba ➔ Szrenica</option>
             </select>
             <div class="trail-result" id="trailCalcResult">Wybierz cel wędrówki z menu powyżej.</div>
+            
+            <a href="https://www.trailforks.com/region/kowary/" target="_blank" class="bike-map-btn">
+                🚲 Otwórz Interaktywną Mapę Szlaków Rowerowych
+            </a>
         </div>
     </div>
 
@@ -698,12 +573,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let selectedPackagePrice = 200;
         let selectedPackageName = "Zwykły";
 
-        // ROZBUDOWANA BAZA DANYCH O ATRAKCJE ZIMOWE ORAZ DOWNHILL/BIKEPARKI
+        // ROZBUDOWANA BAZA DANYCH O ATRAKCJE ZIMOWE ORAZ BIKEPARKI
         const cityData = {
             "Karpacz": { 
                 weather: "14°C", 
                 region: "Karpacz / Karkonosze", 
-                buses: [ { route: "Kowary → Karpacz Górny", times: "07:15, 09:40, 12:10, 15:35" }, { route: "Karpacz → Jelenia Góra", times: "08:20, 10:50, 14:15, 17:40" } ],
                 resorts: [
                     { name: "⛷️ Kompleks Kopa (Nartostrady)", status: true },
                     { name: "⛷️ Stacja Winterpol Biały Jar", status: true },
@@ -714,7 +588,6 @@ document.addEventListener("DOMContentLoaded", function() {
             "Świeradów-Zdrój": { 
                 weather: "15°C", 
                 region: "Góry Izerskie", 
-                buses: [ { route: "Świeradów → Jelenia Góra", times: "06:40, 11:15, 16:05" } ],
                 resorts: [
                     { name: "⛷️ Ski Sun Gondola Świeradów", status: true },
                     { name: "🚲 Bike Park Świeradów (Zjazdowa)", status: true },
@@ -724,7 +597,6 @@ document.addEventListener("DOMContentLoaded", function() {
             "Szklarska Poręba": { 
                 weather: "13°C", 
                 region: "Karkonosze Zachodnie", 
-                buses: [ { route: "Szklarska → Jelenia Góra", times: "07:00, 09:30, 13:45" } ],
                 resorts: [
                     { name: "⛷️ SkiArena Szrenica (Lolobrygida)", status: true },
                     { name: "⛷️ Trasy Biegowe Jakuszyce", status: true },
@@ -734,25 +606,21 @@ document.addEventListener("DOMContentLoaded", function() {
             "Świnoujście": { 
                 weather: "19°C", 
                 region: "Świnoujście / Wybrzeże Uznam", 
-                buses: [ { route: "Prom Centrum → Wydmowa", times: "06:00, 08:30, 12:00, 18:15" } ],
                 resorts: [ { name: "🚲 Nadmorski Szlak Rowerowy R10", status: true }, { name: "⛵ Marina Jachtowa", status: true } ]
             },
             "Kołobrzeg": { 
                 weather: "17°C", 
                 region: "Kołobrzeg / Bałtyk", 
-                buses: [ { route: "Dworzec → Podczele", times: "07:05, 09:15, 14:20" } ],
                 resorts: [ { name: "🚲 Trasa Ku Słońcu (Rowerowa)", status: true } ]
             },
             "Sopot": { 
                 weather: "20°C", 
                 region: "Trójmiasto", 
-                buses: [ { route: "Sopot Kamienny Potok → Gdańsk", times: "Co 10 minut (SKM)" } ],
                 resorts: [ { name: "⛷️ Łysa Góra (Wyciąg Orczykowy)", status: false }, { name: "🚲 Trasy Trójmiejskiego PK", status: true } ]
             },
             "Wisła": { 
                 weather: "16°C", 
                 region: "Beskid Śląski", 
-                buses: [ { route: "Wisła Malinka → Centrum", times: "08:00, 10:30, 15:20" } ],
                 resorts: [
                     { name: "⛷️ Skolnity Ski & Bike Park", status: true },
                     { name: "⛷️ Stacja Nowa Osada", status: true },
@@ -762,7 +630,6 @@ document.addEventListener("DOMContentLoaded", function() {
             "Zakopane": { 
                 weather: "12°C", 
                 region: "Tatry", 
-                buses: [ { route: "Zakopane → Kuźnice", times: "Co 15 minut (Busy)" }, { route: "Zakopane → Morskie Oko", times: "Co 20 minut" } ],
                 resorts: [
                     { name: "⛷️ Kasprowy Wierch (Goryczkowa)", status: true },
                     { name: "⛷️ Polana Szymoszkowa", status: true },
@@ -772,13 +639,11 @@ document.addEventListener("DOMContentLoaded", function() {
             "Szczawnica": { 
                 weather: "15°C", 
                 region: "Pieniny", 
-                buses: [ { route: "Szczawnica → Krościenko", times: "07:30, 10:00, 14:40" } ],
                 resorts: [ { name: "⛷️ Palenica Ski", status: true }, { name: "🚲 Droga Pienińska (Rowerowa)", status: true } ]
             },
             "Krynica-Zdrój": { 
                 weather: "14°C", 
                 region: "Beskid Sądecki", 
-                buses: [ { route: "Krynica Słotwiny → Dworzec", times: "08:10, 12:30, 17:10" } ],
                 resorts: [ { name: "⛷️ Jaworzyna Krynicka", status: true }, { name: "⛷️ Słotwiny Arena (Wieża)", status: true }, { name: "🚲 Krynica Bike Park", status: true } ]
             }
         };
@@ -789,15 +654,16 @@ document.addEventListener("DOMContentLoaded", function() {
         };
 
         const translations = {
-            pl: { title: "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów", visitor: "Licznik Gości:", freeSlots: "Wolne Okienka:", subtitle: "Wybierz miasto, aby wejść na lokalną tablicę reklamową", weatherTitle: "☀️ Pogoda i Bezpieczeństwo", busTitle: "🚌 Rozkład Jazdy (Kluczowe Połączenia)", trailTitle: "🥾 Asystent Górski: Zaplanuj Trasę", backBtn: "⬅ Ukryj matrycę / Pokaż tylko Mapę", wheelTourist: "🎁 Koło Szczęścia Turysty", wheelBusiness: "💼 Biznesowe Koło Okienek", defaultTrail: "-- Wybierz dokąd idziesz --", chatHello: "Siemanko! Pytaj śmiało o reklamy, okienka, szlaki lub busy! Mów mi mordeczka! 😊", btnBuy: "Złóż zamówienie", btnCancel: "Anuluj", modalH3: "Kup Okienko Reklamowe" },
-            de: { title: "PolskieOkienka.pl - Nationales Bildschirm-Netzwerk", visitor: "Besucherzähler:", freeSlots: "Freie Fenster:", subtitle: "Wählen Sie eine Stadt, um die Werbetafel anzuzeigen", weatherTitle: "☀️ Wetter & Sicherheit", busTitle: "🚌 Busfahrplan (Hauptverbindungen)", trailTitle: "🥾 Bergassistent: Route planen", backBtn: "⬅ Matrix ausblenden / Nur Karte anzeigen", wheelTourist: "🎁 Touristen-Glücksrad", wheelBusiness: "💼 Business-Fensterrad", defaultTrail: "-- Wählen Sie Ihr Ziel --", chatHello: "Hallo! Fragen Sie nach Werbung, Fenstern oder Busfahrplänen! 😊", btnBuy: "Bestellen", btnCancel: "Abbrechen", modalH3: "Werbefenster Kaufen" },
-            en: { title: "PolskieOkienka.pl - Nationwide Screen Network", visitor: "Visitor Count:", freeSlots: "Free Slots:", subtitle: "Select a city to enter the local advertising board", weatherTitle: "☀️ Weather & Safety", busTitle: "🚌 Bus Timetable (Key Connections)", trailTitle: "🥾 Mountain Assistant: Plan a Route", backBtn: "⬅ Hide Matrix / Show Map Only", wheelTourist: "🎁 Tourist Wheel of Fortune", wheelBusiness: "💼 Business Slot Wheel", defaultTrail: "-- Select your destination --", chatHello: "Hey there! Feel free to ask about ads, slots, trails, or buses! 😊", btnBuy: "Place Order", btnCancel: "Cancel", modalH3: "Buy Advertising Slot" },
-            cs: { title: "PolskieOkienka.pl - Celostátní Síť Obrazovek", visitor: "Počítadlo Hostů:", freeSlots: "Volná Okna:", subtitle: "Vyberte město pro vstup na reklamní tabuli", weatherTitle: "☀️ Počasí a Bezpečnost", busTitle: "🚌 Autobusové Jazy (Klíčové Spoje)", trailTitle: "🥾 Horský Asistent: Plánování Trasy", backBtn: "⬅ Skrýt matici / Zobrazit pouze mapu", wheelTourist: "🎁 Kolo Štěstí pro Turisty", wheelBusiness: "💼 Biznesové Kolo Oken", defaultTrail: "-- Vyberte cíl cesty --", chatHello: "Ahoj! Neváhejte se zeptat na reklamu, okna nebo autobusy! 😊", btnBuy: "Objednat", btnCancel: "Zrušit", modalH3: "Koupit Reklamní Okno" }
+            pl: { title: "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów", visitor: "Goście Online:", freeSlots: "Wolne Okienka:", subtitle: "Wybierz miasto, aby wejść na lokalną tablicę reklamową", weatherTitle: "☀️ Pogoda i Bezpieczeństwo", busTitle: "🚌 Rozkład Jazdy (Kluczowe Połączenia)", trailTitle: "🥾 Asystent Górski i Trasy MTB", backBtn: "⬅ Ukryj matrycę / Pokaż tylko Mapę", wheelTourist: "🎁 Koło Szczęścia Turysty", wheelBusiness: "💼 Biznesowe Koło Okienek", defaultTrail: "-- Wybierz dokąd idziesz (Pieszo) --", chatHello: "Siemanko! Pytaj śmiało o reklamy, okienka, szlaki lub busy! Mów mi mordeczka! 😊", btnBuy: "Złóż zamówienie", btnCancel: "Anuluj", modalH3: "Kup Okienko Reklamowe" },
+            de: { title: "PolskieOkienka.pl - Nationales Bildschirm-Netzwerk", visitor: "Online-Gäste:", freeSlots: "Freie Fenster:", subtitle: "Wählen Sie eine Stadt, um die Werbetafel anzuzeigen", weatherTitle: "☀️ Wetter & Sicherheit", busTitle: "🚌 Busfahrplan (Hauptverbindungen)", trailTitle: "🥾 Bergassistent & MTB-Strecken", backBtn: "⬅ Matrix ausblenden / Nur Karte anzeigen", wheelTourist: "🎁 Touristen-Glücksrad", wheelBusiness: "💼 Business-Fensterrad", defaultTrail: "-- Wählen Sie Ihr Ziel (Zu Fuß) --", chatHello: "Hallo! Fragen Sie nach Werbung, Fenstern oder Busfahrplänen! 😊", btnBuy: "Bestellen", btnCancel: "Abbrechen", modalH3: "Werbefenster Kaufen" },
+            en: { title: "PolskieOkienka.pl - Nationwide Screen Network", visitor: "Online Visitors:", freeSlots: "Free Slots:", subtitle: "Select a city to enter the local advertising board", weatherTitle: "☀️ Weather & Safety", busTitle: "🚌 Bus Timetable (Key Connections)", trailTitle: "🥾 Mountain Assistant & MTB Trails", backBtn: "⬅ Hide Matrix / Show Map Only", wheelTourist: "🎁 Tourist Wheel of Fortune", wheelBusiness: "💼 Business Slot Wheel", defaultTrail: "-- Select your destination (On Foot) --", chatHello: "Hey there! Feel free to ask about ads, slots, trails, or buses! 😊", btnBuy: "Place Order", btnCancel: "Cancel", modalH3: "Buy Advertising Slot" },
+            cs: { title: "PolskieOkienka.pl - Celostátní Síť Obrazovek", visitor: "Online Hosté:", freeSlots: "Volná Okna:", subtitle: "Vyberte město pro vstup na reklamní tabuli", weatherTitle: "☀️ Počasí a Bezpečnost", busTitle: "🚌 Autobusové Jazy (Klíčové Spoje)", trailTitle: "🥾 Horský Asistent a MTB Trasy", backBtn: "⬅ Skrýt matici / Zobrazit pouze mapu", wheelTourist: "🎁 Kolo Štěstí pro Turisty", wheelBusiness: "💼 Biznesové Kolo Oken", defaultTrail: "-- Vyberte cíl cesty (Pěšky) --", chatHello: "Ahoj! Neváhejte se zeptat na reklamu, okna nebo autobusy! 😊", btnBuy: "Objednat", btnCancel: "Zrušit", modalH3: "Koupit Reklamní Okno" }
         };
 
         const rewardsTourist = ["Rabat 10% Wonder Home", "Darmowa Kawa U Ducha Gór", "Bilet Park Miniatur -5%", "Gadżet Regionalny", "Rabat 15% Winterpol", "Bilet Sztolnie -10%"];
         const rewardsBusiness = ["Darmowe 7 dni", "Rabat 20% na Rok", "Baner na Tickerze", "Dodatkowe Podświetlenie", "Konsultacja SEO", "Pakiet Premium gratis"];
 
+        // GENEROWANIE KÓŁ FORTUNY
         function drawWheel(canvasId, rewards) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
@@ -829,7 +695,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        // FUNKCJA GENEROWANIA LIVE MONITORU RESORTÓW
+        // AKTYWNY MONITOR RESORTÓW (TRASY I BIKEPARKI)
         function renderResorts(cityName) {
             const container = document.getElementById('resortLiveDisplay');
             if(!container) return;
@@ -851,26 +717,38 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        // 🚀 AUTOMATYCZNY LIVE-UPDATER (API SIMULATOR)
-        // Symuluje samoczynne zmiany statusów na żywo co 7 sekund
+        // SAMOCZYNNE AKTUALIZOWANIE STATUSÓW TRAS (Z LIVE-API SIMULATOR)
         function startLiveResortUpdates() {
             setInterval(() => {
                 const cities = Object.keys(cityData);
                 cities.forEach(c => {
                     if(cityData[c].resorts && cityData[c].resorts.length > 0) {
-                        // Losowy wybór trasy do przełączenia statusu (symulacja wiatru/konserwacji)
                         const randomIdx = Math.floor(Math.random() * cityData[c].resorts.length);
-                        // Zmień stan na przeciwny z małym prawdopodobieństwem lub utrzymaj ruch
                         if(Math.random() > 0.6) {
                             cityData[c].resorts[randomIdx].status = !cityData[c].resorts[randomIdx].status;
                         }
                     }
                 });
-                // Odśwież widok dla aktualnie wybranego miasta na ekranie
                 renderResorts(currentCity);
             }, 7000); 
         }
 
+        // SAMOCZYNNE AKTUALIZOWANIE LICZNIKA OSÓB ONLINE
+        function startLiveVisitorCounter() {
+            const counterEl = document.getElementById('headerLiveCounter');
+            let baseCount = Math.floor(Math.random() * (19 - 10 + 1)) + 10; // start 10-19
+            if(counterEl) counterEl.innerText = baseCount;
+
+            setInterval(() => {
+                const fluctuation = Math.floor(Math.random() * 5) - 2; // -2, -1, 0, 1, 2
+                baseCount += fluctuation;
+                if(baseCount < 9) baseCount = 9;
+                if(baseCount > 24) baseCount = 24;
+                if(counterEl) counterEl.innerText = baseCount;
+            }, 4000);
+        }
+
+        // BUDOWANIE MATRYCY REKLAMOWEJ
         function buildMatrix(cityName) {
             const board = document.getElementById('boardMatrix');
             if(!board) return;
@@ -930,9 +808,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             const freeSlotsLabel = document.getElementById('regionFreeSlots');
-            if (freeSlotsLabel) {
-                freeSlotsLabel.innerText = countFree;
-            }
+            if (freeSlotsLabel) freeSlotsLabel.innerText = countFree;
             
             setTimeout(() => {
                 drawWheel('centerWheel', ["Firmy", "Turystyka", "Logistyka", "Nocleg"]);
@@ -949,17 +825,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if(cityData[cityName]) {
                 document.getElementById('currentRegionLabel').innerText = cityData[cityName].region;
                 document.getElementById('weatherTempDisplay').innerText = cityData[cityName].weather;
-                
-                const busContainer = document.getElementById('busListDisplay');
-                busContainer.innerHTML = "";
-                cityData[cityName].buses.forEach(b => {
-                    busContainer.innerHTML += `<div class="bus-item"><span>${b.route}</span><span class="bus-time">${b.times}</span></div>`;
-                });
-
-                // Wywołaj ładowanie tras narciarskich i bikeparków
                 renderResorts(cityName);
             }
-
             buildMatrix(cityName);
         }
 
@@ -1003,9 +870,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            if (!occupiedSlots[currentCity]) {
-                occupiedSlots[currentCity] = {};
-            }
+            if (!occupiedSlots[currentCity]) occupiedSlots[currentCity] = {};
             
             occupiedSlots[currentCity][selectedCellId] = { name: name, link: link };
             alert(`Sukces! Zakupiłeś Okienko #${selectedCellId} w pakiecie ${selectedPackageName}.\nZgłoszenie logistyczne dla firmy wysłane!`);
@@ -1107,17 +972,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }, 3000);
         }
 
+        // ODPOWIEDZIALNY ZA ODPOWIEDNIE ODLICZANIE CZASU TELEBIMU
         setInterval(() => {
             const timer = document.getElementById('liveTimer');
             if(!timer) return;
             let parts = timer.innerText.split(':');
             let h = parseInt(parts[0]), m = parseInt(parts[1]), s = parseInt(parts[2]);
-            
             s--;
             if(s < 0) { s = 59; m--; }
             if(m < 0) { m = 59; h--; }
             if(h < 0) { h = 23; } 
-
             timer.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }, 1000);
 
@@ -1135,7 +999,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!text) return;
 
             const body = document.getElementById('chatBody');
-            
             const uMsg = document.createElement('div');
             uMsg.className = "msg user";
             uMsg.innerText = text;
@@ -1147,28 +1010,27 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => {
                 const bMsg = document.createElement('div');
                 bMsg.className = "msg bot";
-                
                 const lowerText = text.toLowerCase();
-                if (lowerText.includes('cena') || lowerText.includes('okienko') || lowerText.includes('kup')) {
-                    bMsg.innerText = "Słuchaj no, mordeczka! Okienka stoją po 2975 zł rocznie za bazę reklamową, ale w panelu logistycznym masz pakiety zadań po 200 zł (Zwykły) i 350 zł (Premium). Czysty zysk platformy przekracza 200k! Klikaj w wolne pole na matrycy i rezerwuj!";
-                } else if (lowerText.includes('szlak') || lowerText.includes('gór') || lowerText.includes('śnieżka') || lowerText.includes('rower') || lowerText.includes('bikepark')) {
-                    bMsg.innerText = "Wszystkie trasy zjazdowe, bikeparki i nartostrady aktualizują się automatycznie na żywo! Zerknij do nowego panelu Live Resort Monitor obok pogody – tam bije czerwone światełko live. Dane odświeżają się same!";
-                } else if (lowerText.includes('bus') || lowerText.includes('rozklad') || lowerText.includes('pks')) {
-                    bMsg.innerText = "Rozkład jazdy ładuje się automatycznie dla każdego miasta. Przykładowo z Kowar do Karpacza masz PKS o 07:15 czy 09:40. Wszystko widoczne w panelu 🚌.";
-                } else {
-                    bMsg.innerText = "Jasna sprawa, mordeczka! Działamy na pełnych obrotach. Jeśli chcesz sprawdzić tablicę, wybierz miasto na mapie Polski, a jak chcesz kupić okienko – kliknij szare pole na siatce!";
-                }
                 
+                if (lowerText.includes('cena') || lowerText.includes('okienko') || lowerText.includes('kup')) {
+                    bMsg.innerText = "Słuchaj no, mordeczka! Okienka reklamowe stoją za grosze, a pakiety logistyczne masz po 200 zł (Zwykły) i 350 zł (Premium). Gwarantuje to potężny zysk dla platformy! Klikaj śmiało w szare pole na matrycy i zamawiaj!";
+                } else if (lowerText.includes('szlak') || lowerText.includes('gór') || lowerText.includes('śnieżka') || lowerText.includes('rower') || lowerText.includes('bikepark') || lowerText.includes('mtb')) {
+                    bMsg.innerText = "W panelu po prawej stronie na dole masz złoty przycisk z trasami rowerowymi MTB – przeniesie Cię na mapę Trailforks dla okolic Kowar. Z kolei nartostrady i stacje narciarskie żyją i odświeżają się same na monitorze obok!";
+                } else if (lowerText.includes('bus') || lowerText.includes('rozklad') || lowerText.includes('pks') || lowerText.includes('autobus')) {
+                    bMsg.innerText = "Koniec z błędami w godzinach! W strefie turystycznej dodałem bezpośrednie linki do aktualnego Powiatowego Rozkładu Jazdy oraz wyszukiwarki E-Podróżnik. Zawsze pewne info na żywo!";
+                } else {
+                    bMsg.innerText = "Jasna sprawa, mordeczka! Działamy profesjonalnie na pełnej. Wybierz miasto na mapie lub kliknij wolne okienko na siatce, by rozwinąć skrzydła!";
+                }
                 body.appendChild(bMsg);
                 body.scrollTop = body.scrollHeight;
             }, 800);
         }
 
-        // WYWOŁANIE PO ZAŁADOWANIU STRONY
+        // WYWOŁANIE PO INICJALIZACJI
         document.addEventListener("DOMContentLoaded", function() {
             openDashboard('Karpacz');
-            // Odpalenie automatycznych aktualizacji Live-API
             startLiveResortUpdates();
+            startLiveVisitorCounter();
         });
     </script>
 </body>
