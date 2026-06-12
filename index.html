@@ -64,7 +64,7 @@
         .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; }
         .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; }
 
-        /* LISTA MIAST (MOBILNA + DESKTOP) */
+        /* LISTA MIAST */
         #map-view {
             display: flex;
             flex-direction: column;
@@ -112,21 +112,22 @@
             .city-pin { width: calc(25% - 15px); min-width: 180px; }
         }
 
-        /* PANEL MATRYCY */
-        #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; }
+        /* PANEL MATRYCY (Zabezpieczenie przed ucinaniem na telefonach) */
+        #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; box-sizing: border-box; }
         
         .billboard-frame {
             background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
             padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
+            width: 100%; box-sizing: border-box; overflow-x: auto; /* Zapewnia brak wychodzenia poza ekran */
         }
 
-        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
+        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; min-width: 650px; }
         
         /* SIATKA OKIENEK */
         .grid-board {
             display: grid; 
             grid-template-columns: repeat(10, 1fr); 
-            grid-auto-rows: minmax(55px, auto);
+            grid-auto-rows: minmax(60px, auto);
             gap: 8px; background-color: #030405; padding: 12px; border-radius: 10px;
             border: 2px solid #14161f; width: 100%; box-sizing: border-box;
         }
@@ -138,10 +139,18 @@
         }
         .grid-item:hover { transform: scale(1.04); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
         
-        /* Styl 60% - Standard */
+        /* Czyste style wolnych/zajętych typów okienek */
+        .grid-item.standard-vacant { border: 1px solid #232838; color: #4b5563; }
+        
+        /* Złote okienka (Od 61 do 100) mają zawsze grubszą złotą ramkę */
+        .grid-item.gold-vacant { 
+            border: 2px solid rgba(212, 175, 55, 0.4); 
+            color: rgba(212, 175, 55, 0.6);
+            box-shadow: inset 0 0 5px rgba(212,175,55,0.1);
+        }
+
         .grid-item.standard-active { border: 1px solid #4b5563; color: #f3f4f6; background: rgba(31, 41, 55, 0.4); }
         
-        /* Styl 40% - Podświetlane na złoto */
         .grid-item.gold-active { 
             border: 2px solid var(--gold-primary); 
             color: #fff; 
@@ -149,7 +158,7 @@
             box-shadow: inset 0 0 10px rgba(212,175,55,0.3), 0 0 8px rgba(212,175,55,0.2);
         }
 
-        /* ŚRODEK VIP - LOSOWANY (Złoto-Diamentowy) */
+        /* ŚRODEK VIP - LOSOWANY */
         .grid-center {
             grid-column: 4 / span 4; grid-row: 4 / span 4;
             background: linear-gradient(135deg, #07090e 0%, #1a233a 50%, #07090e 100%);
@@ -169,15 +178,14 @@
         /* MODAL REZERWACJI */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
         .modal-box { background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px; width: 95%; max-width: 480px; padding: 25px; box-sizing: border-box; text-align: center; }
-        .modal-input { width: 100%; padding: 12px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
+        .modal-input { width: 100%; padding: 12px; margin-bottom: 15px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
         .modal-select { width: 100%; padding: 12px; margin-bottom: 15px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
         
-        .price-display { margin: 15px 0; font-size: 16px; font-weight: bold; color: var(--gold-primary); background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; }
+        .price-display { margin: 15px 0; font-size: 18px; font-weight: bold; color: var(--gold-primary); background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; }
         .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; font-size: 13px; }
         .btn-buy-cancel { background: #333; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; }
 
-        /* LOGO FIRMY W SCALONYM OKIENKU */
-        .logo-placeholder { font-size: 14px; letter-spacing: 1px; color: #fff; font-weight: 800; margin-top: 2px; }
+        .logo-placeholder { font-size: 13px; letter-spacing: 1px; color: #fff; font-weight: 800; margin-top: 2px; }
         .badge-type { font-size: 8px; text-transform: uppercase; padding: 2px 6px; border-radius: 10px; margin-top: 4px; font-weight: bold; }
     </style>
 </head>
@@ -211,43 +219,35 @@
         </div>
     </div>
 
-    <!-- ZŁOTY DASHBOARD MATRYCY -->
+    <!-- MATRYCA -->
     <div id="dashboard-view">
         <div style="margin-bottom: 12px; font-weight: bold; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;">
             Bieżąca Tablica: <span id="currentCityLabel" style="color:#fff;">Karpacz</span>
         </div>
         <div class="billboard-frame">
             <div class="billboard-inner">
-                <!-- MATRYCA 10x10 -->
                 <div class="grid-board" id="boardMatrix"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL REZERWACJI I NATYCHMIASTOWEGO ZAKUPU -->
+    <!-- MODAL REZERWACJI / SZYBKIEGO ZAKUPU -->
     <div class="modal-overlay" id="purchaseModal">
         <div class="modal-box">
-            <h3 id="modalTitle" style="color: var(--gold-primary); margin-top: 0;">Szybki Zakup Okienka</h3>
-            <p style="color: #aaa; font-size: 13px; margin-bottom: 20px;">Wybierz pakiet i skonfiguruj reklamę na tablicy:</p>
+            <h3 id="modalTitle" style="color: var(--gold-primary); margin-top: 0; text-transform:uppercase; font-size:16px;">Rezerwacja</h3>
             
-            <input type="text" class="modal-input" id="inputBizName" placeholder="Nazwa Twojej Firmy / Logo Text">
-            
-            <label style="display:block; text-align:left; font-size:12px; margin-bottom:5px; color:#ccc;">Wybierz rodzaj powierzchni (Subskrypcja miesięczna):</label>
-            <select class="modal-select" id="selectPackage" onchange="updatePriceCalculation()">
-                <option value="standard">Standard (60% tablicy) - 200 zł netto / msc</option>
-                <option value="gold">Podświetlane Złoto (40% tablicy) - 350 zł netto / msc</option>
-            </select>
+            <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px dashed #333; margin-bottom: 15px; font-size: 13px;">
+                Strefa okienka: <span id="infoAdZone" style="font-weight:bold; color:#fff;">-</span><br>
+                Cena bazowa: <span id="infoAdBasePrice" style="font-weight:bold; color:var(--gold-primary);">-</span> zł netto / msc
+            </div>
 
-            <label style="display:block; text-align:left; font-size:12px; margin-bottom:5px; color:#ccc;">Połącz sąsiednie okienka w jedno duże (Horyzontalnie):</label>
-            <select class="modal-select" id="selectMergeQty" onchange="updatePriceCalculation()">
-                <option value="1">1 Okienko (Standardowe)</option>
-                <option value="2">2 Okienka obok siebie (Podwójne duże okno)</option>
-                <option value="3">3 Okienka obok siebie (Potrójne wielkie okno)</option>
-                <option value="4">4 Okienka obok siebie (Gigantyczne okno na Logo)</option>
-            </select>
+            <input type="text" class="modal-input" id="inputBizName" placeholder="Wpisz nazwę swojej firmy (Logo)">
+
+            <label style="display:block; text-align:left; font-size:12px; margin-bottom:5px; color:#ccc;">Połącz sąsiednie okienka w jedno duże pod logo:</label>
+            <select class="modal-select" id="selectMergeQty" onchange="updatePriceCalculation()"></select>
             
             <div class="price-display">
-                Do zapłaty: <span id="calculatedPrice">200</span> zł netto / miesiąc
+                Suma: <span id="calculatedPrice">0</span> zł netto / miesiąc
             </div>
             
             <button class="btn-buy-confirm" onclick="confirmAdPurchase()">Aktywuj subskrypcję i dodaj logo</button>
@@ -259,12 +259,10 @@
         let currentCity = "Karpacz";
         let selectedCell = null;
 
-        // Baza danych okienek dla każdego miasta
         const cityBoards = {
             "Karpacz": {}, "Szklarska Poręba": {}, "Świeradów-Zdrój": {}, "Świnoujście": {}, "Kołobrzeg": {}, "Sopot": {}, "Wisła": {}, "Zakopane": {}
         };
 
-        // Aktualny zwycięzca losowania VIP dla danego miasta
         const vipWinners = {
             "Karpacz": null, "Szklarska Poręba": null, "Świeradów-Zdrój": null, "Świnoujście": null, "Kołobrzeg": null, "Sopot": null, "Wisła": null, "Zakopane": null
         };
@@ -290,11 +288,10 @@
                         
                         const winner = vipWinners[currentCity];
                         if (winner) {
-                            // Jeśli wylosowano zwycięzcę, środek "rumieni się" na diamentowo
                             centerVIP.classList.add('diamond-mode');
                             centerVIP.innerHTML = `
                                 <div class="vip-crown" style="color: var(--diamond-color); text-shadow: 0 0 10px rgba(185,242,255,0.8);">💎 TELEBIM VIP DIAMENT 💎</div>
-                                <div class="vip-company" style="color: #fff; font-size:15px;">${winner}</div>
+                                <div class="vip-company">${winner}</div>
                                 <div style="font-size:9px; color: #a5b4fc; margin-top:5px; font-weight:bold;">Wylosowany z subskrypcji</div>
                             `;
                         } else {
@@ -309,45 +306,46 @@
                     continue;
                 }
 
-                // 2. POMIJANIE ELEMENTÓW SCALONYCH (DZIECI)
                 if (currentData[i] && currentData[i].isChild) {
                     continue;
                 }
 
-                // 3. BUDOWANIE ZWYKŁYCH OKIENEK
                 const cell = document.createElement('div');
                 cell.className = "grid-item";
 
+                // Określenie typu okienka na sztywno po jego ID
+                const isGoldZone = (i >= 61); 
+
                 if (currentData[i]) {
-                    // Okienko zajęte (Zakupione)
                     occupiedCount++;
                     
-                    // Nadawanie klasy w zależności od wybranego pakietu (Standard 60% lub Złoto 40%)
-                    if (currentData[i].package === 'gold') {
+                    if (isGoldZone) {
                         cell.classList.add('gold-active');
                     } else {
                         cell.classList.add('standard-active');
                     }
 
-                    // Obsługa scalania - rozciąganie okienka w prawo za pomocą CSS Grid
                     if (currentData[i].qty > 1) {
                         cell.style.gridColumn = `span ${currentData[i].qty}`;
                     }
 
-                    // Prezentacja logotypu firmy wewnątrz scalonego okna
                     cell.innerHTML = `
                         <div class="logo-placeholder">${currentData[i].name}</div>
-                        <span class="badge-type" style="background: ${currentData[i].package === 'gold' ? 'var(--gold-dark)' : '#4b5563'}; color: #000;">
-                            ${currentData[i].package === 'gold' ? 'ZŁOTO' : 'STANDARD'}
+                        <span class="badge-type" style="background: ${isGoldZone ? 'var(--gold-primary)' : '#4b5563'}; color: #000;">
+                            ${isGoldZone ? '300 zł/msc' : '200 zł/msc'}
                         </span>
                     `;
-                    
-                    // Kliknięcie zajętego okienka informuje o firmie
                     cell.onclick = () => alert(`Okienko zajęte przez subskrypcję: ${currentData[i].name}`);
                 } else {
-                    // Okienko wolne - NATYCHMIASTOWY ZAKUP PO KLIKNIĘCIU
-                    cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:#444; margin-top:3px;">WOLNE</div>`;
-                    cell.onclick = () => openPurchaseModal(i);
+                    // Nadanie klas dla wolnych pól (od 61 złote ramki)
+                    if (isGoldZone) {
+                        cell.classList.add('gold-vacant');
+                        cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:var(--gold-primary); margin-top:3px; font-weight:800;">300 zł</div>`;
+                    } else {
+                        cell.classList.add('standard-vacant');
+                        cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:#4b5563; margin-top:3px;">200 zł</div>`;
+                    }
+                    cell.onclick = () => openPurchaseModal(i, isGoldZone);
                 }
 
                 matrixContainer.appendChild(cell);
@@ -357,14 +355,14 @@
             if (counterEl) counterEl.innerText = occupiedCount;
         }
 
-        // OTWIERANIE OKNA ZAKUPU
-        function openPurchaseModal(index) {
+        function openPurchaseModal(index, isGoldZone) {
             selectedCell = index;
             const modal = document.getElementById('purchaseModal');
-            const title = document.getElementById('modalTitle');
-            if (title) title.innerText = `Szybki Zakup Okienka [${index}] - ${currentCity}`;
             
-            // Dynamiczne dostosowanie limitu scalania, żeby nie wyjść poza rząd (10 kolumn)
+            document.getElementById('modalTitle').innerText = `Szybki Zakup Okienka [${index}]`;
+            document.getElementById('infoAdZone').innerText = isGoldZone ? "Okienko Premium (Złota Ramka)" : "Okienko Standardowe";
+            document.getElementById('infoAdBasePrice').innerText = isGoldZone ? "300" : "200";
+            
             const currentColumn = ((index - 1) % 10) + 1;
             const maxAllowedMerge = Math.min(4, 11 - currentColumn);
             
@@ -373,7 +371,7 @@
             for (let m = 1; m <= maxAllowedMerge; m++) {
                 const opt = document.createElement('option');
                 opt.value = m;
-                opt.innerText = m === 1 ? "1 Okienko (Standardowe)" : `${m} Okienka obok siebie (Połączone w jedno LOGO)`;
+                opt.innerText = m === 1 ? "1 Okienko (Bez łączenia)" : `${m} Okienka obok siebie (Połączone w jedno duże LOGO)`;
                 mergeSelect.appendChild(opt);
             }
 
@@ -386,62 +384,51 @@
             if (modal) modal.style.display = "none";
         }
 
-        // PRZELICZANIE CENY NA ŻYWO (NETTO)
         function updatePriceCalculation() {
-            const pack = document.getElementById('selectPackage').value;
+            const index = selectedCell;
+            const isGoldZone = (index >= 61);
             const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
             
-            const basePrice = pack === 'gold' ? 350 : 200;
-            const totalPrice = basePrice * qty;
-            
-            document.getElementById('calculatedPrice').innerText = totalPrice;
+            const basePrice = isGoldZone ? 300 : 200;
+            document.getElementById('calculatedPrice').innerText = basePrice * qty;
         }
 
-        // POTWIERDZENIE I AKTUALIZACJA MATRYCY
         function confirmAdPurchase() {
             const nameInput = document.getElementById('inputBizName');
-            const pack = document.getElementById('selectPackage').value;
             const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
-
             const name = nameInput.value.trim().toUpperCase();
 
             if (!name) {
-                alert("Proszę podać nazwę firmy do wyświetlenia w okienku!");
+                alert("Proszę podać nazwę firmy!");
                 return;
             }
 
-            // Zapisanie głównego okienka
             cityBoards[currentCity][selectedCell] = {
                 name: name,
-                package: pack,
                 qty: qty,
                 isChild: false
             };
 
-            // Blokowanie i scalanie kolejnych okienek w poziomie (oznaczanie jako dzieci)
             for (let i = 1; i < qty; i++) {
                 let nextIndex = selectedCell + i;
                 cityBoards[currentCity][nextIndex] = { isChild: true };
             }
 
-            // Konfetti dla nowego subskrybenta premium!
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
             }
 
-            alert(`Sukces! Uruchomiono subskrypcję miesięczną dla firmy "${name}". Okienka zostały scalone.`);
+            alert(`Sukces! Aktywowano subskrypcję dla firmy "${name}".`);
             
             closeModal();
             nameInput.value = "";
             buildMatrix();
         }
 
-        // LOSOWANIE DIAMENTOWEGO ŚRODKA SPOŚRÓD SUBKRYBENTÓW
         function drawMonthlyVipWinner() {
             const currentData = cityBoards[currentCity] || {};
             const activeCompanies = [];
 
-            // Zbierz wszystkie unikalne firmy z subskrypcji w tym mieście
             for (let key in currentData) {
                 if (currentData[key] && !currentData[key].isChild && currentData[key].name) {
                     activeCompanies.push(currentData[key].name);
@@ -449,23 +436,20 @@
             }
 
             if (activeCompanies.length === 0) {
-                alert("Brak aktywnych subskrypcji w tym mieście! Kup pierwsze okienko, aby móc przeprowadzić losowanie.");
+                alert("Brak aktywnych subskrypcji w tym mieście!");
                 return;
             }
 
-            // Losowy wybór zwycięzcy
             const randomIndex = Math.floor(Math.random() * activeCompanies.length);
             const winner = activeCompanies[randomIndex];
             
             vipWinners[currentCity] = winner;
-            
-            // Efektowne odświeżenie matrycy z nowym diamentowym wyróżnieniem
             buildMatrix();
             
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 200, spread: 100, colors: ['#b9f2ff', '#d4af37', '#ffffff'] });
             }
-            alert(`🎉 WYNIK LOSOWANIA MIESIĘCZNEGO! 🎉\n\nŚrodkowy Telebim VIP w mieście ${currentCity} rumieni się od złota po diamenty dla firmy:\n\n👉 ${winner} 👈\n\nGratulacje!`);
+            alert(`🎉 Losowanie VIP zakończone!\n\nWylosowano firmę: ${winner}`);
         }
 
         function selectCity(cityName) {
