@@ -1,640 +1,659 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Turystyczno-Biznesowy</title>
-    
-    <!-- Biblioteka do efektu konfetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <!-- Biblioteka OpenStreetMap / Leaflet do obsługi PRAWDZIWEJ MAPY -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+    <title>PolskieOkienka.pl - Ogólnopolska Platforma Reklamowo-Turystyczna</title>
     <style>
+        /* CONFIGI I MOTYW ULTRA PREMIUM */
         :root {
-            --primary-color: #2e7d32;
-            --secondary-color: #1565c0;
-            --dark-bg: #121212;
-            --card-bg: #1e1e1e;
-            --text-light: #f5f5f5;
-            --accent-gold: #ffd700;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa7c11;
+            --bg-darker: #050608;
+            --bg-panel: rgba(15, 17, 24, 0.95);
+            --border-glow: rgba(212, 175, 55, 0.25);
+            --text-main: #f3f4f6;
+            --green-live: #2ecc71;
         }
 
         body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            line-height: 1.6;
+            background: radial-gradient(circle at top, #161925 0%, #08090d 60%, #020203 100%) no-repeat fixed;
+            color: var(--text-main);
+            font-family: 'Segoe UI', BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding-bottom: 90px;
         }
 
-        /* Nawigacja */
-        nav {
-            background-color: #000;
-            padding: 1rem 2rem;
+        /* NAGŁÓWEK GŁÓWNY */
+        .header-panel {
+            background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
+            border: 2px solid var(--gold-primary);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12), inset 0 1px 1px rgba(255,255,255,0.05);
+            width: 100%;
+            max-width: 1400px;
+            box-sizing: border-box;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
+            flex-wrap: wrap;
             gap: 20px;
         }
 
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.3s;
+        .header-left h2 { 
+            margin: 0 0 8px 0; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            font-weight: 900; 
+            color: #ffffff; 
+            font-size: 24px;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.7);
+        }
+        
+        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; flex-wrap: wrap; align-items: center; }
+        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(212,175,55,0.3); }
+        .stat-item span.live-value { color: var(--green-live); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(46,204,113,0.4); }
+
+        /* PULSUJĄCA DIODA LIVE */
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--green-live);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+            animation: live-pulse-anim 1.6s infinite;
+        }
+        @keyframes live-pulse-anim {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
         }
 
-        .nav-links a:hover {
-            color: var(--primary-color);
+        /* JĘZYKI */
+        .lang-selector { 
+            display: flex; 
+            gap: 12px; 
+            background: rgba(0,0,0,0.5); 
+            padding: 8px 16px; 
+            border-radius: 30px; 
+            border: 1px solid rgba(212,175,55,0.3); 
         }
+        .lang-flag { font-size: 22px; cursor: pointer; transition: transform 0.2s, filter 0.2s; filter: grayscale(40%); }
+        .lang-flag:hover { transform: scale(1.25); filter: grayscale(0%); }
+        .lang-flag.active { filter: grayscale(0%); transform: scale(1.15); border-bottom: 2px solid var(--gold-primary); }
 
-        .auth-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* Główne kontenery */
-        .container {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .page-section {
-            display: none;
-        }
-
-        .page-section.active {
-            display: block;
-        }
-
-        /* System Autoryzacji */
-        .auth-container {
-            max-width: 450px;
-            margin: 40px auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #333;
-        }
-
-        .quick-login-box {
-            background: #222;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #444;
-            text-align: center;
-        }
-
-        .tab-group {
-            display: flex;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            background: #222;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-        }
-
-        .tab.active {
-            border-bottom-color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            background: #333;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 5px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        /* PRAWDZIWA TABLICA OKIENEK (Siatka ogłoszeń) */
-        .grid-container {
-            margin-top: 20px;
-        }
-
-        .ad-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .ad-box {
-            background: #1e1e1e;
-            border: 2px dashed #444;
-            min-height: 160px;
+        /* GŁÓWNY WIDOK: MAPA */
+        #map-view {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
-        .ad-box.occupied {
-            border-style: solid;
-            border-color: var(--secondary-color);
-            background: linear-gradient(135deg, #112233, #1a3a5f);
-        }
-
-        .ad-box.premium {
-            border-color: var(--accent-gold);
-            background: linear-gradient(135deg, #2c2205, #4a3b0b);
-        }
-
-        .ad-box.sponsor-row {
-            grid-column: span 4;
-            min-height: 90px;
-            background: linear-gradient(135deg, #3c1053, #210535);
-            border: 2px solid #9c27b0;
-        }
-
-        .ad-box h4 {
-            color: var(--accent-gold);
-            margin-bottom: 5px;
-        }
-
-        /* Stylizacja Mapy */
-        #map {
             width: 100%;
-            height: 550px;
-            border-radius: 10px;
-            border: 2px solid #333;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            max-width: 900px;
+            background: var(--bg-panel);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.85);
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease;
+            margin-bottom: 25px;
         }
 
-        /* Koło Fortuny */
-        .wheel-section {
-            text-align: center;
-            margin: 40px auto;
-            max-width: 500px;
+        #map-view h1 { 
+            color: var(--gold-primary); 
+            font-size: 16px; 
+            margin: 0 0 25px 0; 
+            text-transform: uppercase; 
+            text-align: center; 
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-
-        .wheel-wrapper {
+        
+        .map-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
-        }
-
-        .wheel {
             width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 10px solid #333;
-            position: relative;
+            aspect-ratio: 1.1 / 1;
+            background: #040507;
+            border: 2px solid #171a22;
+            border-radius: 14px;
             overflow: hidden;
-            transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.95);
         }
 
-        .wheel-pointer {
+        .poland-svg-bg {
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid var(--accent-gold);
+            top: 2%; left: 2%; width: 96%; height: 96%;
+            z-index: 1; pointer-events: none;
+        }
+
+        /* PINEZKI NA MAPIE */
+        .city-pin {
+            position: absolute;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translate(-50%, -50%);
+            background: none; border: none; padding: 0; margin: 0;
+            cursor: pointer; outline: none;
+        }
+        
+        .pin-dot {
+            width: 14px; height: 14px;
+            background-color: var(--gold-primary); border: 2px solid #050608; border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-primary), 0 0 5px var(--gold-dark);
+            transition: all 0.2s ease; z-index: 2;
+        }
+        
+        .city-label {
+            color: #ffffff; font-size: 10px; font-weight: 800; text-transform: uppercase; white-space: nowrap;
+            background: rgba(4, 5, 7, 0.95); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--gold-primary);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.8); transition: all 0.2s ease; position: absolute;
+            letter-spacing: 0.5px;
         }
 
-        .spin-btn {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: var(--accent-gold);
-            color: #000;
-            border: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            border-radius: 25px;
-            cursor: pointer;
+        .lbl-top { bottom: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-bottom { top: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-left { right: 22px; top: 50%; transform: translateY(-50%); }
+        .lbl-right { left: 22px; top: 50%; transform: translateY(-50%); }
+        .lbl-szklarska { bottom: 22px; right: -25px; transform: translateX(0); }
+        .lbl-karpacz { top: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-swieradow { bottom: 22px; left: -35px; transform: translateX(0); }
+
+        .city-pin:hover .pin-dot { transform: scale(1.6); background-color: #ffffff; box-shadow: 0 0 25px #ffffff; }
+        .city-pin:hover .city-label { background: var(--gold-primary); color: #000000; font-weight: 900; box-shadow: 0 0 20px rgba(212,175,55,0.6); z-index: 50; }
+
+        #pin-swinoujscie { top: 18%; left: 8%; }
+        #pin-kolobrzeg   { top: 12%; left: 23%; }
+        #pin-sopot        { top: 10%; left: 50%; }
+        #pin-swieradow    { top: 73%; left: 10%; }
+        #pin-szklarska    { top: 76%; left: 15%; }
+        #pin-karpacz      { top: 79%; left: 21%; }
+        #pin-wisla        { top: 86%; left: 51%; }
+        #pin-zakopane     { top: 92%; left: 64%; }
+        #pin-szccawnica   { top: 89%; left: 72%; }
+        #pin-krynica      { top: 86%; left: 81%; }
+
+        /* INTEGRACJA TURYSTYCZNA */
+        .tourist-zone {
+            width: 100%; max-width: 1400px; margin: 20px 0 30px 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; box-sizing: border-box;
         }
 
-        .spin-btn:disabled {
-            background: #555;
-            color: #aaa;
-            cursor: not-allowed;
+        .tourist-panel {
+            background: linear-gradient(135deg, #12141c, #07080c); border: 1px solid rgba(212,175,55,0.25);
+            border-radius: 14px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); box-sizing: border-box;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
+        .tourist-panel:hover { border-color: var(--gold-primary); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(212,175,55,0.05); }
+
+        .tourist-panel h3 {
+            margin: 0 0 14px 0; color: var(--gold-primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(212,175,55,0.2); padding-bottom: 10px;
+        }
+
+        .weather-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .weather-temp { font-size: 28px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
+        
+        .trail-status { background: rgba(212, 175, 55, 0.08); color: var(--gold-primary); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; border: 1px solid rgba(212, 175, 55, 0.3); margin-top: auto; }
+        .resort-list { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
+        .resort-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
+        .badge-open { background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-closed { background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .live-pulse { display: inline-block; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; animation: pulse 1.5s infinite; margin-left: auto; }
+
+        @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
+
+        /* WIDOK PANELU MATRYCY */
+        #dashboard-view { display: block; width: 100%; max-width: 1450px; animation: fadeIn 0.4s ease; }
+        
+        .back-btn {
+            background: #07080c; color: var(--gold-primary); border: 1px solid var(--gold-primary);
+            padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;
+            margin-bottom: 20px; transition: all 0.2s ease; text-transform: uppercase; font-size: 12px;
+            letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            display: block;
+        }
+        .back-btn:hover { background: var(--gold-primary); color: #000000; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
+
+        .billboard-frame {
+            background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
+            padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95), inset 0 0 15px rgba(255,255,255,0.3);
+            border: 2px solid #73540b; box-sizing: border-box; width: 100%;
+        }
+
+        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
+        .layout-grid { display: flex; flex-direction: column; gap: 25px; }
+        .grid-wrapper { flex: 1.5; width: 100%; overflow-x: auto; padding-bottom: 5px; }
+
+        /* POTĘŻNA SIATKA MATRYCY 10x10 + OBSŁUGA ŁĄCZENIA LOGOTYPOW */
+        .grid-board {
+            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
+            gap: 6px; background-color: #030405; padding: 12px; border-radius: 10px;
+            border: 2px solid #14161f; box-sizing: border-box; aspect-ratio: 1; min-width: 520px;
+            position: relative;
+        }
+
+        .grid-item {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #131620 0%, #07080b 100%);
+            border: 1px solid #1f2433; border-radius: 5px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: bold; color: #6b7280; text-align: center;
+            cursor: pointer; transition: all 0.15s ease; box-sizing: border-box; position: relative;
+            min-height: 45px;
+            overflow: hidden;
+        }
+        
+        .grid-item img {
+            width: 100%; height: 100%; object-fit: contain; transition: transform 0.2s;
+        }
+        .grid-item:hover img { transform: scale(1.05); }
+
+        .grid-item.selected-basket {
+            background: rgba(212, 175, 55, 0.25) !important;
+            border: 1px dashed var(--gold-primary) !important;
+        }
+        
+        .grid-item.premium { border: 1px solid var(--gold-primary); color: var(--gold-primary); background: linear-gradient(135deg, #1f1805 0%, #07080c 100%); }
+        .grid-item.occupied { border-color: #3b82f6; color: #93c5fd; font-size: 8px; }
+
+        /* KLASY DYNAMICZNEGO ŁĄCZENIA POL */
+        .okienko-span-2 { grid-column: span 2; }
+        .okienko-span-3 { grid-column: span 3; }
+        .okienko-span-4 { grid-column: span 4; }
+
+        /* TELEBIM REKLAMOWY CENTRALNY */
+        .grid-center {
+            grid-column: 4 / span 4; grid-row: 4 / span 4;
+            background: linear-gradient(135deg, #030406 0%, #0e1118 100%);
+            border: 2px solid var(--gold-primary); border-radius: 10px; padding: 12px;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(0,0,0,0.9);
+            display: flex; flex-direction: column; justify-content: space-between;
+            align-items: center; text-align: center; box-sizing: border-box; position: relative; z-index: 2;
+        }
+        .banner-crown { color: var(--gold-primary); font-size: 9px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed var(--gold-primary); padding-bottom: 5px; letter-spacing: 1px;}
+        .banner-main-title { font-size: 13px; font-weight: 900; color: var(--gold-primary); text-shadow: 0 0 10px rgba(212,175,55,0.4); letter-spacing: 0.5px; margin: 2px 0; }
+        #winnerName { font-size: 10px; color: #ffffff; font-weight: bold; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); padding: 5px; border-radius: 4px; width: 95%; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .live-countdown { background: #dc2626; color: #ffffff; font-family: monospace; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 8px rgba(220,38,38,0.4); }
+
+        .center-wheel-box { position: relative; width: 60px; height: 60px; margin: 2px 0; }
+        
+        /* SIDEBAR Z KOŁAMI LOSUJĄCYMI */
+        .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; box-sizing: border-box; }
+        .wheel-card {
+            background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8); flex: 1; box-sizing: border-box;
+            transition: all 0.3s ease; width: 100%;
+        }
+        .wheel-card:hover { border-color: var(--gold-primary); box-shadow: 0 15px 40px rgba(212,175,55,0.03); }
+        .wheel-card h3 { font-size: 13px; color: var(--gold-primary); margin: 0 0 16px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
+
+        .wheel-box { position: relative; width: 180px; height: 180px; margin-bottom: 15px; }
+        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--gold-primary); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .wheel-pointer { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid var(--gold-primary); z-index: 20; }
+
+        .btn {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%); color: #000000;
+            border: none; padding: 12px 20px; font-size: 11px; font-weight: 900;
+            border-radius: 25px; cursor: pointer; width: 100%; text-transform: uppercase;
+            box-shadow: 0 5px 20px rgba(212,175,55,0.2); transition: all 0.2s ease;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
+        .btn:disabled { background: #161822 !important; color: #4b5563 !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; }
+
+        .result-display { display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--gold-primary); border-radius: 8px; padding: 10px; margin-top: 12px; box-sizing: border-box; text-align: center; font-size: 11px; }
+
+        /* PANEL KOSZYKA Z UPSELLINGIEM */
+        #purchase-popup {
+            display: none; position: fixed; bottom: 85px; right: 20px; 
+            background: #0f121d; border: 2px solid var(--gold-primary); padding: 20px; 
+            border-radius: 12px; color: #fff; z-index: 999; width: 310px; 
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.7); animation: fadeIn 0.3s ease;
+        }
+
+        /* RESPONSYWNOŚĆ MOBILNA CSS (AKCELERACJA GPU) */
+        @media (max-width: 768px) {
+            body { padding: 8px; padding-bottom: 110px; }
+            .header-panel { padding: 12px; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+            .header-left h2 { font-size: 18px; }
+            .grid-board { gap: 3px; padding: 6px; min-width: 100%; }
+            .grid-item { min-height: 32px; font-size: 8px; padding: 2px; }
+            .layout-grid { flex-direction: column !important; }
+            .wheels-sidebar { width: 100% !important; flex: none; gap: 15px; }
+            .wheel-box { width: 150px; height: 150px; }
+            .wheel-canvas { will-change: auto; }
+            #purchase-popup { width: calc(100% - 40px); left: 20px; bottom: 90px; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
     </style>
 </head>
 <body>
 
-    <!-- Nawigacja -->
-    <nav>
-        <div class="logo">Karkonosze Gps & Biznes</div>
-        <ul class="nav-links">
-            <li><a onclick="switchPage('home')">Strona Główna</a></li>
-            <li><a onclick="switchPage('reklamowa')">Tablica Ogłoszeń</a></li>
-            <li><a onclick="switchPage('rowery')">Mapy Rowerowe</a></li>
-            <li><a onclick="switchPage('losowanie')" id="nav-wheel" style="display:none;">Strefa Nagród (Koło)</a></li>
-        </ul>
-        <button class="auth-btn" id="auth-nav-btn" onclick="switchPage('login')">Zaloguj się</button>
-    </nav>
-
-    <div class="container">
-
-        <!-- STRONA GŁÓWNA -->
-        <section id="home" class="page-section active">
-            <h2>Witaj na platformie regionalnej</h2>
-            <p style="margin-top: 10px; color: #aaa;">Zaloguj się jako Turysta, aby losować zniżki, lub jako Firma, aby zarządzać tablicą okienek reklamowych.</p>
-            
-            <!-- Baner Sponsora pobierany dynamicznie -->
-            <div style="margin-top:30px; padding:20px; background:#1e1e1e; border-radius:8px;">
-                <h3>Główny Sponsor Serwisu</h3>
-                <div id="home-sponsor-zone" style="margin-top:15px;">
-                    <p style="color:#666; font-style:italic;">Miejsce wolne na Twój baner sponsorski. Wykup je w zakładce Tablica Ogłoszeń.</p>
+    <div class="header-panel">
+        <div class="header-left">
+            <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="pulse-dot"></div>
+                    <span id="t-visitorCount">Goście Online:</span> 
+                    <span class="live-value" id="headerLiveCounter">14</span>
                 </div>
+                <div class="stat-item"><span id="t-freeSlots">Wolne Okienka:</span> <span class="stat-value" id="regionFreeSlots">84</span> / 100</div>
             </div>
-        </section>
+        </div>
+        <div class="lang-selector">
+            <span class="lang-flag active" id="lang-pl" style="filter:grayscale(0)">🇵🇱</span>
+        </div>
+    </div>
 
-        <!-- LOGOWANIE / REJESTRACJA (Z szybkim logowaniem) -->
-        <section id="login" class="page-section">
-            <div class="auth-container">
-                <div class="quick-login-box">
-                    <p style="margin-bottom: 10px; font-weight: bold; color: var(--accent-gold);">⚡ Szybkie logowanie do testów:</p>
-                    <button class="auth-btn" style="background:#1565c0; margin-right:5px;" onclick="directLogin('turysta@test.pl', 'turysta')">Jako Turysta</button>
-                    <button class="auth-btn" style="background:#2e7d32;" onclick="directLogin('firma@test.pl', 'firma')">Jako Firma</button>
-                </div>
+    <div id="map-view">
+        <h1 id="t-mapSubtitle">Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
+        <div class="map-container">
+            <svg class="poland-svg-bg" viewBox="0 0 650 600" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 125,95 C 130,90 145,80 155,83 C 170,85 178,92 195,85 C 210,80 220,55 240,55 C 265,55 280,68 310,60 C 330,55 332,40 355,42 C 375,44 390,62 415,55 C 440,48 450,22 475,25 C 500,28 505,48 525,58 C 550,70 575,55 595,78 C 610,95 602,115 620,130 C 630,140 642,162 635,180 C 625,205 632,230 622,255 C 612,280 628,310 615,335 C 602,360 578,375 570,402 C 562,430 580,455 565,485 C 550,515 522,510 505,538 C 492,560 488,585 465,595 C 445,602 430,580 410,585 C 390,590 375,600 355,590 C 335,580 330,555 310,550 C 290,545 272,558 250,552 C 228,546 215,520 195,522 C 175,524 160,540 140,532 C 125,525 128,500 115,490 C 102,480 85,485 72,472 C 60,460 65,438 52,425 C 40,412 18,405 18,385 C 18,365 35,355 35,335 C 35,315 22,298 28,278 C 34,258 55,252 55,232 C 55,212 40,195 48,175 C 56,155 75,150 85,130 C 95,110 110,115 125,95 Z" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="3 5"/>
+            </svg>
+            <button class="city-pin" id="pin-karpacz" onclick="openDashboard('Karpacz')"><div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div></button>
+            <button class="city-pin" id="pin-szccawnica" onclick="openDashboard('Szczawnica')"><div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div></button>
+        </div>
+    </div>
 
-                <hr style="border-color:#333; margin-bottom:20px;">
-
-                <div class="tab-group">
-                    <div class="tab active" id="tab-turysta" onclick="setAuthRole('turysta')">Turysta</div>
-                    <div class="tab" id="tab-firma" onclick="setAuthRole('firma')">Firma</div>
-                </div>
-                <h3 id="auth-title">Logowanie jako Turysta</h3>
-                <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top: 20px;">
-                    <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="email" id="auth-email" required placeholder="twoj-email@domain.com">
+    <div id="dashboard-view" style="display:none;">
+        <button class="back-btn" onclick="hideDashboardOnly()">⬅ Ukryj matrycę / Pokaż tylko Mapę</button>
+        <div class="billboard-frame">
+            <div class="billboard-inner">
+                <div class="layout-grid">
+                    <div class="grid-wrapper">
+                        <div class="grid-board" id="boardMatrix">
+                            </div>
                     </div>
-                    <div class="form-group">
-                        <label>Hasło</label>
-                        <input type="password" id="auth-password" required placeholder="••••••••">
-                    </div>
-                    <button type="submit" class="btn-submit">Zaloguj się</button>
-                </form>
-            </div>
-        </section>
 
-        <!-- MAPY ROWEROWE (Z DZIAŁAJĄCĄ MAPĄ LEAFLET) -->
-        <section id="rowery" class="page-section">
-            <h2>Interaktywna Mapa Tras Rowerowych</h2>
-            <p style="margin-bottom: 20px; color: #aaa;">Prawdziwa mapa regionu. Klikaj na ikony, aby zobaczyć polecane punkty i ścieżki rowerowe wokół Kowar i Karpacza.</p>
-            
-            <!-- Tu renderuje się prawdziwa mapa -->
-            <div id="map"></div>
-        </section>
+                    <div class="wheels-sidebar">
+                        <div class="wheel-card">
+                            <h3 id="t-wheelTouristTitle">🎁 Koło Szczęścia Turysty (1x w tygodniu)</h3>
+                            <div class="wheel-box"><div class="wheel-pointer"></div><canvas class="wheel-canvas" id="canvasTourist" width="180" height="180"></canvas></div>
+                            <button class="btn" id="btnTourist" onclick="spin('tourist')">Losuj Rabat na Nocleg</button>
+                            <div class="result-display" id="resTourist"></div>
+                        </div>
 
-        <!-- TABLICA REKLAMOWA (OKIENKA) -->
-        <section id="reklamowa" class="page-section">
-            <h2>System Zakupu Okienek Reklamowych</h2>
-            <p style="color:#aaa; margin-bottom:20px;">Możesz kupić pojedyncze okienko lub kilka na raz – połączą się one automatycznie na naszej głównej tablicy!</p>
-
-            <!-- Panel zakupowy -->
-            <div style="background:#1e1e1e; padding:20px; border-radius:8px; margin-bottom:30px; border: 1px solid #333;">
-                <h3>Kalkulator i rezerwacja powierzchni</h3>
-                <div style="display:flex; gap:15px; margin-top:15px; flex-wrap:wrap;">
-                    <div class="form-group" style="flex:1; min-width:200px;">
-                        <label>Rodzaj reklamy</label>
-                        <select id="ad-type-select" onchange="updatePriceCalc()">
-                            <option value="standard">Zwykłe okienko (200 zł / mc)</option>
-                            <option value="premium">Okienko Premium (300 zł / mc)</option>
-                            <option value="sponsor">Pasek Sponsora (400 zł / tydzień)</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="width:100px;">
-                        <label>Ilość okienek (Łączenie)</label>
-                        <input type="number" id="ad-quantity" value="1" min="1" max="4" onchange="updatePriceCalc()">
-                    </div>
-                    <div style="flex:1; min-width:200px; display:flex; align-items:center; justify-content:space-between; padding-top:20px;">
-                        <div>Suma: <strong id="ad-price-display" style="color:var(--accent-gold); font-size:1.3rem;">200 zł</strong></div>
-                        <button class="auth-btn" style="background:var(--secondary-color);" onclick="buyAdSpaces()">Kupuję i losuję nagrodę</button>
+                        <div class="wheel-card">
+                            <h3 id="t-wheelBusinessTitle">💼 Biznesowe Koło Okienek (Po Opłaceniu)</h3>
+                            <div class="wheel-box"><div class="wheel-pointer"></div><canvas class="wheel-canvas" id="canvasBusiness" width="180" height="180"></canvas></div>
+                            <button class="btn" id="btnBusiness" onclick="spin('business')">Losuj Bon Lojalnościowy</button>
+                            <div class="result-display" id="resBusiness"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- NASZA GLÓWNA TABLICA Z OKIENKAMI -->
-            <h3>Nasza Tablica Ogłoszeniowa</h3>
-            <div class="grid-container">
-                <div id="grid-sponsor-zone"></div>
-                <div class="ad-grid" id="main-ad-grid">
-                    <div class="ad-box" id="box-1"><h4>Okienko 1</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
-                    <div class="ad-box" id="box-2"><h4>Okienko 2</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
-                    <div class="ad-box" id="box-3"><h4>Okienko 3</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
-                    <div class="ad-box" id="box-4"><h4>Okienko 4</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
+    <div class="tourist-zone" id="touristInfoZone">
+        <div class="tourist-panel">
+            <h3 id="t-panelWeather">☀️ Pogoda i Bezpieczeństwo</h3>
+            <div class="weather-info">
+                <div>
+                    <div style="font-size: 11px; color: #6b7280;">Aktualnie w regionie:</div>
+                    <div style="color: #fff; font-weight: bold; font-size: 14px;" id="currentRegionLabel">Wybierz miasto z mapy</div>
                 </div>
+                <div class="weather-temp" id="weatherTempDisplay">--°C</div>
             </div>
-        </section>
+            <div class="trail-status">🟢 GOPR/MOPR: Warunki w normie. Szlaki drożne.</div>
+        </div>
 
-        <!-- KOŁO FORTUNY (STREFA NAGRÓD) -->
-        <section id="losowanie" class="page-section">
-            <div class="wheel-section">
-                <h2 id="wheel-title">Koło Fortuny</h2>
-                <p id="wheel-desc" style="color:#aaa; margin-bottom:20px;"></p>
-                
-                <div class="wheel-wrapper">
-                    <div class="wheel-pointer"></div>
-                    <div class="wheel" id="main-wheel"></div>
-                </div>
-
-                <button class="spin-btn" id="spin-button" onclick="spinWheel()">Losuj nagrodę!</button>
-                <div id="wheel-result" style="margin-top:20px; font-size:1.2rem; font-weight:bold; color:var(--accent-gold);"></div>
+        <div class="tourist-panel">
+            <h3 style="justify-content: space-between;">⛷️ Live Resort Monitor <span class="live-pulse"></span></h3>
+            <div class="resort-list" id="resortLiveDisplay">
+                <div class="resort-item"><span>Wyciągi narciarskie / Atrakcje</span><span class="badge-open">Otwarte</span></div>
             </div>
-        </section>
+        </div>
+    </div>
 
+    <div id="purchase-popup">
+        <h3 style="color: var(--gold-primary); margin-top: 0; font-size: 16px; text-transform: uppercase;">Twój Koszyk Reklamy</h3>
+        <p style="font-size: 12px; margin: 5px 0;">Zaznaczone pola: <span id="selected-numbers" style="font-weight: bold; color: #fff;">Brak</span></p>
+        
+        <div id="upsell-message" style="background: rgba(212,175,55,0.1); border-left: 3px solid var(--gold-primary); padding: 8px; margin-bottom: 12px; font-size: 11px; line-height: 1.4;">
+            💡 Wybierz okienko, aby rozpocząć konfigurację reklamy.
+        </div>
+
+        <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px;">Suma abonamentu:</span>
+            <strong id="total-price" style="font-size: 18px; color: var(--green-live);">0 zł</strong>
+        </div>
+        
+        <button onclick="executeSecureCheckout()" style="width: 100%; background: linear-gradient(135deg, var(--gold-light), var(--gold-primary)); color: #000; border: none; padding: 12px; font-weight: 900; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 11px;">
+            Zapłać BLIKEM / Wgraj baner JPG
+        </button>
     </div>
 
     <script>
-        // Stan globalny systemu
-        let currentUser = null; 
-        let currentRole = 'turysta';
-        let hasSpunThisWeek = false;
-        let firmDiscountEarned = 0;
-        let mapInitialized = false;
-        let myMap = null;
+        // CONFIG GLOBALNY URUCHOMIENIA
+        const CENA_OKIENKA = 200;
+        let wybraneOkienka = [];
+        let spinning = { tourist: false, business: false };
+        
+        // Dane losowań kół fortuny
+        const rewardsTourist = ["Rabat -5%", "Bon 20zł", "Rabat -10%", "Darmowy bilet", "Rabat -15%", "Brak wygranej"];
+        const rewardsBusiness = ["Bon 50zł", "Zniżka -10%", "Bon 100zł", "Premium Pas 7 dni", "Zniżka -20%", "Przedłużenie gratis"];
 
-        // Przełączanie podstron
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            const targetSection = document.getElementById(pageId);
-            if(targetSection) {
-                targetSection.classList.add('active');
+        // GENEROWANIE I REFRESH MATRYCY (Z UWZGLĘDNIENIEM SCALONYCH LOGO)
+        function generateMatrix() {
+            const board = document.getElementById('boardMatrix');
+            board.innerHTML = ''; 
+
+            // Wygenerowanie przykładowego dużego logotypu w układzie (np. firma wykupiła pola 1 i 2)
+            // W bazie danych pole 2 zostanie ukryte, a pole 1 otrzyma rozpiętość klasy .okienko-span-2
+            let skipIds = [2, 12, 13]; // Przykład symulacji pól zajętych i połączonych
+
+            for (let i = 1; i <= 100; i++) {
+                if (i === 4) {
+                    // Blokada Centralnego Telebimu
+                    const center = document.createElement('div');
+                    center.className = 'grid-center';
+                    center.innerHTML = `
+                        <div class="banner-crown">👑 Złoty Telebim</div>
+                        <div class="banner-main-title">WONDER HOME</div>
+                        <div id="winnerName">Luksusowe Apartamenty Karpacz</div>
+                        <div class="live-countdown">LIVE PANEL</div>
+                    `;
+                    board.appendChild(center);
+                    i += 3; // Przeskakujemy zajęty obszar środka (kolumny 4,5,6,7)
+                    continue;
+                }
+
+                // Pomijanie okienek scalonych w jeden baner
+                if (skipIds.includes(i)) continue;
+
+                const item = document.createElement('div');
+                item.className = 'grid-item';
+                item.id = `okienko-${i}`;
+                
+                // PRZYKŁAD SYMLACJI DANYCH BAZY: Pole 1 jest połączonym banerem graficznym JPG
+                if (i === 1) {
+                    item.classList.add('okienko-span-2', 'occupied');
+                    item.innerHTML = `<img src="https://via.placeholder.com/150x70/0f111a/d4af37?text=Logo+Firmy+2x" alt="Logo">`;
+                } else if (i === 11) {
+                    item.classList.add('okienko-span-3', 'occupied');
+                    item.innerHTML = `<img src="https://via.placeholder.com/220x70/0f111a/2ecc71?text=Sklep+Górski+3x" alt="Logo">`;
+                } else {
+                    item.innerHTML = `<span>#${i}<br><small style="color:var(--green-live)">WOLNE</small></span>`;
+                    item.onclick = () => toggleBasketCell(i);
+                }
+
+                board.appendChild(item);
             }
-            if(pageId === 'losowanie') {
-                setupWheelView();
-            }
-            // Inicjalizacja prawdziwej mapy po wejściu w zakładkę rowerów
-            if(pageId === 'rowery' && !mapInitialized) {
-                setTimeout(initMap, 100); 
-            }
         }
 
-        // Inicjalizacja PRAWDZIWEJ MAPY wokół Twojego regionu
-        function initMap() {
-            // Współrzędne ustawione na region Kowary / Karpacz
-            myMap = L.map('map').setView([50.7922, 15.8302], 13);
+        // FUNKCJA OBSŁUGI DYNAMICZNEGO KOSZYKA I UPSELLINGU
+        function toggleBasketCell(id) {
+            const cell = document.getElementById(`okienko-${id}`);
+            const index = wybraneOkienka.indexOf(id);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(myMap);
-
-            // Przykładowe trasy i pinezki rowerowe na mapie
-            const locations = [
-                {coords: [50.7940, 15.8340], text: "<b>Punkt Serwisowy Kowary</b><br>Darmowa stacja naprawcza."},
-                {coords: [50.7745, 15.7525], text: "<b>Trasa Rowerowa Karpacz</b><br>Wymagający podjazd górski."},
-                {coords: [50.8120, 15.8110], text: "<b>Ścieżka widokowa nad Jedlicą</b><br>Trasa łatwa, rodzinna."}
-            ];
-
-            locations.forEach(loc => {
-                L.marker(loc.coords).addTo(myMap).bindPopup(loc.text);
-            });
-
-            mapInitialized = true;
-        }
-
-        function setAuthRole(role) {
-            currentRole = role;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(`tab-${role}`).classList.add('active');
-            document.getElementById('auth-title').innerText = `Logowanie jako ${role.charAt(0).toUpperCase() + role.slice(1)}`;
-        }
-
-        function directLogin(email, role) {
-            currentUser = { email: email, role: role };
-            document.getElementById('auth-nav-btn').innerText = `Wyloguj (${email.split('@')[0]})`;
-            document.getElementById('auth-nav-btn').setAttribute('onclick', 'logout()');
-            document.getElementById('nav-wheel').style.display = 'block';
-            hasSpunThisWeek = false; 
-            alert(`Zalogowano automatycznie jako: ${role.toUpperCase()}`);
-            switchPage('home');
-        }
-
-        function handleAuth(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            directLogin(email, currentRole);
-        }
-
-        function logout() {
-            currentUser = null;
-            hasSpunThisWeek = false;
-            document.getElementById('auth-nav-btn').innerText = 'Zaloguj się';
-            document.getElementById('auth-nav-btn').setAttribute('onclick', "switchPage('login')");
-            document.getElementById('nav-wheel').style.display = 'none';
-            alert('Wylogowano');
-            switchPage('home');
-        }
-
-        function updatePriceCalc() {
-            const type = document.getElementById('ad-type-select').value;
-            const qty = parseInt(document.getElementById('ad-quantity').value) || 1;
-            let basePrice = 200;
-
-            if(type === 'premium') basePrice = 300;
-            if(type === 'sponsor') basePrice = 400;
-
-            let finalPrice = basePrice * qty;
-            
-            if(type !== 'sponsor' && firmDiscountEarned > 0) {
-                finalPrice = finalPrice * (1 - (firmDiscountEarned / 100));
-                document.getElementById('ad-price-display').innerHTML = `<span style="text-decoration:line-through; font-size:0.9rem; color:#888;">${basePrice * qty} zł</span> ${finalPrice.toFixed(0)} zł (-${firmDiscountEarned}%)`;
+            if (index > -1) {
+                wybraneOkienka.splice(index, 1);
+                cell.classList.remove('selected-basket');
             } else {
-                document.getElementById('ad-price-display').innerText = `${finalPrice} zł`;
+                wybraneOkienka.push(id);
+                cell.classList.add('selected-basket');
             }
+
+            updateBasketUI();
         }
 
-        // Kupowanie i łączenie okienek na tablicy
-        function buyAdSpaces() {
-            if(!currentUser || currentUser.role !== 'firma') {
-                alert('Musisz być zalogowany jako FIRMA! Kliknij Zaloguj się w menu i użyj przycisku ekspresowego logowania.');
-                switchPage('login');
+        function updateBasketUI() {
+            const popup = document.getElementById('purchase-popup');
+            const numbersTxt = document.getElementById('selected-numbers');
+            const priceTxt = document.getElementById('total-price');
+            const upsellTxt = document.getElementById('upsell-message');
+
+            if (wybraneOkienka.length === 0) {
+                popup.style.display = 'none';
                 return;
             }
 
-            const type = document.getElementById('ad-type-select').value;
-            const qty = parseInt(document.getElementById('ad-quantity').value) || 1;
+            popup.style.display = 'block';
+            numbersTxt.innerText = wybraneOkienka.map(n => `#${n}`).join(', ');
+            
+            const cost = wybraneOkienka.length * CENA_OKIENKA;
+            priceTxt.innerText = `${cost} zł`;
 
-            if(type === 'sponsor') {
-                document.getElementById('grid-sponsor-zone').innerHTML = `
-                    <div class="ad-box sponsor-row">
-                        <h4 style="color:#e040fb;">⭐ SPONSOR GŁÓWNY: ${currentUser.email.split('@')[0].toUpperCase()}</h4>
-                        <p>Baner scalony z całej szerokości portalu aktywny na tydzień</p>
-                    </div>
-                `;
-                document.getElementById('home-sponsor-zone').innerHTML = `
-                    <div class="ad-box sponsor-row" style="width:100%; margin:0;">
-                        <h4 style="color:#e040fb;">🔥 POLECAMY: Menedżer Reklamy ${currentUser.email.split('@')[0].toUpperCase()}</h4>
-                    </div>
-                `;
+            // System wiadomości psychologicznych nakłaniających do kupna większej liczby pól
+            if (wybraneOkienka.length === 1) {
+                upsellTxt.innerHTML = `💡 <strong>Zwiększ widoczność!</strong> Zaznacz pole obok, a system automatycznie połączy je w jedno, 2-razy większe logo firmy!`;
+                upsellTxt.style.borderColor = "var(--gold-primary)";
+            } else if (wybraneOkienka.length === 2) {
+                upsellTxt.innerHTML = `🚀 <strong>Super układ!</strong> Twoje logo stanie się szerokim banerem. Dokup 3 pole, aby zdominować dany wiersz tablicy!`;
+                upsellTxt.style.borderColor = "#2ecc71";
             } else {
-                const mainGrid = document.getElementById('main-ad-grid');
-                mainGrid.innerHTML = '';
+                upsellTxt.innerHTML = `🔥 <strong>Status giganta!</strong> Połączone pola stworzą potężną reklamę graficzną, która natychmiast rzuca się w oczy wszystkim turystom!`;
+                upsellTxt.style.borderColor = "#e74c3c";
+            }
+        }
 
-                // Wygenerowanie złączonego okienka na tablicy ogłoszeń
-                const mergedBox = document.createElement('div');
-                mergedBox.className = `ad-box occupied ${type === 'premium' ? 'premium' : ''}`;
-                mergedBox.style.gridColumn = `span ${qty}`;
-                mergedBox.innerHTML = `
-                    <h4>PROMO: ${currentUser.email.split('@')[0].toUpperCase()}</h4>
-                    <p style="font-size:0.9rem;">Powierzchnia złączona z ${qty}x modułów</p>
-                    <small style="color: #888;">Typ profilu: ${type.toUpperCase()}</small>
-                `;
-                mainGrid.appendChild(mergedBox);
+        // AKCELEROWANE SPRZĘTOWO SYSTEMY KÓŁ FORTUNY (60FPS)
+        function drawWheel(canvasId, rewards) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numSegments = rewards.length;
+            const anglePerSegment = (2 * Math.PI) / numSegments;
+            const colors = ["#0f121d", "#1c2030", "#131724", "#0a0c14", "#1a1f33", "#080a10"];
 
-                // Dopełnienie reszty pustych kafelków na tablicy
-                for(let i = qty + 1; i <= 4; i++) {
-                    const emptyBox = document.createElement('div');
-                    emptyBox.className = 'ad-box';
-                    emptyBox.innerHTML = `<h4>Okienko ${i}</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p>`;
-                    mainGrid.appendChild(emptyBox);
+            ctx.clearRect(0, 0, 180, 180);
+            for (let i = 0; i < numSegments; i++) {
+                ctx.beginPath();
+                ctx.moveTo(90, 90);
+                ctx.arc(90, 90, 85, i * anglePerSegment, (i + 1) * anglePerSegment);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "rgba(212,175,55,0.4)";
+                ctx.stroke();
+
+                // Dodanie tekstu nagrody
+                ctx.save();
+                ctx.translate(90, 90);
+                ctx.rotate(i * anglePerSegment + anglePerSegment / 2);
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 9px Segoe UI";
+                ctx.fillText(rewards[i].substring(0, 12), 35, 3);
+                ctx.restore();
+            }
+        }
+
+        function spin(type) {
+            if (spinning[type]) return;
+            
+            // Testowe sprawdzenie blokady uprawnień koła turysty przed uruchomieniem animacji
+            if (type === 'tourist') {
+                let lastSpin = localStorage.getItem('last_spin_time');
+                if (lastSpin && (Date.now() - lastSpin < 1000 * 60 * 60 * 24 * 7)) {
+                    alert("Ej mordeczka! Możesz kręcić tym kołem tylko raz w tygodniu. Wróć za kilka dni!");
+                    return;
                 }
             }
 
-            firmDiscountEarned = 0;
-            hasSpunThisWeek = false; 
-            alert('Sukces! Okienka połączone na naszej tablicy. Przenoszę Cię na losowanie koła biznesowego!');
-            switchPage('losowanie');
-        }
+            spinning[type] = true;
+            const canvasId = type === 'tourist' ? 'canvasTourist' : 'canvasBusiness';
+            const resId = type === 'tourist' ? 'resTourist' : 'resBusiness';
+            const btnId = type === 'tourist' ? 'btnTourist' : 'btnBusiness';
+            const rewards = type === 'tourist' ? rewardsTourist : rewardsBusiness;
 
-        function setupWheelView() {
-            if(!currentUser) {
-                alert('Zaloguj się najpierw!');
-                switchPage('login');
-                return;
-            }
+            const canvas = document.getElementById(canvasId);
+            const display = document.getElementById(resId);
+            document.getElementById(btnId).disabled = true;
 
-            const title = document.getElementById('wheel-title');
-            const desc = document.getElementById('wheel-desc');
-            const wheel = document.getElementById('main-wheel');
-            const btn = document.getElementById('spin-button');
+            // WŁĄCZENIE AKCELERACJI SPRZĘTOWEJ GPU NA TELEFONIE
+            canvas.style.willChange = "transform";
             
-            document.getElementById('wheel-result').innerText = '';
-            btn.disabled = hasSpunThisWeek;
-
-            if(currentUser.role === 'firma') {
-                title.innerText = 'Koło Biznesowe (Dla Firm)';
-                desc.innerText = 'Wylosuj zniżkę, która automatycznie pomniejszy wartość kolejnego zakupu okienek!';
-                wheel.style.background = `conic-gradient(
-                    #4caf50 0deg 90deg, 
-                    #81c784 90deg 180deg, 
-                    #2e7d32 180deg 270deg, 
-                    #1b5e20 270deg 360deg
-                )`;
-            } else {
-                title.innerText = 'Koło Nagród (Dla Turystów)';
-                desc.innerText = 'Losuj nagrody raz w tygodniu! Unikalny kod rabatowy prześlemy natychmiast na Twój adres e-mail.';
-                wheel.style.background = `conic-gradient(
-                    #ff5722 0deg 60deg,
-                    #ffeb3b 60deg 120deg,
-                    #4caf50 120deg 180deg,
-                    #00bcd4 180deg 240deg,
-                    #9c27b0 240deg 300deg,
-                    #e91e63 300deg 360deg
-                )`;
-            }
-        }
-
-        function spinWheel() {
-            if(hasSpunThisWeek) return;
-
-            const wheel = document.getElementById('main-wheel');
-            const btn = document.getElementById('spin-button');
-            const resultDiv = document.getElementById('wheel-result');
-            
-            btn.disabled = true;
-            hasSpunThisWeek = true;
-
-            const randomDegrees = Math.floor(Math.random() * 360) + 1800; 
-            wheel.style.transform = `rotate(${randomDegrees}deg)`;
+            const randDegrees = Math.floor(Math.random() * 360) + 1440; // 4 pełne obroty
+            canvas.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";
+            canvas.style.transform = `rotate(${randDegrees}deg)`;
 
             setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
+                const actualDegrees = randDegrees % 360;
+                const segmentAngle = 360 / rewards.length;
+                const index = Math.floor(((360 - actualDegrees + 90) % 360) / segmentAngle) % rewards.length;
 
-                if(currentUser.role === 'firma') {
-                    const rewards = [10, 15, 20, 30];
-                    const selectedReward = rewards[Math.floor(Math.random() * rewards.length)];
-                    firmDiscountEarned = selectedReward;
-                    resultDiv.innerText = `Gratulacje! Wylosowałeś ${selectedReward}% zniżki na następny abonament! Naliczy się ona automatycznie przy kolejnej rezerwacji.`;
-                    updatePriceCalc();
-                } else {
-                    const rewards = [
-                        'Rabat -20% na wypożyczenie roweru',
-                        'Darmowy bilet do muzeum regionalnego',
-                        'Zniżka 15% na pizzerię w centrum',
-                        'Kupon o wartości 30zł na lokalne atrakcje'
-                    ];
-                    const selectedReward = rewards[Math.floor(Math.random() * rewards.length)];
-                    resultDiv.innerHTML = `Wygrałeś: ${selectedReward}!<br><span style="font-size:0.9rem; color:#aaa;">Kod zniżkowy został wysłany automatycznie na adres: ${currentUser.email}</span>`;
-                }
+                // Symulacja bezpiecznego generowania kodu przez API backendu
+                const generatedCode = (type === 'tourist' ? 'TUR-' : 'BIZ-') + Math.random().toString(36).substr(2, 6).toUpperCase();
+                
+                display.innerHTML = `
+                    <div style="border: 1px dashed var(--gold-primary); padding: 8px; margin-top: 5px; background: rgba(0,0,0,0.4);">
+                        🎉 NAGRODA: <strong>${rewards[index]}</strong><br>
+                        <small style="color:#aaa;">Twój kod rabatowy:</small><br>
+                        <span style="color:var(--gold-primary); font-weight:bold; font-size:14px; letter-spacing:1px;">${generatedCode}</span>
+                    </div>
+                `;
+                display.style.display = 'block';
+                
+                // Zapis czasu rezerwacji koła turysty
+                if (type === 'tourist') localStorage.setItem('last_spin_time', Date.now());
+
+                // Czyszczenie procesów renderowania GPU (oszczędność baterii)
+                canvas.style.willChange = "auto";
+                spinning[type] = false;
+                document.getElementById(btnId).disabled = false;
             }, 4000);
+        }
+
+        // PANEL NAWIGACJI WIDOKÓW
+        function openDashboard(cityName) {
+            document.getElementById('map-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            document.getElementById('currentRegionLabel').innerText = cityName;
+            document.getElementById('weatherTempDisplay').innerText =cityName === 'Karpacz' ? '19°C' : '21°C';
+            
+            // Inicjalizacja komponentów
+            generateMatrix();
+            drawWheel('canvasTourist', rewardsTourist);
+            drawWheel('canvasBusiness', rewardsBusiness);
+        }
+
+        function hideDashboardOnly() {
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('map-view').style.display = 'flex';
+            wybraneOkienka = [];
+            updateBasketUI();
+        }
+
+        function executeSecureCheckout() {
+            alert("Przekierowanie do bramki płatniczej BLIK... Rezerwacja okienek: " + wybraneOkienka.join(', '));
+            // Po powrocie z tpay/PayU system wywoła skrypt SQL nadpisujący pola logotypem JPG.
         }
     </script>
 </body>
