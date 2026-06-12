@@ -35,7 +35,7 @@
             padding-bottom: 90px;
         }
 
-        /* NAGŁÓWEK */
+        /* NAGŁÓWEK - Zabezpieczony przed rozjeżdżaniem */
         .header-panel {
             background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
             border: 2px solid var(--gold-primary);
@@ -53,32 +53,66 @@
             gap: 20px;
         }
 
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            .header-left {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
         .header-left h2 { 
-            margin: 0 0 8px 0; 
+            margin: 0; 
             text-transform: uppercase; 
-            letter-spacing: 3px; 
+            letter-spacing: 2px; 
             color: #ffffff; 
-            font-size: 24px;
+            font-size: 22px;
         }
         
-        .stats-container { display: flex; align-items: center; gap: 25px; font-size: 13px; font-weight: 600; flex-wrap: wrap; }
-        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; }
+        .stats-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            flex-wrap: wrap; 
+        }
+
+        .stat-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: #9ca3af; 
+            background: rgba(0,0,0,0.4); 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            white-space: nowrap;
+        }
         .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; }
 
-        /* WIDGET METEO I CZASU */
+        /* WIDGET METEO I CZASU - Poprawiona elastyczność i zawijanie w ramce */
         .live-widget {
-            background: rgba(20, 24, 38, 0.6);
-            border: 1px solid rgba(214, 175, 55, 0.3);
+            background: rgba(20, 24, 38, 0.7);
+            border: 1px solid rgba(214, 175, 55, 0.4);
             border-radius: 12px;
-            padding: 10px 20px;
+            padding: 8px 16px;
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
             align-items: center;
             color: #fff;
             font-size: 13px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            max-width: 100%;
         }
-        .widget-part { display: flex; align-items: center; gap: 6px; }
+        .widget-part { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
         .widget-highlight { color: var(--gold-primary); font-weight: bold; }
 
         /* LISTA MIAST */
@@ -87,9 +121,9 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 900px;
+            max-width: 1400px;
             background: var(--bg-panel);
-            padding: 25px;
+            padding: 20px;
             border-radius: 20px;
             border: 2px solid var(--gold-primary);
             box-shadow: 0 20px 60px rgba(0,0,0,0.85);
@@ -111,7 +145,7 @@
             align-items: center;
             background: rgba(18, 21, 31, 0.8);
             border: 1px solid var(--gold-primary);
-            padding: 14px 18px;
+            padding: 12px 16px;
             border-radius: 10px;
             box-sizing: border-box;
             cursor: pointer;
@@ -119,32 +153,32 @@
         }
 
         .city-pin:hover { background: var(--gold-primary); }
-        .pin-dot { width: 12px; height: 12px; background-color: var(--gold-primary); border-radius: 50%; margin-right: 15px; flex-shrink: 0; }
+        .pin-dot { width: 10px; height: 10px; background-color: var(--gold-primary); border-radius: 50%; margin-right: 12px; flex-shrink: 0; }
         .city-pin:hover .pin-dot { background-color: #000; }
-        .city-label { color: #fff; font-size: 14px; font-weight: 800; text-transform: uppercase; }
+        .city-label { color: #fff; font-size: 13px; font-weight: 800; text-transform: uppercase; }
         .city-pin:hover .city-label { color: #000; }
 
-        @media (min-width: 769px) {
-            .map-container { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px; }
-            .city-pin { width: calc(25% - 15px); min-width: 180px; }
+        @media (min-width: 640px) {
+            .map-container { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .city-pin { width: calc(25% - 10px); min-width: 150px; }
         }
 
         /* PANEL MATRYCY */
-        #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; box-sizing: border-box; }
+        #dashboard-view { display: block; width: 100%; max-width: 1400px; margin-top: 5px; box-sizing: border-box; }
         
         .billboard-frame {
             background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
-            padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
+            padding: 12px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
             width: 100%; box-sizing: border-box; overflow-x: auto;
         }
 
-        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; min-width: 650px; }
+        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 15px; border-radius: 10px; min-width: 950px; }
         
-        /* SIATKA OKIENEK */
+        /* SIATKA OKIENEK - Równe 100 okienek */
         .grid-board {
             display: grid; 
             grid-template-columns: repeat(10, 1fr); 
-            grid-auto-rows: minmax(65px, auto);
+            grid-template-rows: repeat(10, minmax(70px, auto));
             gap: 8px; background-color: #030405; padding: 12px; border-radius: 10px;
             border: 2px solid #14161f; width: 100%; box-sizing: border-box;
         }
@@ -160,9 +194,10 @@
         .grid-item.standard-vacant { border: 1px solid #232838; color: #4b5563; }
         
         .grid-item.gold-vacant { 
-            border: 2px solid rgba(212, 175, 55, 0.4); 
-            color: rgba(212, 175, 55, 0.6);
-            box-shadow: inset 0 0 5px rgba(212,175,55,0.1);
+            border: 2px solid rgba(212, 175, 55, 0.5); 
+            color: rgba(212, 175, 55, 0.8);
+            background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, #07080b 100%);
+            box-shadow: inset 0 0 5px rgba(212,175,55,0.05);
         }
 
         .grid-item.standard-active { border: 1px solid #4b5563; color: #f3f4f6; background: rgba(31, 41, 55, 0.4); }
@@ -170,7 +205,7 @@
         .grid-item.gold-active { 
             border: 2px solid var(--gold-primary); 
             color: #fff; 
-            background: linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(7,8,12,0.9) 100%);
+            background: linear-gradient(135deg, rgba(212,175,55,0.2) 0%, rgba(7,8,12,0.9) 100%);
             box-shadow: inset 0 0 10px rgba(212,175,55,0.3), 0 0 8px rgba(212,175,55,0.2);
         }
 
@@ -178,7 +213,7 @@
             width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .grid-item-logo-img {
-            max-width: 95%; max-height: 32px; object-fit: contain; border-radius: 4px; margin-bottom: 2px;
+            max-width: 95%; max-height: 35px; object-fit: contain; border-radius: 4px; margin-bottom: 2px;
         }
 
         /* POTĘŻNY, BŁYSZCZĄCY ŚRODEK VIP (EFEKT DIAMENTU) */
@@ -191,7 +226,6 @@
             position: relative; overflow: hidden;
         }
 
-        /* Efekt diamentowego błysku i mienienia się */
         .grid-center.diamond-mode {
             border: 4px solid #fff;
             border-image: linear-gradient(45deg, var(--diamond-glow), #ffffff, var(--gold-primary), #ffffff) 1;
@@ -218,8 +252,8 @@
             100% { box-shadow: 0 0 45px rgba(0, 210, 255, 0.8), 0 0 15px rgba(214, 175, 55, 0.4); }
         }
 
-        .vip-crown { color: var(--gold-primary); font-size: 11px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase;}
-        .vip-company { font-size: 18px; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .vip-crown { color: var(--gold-primary); font-size: 12px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase;}
+        .vip-company { font-size: 20px; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         /* MODAL REZERWACJI */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
@@ -256,7 +290,10 @@
     <!-- PANEL GÓRNY -->
     <div class="header-panel">
         <div class="header-left">
-            <h2>PolskieOkienka.pl - Główna Matryca Kurortów</h2>
+            <div>
+                <h2>PolskieOkienka.pl - Główna Matryca Kurortów</h2>
+                <div style="font-size: 12px; color: #9ca3af; margin-top: 4px;">Premium 300 zł na górze (1-30) | Standard 200 zł na dole (31-100)</div>
+            </div>
             <div class="stats-container">
                 <div class="stat-item">Zajęte Okienka: <span class="stat-value" id="statsOccupied">0</span> / 84</div>
                 
@@ -267,8 +304,8 @@
                     <div class="widget-part">🌤️ Pogoda: <span id="widgetWeather" class="widget-highlight">-</span></div>
                 </div>
 
-                <button onclick="drawMonthlyVipWinner()" style="background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); border: none; color: #000; font-weight: 900; padding: 8px 18px; border-radius: 12px; cursor: pointer; margin-left: 10px; font-size: 11px; text-transform: uppercase; box-shadow: 0 0 15px rgba(214,175,55,0.4);">
-                    🎲 Losuj Diamentowy Telebim VIP
+                <button onclick="drawMonthlyVipWinner()" style="background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); border: none; color: #000; font-weight: 900; padding: 8px 18px; border-radius: 12px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 0 15px rgba(214,175,55,0.4);">
+                    🎲 Losuj Diamentowy VIP
                 </button>
             </div>
         </div>
@@ -276,7 +313,7 @@
 
     <!-- WYBÓR KURORTU -->
     <div id="map-view">
-        <h3 style="margin: 0 0 15px 0; font-size: 16px; text-transform: uppercase; color: var(--gold-primary);">Wybierz kurort:</h3>
+        <h3 style="margin: 0 0 12px 0; font-size: 15px; text-transform: uppercase; color: var(--gold-primary); letter-spacing: 1px;">Wybierz interesujący Cię kurort:</h3>
         <div class="map-container">
             <div class="city-pin" onclick="selectCity('Świnoujście')"><div class="pin-dot"></div><div class="city-label">Świnoujście</div></div>
             <div class="city-pin" onclick="selectCity('Kołobrzeg')"><div class="pin-dot"></div><div class="city-label">Kołobrzeg</div></div>
@@ -306,7 +343,6 @@
         <div class="modal-box">
             <h3 id="modalTitle" style="color: var(--gold-primary); margin-top: 0; text-transform:uppercase; font-size:15px;">Rezerwacja</h3>
             
-            <!-- BONUS INFO O LOSOWANIU VIP -->
             <div style="background: linear-gradient(135deg, rgba(0,210,255,0.1) 0%, rgba(214,175,55,0.1) 100%); border: 1px solid var(--diamond-glow); padding: 8px 12px; border-radius: 8px; font-size: 11px; color: #b9f2ff; margin-bottom: 12px; text-align: left; font-weight: 600;">
                 💎 <strong>PREMIA VIP:</strong> Każda aktywna subskrypcja automatycznie bierze udział w comiesięcznym losowaniu Głównego Panelu, który lśni jak diamenty na całej matrycy!
             </div>
@@ -347,7 +383,6 @@
         let selectedCell = null;
         let uploadedLogoBase64 = null;
 
-        // Baza danych pogody dla kurortów
         const weatherDatabase = {
             "Karpacz": "☀️ Słonecznie, 19°C (Karkonosze)",
             "Szklarska Poręba": "⛅ Częściowe zachmurzenie, 18°C",
@@ -382,21 +417,15 @@
                     }
                 });
             }
-            // Start zegara i widgetu pogodowego
             updateLiveWidget();
             setInterval(updateLiveWidget, 1000);
         });
 
-        // Funkcja aktualizująca datę, czas i pogodę zależnie od miasta
         function updateLiveWidget() {
             const now = new Date();
-            
-            // Format daty (np. 12.06.2026)
             const day = String(now.getDate()).padStart(2, '0');
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const year = now.getFullYear();
-            
-            // Format czasu
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -414,11 +443,12 @@
             const currentData = cityBoards[currentCity] || {};
             let occupiedCount = 0;
 
+            // Pętla generuje równe 100 okienek (od 1 do 100)
             for (let i = 1; i <= 100; i++) {
                 let row = Math.floor((i - 1) / 10) + 1;
                 let col = ((i - 1) % 10) + 1;
 
-                // WYŚWIETLANIE DIAMENTOWEGO TELEBIMU VIP
+                // WYŚWIETLANIE DIAMENTOWEGO TELEBIMU VIP W SAMYM ŚRODKU (Rzędy 4-7, Kolumny 4-7)
                 if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
                     if (row === 4 && col === 4) {
                         const centerVIP = document.createElement('div');
@@ -429,15 +459,15 @@
                         if (winner) {
                             centerVIP.classList.add('diamond-mode');
                             centerVIP.innerHTML = `
-                                <div class="vip-crown" style="color: var(--diamond-color); font-weight:900; text-shadow: 0 0 12px #00d2ff;">💎 DIAMENTOWY REWIR VIP 💎</div>
+                                <div class="vip-crown" style="color: var(--diamond-color); font-weight:900; text-shadow: 0 0 12px #00d2ff;">💎 PANEL VIP 💎</div>
                                 <div class="vip-company">${winner}</div>
-                                <div style="font-size:9px; color: #fff; margin-top:5px; font-weight:bold; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:10px;">👑 Władca Tablicy na ten miesiąc 👑</div>
+                                <div style="font-size:9px; color: #fff; margin-top:5px; font-weight:bold; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:10px;">👑 Władca Tablicy 👑</div>
                             `;
                         } else {
                             centerVIP.innerHTML = `
-                                <div class="vip-crown">👑 GŁÓWNY TELEBIM VIP</div>
-                                <div class="vip-company" style="color: var(--gold-primary); font-size:13px;">PolskieOkienka.pl</div>
-                                <div style="font-size:9px; color:#6b7280; margin-top:5px;">Wszystkie subskrypcje biorą udział w losowaniu!</div>
+                                <div class="vip-crown">👑 TELEBIM VIP</div>
+                                <div class="vip-company" style="color: var(--gold-primary); font-size:14px;">PolskieOkienka.pl</div>
+                                <div style="font-size:9px; color:#6b7280; margin-top:5px;">Subskrypcje biorą udział w losowaniu!</div>
                             `;
                         }
                         matrixContainer.appendChild(centerVIP);
@@ -449,7 +479,9 @@
 
                 const cell = document.createElement('div');
                 cell.className = "grid-item";
-                const isGoldZone = (i >= 61); 
+                
+                // NOWY PODZIAŁ: Pierwsze 3 rzędy (indeksy 1-30) to PREMIUM na samej górze
+                const isGoldZone = (i <= 30); 
 
                 if (currentData[i]) {
                     occupiedCount++;
@@ -476,7 +508,7 @@
                     const targetUrl = currentData[i].url;
                     cell.onclick = () => {
                         if (targetUrl) window.open(targetUrl, '_blank');
-                        else alert(`Okienko zajęte przez subskrypcję: ${currentData[i].name}`);
+                        else alert(`Okienko zajęte przez: ${currentData[i].name}`);
                     };
                 } else {
                     if (isGoldZone) {
@@ -492,6 +524,7 @@
                 matrixContainer.appendChild(cell);
             }
 
+            // Aktualizacja licznika zajętości (odliczamy od 84 wolnych miejsc, bo 16 zabiera środek VIP)
             const counterEl = document.getElementById('statsOccupied');
             if (counterEl) counterEl.innerText = occupiedCount;
         }
@@ -504,7 +537,7 @@
 
             const modal = document.getElementById('purchaseModal');
             document.getElementById('modalTitle').innerText = `Szybki Zakup Okienka [${index}]`;
-            document.getElementById('infoAdZone').innerText = isGoldZone ? "Okienko Premium (Złota Ramka)" : "Okienko Standardowe";
+            document.getElementById('infoAdZone').innerText = isGoldZone ? "Okienko Premium (Górny Sektor)" : "Okienko Standardowe";
             document.getElementById('infoAdBasePrice').innerText = isGoldZone ? "300" : "200";
             
             const currentColumn = ((index - 1) % 10) + 1;
@@ -531,15 +564,15 @@
 
         function updatePriceCalculation() {
             const index = selectedCell;
-            const isGoldZone = (index >= 61);
+            const isGoldZone = (index <= 30); // Zaktualizowana strefa w kalkulatorze ceny
             const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
             const months = parseInt(document.getElementById('selectDuration').value) || 1;
             
             const baseMonthlyPrice = isGoldZone ? 300 : 200;
             let totalPrice = baseMonthlyPrice * qty * months;
 
-            if (months === 6) totalPrice = totalPrice * 0.90; // 10% zniżki
-            else if (months === 12) totalPrice = totalPrice * 0.85; // 15% zniżki
+            if (months === 6) totalPrice = totalPrice * 0.90;
+            else if (months === 12) totalPrice = totalPrice * 0.85;
 
             document.getElementById('calculatedPrice').innerText = Math.round(totalPrice);
         }
@@ -580,9 +613,8 @@
                 confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
             }
 
-            alert(`Sukces! Aktywowano pakiet oraz dopisano firmę do losowania DIAMENTOWEGO PANELU VIP!`);
+            alert(`Sukces! Okienko dodane na tablicę. Twoja firma bierze udział w losowaniu Diamentowego VIP!`);
             
-            // Symulacja powiadomienia o wygasaniu pakietu
             if (email) {
                 setTimeout(() => {
                     const toast = document.getElementById('emailNotification');
@@ -630,7 +662,7 @@
             currentCity = cityName;
             const label = document.getElementById('currentCityLabel');
             if (label) label.innerText = cityName;
-            updateLiveWidget(); // Natychmiast zmienia pogodę i strefę kurortu
+            updateLiveWidget();
             buildMatrix();
         }
 
