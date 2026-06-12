@@ -112,13 +112,13 @@
             .city-pin { width: calc(25% - 15px); min-width: 180px; }
         }
 
-        /* PANEL MATRYCY (Zabezpieczenie przed ucinaniem na telefonach) */
+        /* PANEL MATRYCY */
         #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; box-sizing: border-box; }
         
         .billboard-frame {
             background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
             padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
-            width: 100%; box-sizing: border-box; overflow-x: auto; /* Zapewnia brak wychodzenia poza ekran */
+            width: 100%; box-sizing: border-box; overflow-x: auto;
         }
 
         .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; min-width: 650px; }
@@ -136,13 +136,12 @@
             height: 100%; background: linear-gradient(135deg, #131620 0%, #07080b 100%);
             border: 1px solid #1f2433; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
             font-size: 11px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; padding: 5px; box-sizing: border-box; text-align: center;
+            position: relative; overflow: hidden;
         }
         .grid-item:hover { transform: scale(1.04); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
         
-        /* Czyste style wolnych/zajętych typów okienek */
         .grid-item.standard-vacant { border: 1px solid #232838; color: #4b5563; }
         
-        /* Złote okienka (Od 61 do 100) mają zawsze grubszą złotą ramkę */
         .grid-item.gold-vacant { 
             border: 2px solid rgba(212, 175, 55, 0.4); 
             color: rgba(212, 175, 55, 0.6);
@@ -158,7 +157,24 @@
             box-shadow: inset 0 0 10px rgba(212,175,55,0.3), 0 0 8px rgba(212,175,55,0.2);
         }
 
-        /* ŚRODEK VIP - LOSOWANY */
+        /* Dedykowany styl dla graficznego logo Clean Expert */
+        .grid-item-logo-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .grid-item-logo-img {
+            max-width: 90%;
+            max-height: 28px;
+            object-fit: contain;
+            border-radius: 2px;
+            margin-bottom: 2px;
+        }
+
+        /* ŚRODEK VIP */
         .grid-center {
             grid-column: 4 / span 4; grid-row: 4 / span 4;
             background: linear-gradient(135deg, #07090e 0%, #1a233a 50%, #07090e 100%);
@@ -185,7 +201,7 @@
         .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; font-size: 13px; }
         .btn-buy-cancel { background: #333; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; }
 
-        .logo-placeholder { font-size: 13px; letter-spacing: 1px; color: #fff; font-weight: 800; margin-top: 2px; }
+        .logo-placeholder { font-size: 12px; letter-spacing: 1px; color: #fff; font-weight: 800; margin-top: 2px; text-transform: uppercase; }
         .badge-type { font-size: 8px; text-transform: uppercase; padding: 2px 6px; border-radius: 10px; margin-top: 4px; font-weight: bold; }
     </style>
 </head>
@@ -231,7 +247,7 @@
         </div>
     </div>
 
-    <!-- MODAL REZERWACJI / SZYBKIEGO ZAKUPU -->
+    <!-- MODAL REZERWACJI -->
     <div class="modal-overlay" id="purchaseModal">
         <div class="modal-box">
             <h3 id="modalTitle" style="color: var(--gold-primary); margin-top: 0; text-transform:uppercase; font-size:16px;">Rezerwacja</h3>
@@ -242,6 +258,7 @@
             </div>
 
             <input type="text" class="modal-input" id="inputBizName" placeholder="Wpisz nazwę swojej firmy (Logo)">
+            <input type="url" class="modal-input" id="inputBizUrl" placeholder="Wpisz link URL do swojej strony (Opcjonalnie)">
 
             <label style="display:block; text-align:left; font-size:12px; margin-bottom:5px; color:#ccc;">Połącz sąsiednie okienka w jedno duże pod logo:</label>
             <select class="modal-select" id="selectMergeQty" onchange="updatePriceCalculation()"></select>
@@ -259,8 +276,18 @@
         let currentCity = "Karpacz";
         let selectedCell = null;
 
+        // BAZA DANYCH - Clean Expert dodany na stałe do bazy w Karpaczu pod okienko nr 1
         const cityBoards = {
-            "Karpacz": {}, "Szklarska Poręba": {}, "Świeradów-Zdrój": {}, "Świnoujście": {}, "Kołobrzeg": {}, "Sopot": {}, "Wisła": {}, "Zakopane": {}
+            "Karpacz": {
+                1: {
+                    name: "CLEAN EXPERT",
+                    url: "https://sprzatanie.jelenia.pl/",
+                    logoImg: "pobrane.jpeg", // Referencja do pliku pobrane.jpeg
+                    qty: 1,
+                    isChild: false
+                }
+            }, 
+            "Szklarska Poręba": {}, "Świeradów-Zdrój": {}, "Świnoujście": {}, "Kołobrzeg": {}, "Sopot": {}, "Wisła": {}, "Zakopane": {}
         };
 
         const vipWinners = {
@@ -279,7 +306,7 @@
                 let row = Math.floor((i - 1) / 10) + 1;
                 let col = ((i - 1) % 10) + 1;
 
-                // 1. ŚRODEK VIP (Wiersze 4-7, Kolumny 4-7)
+                // 1. ŚRODEK VIP
                 if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
                     if (row === 4 && col === 4) {
                         const centerVIP = document.createElement('div');
@@ -313,9 +340,9 @@
                 const cell = document.createElement('div');
                 cell.className = "grid-item";
 
-                // Określenie typu okienka na sztywno po jego ID
                 const isGoldZone = (i >= 61); 
 
+                // 2. OKIENKO ZAJĘTE
                 if (currentData[i]) {
                     occupiedCount++;
                     
@@ -329,15 +356,34 @@
                         cell.style.gridColumn = `span ${currentData[i].qty}`;
                     }
 
-                    cell.innerHTML = `
-                        <div class="logo-placeholder">${currentData[i].name}</div>
-                        <span class="badge-type" style="background: ${isGoldZone ? 'var(--gold-primary)' : '#4b5563'}; color: #000;">
-                            ${isGoldZone ? '300 zł/msc' : '200 zł/msc'}
-                        </span>
-                    `;
-                    cell.onclick = () => alert(`Okienko zajęte przez subskrypcję: ${currentData[i].name}`);
+                    // Renderowanie graficznego logo jeśli istnieje (jak u Clean Expert)
+                    if (currentData[i].logoImg) {
+                        cell.innerHTML = `
+                            <div class="grid-item-logo-container">
+                                <img src="${currentData[i].logoImg}" class="grid-item-logo-img" alt="${currentData[i].name}">
+                                <div class="logo-placeholder" style="font-size:10px;">${currentData[i].name}</div>
+                            </div>
+                        `;
+                    } else {
+                        cell.innerHTML = `
+                            <div class="logo-placeholder">${currentData[i].name}</div>
+                            <span class="badge-type" style="background: ${isGoldZone ? 'var(--gold-primary)' : '#4b5563'}; color: #000;">
+                                ${isGoldZone ? '300 zł/msc' : '200 zł/msc'}
+                            </span>
+                        `;
+                    }
+
+                    // Obsługa przekierowania URL po kliknięciu
+                    const targetUrl = currentData[i].url;
+                    cell.onclick = () => {
+                        if (targetUrl) {
+                            window.open(targetUrl, '_blank');
+                        } else {
+                            alert(`Okienko zajęte przez subskrypcję: ${currentData[i].name}`);
+                        }
+                    };
                 } else {
-                    // Nadanie klas dla wolnych pól (od 61 złote ramki)
+                    // 3. OKIENKO WOLNE
                     if (isGoldZone) {
                         cell.classList.add('gold-vacant');
                         cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:var(--gold-primary); margin-top:3px; font-weight:800;">300 zł</div>`;
@@ -395,16 +441,24 @@
 
         function confirmAdPurchase() {
             const nameInput = document.getElementById('inputBizName');
+            const urlInput = document.getElementById('inputBizUrl');
             const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
             const name = nameInput.value.trim().toUpperCase();
+            let url = urlInput.value.trim();
 
             if (!name) {
                 alert("Proszę podać nazwę firmy!");
                 return;
             }
 
+            if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
             cityBoards[currentCity][selectedCell] = {
                 name: name,
+                url: url || null,
+                logoImg: null,
                 qty: qty,
                 isChild: false
             };
@@ -422,6 +476,7 @@
             
             closeModal();
             nameInput.value = "";
+            urlInput.value = "";
             buildMatrix();
         }
 
