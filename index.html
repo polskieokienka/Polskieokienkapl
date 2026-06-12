@@ -9,60 +9,252 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa7c11;
+            --bg-darker: #050608;
+            --bg-panel: rgba(15, 17, 24, 0.95);
+            --text-main: #f3f4f6;
+            --green-live: #2ecc71;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #161925 0%, #08090d 60%, #020203 100%) no-repeat fixed;
+            color: var(--text-main);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding-bottom: 90px;
+        }
+
+        /* NAGŁÓWEK */
+        .header-panel {
+            background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
+            border: 2px solid var(--gold-primary);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12);
+            width: 100%;
+            max-width: 1400px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left h2 { 
+            margin: 0 0 8px 0; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            color: #ffffff; 
+            font-size: 24px;
+        }
+        
+        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; }
+        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; }
+        .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; }
+        .stat-item span.live-value { color: var(--green-live); font-size: 15px; font-weight: 800; }
+
+        .auth-bar { display: flex; align-items: center; gap: 12px; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 30px; border: 1px solid #333; }
+        .auth-btn-quick { background: var(--gold-dark); color: #000; border: none; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+        .auth-btn-quick:hover { background: var(--gold-primary); }
+
+        /* WIDOK MAPY - BAZA */
+        #map-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-panel);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.85);
+            box-sizing: border-box;
+            margin-bottom: 25px;
+        }
+        
+        /* KONTENER MAPY (Domyślnie dla komputera) */
+        .map-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1.1 / 1;
+            background: #040507;
+            border: 2px solid #171a22;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .poland-svg-bg { position: absolute; top: 2%; left: 2%; width: 96%; height: 96%; pointer-events: none; }
+
+        /* PINEZKI I ETYKIETY (Domyślnie dla komputera) */
+        .city-pin { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); background: none; border: none; cursor: pointer; }
+        .pin-dot { width: 14px; height: 14px; background-color: var(--gold-primary); border: 2px solid #050608; border-radius: 50%; box-shadow: 0 0 15px var(--gold-primary); transition: all 0.2s; }
+        .city-label { color: #ffffff; font-size: 10px; font-weight: 800; text-transform: uppercase; white-space: nowrap; background: rgba(4, 5, 7, 0.95); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--gold-primary); position: absolute; }
+
+        /* Pozycje etykiet względem kropek na komputerze */
+        .lbl-top { bottom: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-bottom { top: 22px; left: 50%; transform: translateX(-50%); }
+        .lbl-left { right: 22px; top: 50%; transform: translateY(-50%); }
+        .lbl-right { left: 22px; top: 50%; transform: translateY(-50%); }
+
+        .city-pin:hover .pin-dot { transform: scale(1.5); background-color: #fff; }
+        .city-pin:hover .city-label { background: var(--gold-primary); color: #000; }
+
+        /* Sztywne pozycje pinezek na mapie Polski (Komputer) */
+        #pin-swinoujscie { top: 18%; left: 8%; }
+        #pin-kolobrzeg   { top: 12%; left: 23%; }
+        #pin-sopot        { top: 10%; left: 50%; }
+        #pin-swieradow    { top: 73%; left: 10%; }
+        #pin-szklarska    { top: 76%; left: 15%; }
+        #pin-karpacz      { top: 79%; left: 21%; }
+        #pin-wisla        { top: 86%; left: 51%; }
+        #pin-zakopane     { top: 92%; left: 64%; }
+
+        /* PANEL MATRYCY */
+        #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; }
+        
+        .billboard-frame {
+            background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
+            padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
+        }
+
+        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
+        .layout-grid { display: flex; flex-direction: column; gap: 25px; }
+        
+        @media (min-width: 1200px) { .layout-grid { flex-direction: row; } }
+
+        .grid-wrapper { flex: 1.5; width: 100%; overflow-x: auto; }
+        
+        /* SIATKA OKIENEK */
+        .grid-board {
+            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
+            gap: 6px; background-color: #030405; padding: 12px; border-radius: 10px;
+            border: 2px solid #14161f; aspect-ratio: 1; min-width: 500px; box-sizing: border-box;
+        }
+
+        .cell-link { text-decoration: none; display: block; height: 100%; }
+        .grid-item {
+            height: 100%; background: linear-gradient(135deg, #131620 0%, #07080b 100%);
+            border: 1px solid #1f2433; border-radius: 5px; display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; min-height: 45px; box-sizing: border-box;
+        }
+        .cell-link:hover .grid-item { transform: scale(1.08); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+        .grid-item.premium { border: 2px solid var(--gold-primary); color: var(--gold-primary); background: rgba(212,175,55,0.05); }
+        .grid-item.occupied { border-color: #3b82f6; color: #93c5fd; }
+
+        /* ŚRODEK VIP */
+        .grid-center {
+            grid-column: 4 / span 4; grid-row: 4 / span 4;
+            background: linear-gradient(135deg, #030406 0%, #0e1118 100%);
+            border: 2px solid var(--gold-primary); border-radius: 10px; padding: 12px;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;
+        }
+        .banner-crown { color: var(--gold-primary); font-size: 10px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed var(--gold-primary); padding-bottom: 4px; }
+        .banner-main-title { font-size: 14px; font-weight: 900; color: var(--gold-primary); margin: 5px 0; }
+
+        /* KOŁA FORTUNY */
+        .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; box-sizing: border-box; }
+        .wheel-card {
+            background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
+            display: flex; flex-direction: column; align-items: center; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+        .wheel-card h3 { font-size: 13px; color: var(--gold-primary); margin: 0 0 15px 0; text-transform: uppercase; }
+        .wheel-box { position: relative; width: 160px; height: 160px; margin-bottom: 15px; }
+        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--gold-primary); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        .wheel-pointer { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 15px solid var(--gold-primary); z-index: 10; }
+        
+        .btn { background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%); color: #000; border: none; padding: 12px; font-weight: 900; border-radius: 25px; cursor: pointer; width: 100%; text-transform: uppercase; font-size: 11px; }
+        .btn:disabled { background: #161822 !important; color: #4b5563 !important; cursor: not-allowed; }
+
+        /* TICKER DOLNY */
+        .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #030405; border-top: 2px solid var(--gold-primary); padding: 12px 0; overflow: hidden; z-index: 999; }
+        .ticker { display: flex; white-space: nowrap; animation: tickerAnim 25s linear infinite; padding-left: 100px; }
+        .ticker-item { display: inline-block; padding: 0 25px; color: #fff; font-size: 13px; font-weight: bold; }
+        @keyframes tickerAnim { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* MODAL */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-box { background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px; width: 90%; max-width: 450px; padding: 25px; box-sizing: border-box; text-align: center; }
+        .modal-input { width: 100%; padding: 12px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
+        .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; }
+        .btn-buy-cancel { background: #333; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; }
+
+        /* ======================================================= */
+        /* ROZWIĄZANIE PROBLEMU NA TELEFONACH (Ekran poniżej 768px) */
+        /* ======================================================= */
+        @media (max-width: 768px) {
+            .poland-svg-bg {
+                display: none; /* Ukrywamy rysunek mapy, bo się gniecie */
+            }
+
+            .map-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                height: auto !important;
+                aspect-ratio: auto !important;
+                background: transparent;
+                border: none;
+                padding: 5px;
+                overflow: visible;
+            }
+
+            .city-pin {
+                position: static !important;
+                transform: none !important;
+                width: 100%;
+                display: flex;
+                flex-direction: row !important; /* Kropka obok tekstu */
+                align-items: center;
+                background: rgba(18, 21, 31, 0.8) !important;
+                border: 1px solid var(--gold-primary) !important;
+                padding: 14px 18px !important;
+                border-radius: 10px !important;
+                box-sizing: border-box;
+            }
+
+            .city-pin:hover {
+                background: var(--gold-primary) !important;
+            }
+
+            .pin-dot {
+                margin-right: 15px;
+                flex-shrink: 0;
+            }
+
+            .city-label {
+                position: static !important;
+                transform: none !important;
+                background: none !important;
+                border: none !important;
+                padding: 0 !important;
+                font-size: 14px !important; /* Większe, czytelne napisy */
+                color: #fff !important;
+            }
+            
+            .city-pin:hover .city-label {
+                color: #000 !important;
+            }
+        }
+    </style>
         /* 1. Poprawka dla kontenera mapy - usunięcie sztywnego wymiaru na telefonach */
 .map-container {
     position: relative;
     width: 100%;
     aspect-ratio: 1.1 / 1;
     background: #040507;
-    border: 2px solid #171a22;
-    border-radius: 14px;
-    overflow: hidden;
-}
 
-/* 2. MAGIA: Reguła dla ekranów telefonów (maksymalna szerokość 768px) */
-@media (max-width: 768px) {
-    /* Ukrywamy linię konturu Polski, bo tylko przeszkadza */
-    .poland-svg-bg {
-        display: none;
-    }
-
-    /* Zmieniamy kontener mapy w elastyczną listę przycisków */
-    .map-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        height: auto !important;
-        aspect-ratio: auto !important;
-        background: transparent;
-        border: none;
-        padding: 5px;
-        overflow: visible;
-    }
-
-    /* Resetujemy sztywne pozycjonowanie pinezek z komputera */
-    .city-pin {
-        position: static !important;
-        transform: none !important;
-        width: 100%;
-        display: flex;
-        flex-direction: row !important; /* Kropka i napis obok siebie */
-        align-items: center;
-        background: rgba(18, 21, 31, 0.8) !important;
-        border: 1px solid var(--gold-primary) !important;
-        padding: 12px 15px !important;
-        border-radius: 10px !important;
-        box-sizing: border-box;
-        transition: background 0.2s;
-    }
-
-    .city-pin:hover {
-        background: var(--gold-primary) !important;
-    }
-
-    .city-pin:hover .city-label {
-        color: #000 !important;
-    }
 
     /* Kropka jako mały złoty akcent z lewej strony */
     .pin-dot {
