@@ -9,6 +9,78 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
+        /* 1. Poprawka dla kontenera mapy - usunięcie sztywnego wymiaru na telefonach */
+.map-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.1 / 1;
+    background: #040507;
+    border: 2px solid #171a22;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* 2. MAGIA: Reguła dla ekranów telefonów (maksymalna szerokość 768px) */
+@media (max-width: 768px) {
+    /* Ukrywamy linię konturu Polski, bo tylko przeszkadza */
+    .poland-svg-bg {
+        display: none;
+    }
+
+    /* Zmieniamy kontener mapy w elastyczną listę przycisków */
+    .map-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: auto !important;
+        aspect-ratio: auto !important;
+        background: transparent;
+        border: none;
+        padding: 5px;
+        overflow: visible;
+    }
+
+    /* Resetujemy sztywne pozycjonowanie pinezek z komputera */
+    .city-pin {
+        position: static !important;
+        transform: none !important;
+        width: 100%;
+        display: flex;
+        flex-direction: row !important; /* Kropka i napis obok siebie */
+        align-items: center;
+        background: rgba(18, 21, 31, 0.8) !important;
+        border: 1px solid var(--gold-primary) !important;
+        padding: 12px 15px !important;
+        border-radius: 10px !important;
+        box-sizing: border-box;
+        transition: background 0.2s;
+    }
+
+    .city-pin:hover {
+        background: var(--gold-primary) !important;
+    }
+
+    .city-pin:hover .city-label {
+        color: #000 !important;
+    }
+
+    /* Kropka jako mały złoty akcent z lewej strony */
+    .pin-dot {
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    /* Reset pozycji napisów - teraz są zwykłym tekstem wewnątrz przycisku */
+    .city-label {
+        position: static !important;
+        transform: none !important;
+        background: none !important;
+        border: none !important;
+        padding: 0 !important;
+        font-size: 14px !important; /* Większa czcionka, żeby łatwiej było klikać */
+        color: #fff !important;
+    }
+}
         :root {
             --gold-primary: #d4af37;
             --gold-light: #f3e5ab;
