@@ -1,889 +1,553 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieOkienka.pl - Ogólnopolska Platforma Reklamowo-Turystyczna</title>
+    <title>Karkonosze GO - Premium Regional Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* CONFIGI I MOTYW ULTRA PREMIUM */
         :root {
-            --gold-primary: #d4af37;
-            --gold-light: #f3e5ab;
-            --gold-dark: #aa7c11;
-            --bg-darker: #050608;
-            --bg-panel: rgba(15, 17, 24, 0.95);
-            --border-glow: rgba(212, 175, 55, 0.25);
-            --text-main: #f3f4f6;
-            --green-live: #2ecc71;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --accent-glow: #38bdf8;
+            --accent-green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --premium-gradient: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
         }
 
         body {
-            background: radial-gradient(circle at top, #161925 0%, #08090d 60%, #020203 100%) no-repeat fixed;
-            color: var(--text-main);
-            font-family: 'Segoe UI', BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-            padding-bottom: 90px;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        /* NAGŁÓWEK GŁÓWNY */
-        .header-panel {
-            background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
-            border: 2px solid var(--gold-primary);
-            border-radius: 16px;
-            padding: 20px 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12), inset 0 1px 1px rgba(255,255,255,0.05);
-            width: 100%;
-            max-width: 1400px;
-            box-sizing: border-box;
+        /* PREMIUM TOP BAR */
+        .top-bar {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .header-left h2 { 
-            margin: 0 0 8px 0; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            font-weight: 900; 
-            color: #ffffff; 
-            font-size: 24px;
-            text-shadow: 0 3px 6px rgba(0,0,0,0.7);
-        }
-        
-        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; flex-wrap: wrap; align-items: center; }
-        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); }
-        .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(212,175,55,0.3); }
-        .stat-item span.live-value { color: var(--green-live); font-size: 15px; font-weight: 800; text-shadow: 0 0 8px rgba(46,204,113,0.4); }
-
-        /* PULSUJĄCA DIODA LIVE */
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--green-live);
-            border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-            animation: live-pulse-anim 1.6s infinite;
-        }
-        @keyframes live-pulse-anim {
-            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
-            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-
-        /* JĘZYKI */
-        .lang-selector { 
-            display: flex; 
-            gap: 12px; 
-            background: rgba(0,0,0,0.5); 
-            padding: 8px 16px; 
-            border-radius: 30px; 
-            border: 1px solid rgba(212,175,55,0.3); 
-        }
-        .lang-flag { font-size: 22px; cursor: pointer; transition: transform 0.2s, filter 0.2s; filter: grayscale(40%); }
-        .lang-flag:hover { transform: scale(1.25); filter: grayscale(0%); }
-        .lang-flag.active { filter: grayscale(0%); transform: scale(1.15); border-bottom: 2px solid var(--gold-primary); }
-
-        /* GŁÓWNY WIDOK: MAPA */
-        #map-view {
+        .user-modes {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 900px;
-            background: var(--bg-panel);
-            padding: 25px;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-mode {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 8px 20px;
             border-radius: 20px;
-            border: 2px solid var(--gold-primary);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.85);
-            box-sizing: border-box;
-            animation: fadeIn 0.5s ease;
-            margin-bottom: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        #map-view h1 { 
-            color: var(--gold-primary); 
-            font-size: 16px; 
-            margin: 0 0 25px 0; 
-            text-transform: uppercase; 
-            text-align: center; 
-            letter-spacing: 1.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        .btn-mode.active {
+            background: var(--premium-gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
         }
-        
-        .map-container {
+
+        .lang-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lang-select-wrapper select {
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* HERO SECTION */
+        .container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-title h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* PREMIUM CARDS GRID */
+        .grid-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card-premium {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
             position: relative;
-            width: 100%;
-            aspect-ratio: 1.1 / 1;
-            background: #040507;
-            border: 2px solid #171a22;
-            border-radius: 14px;
             overflow: hidden;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.95);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .poland-svg-bg {
+        .card-premium::before {
+            content: '';
             position: absolute;
-            top: 2%; left: 2%; width: 96%; height: 96%;
-            z-index: 1; pointer-events: none;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        /* PINEZKI NA MAPIE */
-        .city-pin {
-            position: absolute;
-            z-index: 10;
+        .card-premium:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-premium:hover::before {
+            opacity: 1;
+        }
+
+        .card-premium h3 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+        }
+
+        .card-premium h3 i {
+            color: var(--accent-glow);
+        }
+
+        .card-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* DYNAMIC LISTS */
+        .premium-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .premium-list li {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.open { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .status-badge.closed { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        /* CZAT AI INTERFEJS (PREMIUM) */
+        .chat-ai-container {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            height: 220px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            transform: translate(-50%, -50%);
-            background: none; border: none; padding: 0; margin: 0;
-            cursor: pointer; outline: none;
-        }
-        
-        .pin-dot {
-            width: 14px; height: 14px;
-            background-color: var(--gold-primary); border: 2px solid #050608; border-radius: 50%;
-            box-shadow: 0 0 15px var(--gold-primary), 0 0 5px var(--gold-dark);
-            transition: all 0.2s ease; z-index: 2;
-        }
-        
-        .city-label {
-            color: #ffffff; font-size: 10px; font-weight: 800; text-transform: uppercase; white-space: nowrap;
-            background: rgba(4, 5, 7, 0.95); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--gold-primary);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.8); transition: all 0.2s ease; position: absolute;
-            letter-spacing: 0.5px;
+            overflow: hidden;
+            margin-top: 15px;
         }
 
-        .lbl-top { bottom: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-bottom { top: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-left { right: 22px; top: 50%; transform: translateY(-50%); }
-        .lbl-right { left: 22px; top: 50%; transform: translateY(-50%); }
-        .lbl-szklarska { bottom: 22px; right: -25px; transform: translateX(0); }
-        .lbl-karpacz { top: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-swieradow { bottom: 22px; left: -35px; transform: translateX(0); }
-
-        .city-pin:hover .pin-dot { transform: scale(1.6); background-color: #ffffff; box-shadow: 0 0 25px #ffffff; }
-        .city-pin:hover .city-label { background: var(--gold-primary); color: #000000; font-weight: 900; box-shadow: 0 0 20px rgba(212,175,55,0.6); z-index: 50; }
-
-        #pin-swinoujscie { top: 18%; left: 8%; }
-        #pin-kolobrzeg   { top: 12%; left: 23%; }
-        #pin-sopot        { top: 10%; left: 50%; }
-        #pin-swieradow    { top: 73%; left: 10%; }
-        #pin-szklarska    { top: 76%; left: 15%; }
-        #pin-karpacz      { top: 79%; left: 21%; }
-        #pin-wisla        { top: 86%; left: 51%; }
-        #pin-zakopane     { top: 92%; left: 64%; }
-        #pin-szccawnica   { top: 89%; left: 72%; }
-        #pin-krynica      { top: 86%; left: 81%; }
-
-        /* INTEGRACJA TURYSTYCZNA */
-        .tourist-zone {
-            width: 100%; max-width: 1400px; margin: 20px 0 30px 0;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; box-sizing: border-box;
+        .chat-messages {
+            flex-grow: 1;
+            padding: 12px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .tourist-panel {
-            background: linear-gradient(135deg, #12141c, #07080c); border: 1px solid rgba(212,175,55,0.25);
-            border-radius: 14px; padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); box-sizing: border-box;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .tourist-panel:hover { border-color: var(--gold-primary); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(212,175,55,0.05); }
-
-        .tourist-panel h3 {
-            margin: 0 0 14px 0; color: var(--gold-primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(212,175,55,0.2); padding-bottom: 10px;
+        .msg {
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 85%;
         }
 
-        .weather-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-        .weather-temp { font-size: 28px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
-        
-        .trail-status { background: rgba(212, 175, 55, 0.08); color: var(--gold-primary); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; border: 1px solid rgba(212, 175, 55, 0.3); margin-top: auto; }
-
-        .bus-list { display: flex; flex-direction: column; gap: 10px; font-size: 12px; margin-bottom: 15px; }
-        .bus-item-link {
-            display: flex; align-items: center; justify-content: center; text-align: center;
-            background: linear-gradient(135deg, #1f2436, #131722); color: #fff; text-decoration: none;
-            padding: 12px; border-radius: 8px; border-left: 4px solid #3498db; font-weight: bold;
-            transition: all 0.2s; border-top: 1px solid rgba(255,255,255,0.03);
-        }
-        .bus-item-link:hover { background: #2980b9; color: #fff; transform: translateX(3px); }
-
-        .trail-select { width: 100%; padding: 12px; background: #040507; border: 1px solid #1a1d26; border-radius: 8px; font-size: 12px; margin-bottom: 15px; outline: none; color: var(--gold-primary); font-weight: bold; }
-        .trail-select:focus { border-color: var(--gold-primary); }
-        .trail-result { font-size: 12px; color: #9ca3af; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; min-height: 45px; border: 1px solid #161821; line-height: 1.5; margin-bottom: 15px; }
-
-        /* PRZYCISK MAPY MTB / SZLAKÓW */
-        .bike-map-btn {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: #000000; text-decoration: none; font-weight: 900; font-size: 12px;
-            padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.2); transition: all 0.2s;
-            text-align: center;
-        }
-        .bike-map-btn:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(212,175,55,0.4); }
-
-        /* LIVE RESORT MONITOR */
-        .resort-list { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
-        .resort-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
-        .badge-open { background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(34, 197, 94, 0.3); }
-        .badge-closed { background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .live-pulse { display: inline-block; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; animation: pulse 1.5s infinite; margin-left: auto; }
-
-        @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
-
-        /* WIDOK PANELU MATRYCY */
-        #dashboard-view { display: block; width: 100%; max-width: 1450px; animation: fadeIn 0.4s ease; }
-        
-        .back-btn {
-            background: #07080c; color: var(--gold-primary); border: 1px solid var(--gold-primary);
-            padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;
-            margin-bottom: 20px; transition: all 0.2s ease; text-transform: uppercase; font-size: 12px;
-            letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            display: block;
-        }
-        .back-btn:hover { background: var(--gold-primary); color: #000000; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
-
-        .billboard-frame {
-            background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
-            padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95), inset 0 0 15px rgba(255,255,255,0.3);
-            border: 2px solid #73540b; box-sizing: border-box; width: 100%;
+        .msg.user {
+            background: rgba(255, 255, 255, 0.06);
+            align-self: flex-end;
+            color: var(--text-main);
         }
 
-        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
-        .layout-grid { display: flex; flex-direction: column; gap: 25px; }
-        .grid-wrapper { flex: 1.5; width: 100%; overflow-x: auto; padding-bottom: 5px; }
+        .msg.bot {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 3px solid var(--accent-glow);
+            align-self: flex-start;
+        }
 
-        /* POTĘŻNA SIATKA MATRYCY 10x10 */
-        .grid-board {
-            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
-            gap: 6px; background-color: #030405; padding: 12px; border-radius: 10px;
-            border: 2px solid #14161f; box-sizing: border-box; aspect-ratio: 1; min-width: 520px;
+        .chat-input-area {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .chat-input-area input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            padding: 12px;
+            color: white;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        .chat-send-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-glow);
+            padding: 0 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .chat-send-btn:hover { transform: scale(1.1); }
+
+        /* MAP MODULE INTERFEJS */
+        .map-container-premium {
+            background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600&q=80') center/cover;
+            height: 220px;
+            border-radius: 12px;
             position: relative;
+            border: 1px solid var(--border-color);
+            margin-top: 15px;
         }
 
-        .cell-link { text-decoration: none; display: block; width: 100%; height: 100%; }
-
-        .grid-item {
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, #131620 0%, #07080b 100%);
-            border: 1px solid #1f2433; border-radius: 5px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 9px; font-weight: bold; color: #6b7280; text-align: center;
-            cursor: pointer; transition: all 0.15s ease; box-sizing: border-box; position: relative;
-            min-height: 45px;
+        .map-overlay {
+            position: absolute;
+            bottom: 10px; left: 10px; right: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .cell-link:hover .grid-item { transform: scale(1.1); z-index: 5; border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212,175,55,0.4); color: #ffffff; }
-        
-        .grid-item.premium { border: 1px solid var(--gold-primary); color: var(--gold-primary); background: linear-gradient(135deg, #1f1805 0%, #07080c 100%); }
-        .grid-item.occupied { border-color: #3b82f6; color: #93c5fd; font-size: 8px; }
 
-        /* TELEBIM REKLAMOWY CENTRALNY */
-        .grid-center {
-            grid-column: 4 / span 4; grid-row: 4 / span 4;
-            background: linear-gradient(135deg, #030406 0%, #0e1118 100%);
-            border: 2px solid var(--gold-primary); border-radius: 10px; padding: 12px;
-            box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(0,0,0,0.9);
-            display: flex; flex-direction: column; justify-content: space-between;
-            align-items: center; text-align: center; box-sizing: border-box; position: relative; z-index: 2;
+        /* STRUKTURA WIDOKÓW */
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeIn 0.5s ease forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .banner-crown { color: var(--gold-primary); font-size: 9px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed var(--gold-primary); padding-bottom: 5px; letter-spacing: 1px;}
-        .banner-main-title { font-size: 13px; font-weight: 900; color: var(--gold-primary); text-shadow: 0 0 10px rgba(212,175,55,0.4); letter-spacing: 0.5px; margin: 2px 0; }
-        #winnerName { font-size: 10px; color: #ffffff; font-weight: bold; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.15); padding: 5px; border-radius: 4px; width: 95%; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .live-countdown { background: #dc2626; color: #ffffff; font-family: monospace; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 8px rgba(220,38,38,0.4); }
 
-        .center-wheel-box { position: relative; width: 60px; height: 60px; margin: 2px 0; }
-        #centerWheel { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--gold-primary); transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        
-        .btn-center-spin {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); color: #000000; font-size: 9px; font-weight: 900; border: none;
-            padding: 4px 10px; border-radius: 12px; cursor: pointer; text-transform: uppercase; box-shadow: 0 3px 8px rgba(0,0,0,0.6); transition: all 0.1s;
+        /* PREMIUM PRZYCISKI */
+        .btn-premium-action {
+            background: var(--premium-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
         }
-        .btn-center-spin:hover { transform: scale(1.05); }
 
-        /* MODAL ZAKUPU OKIENKA */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
+        .btn-premium-action:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
-        .modal-box {
-            background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px;
-            width: 90%; max-width: 450px; padding: 25px; box-shadow: 0 0 50px rgba(212,175,55,0.3);
-            box-sizing: border-box; text-align: center; animation: fadeIn 0.3s ease;
-        }
-        .modal-box h3 { color: #fff; margin: 0 0 10px 0; font-size: 20px; text-transform: uppercase; }
-        .modal-price { font-size: 24px; color: var(--gold-primary); font-weight: 900; margin: 10px 0; text-shadow: 0 0 10px rgba(212,175,55,0.3); }
-        .modal-input { width: 100%; padding: 12px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; outline: none; }
-        .modal-input:focus { border-color: var(--gold-primary); }
-        .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        
-        .pkg-selector-btn {
-            background: #171b26; border: 1px solid #2d354d; color: #fff; padding: 12px; border-radius: 8px;
-            cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;
-        }
-        .pkg-selector-btn:hover { border-color: var(--gold-primary); background: #1f2536; }
-        .pkg-selector-btn.active { border-color: var(--gold-primary); background: rgba(212,175,55,0.1); box-shadow: 0 0 10px rgba(212,175,55,0.2); }
-
-        .btn-buy-confirm { background: var(--gold-primary); color: #000; border: none; padding: 14px; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
-        .btn-buy-cancel { background: #232736; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
-
-        /* SIDEBAR Z KOŁAMI LOSUJĄCYMI */
-        .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; box-sizing: border-box; }
-        .wheel-card {
-            background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
-            display: flex; flex-direction: column; align-items: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8); flex: 1; box-sizing: border-box;
-            transition: all 0.3s ease; width: 100%;
-        }
-        .wheel-card:hover { border-color: var(--gold-primary); box-shadow: 0 15px 40px rgba(212,175,55,0.03); }
-        .wheel-card h3 { font-size: 13px; color: var(--gold-primary); margin: 0 0 16px 0; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
-
-        .wheel-box { position: relative; width: 180px; height: 180px; margin-bottom: 15px; }
-        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--gold-primary); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); box-shadow: 0 0 20px rgba(0,0,0,0.8); }
-        .wheel-pointer { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid var(--gold-primary); z-index: 20; }
-
-        .btn {
-            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%); color: #000000;
-            border: none; padding: 12px 20px; font-size: 11px; font-weight: 900;
-            border-radius: 25px; cursor: pointer; width: 100%; text-transform: uppercase;
-            box-shadow: 0 5px 20px rgba(212,175,55,0.2); transition: all 0.2s ease;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
-        .btn:disabled, .btn-center-spin:disabled { background: #161822 !important; color: #4b5563 !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; }
-
-        .result-display { display: none; width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--gold-primary); border-radius: 8px; padding: 10px; margin-top: 12px; box-sizing: border-box; text-align: center; font-size: 11px; }
-        .result-display a { color: var(--gold-primary); font-weight: bold; }
-
-        /* DOLNY PASEK REKLAMOWY TICKER */
-        .ticker-wrap {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: linear-gradient(90deg, #030405, #0d0f17);
-            border-top: 2px solid var(--gold-primary); padding: 14px 0; overflow: hidden; z-index: 999;
-        }
-        .ticker-title { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold-primary); color: #000000; font-weight: 900; font-size: 11px; display: flex; align-items: center; padding: 0 24px; z-index: 10; text-transform: uppercase; }
-        .ticker { display: flex; white-space: nowrap; padding-left: 150px; animation: ticker 28s linear infinite; }
-        .ticker-item { display: inline-block; padding: 0 30px; color: #ffffff; font-size: 13px; font-weight: bold; border-right: 1px dashed rgba(212,175,55,0.3); }
-        .ticker-item a { color: var(--gold-primary); text-decoration: none; margin-left: 6px; }
-
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
-
-        /* ASYSTENT AI CZAT SIGMA */
-        .chat-widget { position: fixed; bottom: 75px; right: 25px; width: 330px; background: rgba(8, 9, 14, 0.98); border: 2px solid var(--gold-primary); border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.85); display: flex; flex-direction: column; z-index: 1000; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .chat-widget.collapsed { width: 55px; height: 55px; border-radius: 50%; bottom: 75px; }
-        .chat-header { background: linear-gradient(135deg, #0f111a, #030406); padding: 14px; color: var(--gold-primary); font-weight: 900; font-size: 12px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid #161822; }
-        .chat-body { padding: 14px; height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 12px; background: #030406; }
-        .chat-widget.collapsed .chat-body, .chat-widget.collapsed .chat-input-area { display: none; }
-        .msg { padding: 10px 14px; border-radius: 10px; max-width: 85%; line-height: 1.4; word-wrap: break-word; }
-        .msg.bot { background: #0e1118; color: #ffffff; align-self: flex-start; border-left: 3px solid var(--gold-primary); }
-        .msg.user { background: rgba(212,175,55,0.12); color: var(--gold-primary); align-self: flex-end; border: 1px solid rgba(212,175,55,0.25); }
-        .chat-input-area { display: flex; border-top: 1px solid #161822; background: #0e1118; }
-        .chat-input { flex: 1; padding: 14px; background: none; border: none; color: #fff; font-size: 12px; outline: none; }
-        .chat-btn { background: var(--gold-primary); border: none; color: #000000; font-weight: 900; padding: 0 18px; cursor: pointer; }
-        .chat-toggle-icon { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; font-size: 24px; background: var(--gold-primary); color: #000000; cursor: pointer; }
-        .chat-widget.collapsed .chat-toggle-icon { display: flex; }
-        .chat-widget.collapsed .chat-header { display: none; }
-        .status-dot { display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; margin-right: 6px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        @media (min-width: 1200px) { .layout-grid { flex-direction: row; align-items: flex-start; } }
     </style>
 </head>
 <body>
 
-    <div class="header-panel">
-        <div class="header-left">
-            <h2 id="mainTitleHeader">PolskieOkienka.pl - Ogólnopolska Sieć Ekranów</h2>
-            <div class="stats-container">
-                <div class="stat-item">
-                    <div class="pulse-dot"></div>
-                    <span id="t-visitorCount">Goście Online:</span> 
-                    <span class="live-value" id="headerLiveCounter">14</span>
-                </div>
-                <div class="stat-item"><span id="t-freeSlots">Wolne Okienka:</span> <span class="stat-value" id="regionFreeSlots">84</span> / 100</div>
-            </div>
+    <div class="top-bar">
+        <div class="user-modes">
+            <button class="btn-mode active" id="btn-tourist" onclick="switchMode('tourist')">
+                <i class="fas fa-hiking"></i> <span data-i18n="nav-tourist">Zaloguj jako Turysta</span>
+            </button>
+            <button class="btn-mode" id="btn-company" onclick="switchMode('company')">
+                <i class="fas fa-briefcase"></i> <span data-i18n="nav-company">Zaloguj jako Firma</span>
+            </button>
         </div>
-        <div class="lang-selector">
-            <span class="lang-flag active" id="lang-pl" onclick="changeLanguage('pl')">🇵🇱</span>
-            <span class="lang-flag" id="lang-de" onclick="changeLanguage('de')">🇩🇪</span>
-            <span class="lang-flag" id="lang-en" onclick="changeLanguage('en')">🇬🇧</span>
-            <span class="lang-flag" id="lang-cs" onclick="changeLanguage('cs')">🇨🇿</span>
-        </div>
-    </div>
-
-    <div id="map-view">
-        <h1 id="t-mapSubtitle">Wybierz miasto, aby wejść na lokalną tablicę reklamową</h1>
-        <div class="map-container">
-            <svg class="poland-svg-bg" viewBox="0 0 650 600" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 125,95 C 130,90 145,80 155,83 C 170,85 178,92 195,85 C 210,80 220,55 240,55 C 265,55 280,68 310,60 C 330,55 332,40 355,42 C 375,44 390,62 415,55 C 440,48 450,22 475,25 C 500,28 505,48 525,58 C 550,70 575,55 595,78 C 610,95 602,115 620,130 C 630,140 642,162 635,180 C 625,205 632,230 622,255 C 612,280 628,310 615,335 C 602,360 578,375 570,402 C 562,430 580,455 565,485 C 550,515 522,510 505,538 C 492,560 488,585 465,595 C 445,602 430,580 410,585 C 390,590 375,600 355,590 C 335,580 330,555 310,550 C 290,545 272,558 250,552 C 228,546 215,520 195,522 C 175,524 160,540 140,532 C 125,525 128,500 115,490 C 102,480 85,485 72,472 C 60,460 65,438 52,425 C 40,412 18,405 18,385 C 18,365 35,355 35,335 C 35,315 22,298 28,278 C 34,258 55,252 55,232 C 55,212 40,195 48,175 C 56,155 75,150 85,130 C 95,110 110,115 125,95 Z" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="3 5"/>
-            </svg>
-            <button class="city-pin" id="pin-swinoujscie" onclick="openDashboard('Świnoujście')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div></button>
-            <button class="city-pin" id="pin-kolobrzeg" onclick="openDashboard('Kołobrzeg')"><div class="pin-dot"></div><div class="city-label lbl-top">Kołobrzeg</div></button>
-            <button class="city-pin" id="pin-sopot" onclick="openDashboard('Sopot')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div></button>
-            <button class="city-pin" id="pin-swieradow" onclick="openDashboard('Świeradów-Zdrój')"><div class="pin-dot"></div><div class="city-label lbl-swieradow">Świeradów-Zdrój</div></button>
-            <button class="city-pin" id="pin-szklarska" onclick="openDashboard('Szklarska Poręba')"><div class="pin-dot"></div><div class="city-label lbl-szklarska">Szklarska Poręba</div></button>
-            <button class="city-pin" id="pin-karpacz" onclick="openDashboard('Karpacz')"><div class="pin-dot"></div><div class="city-label lbl-karpacz">Karpacz</div></button>
-            <button class="city-pin" id="pin-wisla" onclick="openDashboard('Wisła')"><div class="pin-dot"></div><div class="city-label lbl-left">Wisła</div></button>
-            <button class="city-pin" id="pin-zakopane" onclick="openDashboard('Zakopane')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div></button>
-            <button class="city-pin" id="pin-szccawnica" onclick="openDashboard('Szczawnica')"><div class="pin-dot"></div><div class="city-label lbl-top">Szczawnica</div></button>
-            <button class="city-pin" id="pin-krynica" onclick="openDashboard('Krynica-Zdrój')"><div class="pin-dot"></div><div class="city-label lbl-right">Krynica-Zdrój</div></button>
-        </div>
-    </div>
-
-    <div id="dashboard-view" style="display:none;">
-        <button class="back-btn" id="t-backBtn" onclick="hideDashboardOnly()">⬅ Ukryj matrycę / Pokaż tylko Mapę</button>
-        <div class="billboard-frame">
-            <div class="billboard-inner">
-                <div class="layout-grid">
-                    <div class="grid-wrapper">
-                        <div class="grid-board" id="boardMatrix">
-                            </div>
-                    </div>
-
-                    <div class="wheels-sidebar">
-                        <div class="wheel-card">
-                            <h3 id="t-wheelTouristTitle">🎁 Koło Szczęścia Turysty</h3>
-                            <div class="wheel-box"><div class="wheel-pointer"></div><canvas class="wheel-canvas" id="canvasTourist" width="180" height="180"></canvas></div>
-                            <button class="btn" id="btnTourist" onclick="spin('tourist')">Losuj Rabat / Atrakcję</button>
-                            <div class="result-display" id="resTourist"></div>
-                        </div>
-
-                        <div class="wheel-card">
-                            <h3 id="t-wheelBusinessTitle">💼 Biznesowe Koło Okienek</h3>
-                            <div class="wheel-box"><div class="wheel-pointer"></div><canvas class="wheel-canvas" id="canvasBusiness" width="180" height="180"></canvas></div>
-                            <button class="btn" id="btnBusiness" onclick="spin('business')">Losuj Darmową Reklamę</button>
-                            <div class="result-display" id="resBusiness"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="tourist-zone" id="touristInfoZone">
         
-        <div class="tourist-panel">
-            <h3 id="t-panelWeather">☀️ Pogoda i Bezpieczeństwo</h3>
-            <div class="weather-info">
-                <div>
-                    <div style="font-size: 11px; color: #6b7280;" id="t-currRegion">Aktualnie w regionie:</div>
-                    <div style="color: #fff; font-weight: bold; font-size: 14px;" id="currentRegionLabel">Wybierz miasto z mapy</div>
-                </div>
-                <div class="weather-temp" id="weatherTempDisplay">--°C</div>
-            </div>
-            <div class="trail-status" id="t-goprStatus">🟢 Służby ratunkowe: Warunki w normie. Szlaki drożne.</div>
-        </div>
-
-        <div class="tourist-panel">
-            <h3 style="justify-content: space-between;">⛷️ Live Resort Monitor <span class="live-pulse"></span></h3>
-            <div class="resort-list" id="resortLiveDisplay">
-                <div style="color:#6b7280; font-size:11px; text-align:center;">Wybierz lokalizację z mapy, aby zobaczyć stan tras i stacji.</div>
-            </div>
-        </div>
-
-        <div class="tourist-panel">
-            <h3 id="t-panelBus">🚌 Rozkład Jazdy & Nawigacja</h3>
-            <div class="bus-list" id="busRouteDisplay">
-                <div style="color:#6b7280; font-size:11px; text-align:center; padding-bottom:10px;">Rozkłady jazdy i połączenia lokalne.</div>
-            </div>
-            <select class="trail-select" id="trailSelector" onchange="updateTrailInfo()">
-                <option value="">-- Wybierz trasę / atrakcję --</option>
-                <option value="szlak1">Szlak na Śnieżkę (z Karpacza)</option>
-                <option value="szlak2">Singletrack Rudawy (Kowary)</option>
-                <option value="szlak3">Wodospad Kamieńczyka (Szklarska)</option>
+        <div class="lang-select-wrapper">
+            <i class="fas fa-globe" style="color: var(--accent-glow);"></i>
+            <select id="language" onchange="changeLanguage()">
+                <option value="pl">Polski</option>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
             </select>
-            <div class="trail-result" id="trailResultDisplay">Wybierz pozycję z listy, aby załadować parametry trasy oraz stan bezpieczeństwa.</div>
-            <a href="#" class="bike-map-btn" id="t-bikeMapBtn" onclick="alert('Ładowanie zewnętrznej mapy szlaków MTB i tras pieszych...'); return false;">
-                🗺️ Otwórz Mapę Szlaków & Bike Parków
-            </a>
         </div>
     </div>
 
-    <div class="modal-overlay" id="purchaseModal">
-        <div class="modal-box">
-            <h3 id="modalCellTitle">Rezerwacja Okienka</h3>
-            <p style="font-size: 12px; color: #9ca3af;">Wprowadź swoje dane, aby umieścić banner reklamowy na naszej tablicy.</p>
-            <div class="modal-price" id="modalCellPrice">99 PLN</div>
-            
-            <input type="text" class="modal-input" id="modalInputName" placeholder="Nazwa Twojej Firmy / Usługi">
-            <input type="text" class="modal-input" id="modalInputLink" placeholder="Link docelowy (np. https://...)">
-            
-            <div class="pkg-selector-btn active" id="pkg-standard" onclick="selectPackage('standard', 99)">
-                <span>Pakiet Standard (Wyświetlanie 24h)</span>
-                <strong>99 PLN</strong>
-            </div>
-            <div class="pkg-selector-btn" id="pkg-premium" onclick="selectPackage('premium', 199)">
-                <span>Pakiet Premium Gold (+Glow)</span>
-                <strong>199 PLN</strong>
-            </div>
+    <div class="container">
+        <div class="header-title">
+            <h1 id="main-title">Karkonosze GO</h1>
+            <p id="sub-title" style="color: var(--text-muted);">Zintegrowany panel zarządzania i nawigacji regionalnej</p>
+        </div>
 
-            <div class="modal-actions">
-                <button class="btn-buy-confirm" onclick="confirmPurchase()">Zarezerwuj i Opłać Okienko</button>
-                <button class="btn-buy-cancel" onclick="closeModal()">Anuluj</button>
+        <div id="tourist-view" class="view-section active">
+            <div class="grid-modules">
+                
+                <div class="card-premium">
+                    <h3><i class="fas fa-bus-alt"></i> <span data-i18n="title-bus">Rozkład Autobusów & Asystent</span></h3>
+                    <p class="card-description" data-i18n="desc-bus">Aktualne kursy z Kowar, Karpacza i okolic połączone z inteligentnym asystentem podróży.</p>
+                    
+                    <ul class="premium-list">
+                        <li>
+                            <div><strong style="color: #fff;">Linia 100</strong> <span style="color: var(--text-muted); margin-left:8px;">Kowary - Karpacz</span></div>
+                            <span style="color: var(--accent-glow); font-weight:600;">08:15, 10:30, 14:20</span>
+                        </li>
+                        <li>
+                            <div><strong style="color: #fff;">Linia 200</strong> <span style="color: var(--text-muted); margin-left:8px;">Jelenia Góra - Miłków</span></div>
+                            <span style="color: var(--accent-glow); font-weight:600;">09:00, 11:45, 16:10</span>
+                        </li>
+                    </ul>
+
+                    <div class="chat-ai-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="msg bot">Cześć! Jestem Twoim lokalnym asystentem. Zapytaj mnie o dowolne połączenie autobusowe lub szlak.</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chatInput" placeholder="Napisz do asystenta (np. Kiedy bus do Miłkowa?)..." onkeypress="handleChatKey(event)">
+                            <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-premium">
+                    <h3><i class="fas fa-map-location-dot"></i> <span data-i18n="title-map">Mapa Szlaków Turystycznych</span></h3>
+                    <p class="card-description" data-i18n="desc-map">Interaktywne śledzenie tras pieszych, czasów przejść oraz schronisk w Karkonoszach.</p>
+                    
+                    <div class="map-container-premium">
+                        <div class="map-overlay">
+                            <span><i class="fas fa-layer-group" style="color: var(--accent-glow);"></i> Warstwa: Szlaki Karkonosze</span>
+                            <span style="color: var(--accent-green); font-weight:500;"><i class="fas fa-circle-check"></i> Live GPS ok</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-premium">
+                    <h3><i class="fas fa-bicycle"></i> <span data-i18n="title-bike">Bike Parki & Trasy Rowerowe</span></h3>
+                    <p class="card-description" data-i18n="desc-bike">Sprawdź statusy zjazdów oraz warunki panujące na lokalnych singletrackach.</p>
+                    
+                    <ul class="premium-list">
+                        <li>
+                            <span>Singletrack A (Kowary-Pustelnik)</span>
+                            <span class="status-badge open">Otwarta</span>
+                        </li>
+                        <li>
+                            <span>Downhill Extremal Line</span>
+                            <span class="status-badge closed">Remont</span>
+                        </li>
+                        <li>
+                            <span>Trasa Widokowa Karkonosze</span>
+                            <span class="status-badge open">Otwarta</span>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
-    </div>
 
-    <div class="ticker-wrap">
-        <div class="ticker-title">Premium Partnerzy</div>
-        <div class="ticker" id="tickerContent">
-            <div class="ticker-item">Wonder Home Karpacz - Luksusowe Apartamenty Pod Śnieżką <a href="#">Sprawdź ➔</a></div>
-            <div class="ticker-item">Apartamenty Kowary Serwis - Profesjonalne zarządzanie i sprzątanie <a href="#">Zleć ➔</a></div>
-            <div class="ticker-item">Bike Park Karkonosze - Trasy Enduro i wypożyczalnia rowerów <a href="#">Zobacz ➔</a></div>
-        </div>
-    </div>
+        <div id="company-view" class="view-section">
+            <div class="grid-modules">
+                
+                <div class="card-premium">
+                    <h3><i class="fas fa-sliders"></i> <span data-i18n="title-comp-panel">Panel Logistyki i Usług</span></h3>
+                    <p class="card-description">Kompleksowe zarządzanie serwisem apartamentów, zleceniami sprzątania oraz bazą noclegową w Karpaczu i okolicach.</p>
+                    <button class="btn-premium-action" style="margin-bottom: 12px;"><i class="fas fa-plus-circle"></i> Dodaj Nowe Zlecenie</button>
+                    <button class="btn-premium-action" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; box-shadow: none;">
+                        <i class="fas fa-file-invoice-dollar"></i> Raporty Logistyczne
+                    </button>
+                </div>
 
-    <div class="chat-widget collapsed" id="sigmaChat" onclick="toggleChat(false)">
-        <div class="chat-toggle-icon">💬</div>
-        <div class="chat-header" onclick="toggleChat(true); event.stopPropagation();">
-            <div><span class="status-dot"></span>Sigma Asystent Regionalny</div>
-            <div style="cursor: pointer; font-size: 14px;">−</div>
-        </div>
-        <div class="chat-body" id="chatBody">
-            <div class="msg bot">Siemanko! Jestem Twoim inteligentnym przewodnikiem i doradcą reklamowym. Wpisz np. "Miłków", "Wonder Home" lub "reklama"!</div>
-        </div>
-        <div class="chat-input-area" onclick="event.stopPropagation();">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Napisz do bota..." onkeypress="handleChatEnter(event)">
-            <button class="chat-btn" onclick="sendMessage()">OK</button>
+                <div class="card-premium">
+                    <h3><i class="fas fa-chart-pie"></i> <span data-i18n="title-comp-stats">Analityka Ruchu i Rekomendacji</span></h3>
+                    <p class="card-description">Monitoruj ile razy Twój obiekt lub usługa były rekomendowane turystom przez Asystenta AI.</p>
+                    <div class="map-container-premium" style="background: rgba(15, 23, 42, 0.6); display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border-color);">
+                        <div style="text-align: center; color: var(--text-muted);">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--accent-glow); margin-bottom: 10px;"></i>
+                            <div style="font-size: 0.85rem;">Wykresy unikalnych wyświetleń i zapytań AI</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
     <script>
-        // Dane pogodowe i monitoringu kurortów dla miast
-        const regionDatabase = {
-            'Świnoujście': { temp: '19°C', safe: 'Warunki morskie stabilne.', resorts: [['Plaża Miejska', 'Otwarte'], ['Prom Centrum', 'Sprawny']] },
-            'Kołobrzeg': { temp: '18°C', safe: 'Brak ostrzeżeń meteo.', resorts: [['Molo Główne', 'Otwarte'], ['Port Jachtowy', 'Otwarte']] },
-            'Sopot': { temp: '20°C', safe: 'Kąpieliska strzeżone otwarte.', resorts: [['Molo Sopot', 'Otwarte'], ['Opera Leśna', 'Brak Imprez']] },
-            'Świeradów-Zdrój': { temp: '14°C', safe: 'Szlaki Izerskie bezpieczne.', resorts: [['Gondola Świeradów', 'Otwarte'], ['Singletracki', 'Otwarte']] },
-            'Szklarska Poręba': { temp: '12°C', safe: 'Karkonosze: Szlaki wilgotne.', resorts: [['Wyciąg Szrenica', 'Otwarte'], ['Kamieńczyk', 'Otwarte']] },
-            'Karpacz': { temp: '13°C', safe: 'GOPR: Uważaj na podejście pod Śnieżkę.', resorts: [['Kompleks Kopa', 'Otwarte'], ['Wonder Home Logistyka', 'Aktywny'], ['Śnieżka Tramp', 'Zamknięte']] },
-            'Wisła': { temp: '15°C', safe: 'Beskidy: Widoczność dobra.', resorts: [['Skocznia Malinka', 'Zwiedzanie'], ['Wyciąg Soszów', 'Otwarte']] },
-            'Zakopane': { temp: '10°C', safe: 'TOPR: Możliwe oblodzenia w wyższych partiach.', resorts: [['Kasprowy Wierch', 'Otwarte'], ['Gubałówka Kolej', 'Otwarte']] },
-            'Szczawnica': { temp: '14°C', safe: 'Pieniny: Spływ Dunajcem bez zakłóceń.', resorts: [['Palenica Wyciąg', 'Otwarte'], ['Trasa Pienińska', 'Dostępna']] },
-            'Krynica-Zdrój': { temp: '13°C', safe: 'Beskid Sądecki: Warunki idealne.', resorts: [['Jaworzyna Krynicka', 'Otwarte'], ['Wieża Widokowa', 'Otwarte']] }
+        // Słownik tłumaczeń (PL, EN, DE) zapobiegający przeładowaniu strony
+        const translations = {
+            pl: {
+                "nav-tourist": "Zaloguj jako Turysta",
+                "nav-company": "Zaloguj jako Firma",
+                "title-bus": "Rozkład Autobusów & Asystent",
+                "desc-bus": "Aktualne kursy z Kowar, Karpacza i okolic połączone z inteligentnym asystentem podróży.",
+                "title-map": "Mapa Szlaków Turystycznych",
+                "desc-map": "Interaktywne śledzenie tras pieszych, czasów przejść oraz schronisk w Karkonoszach.",
+                "title-bike": "Bike Parki & Trasy Rowerowe",
+                "desc-bike": "Sprawdź statusy zjazdów oraz warunki panujące na lokalnych singletrackach.",
+                "title-comp-panel": "Panel Logistyki i Usług",
+                "title-comp-stats": "Analityka Ruchu i Rekomendacji"
+            },
+            en: {
+                "nav-tourist": "Login as Tourist",
+                "nav-company": "Login as Company",
+                "title-bus": "Bus Timetable & AI Assistant",
+                "desc-bus": "Current connections from region combined with intelligent travel companion.",
+                "title-map": "Tourist Trails Map",
+                "desc-map": "Interactive tracking of hiking trails, walking times and mountain shelters.",
+                "title-bike": "Bike Parks & Trails",
+                "desc-bike": "Check downhill track statuses and current trail conditions.",
+                "title-comp-panel": "Logistics & Services Panel",
+                "title-comp-stats": "Traffic & Recommendation Analytics"
+            },
+            de: {
+                "nav-tourist": "Als Tourist einloggen",
+                "nav-company": "Als Firma einloggen",
+                "title-bus": "Busfahrplan & AI Assistent",
+                "desc-bus": "Aktuelle Busverbindungen der Region integriert mit einem smarten Reiseassistenten.",
+                "title-map": "Wanderwege-Karte",
+                "desc-map": "Interaktive Verfolgung von Bergpfaden, Gehzeiten und Berghütten.",
+                "title-bike": "Bike Parks & Radwege",
+                "desc-bike": "Überprüfen Sie den Status der Downhill-Strecken und die Bedingungen.",
+                "title-comp-panel": "Logistik- & Service-Panel",
+                "title-comp-stats": "Verkehrs- & Empfehlungsanalysen"
+            }
         };
 
-        let selectedCity = "";
-        let selectedCellId = null;
-        let selectedPrice = 99;
+        // 1. Przełączanie widoków (Turysta / Firma)
+        function switchMode(mode) {
+            document.getElementById('btn-tourist').classList.remove('active');
+            document.getElementById('btn-company').classList.remove('active');
+            document.getElementById('tourist-view').classList.remove('active');
+            document.getElementById('company-view').classList.remove('active');
 
-        // Inicjalizacja koła fortuny
-        function drawWheel(canvasId, items) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const numSegments = items.length;
-            const anglePerSegment = Math.PI * 2 / numSegments;
-            
-            ctx.clearRect(0, 0, 180, 180);
-            for (let i = 0; i < numSegments; i++) {
-                ctx.beginPath();
-                ctx.fillStyle = i % 2 === 0 ? '#0f111a' : '#1d2130';
-                ctx.moveTo(90, 90);
-                ctx.arc(90, 90, 88, i * anglePerSegment, (i + 1) * anglePerSegment);
-                ctx.fill();
-                ctx.strokeStyle = '#d4af37';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // Dodawanie tekstu segmentów
-                ctx.save();
-                ctx.translate(90, 90);
-                ctx.rotate(i * anglePerSegment + anglePerSegment / 2);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 9px Segoe UI';
-                ctx.textAlign = 'right';
-                ctx.fillText(items[i], 80, 3);
-                ctx.restore();
+            if (mode === 'tourist') {
+                document.getElementById('btn-tourist').classList.add('active');
+                document.getElementById('tourist-view').classList.add('active');
+            } else {
+                document.getElementById('btn-company').classList.add('active');
+                document.getElementById('company-view').classList.add('active');
             }
         }
 
-        const touristPrizes = ["Rabat -10%", "Darmowy Goferek", "Wejściówka Szklarska", "Bilet Karpacz", "Brak wygranej", "Gadżet Regionalny"];
-        const businessPrizes = ["Okienko Gratis 24h", "Banner Poświata", "Rabat -20%", "Artykuł Sponsorowany", "Spróbuj ponownie", "Konsultacja SEO"];
-
-        window.onload = function() {
-            drawWheel('canvasTourist', touristPrizes);
-            drawWheel('canvasBusiness', businessPrizes);
+        // 2. Dynamiczny wybór języka
+        function changeLanguage() {
+            const selectedLang = document.getElementById('language').value;
+            const elements = document.querySelectorAll('[data-i18n]');
             
-            // Podwójny efekt zapętlenia paska reklamowego dla płynności
-            const ticker = document.getElementById('tickerContent');
-            ticker.innerHTML += ticker.innerHTML;
-        };
-
-        // Generowanie matrycy 10x10 i wstrzykiwanie telebimu centralnego
-        function buildMatrix(cityName) {
-            const matrixContainer = document.getElementById('boardMatrix');
-            matrixContainer.innerHTML = "";
-
-            // Tworzenie centralnego kontenera dla Telebimu (kolumny 4-7, wiersze 4-7)
-            const centerSection = document.createElement('div');
-            centerSection.className = "grid-center";
-            centerSection.innerHTML = `
-                <div class="banner-crown">🌟 Główny Telebim Regionalny 🌟</div>
-                <div class="banner-main-title" id="centerCityLabel">${cityName.toUpperCase()}</div>
-                <div id="winnerName">Wonder Home Property Management</div>
-                <div class="center-wheel-box">
-                    <div id="centerWheel" style="background: radial-gradient(circle, #d4af37 0%, #000 70%);"></div>
-                </div>
-                <div class="live-countdown" id="liveMatrixTimer">Reset: 14:22:05</div>
-            `;
-            matrixContainer.appendChild(centerSection);
-
-            // Generowanie 100 komórek siatki
-            for (let row = 1; row <= 10; row++) {
-                for (let col = 1; col <= 10; col++) {
-                    // Pomijaj komórki zajęte przez centralny telebim reklamowy (od 4 do 7 w obu osiach)
-                    if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
-                        continue;
-                    }
-
-                    const index = (row - 1) * 10 + col;
-                    const aLink = document.createElement('a');
-                    aLink.href = "#";
-                    aLink.className = "cell-link";
-                    aLink.onclick = function(e) { e.preventDefault(); openPurchaseModal(index); };
-
-                    const cell = document.createElement('div');
-                    cell.className = "grid-item";
-                    cell.id = `cell-${index}`;
-                    
-                    // Przykładowe symulacje statusów i zagospodarowania okienek
-                    if (index % 11 === 0) {
-                        cell.classList.add('premium');
-                        cell.innerHTML = `<span>GOLD</span><strong style="color:#fff;">#${index}</strong>`;
-                    } else if (index % 7 === 0) {
-                        cell.classList.add('occupied');
-                        cell.innerHTML = `<span>Zajęte</span>`;
-                    } else {
-                        cell.innerHTML = `<span>Wolne</span><span style="color:#4b5563;">#${index}</span>`;
-                    }
-
-                    cell.style.gridColumn = col;
-                    cell.style.gridRow = row;
-
-                    aLink.appendChild(cell);
-                    matrixContainer.appendChild(aLink);
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[selectedLang] && translations[selectedLang][key]) {
+                    element.innerText = translations[selectedLang][key];
                 }
-            }
-        }
-
-        // Aktywacja wybranego regionu/miasta
-        function openDashboard(cityName) {
-            selectedCity = cityName;
-            document.getElementById('currentRegionLabel').innerText = cityName;
-            document.getElementById('dashboard-view').style.display = "block";
-            
-            // Budowanie dynamicznego interfejsu matrycy reklamowej
-            buildMatrix(cityName);
-
-            // Aktualizacja sekcji pogodowej i resortów z bazy danych
-            const data = regionDatabase[cityName] || { temp: '15°C', safe: 'Brak raportów.', resorts: [['Wyciąg Standard', 'Brak Danych']] };
-            document.getElementById('weatherTempDisplay').innerText = data.temp;
-            document.getElementById('t-goprStatus').innerText = `🟢 Służby ratunkowe: ${data.safe}`;
-
-            const resortContainer = document.getElementById('resortLiveDisplay');
-            resortContainer.innerHTML = "";
-            data.resorts.forEach(res => {
-                const badgeClass = res[1] === 'Otwarte' || res[1] === 'Aktywny' || res[1] === 'Sprawny' ? 'badge-open' : 'badge-closed';
-                resortContainer.innerHTML += `
-                    <div class="resort-item">
-                        <span>${res[0]}</span>
-                        <span class="badge ${badgeClass}">${res[1]}</span>
-                    </div>
-                `;
             });
-
-            // Aktualizacja dynamicznych połączeń autobusowych
-            const busContainer = document.getElementById('busRouteDisplay');
-            if (cityName === 'Karpacz' || cityName === 'Szklarska Poręba' || cityName === 'Świeradów-Zdrój') {
-                busContainer.innerHTML = `
-                    <a href="#" class="bus-item-link" onclick="alert('Bilety zintegrowane zakupione pomyślnie!'); return false;">🚌 Linia 100: Kowary ⇄ Karpacz Center (08:15, 10:30)</a>
-                    <a href="#" class="bus-item-link" onclick="alert('Przejazd zarezerwowany.'); return false;" style="border-left-color: #2ecc71;">🚌 Linia 200: Jelenia Góra ⇄ Miłków (09:00, 11:45)</a>
-                `;
-            } else {
-                busContainer.innerHTML = `
-                    <a href="#" class="bus-item-link" onclick="return false;">🚌 PKS Regionalny: Dworzec Główny ⇄ Plaża Co 45 min</a>
-                `;
-            }
-
-            window.scrollTo({ top: document.getElementById('dashboard-view').offsetTop - 20, behavior: 'smooth' });
         }
 
-        function hideDashboardOnly() {
-            document.getElementById('dashboard-view').style.display = "none";
-            window.scrollTo({ top: document.getElementById('map-view').offsetTop - 20, behavior: 'smooth' });
-        }
-
-        // Obsługa modułu wyboru szlaków turystycznych
-        function updateTrailInfo() {
-            const selector = document.getElementById('trailSelector').value;
-            const display = document.getElementById('trailResultDisplay');
-            
-            if (selector === "szlak1") {
-                display.innerHTML = "<strong>Szlak Czarny:</strong> Karpacz Biały Jar ➔ Śnieżka. <br>Czas przejścia: 2h 45m. Trudność: Średnia. Status: Otwarty.";
-            } else if (selector === "szlak2") {
-                display.innerHTML = "<strong>Trasa MTB Kowary:</strong> Singletrack wokół Jedlicy. <br>Długość: 11.5 km. Stan podłoża: Sucho i stabilnie. Polecane opony Enduro.";
-            } else if (selector === "szlak3") {
-                display.innerHTML = "<strong>Szlak Czerwony:</strong> Szklarska Poręba ➔ Wodospad Kamieńczyka. <br>Czas: 40 minut spacerem. Wstęp na platformę płatny kaskiem.";
-            } else {
-                display.innerHTML = "Wybierz pozycję z listy, aby załadować parametry trasy oraz stan bezpieczeństwa.";
-            }
-        }
-
-        // Logika Losowania Kół Szczęścia
-        function spin(type) {
-            const btn = type === 'tourist' ? document.getElementById('btnTourist') : document.getElementById('btnBusiness');
-            const canvas = type === 'tourist' ? document.getElementById('canvasTourist') : document.getElementById('canvasBusiness');
-            const resultBox = type === 'tourist' ? document.getElementById('resTourist') : document.getElementById('resBusiness');
-            const prizes = type === 'tourist' ? touristPrizes : businessPrizes;
-
-            btn.disabled = true;
-            resultBox.style.display = "none";
-
-            const randomDeg = Math.floor(Math.random() * 360) + 1440; // minimum 4 pełne obroty
-            canvas.style.transform = `rotate(${randomDeg}deg)`;
-
-            setTimeout(() => {
-                const actualRotation = randomDeg % 360;
-                const segmentAngle = 360 / prizes.length;
-                // Wyznaczanie wygranego indeksu (odwrócony kierunek obrotu koła względem wskaźnika)
-                const prizeIndex = Math.floor(((360 - actualRotation + (segmentAngle / 2)) % 360) / segmentAngle) % prizes.length;
-                
-                resultBox.style.display = "block";
-                resultBox.innerHTML = `🎉 Wynik losowania: <strong>${prizes[prizeIndex]}</strong><br><span style="font-size:10px; color:#888;">Zgłoś się do administracji noncraft.pl po odbiór!</span>`;
-                btn.disabled = false;
-            }, 4000);
-        }
-
-        // Obsługa modalnego okna zakupu
-        function openPurchaseModal(cellId) {
-            selectedCellId = cellId;
-            document.getElementById('modalCellTitle').innerText = `Rezerwacja Okienka #${cellId}`;
-            document.getElementById('purchaseModal').style.display = "flex";
-            selectPackage('standard', 99);
-        }
-
-        function closeModal() {
-            document.getElementById('purchaseModal').style.display = "none";
-        }
-
-        function selectPackage(pkg, price) {
-            selectedPrice = price;
-            document.getElementById('modalCellPrice').innerText = `${price} PLN`;
-            document.getElementById('pkg-standard').classList.remove('active');
-            document.getElementById('pkg-premium').classList.remove('active');
-            document.getElementById(`pkg-${pkg}`).classList.add('active');
-        }
-
-        function confirmPurchase() {
-            const name = document.getElementById('modalInputName').value.trim();
-            const link = document.getElementById('modalInputLink').value.trim();
-
-            if (!name) {
-                alert("Proszę podać nazwę firmy lub kampanii reklamowej!");
-                return;
-            }
-
-            // Podmiana komórki w matrycy w czasie rzeczywistym
-            const targetCell = document.getElementById(`cell-${selectedCellId}`);
-            if (targetCell) {
-                targetCell.className = "grid-item occupied";
-                if (selectedPrice === 199) {
-                    targetCell.classList.add('premium');
-                }
-                targetCell.innerHTML = `<span>${name.substring(0, 8)}</span><span style='font-size:7px;color:var(--gold-primary);'>Aktywne</span>`;
-            }
-
-            alert(`Sukces! Okienko #${selectedCellId} zostało zarezerwowane dla "${name}". Koszt: ${selectedPrice} PLN. Dziękujemy za wybór PolskieOkienka.pl!`);
-            closeModal();
-        }
-
-        // Tłumaczenia językowe panelu
-        function changeLanguage(lang) {
-            const flags = document.querySelectorAll('.lang-flag');
-            flags.forEach(f => f.classList.remove('active'));
-            document.getElementById(`lang-${lang}`).classList.add('active');
-
-            const headerTitle = document.getElementById('mainTitleHeader');
-            const subMap = document.getElementById('t-mapSubtitle');
-
-            if (lang === 'en') {
-                headerTitle.innerText = "PolskieOkienka.pl - National Screen Network";
-                subMap.innerText = "Choose a city to access the local advertising board";
-                document.getElementById('t-visitorCount').innerText = "Online Visitors:";
-                document.getElementById('t-freeSlots').innerText = "Available Screens:";
-                document.getElementById('t-backBtn').innerText = "⬅ Hide Matrix / Show Map Only";
-            } else if (lang === 'de') {
-                headerTitle.innerText = "PolskieOkienka.pl - Nationales Bildschirmnetzwerk";
-                subMap.innerText = "Wählen Sie eine Stadt aus, um das lokale Werbeboard anzuzeigen";
-                document.getElementById('t-visitorCount').innerText = "Besucher Online:";
-                document.getElementById('t-freeSlots').innerText = "Freie Fenster:";
-                document.getElementById('t-backBtn').innerText = "⬅ Matrix ausblenden / Nur Karte anzeigen";
-            } else if (lang === 'cs') {
-                headerTitle.innerText = "PolskieOkienka.pl - Celostátní Síť Obrazovek";
-                subMap.innerText = "Vyberte město pro vstup na místní reklamní tabuli";
-                document.getElementById('t-visitorCount').innerText = "Návštěvníci online:";
-                document.getElementById('t-freeSlots').innerText = "Volná okénka:";
-                document.getElementById('t-backBtn').innerText = "⬅ Skrýt matici / Zobrazit pouze mapu";
-            } else {
-                headerTitle.innerText = "PolskieOkienka.pl - Ogólnopolska Sieć Ekranów";
-                subMap.innerText = "Wybierz miasto, aby wejść na lokalną tablicę reklamową";
-                document.getElementById('t-visitorCount').innerText = "Goście Online:";
-                document.getElementById('t-freeSlots').innerText = "Wolne Okienka:";
-                document.getElementById('t-backBtn').innerText = "⬅ Ukryj matricę / Pokaż tylko Mapę";
-            }
-        }
-
-        // Moduł Asystenta Sigma Czat AI
-        function toggleChat(forceCollapse) {
-            const chat = document.getElementById('sigmaChat');
-            if (forceCollapse) {
-                chat.classList.add('collapsed');
-            } else {
-                chat.classList.remove('collapsed');
-            }
-        }
-
-        function handleChatEnter(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
-
-        function sendMessage() {
+        // 3. Obsługa wysyłania wiadomości w Czacie AI
+        function sendChatMessage() {
             const input = document.getElementById('chatInput');
-            const body = document.getElementById('chatBody');
-            const query = input.value.trim();
+            const messagesContainer = document.getElementById('chatMessages');
+            const userText = input.value.trim();
 
-            if (!query) return;
+            if (userText === '') return;
 
-            // Dodanie wiadomości użytkownika
-            body.innerHTML += `<div class="msg user">${query}</div>`;
-            input.value = "";
-            body.scrollTop = body.scrollHeight;
+            // Dodaj wiadomość użytkownika
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'msg user';
+            userMsgDiv.innerText = userText;
+            messagesContainer.appendChild(userMsgDiv);
 
-            // Symulacja bota Sigma AI
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Logika automatycznej odpowiedzi (symulacja AI bazy rozkładów)
             setTimeout(() => {
-                let reply = "Przeszukuję system... Jeśli szukasz wolnych okienek, kliknij dowolne wolne pole na matrycy reklamowej wybranego miasta!";
-                const qLower = query.toLowerCase();
-
-                if (qLower.includes('miłków') || qLower.includes('autobus') || qLower.includes('bus')) {
-                    reply = "Rozkład jazdy do Miłkowa z Kowar/Jeleniej Góry (Linia 200) odjeżdża o godzinie 09:00 oraz 11:45. Połączenie stabilne!";
-                } else if (qLower.includes('wonder') || qLower.includes('home') || qLower.includes('karpacz')) {
-                    reply = "Firma Wonder Home w Karpaczu to nasz kluczowy partner premium. Zarządzają profesjonalnymi apartamentami, a cała logistyka ich sprzątania i utrzymania jest skoordynowana z naszymi systemami!";
-                } else if (qLower.includes('reklama') || qLower.includes('cena')) {
-                    reply = "Reklama u nas to strzał w dziesiątkę! Ceny zaczynają się od 99 PLN za dobę w pakiecie Standard, a pakiety Premium Gold dają efekt podświetlenia (glow).";
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'msg bot';
+                
+                if (userText.toLowerCase().includes('miłków') || userText.toLowerCase().includes('bus')) {
+                    botMsgDiv.innerText = "Najbliższy autobus z Kowar do Miłkowa (Linia 200) odjeżdża o godzinie 11:45. Przystanek główny.";
+                } else {
+                    botMsgDiv.innerText = "Rozumiem! Sprawdzam bazę danych dla Karkonoszy. Czy chcesz, abym zapisał to powiadomienie?";
                 }
+                
+                messagesContainer.appendChild(botMsgDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 800);
+        }
 
-                body.innerHTML += `<div class="msg bot">${reply}</div>`;
-                body.scrollTop = body.scrollHeight;
-            }, 500);
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
         }
     </script>
 </body>
