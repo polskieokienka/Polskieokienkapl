@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieOkienka.pl - Główna Matryca Kurortów</title>
+    <title>PolskieOkienka.pl - Główna Matryca i Strefa Turysty</title>
     
-    <!-- Biblioteka konfetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -19,6 +18,7 @@
             --green-live: #2ecc71;
             --diamond-color: #b9f2ff;
             --diamond-glow: #00d2ff;
+            --blue-tourist: #3b82f6;
         }
 
         body {
@@ -35,7 +35,45 @@
             padding-bottom: 90px;
         }
 
-        /* NAGŁÓWEK - Zabezpieczony przed rozjeżdżaniem */
+        /* NAWIGACJA GLÓWNA (ZAKŁADKI) */
+        .main-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px;
+            background: rgba(20, 24, 38, 0.6);
+            border: 2px solid rgba(214, 175, 55, 0.3);
+            border-radius: 12px;
+            color: #9ca3af;
+            font-weight: bold;
+            font-size: 15px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn.active[data-target="matrix"] {
+            border-color: var(--gold-primary);
+            color: #fff;
+            background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, #12151f 100%);
+            box-shadow: 0 0 15px rgba(212,175,55,0.2);
+        }
+
+        .nav-btn.active[data-target="tourist"] {
+            border-color: var(--blue-tourist);
+            color: #fff;
+            background: linear-gradient(135deg, rgba(59,130,246,0.15) 0%, #12151f 100%);
+            box-shadow: 0 0 15px rgba(59,130,246,0.3);
+        }
+
+        /* NAGŁÓWEK */
         .header-panel {
             background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
             border: 2px solid var(--gold-primary);
@@ -61,11 +99,7 @@
         }
 
         @media (min-width: 1024px) {
-            .header-left {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-            }
+            .header-left { flex-direction: row; align-items: center; justify-content: space-between; }
         }
 
         .header-left h2 { 
@@ -76,28 +110,11 @@
             font-size: 22px;
         }
         
-        .stats-container { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            font-size: 13px; 
-            font-weight: 600; 
-            flex-wrap: wrap; 
-        }
-
-        .stat-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            color: #9ca3af; 
-            background: rgba(0,0,0,0.4); 
-            padding: 6px 14px; 
-            border-radius: 20px; 
-            white-space: nowrap;
-        }
+        .stats-container { display: flex; align-items: center; gap: 15px; font-size: 13px; font-weight: 600; flex-wrap: wrap; }
+        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
         .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; }
 
-        /* WIDGET METEO I CZASU - Poprawiona elastyczność i zawijanie w ramce */
+        /* WIDGET METEO I CZASU */
         .live-widget {
             background: rgba(20, 24, 38, 0.7);
             border: 1px solid rgba(214, 175, 55, 0.4);
@@ -131,27 +148,11 @@
             margin-bottom: 25px;
         }
 
-        .map-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-
+        .map-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .city-pin {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            background: rgba(18, 21, 31, 0.8);
-            border: 1px solid var(--gold-primary);
-            padding: 12px 16px;
-            border-radius: 10px;
-            box-sizing: border-box;
-            cursor: pointer;
-            transition: background 0.2s;
+            width: 100%; display: flex; flex-direction: row; align-items: center; background: rgba(18, 21, 31, 0.8);
+            border: 1px solid var(--gold-primary); padding: 12px 16px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background 0.2s;
         }
-
         .city-pin:hover { background: var(--gold-primary); }
         .pin-dot { width: 10px; height: 10px; background-color: var(--gold-primary); border-radius: 50%; margin-right: 12px; flex-shrink: 0; }
         .city-pin:hover .pin-dot { background-color: #000; }
@@ -163,157 +164,118 @@
             .city-pin { width: calc(25% - 10px); min-width: 150px; }
         }
 
-        /* PANEL MATRYCY */
+        /* WIDOK: MATRYCA REKLAMOWA */
         #dashboard-view { display: block; width: 100%; max-width: 1400px; margin-top: 5px; box-sizing: border-box; }
-        
         .billboard-frame {
             background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
-            padding: 12px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
-            width: 100%; box-sizing: border-box; overflow-x: auto;
+            padding: 12px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b; width: 100%; box-sizing: border-box; overflow-x: auto;
         }
-
         .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 15px; border-radius: 10px; min-width: 950px; }
-        
-        /* SIATKA OKIENEK - Równe 100 okienek */
         .grid-board {
-            display: grid; 
-            grid-template-columns: repeat(10, 1fr); 
-            grid-template-rows: repeat(10, minmax(70px, auto));
-            gap: 8px; background-color: #030405; padding: 12px; border-radius: 10px;
-            border: 2px solid #14161f; width: 100%; box-sizing: border-box;
+            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, minmax(70px, auto));
+            gap: 8px; background-color: #030405; padding: 12px; border-radius: 10px; border: 2px solid #14161f; width: 100%; box-sizing: border-box;
         }
 
         .grid-item {
             height: 100%; background: linear-gradient(135deg, #131620 0%, #07080b 100%);
             border: 1px solid #1f2433; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; padding: 5px; box-sizing: border-box; text-align: center;
-            position: relative; overflow: hidden;
+            font-size: 11px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; padding: 5px; box-sizing: border-box; text-align: center; position: relative; overflow: hidden;
         }
         .grid-item:hover { transform: scale(1.04); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
-        
         .grid-item.standard-vacant { border: 1px solid #232838; color: #4b5563; }
-        
-        .grid-item.gold-vacant { 
-            border: 2px solid rgba(212, 175, 55, 0.5); 
-            color: rgba(212, 175, 55, 0.8);
-            background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, #07080b 100%);
-            box-shadow: inset 0 0 5px rgba(212,175,55,0.05);
-        }
-
+        .grid-item.gold-vacant { border: 2px solid rgba(212, 175, 55, 0.5); color: rgba(212, 175, 55, 0.8); background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, #07080b 100%); box-shadow: inset 0 0 5px rgba(212,175,55,0.05); }
         .grid-item.standard-active { border: 1px solid #4b5563; color: #f3f4f6; background: rgba(31, 41, 55, 0.4); }
-        
-        .grid-item.gold-active { 
-            border: 2px solid var(--gold-primary); 
-            color: #fff; 
-            background: linear-gradient(135deg, rgba(212,175,55,0.2) 0%, rgba(7,8,12,0.9) 100%);
-            box-shadow: inset 0 0 10px rgba(212,175,55,0.3), 0 0 8px rgba(212,175,55,0.2);
-        }
+        .grid-item.gold-active { border: 2px solid var(--gold-primary); color: #fff; background: linear-gradient(135deg, rgba(212,175,55,0.2) 0%, rgba(7,8,12,0.9) 100%); box-shadow: inset 0 0 10px rgba(212,175,55,0.3), 0 0 8px rgba(212,175,55,0.2); }
+        .grid-item-logo-container { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .grid-item-logo-img { max-width: 95%; max-height: 35px; object-fit: contain; border-radius: 4px; margin-bottom: 2px; }
 
-        .grid-item-logo-container {
-            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .grid-item-logo-img {
-            max-width: 95%; max-height: 35px; object-fit: contain; border-radius: 4px; margin-bottom: 2px;
-        }
-
-        /* POTĘŻNY, BŁYSZCZĄCY ŚRODEK VIP (EFEKT DIAMENTU) */
+        /* VIP ŚRODEK DIAMENTOWY */
         .grid-center {
             grid-column: 4 / span 4; grid-row: 4 / span 4;
             background: linear-gradient(135deg, #07090e 0%, #151a26 50%, #07090e 100%);
             border: 3px dashed var(--gold-primary); border-radius: 14px; padding: 15px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box;
-            box-shadow: 0 0 20px rgba(214, 175, 55, 0.1);
-            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; box-shadow: 0 0 20px rgba(214, 175, 55, 0.1); position: relative; overflow: hidden;
         }
-
-        .grid-center.diamond-mode {
-            border: 4px solid #fff;
-            border-image: linear-gradient(45deg, var(--diamond-glow), #ffffff, var(--gold-primary), #ffffff) 1;
-            background: radial-gradient(circle, #10172a 0%, #07090e 100%);
-            animation: diamond-pulse 2s infinite alternate;
-            box-shadow: 0 0 35px rgba(0, 210, 255, 0.6), inset 0 0 20px rgba(255,255,255,0.2);
-        }
-
-        .grid-center.diamond-mode::before {
-            content: '';
-            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
-            transform: rotate(45deg);
-            animation: diamond-shimmer 2.5s infinite linear;
-        }
-
-        @keyframes diamond-shimmer {
-            0% { transform: translate(-30%, -30%) rotate(45deg); }
-            100% { transform: translate(30%, 30%) rotate(45deg); }
-        }
-
-        @keyframes diamond-pulse {
-            0% { box-shadow: 0 0 25px rgba(0, 210, 255, 0.4); }
-            100% { box-shadow: 0 0 45px rgba(0, 210, 255, 0.8), 0 0 15px rgba(214, 175, 55, 0.4); }
-        }
-
+        .grid-center.diamond-mode { border: 4px solid #fff; border-image: linear-gradient(45deg, var(--diamond-glow), #ffffff, var(--gold-primary), #ffffff) 1; background: radial-gradient(circle, #10172a 0%, #07090e 100%); animation: diamond-pulse 2s infinite alternate; box-shadow: 0 0 35px rgba(0, 210, 255, 0.6), inset 0 0 20px rgba(255,255,255,0.2); }
+        .grid-center.diamond-mode::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); animation: diamond-shimmer 2.5s infinite linear; }
+        @keyframes diamond-shimmer { 0% { transform: translate(-30%, -30%) rotate(45deg); } 100% { transform: translate(30%, 30%) rotate(45deg); } }
+        @keyframes diamond-pulse { 0% { box-shadow: 0 0 25px rgba(0, 210, 255, 0.4); } 100% { box-shadow: 0 0 45px rgba(0, 210, 255, 0.8), 0 0 15px rgba(214, 175, 55, 0.4); } }
         .vip-crown { color: var(--gold-primary); font-size: 12px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase;}
         .vip-company { font-size: 20px; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* WIDOK: NOWA STREFA TURYSTY */
+        #tourist-view { display: none; width: 100%; max-width: 1400px; box-sizing: border-box; }
+        .tourist-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 900px) { .tourist-grid { grid-template-columns: 1fr 1fr; } }
+
+        .tourist-card {
+            background: rgba(15, 18, 28, 0.95); border: 2px solid var(--blue-tourist); border-radius: 16px;
+            padding: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); box-sizing: border-box;
+        }
+
+        /* KOŁO FORTUNY DESIGN */
+        .wheel-box { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-top: 15px; }
+        .wheel-container { width: 260px; height: 260px; border-radius: 50%; border: 6px solid #fff; position: relative; overflow: hidden; transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); box-shadow: 0 0 25px rgba(59,130,246,0.5); background: conic-gradient(#1e3a8a 0deg 60deg, #3b82f6 60deg 120deg, #1d4ed8 120deg 180deg, #2563eb 180deg 240deg, #1e40af 240deg 300deg, #60a5fa 300deg 360deg); }
+        .wheel-marker { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #ef4444; z-index: 10; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
+        .wheel-center-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: #fff; border-radius: 50%; border: 4px solid var(--blue-tourist); z-index: 12; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #000; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-transform: uppercase; }
+        
+        /* SZLAKI INTERAKTYWNE */
+        .trail-item { background: rgba(0,0,0,0.3); border-left: 4px solid var(--blue-tourist); padding: 12px 15px; border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+        .trail-tag { font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 10px; text-transform: uppercase; margin-right: 6px; display: inline-block; }
 
         /* MODAL REZERWACJI */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
         .modal-box { background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px; width: 95%; max-width: 480px; padding: 22px; box-sizing: border-box; text-align: center; max-height: 90vh; overflow-y: auto; }
         .modal-input { width: 100%; padding: 11px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 14px; }
         .modal-select { width: 100%; padding: 11px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 14px; }
-        
         .price-display { margin: 12px 0; font-size: 18px; font-weight: bold; color: var(--gold-primary); background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; }
         .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; font-size: 13px; }
         .btn-buy-cancel { background: #333; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; }
-
         .logo-placeholder { font-size: 11px; letter-spacing: 0.5px; color: #fff; font-weight: 800; margin-top: 2px; text-transform: uppercase; }
         .badge-type { font-size: 8px; text-transform: uppercase; padding: 2px 6px; border-radius: 10px; margin-top: 4px; font-weight: bold; }
 
-        .notification-toast {
-            position: fixed; bottom: 20px; right: 20px; background: #1e1b4b; border: 2px solid #6366f1;
-            padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999;
-            max-width: 320px; display: none; animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .notification-toast { position: fixed; bottom: 20px; right: 20px; background: #1e1b4b; border: 2px solid #6366f1; padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; max-width: 320px; display: none; }
     </style>
 </head>
 <body>
 
-    <!-- SYSTEM POWIADOMIEŃ EMAIL -->
     <div class="notification-toast" id="emailNotification">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#a5b4fc; font-size:12px;">📨 Powiadomienie PolskieOkienka.pl</strong>
+            <strong style="color:#a5b4fc; font-size:12px;">📨 Wiadomość PolskieOkienka.pl</strong>
             <button onclick="this.parentElement.parentElement.style.display='none'" style="background:none; border:none; color:#fff; cursor:pointer; font-weight:bold;">×</button>
         </div>
         <div style="font-size:13px; color:#f3f4f6;" id="emailNotificationText"></div>
     </div>
 
-    <!-- PANEL GÓRNY -->
+    <div class="main-nav">
+        <button class="nav-btn active" data-target="matrix" onclick="switchMainTab('matrix')">📊 Matryca Ogłoszeń Kurortów</button>
+        <button class="nav-btn" data-target="tourist" onclick="switchMainTab('tourist')">⛰️ Strefa Turysty (Zniżki & Szlaki)</button>
+    </div>
+
     <div class="header-panel">
         <div class="header-left">
             <div>
-                <h2>PolskieOkienka.pl - Główna Matryca Kurortów</h2>
-                <div style="font-size: 12px; color: #9ca3af; margin-top: 4px;">Premium 300 zł na górze (1-30) | Standard 200 zł na dole (31-100)</div>
+                <h2>PolskieOkienka.pl</h2>
+                <div style="font-size: 12px; color: #9ca3af; margin-top: 4px;">Premium 300 zł u góry (1-30) | Standard 200 zł na dole (31-100)</div>
             </div>
             <div class="stats-container">
-                <div class="stat-item">Zajęte Okienka: <span class="stat-value" id="statsOccupied">0</span> / 84</div>
+                <div class="stat-item">Zajęte Miejsca: <span class="stat-value" id="statsOccupied">0</span> / 84</div>
                 
-                <!-- LIVE METEO I CZAS WIDGET -->
                 <div class="live-widget" id="liveMeteoWidget">
                     <div class="widget-part">📅 <span id="widgetDate">-</span></div>
                     <div class="widget-part">⏰ <span id="widgetTime" class="widget-highlight">-</span></div>
-                    <div class="widget-part">🌤️ Pogoda: <span id="widgetWeather" class="widget-highlight">-</span></div>
+                    <div class="widget-part">🌤️ <span id="widgetWeather" class="widget-highlight">-</span></div>
                 </div>
 
-                <button onclick="drawMonthlyVipWinner()" style="background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); border: none; color: #000; font-weight: 900; padding: 8px 18px; border-radius: 12px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 0 15px rgba(214,175,55,0.4);">
-                    🎲 Losuj Diamentowy VIP
+                <button onclick="drawMonthlyVipWinner()" style="background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); border: none; color: #000; font-weight: 900; padding: 8px 18px; border-radius: 12px; cursor: pointer; font-size: 11px; text-transform: uppercase;">
+                    🎲 Losuj VIP
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- WYBÓR KURORTU -->
     <div id="map-view">
-        <h3 style="margin: 0 0 12px 0; font-size: 15px; text-transform: uppercase; color: var(--gold-primary); letter-spacing: 1px;">Wybierz interesujący Cię kurort:</h3>
+        <h3 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: var(--gold-primary); letter-spacing: 1px;">Wybierz region:</h3>
         <div class="map-container">
             <div class="city-pin" onclick="selectCity('Świnoujście')"><div class="pin-dot"></div><div class="city-label">Świnoujście</div></div>
             <div class="city-pin" onclick="selectCity('Kołobrzeg')"><div class="pin-dot"></div><div class="city-label">Kołobrzeg</div></div>
@@ -326,10 +288,9 @@
         </div>
     </div>
 
-    <!-- MATRYCA -->
     <div id="dashboard-view">
-        <div style="margin-bottom: 12px; font-weight: bold; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;">
-            Bieżąca Tablica: <span id="currentCityLabel" style="color:#fff;">Karpacz</span>
+        <div style="margin-bottom: 12px; font-weight: bold; color: var(--gold-primary); text-transform: uppercase;">
+            Aktywna tablica: <span id="currentCityLabel" style="color:#fff;">Karpacz</span>
         </div>
         <div class="billboard-frame">
             <div class="billboard-inner">
@@ -338,42 +299,49 @@
         </div>
     </div>
 
-    <!-- MODAL REZERWACJI -->
+    <div id="tourist-view">
+        <div style="margin-bottom: 12px; font-weight: bold; color: var(--blue-tourist); text-transform: uppercase;">
+            Przewodnik Turystyczny: <span id="touristCityLabel" style="color:#fff;">Karpacz</span>
+        </div>
+        
+        <div class="tourist-grid">
+            
+            <div class="tourist-card">
+                <h3 style="margin:0 0 5px 0; color:var(--blue-tourist); text-transform:uppercase; font-size:16px;">🎡 Cotygodniowe Koło Fortuny</h3>
+                <p style="font-size:12px; color:#9ca3af; margin:0 0 15px 0;">Zalogowany jako: <span style="color:var(--green-live); font-weight:bold;">Turysta_VIP_77</span>. Zakręć raz w tygodniu i zgarnij zniżki w regionie!</p>
+                
+                <div class="wheel-box">
+                    <div class="wheel-marker"></div>
+                    <div class="wheel-container" id="wheel"></div>
+                    <div class="wheel-center-btn" onclick="spinTheWheel()">ZAKRĘĆ</div>
+                </div>
+                <div id="wheelResult" style="margin-top:20px; font-weight:bold; text-align:center; color:var(--green-live); font-size:14px;"></div>
+            </div>
+
+            <div class="tourist-card">
+                <h3 style="margin:0 0 15px 0; color:var(--blue-tourist); text-transform:uppercase; font-size:16px;">🗺️ Lokalne Szlaki i Trasy</h3>
+                <div id="trailsContainer"></div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="modal-overlay" id="purchaseModal">
         <div class="modal-box">
-            <h3 id="modalTitle" style="color: var(--gold-primary); margin-top: 0; text-transform:uppercase; font-size:15px;">Rezerwacja</h3>
-            
-            <div style="background: linear-gradient(135deg, rgba(0,210,255,0.1) 0%, rgba(214,175,55,0.1) 100%); border: 1px solid var(--diamond-glow); padding: 8px 12px; border-radius: 8px; font-size: 11px; color: #b9f2ff; margin-bottom: 12px; text-align: left; font-weight: 600;">
-                💎 <strong>PREMIA VIP:</strong> Każda aktywna subskrypcja automatycznie bierze udział w comiesięcznym losowaniu Głównego Panelu, który lśni jak diamenty na całej matrycy!
-            </div>
-
-            <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px dashed #333; margin-bottom: 12px; font-size: 13px;">
-                Strefa okienka: <span id="infoAdZone" style="font-weight:bold; color:#fff;">-</span><br>
-                Cena bazowa: <span id="infoAdBasePrice" style="font-weight:bold; color:var(--gold-primary);">-</span> zł netto / msc
-            </div>
-
+            <h3 id="modalTitle" style="color: var(--gold-primary); margin-top:0; text-transform:uppercase;">Rezerwacja</h3>
             <input type="text" class="modal-input" id="inputBizName" placeholder="Wpisz nazwę swojej firmy">
-            <input type="url" class="modal-input" id="inputBizUrl" placeholder="Wpisz link URL strony (np. https://...)">
-            <input type="email" class="modal-input" id="inputBizEmail" placeholder="Twój e-mail (Do powiadomień o końcu pakietu)">
-
-            <label style="display:block; text-align:left; font-size:12px; margin-bottom:4px; color:#ccc;">Wgraj grafikę / logo firmy (JPG/PNG):</label>
-            <input type="file" class="modal-input" id="inputLogoFile" accept="image/*" style="padding:6px;">
-
-            <label style="display:block; text-align:left; font-size:12px; margin-bottom:4px; color:#ccc;">Okres ważności subskrypcji:</label>
+            <input type="url" class="modal-input" id="inputBizUrl" placeholder="Wpisz link URL strony">
+            <input type="email" class="modal-input" id="inputBizEmail" placeholder="Twój e-mail">
+            <label style="display:block; text-align:left; font-size:12px; margin-bottom:4px; color:#ccc;">Okres subskrypcji:</label>
             <select class="modal-select" id="selectDuration" onchange="updatePriceCalculation()">
-                <option value="1">1 Miesiąc (Standard)</option>
+                <option value="1">1 Miesiąc</option>
                 <option value="6">6 Miesięcy (Zniżka 10%)</option>
-                <option value="12">1 Rok / 12 Miesięcy (Zniżka 15%)</option>
+                <option value="12">1 Rok (Zniżka 15%)</option>
             </select>
-
             <label style="display:block; text-align:left; font-size:12px; margin-bottom:4px; color:#ccc;">Połącz sąsiednie okienka:</label>
             <select class="modal-select" id="selectMergeQty" onchange="updatePriceCalculation()"></select>
-            
-            <div class="price-display">
-                Suma całkowita: <span id="calculatedPrice">0</span> zł netto
-            </div>
-            
-            <button class="btn-buy-confirm" onclick="confirmAdPurchase()">Aktywuj i dodaj na tablicę</button>
+            <div class="price-display">Suma: <span id="calculatedPrice">0</span> zł netto</div>
+            <button class="btn-buy-confirm" onclick="confirmAdPurchase()">Aktywuj okienko</button>
             <button class="btn-buy-cancel" onclick="closeModal()">Anuluj</button>
         </div>
     </div>
@@ -381,294 +349,48 @@
     <script>
         let currentCity = "Karpacz";
         let selectedCell = null;
-        let uploadedLogoBase64 = null;
+        let isSpinning = false;
 
-        const weatherDatabase = {
-            "Karpacz": "☀️ Słonecznie, 19°C (Karkonosze)",
-            "Szklarska Poręba": "⛅ Częściowe zachmurzenie, 18°C",
-            "Świeradów-Zdrój": "🌧️ Lekka mżawka, 16°C",
-            "Świnoujście": "💨 Wietrznie / Plażowo, 21°C (Bałtyk)",
-            "Kołobrzeg": "☀️ Słonecznie, 22°C",
-            "Sopot": "🌤️ Piękna pogoda, 23°C",
-            "Wisła": "⛅ Pochmurno z przejaśnieniami, 20°C",
-            "Zakopane": "⛈️ Możliwa burza, 17°C (Tatry)"
+        // BAZA DANYCH REGIONALNYCH SZLAKÓW
+        const regionalTrails = {
+            "Karpacz": [
+                { type: "pieszy", name: "Czerwony szlak na Śnieżkę przez Kocioł Łomniczki", len: "6.8 km", diff: "Trudny", bg: "#ef4444" },
+                { type: "pieszy", name: "Szlak do Schroniska Samotnia (Czarny / Niebieski)", len: "4.5 km", diff: "Łatwy", bg: "#3b82f6" },
+                { type: "rower", name: "Pasmo Rowerowe Olbrzymy - Pętla Borowy", len: "18.2 km", diff: "Średni", bg: "#10b981" }
+            ],
+            "Szklarska Poręba": [
+                { type: "pieszy", name: "Szlak na Szrenicę przez Wodospad Kamieńczyka", len: "5.5 km", diff: "Średni", bg: "#3b82f6" },
+                { type: "rower", name: "Trasa Rowerowa ER-2 wokół Jakuszyc", len: "24.0 km", diff: "Łatwy", bg: "#10b981" }
+            ],
+            "Świeradów-Zdrój": [
+                { type: "rower", name: "Zintegrowany system Ścieżek Singletrack (PL/CZ)", len: "40.0 km", diff: "Zróżnicowany", bg: "#10b981" },
+                { type: "pieszy", name: "Szlak na Stóg Izerski z centrum uzdrowiska", len: "6.1 km", diff: "Średni", bg: "#3b82f6" }
+            ],
+            "Sopot": [
+                { type: "rower", name: "Nadmorska Ścieżka Rowerowa Sopot - Gdańsk Brzeźno", len: "8.5 km", diff: "Łatwy", bg: "#10b981" },
+                { type: "pieszy", name: "Szlak Lisów przez Trójmiejski Park Krajobrazowy", len: "11.2 km", diff: "Średni", bg: "#ef4444" }
+            ],
+            "Świnoujście": [
+                { type: "rower", name: "Międzynarodowy Szlak Rowerowy wokół Zalewu Szczecińskiego", len: "35.0 km", diff: "Łatwy", bg: "#10b981" },
+                { type: "pieszy", name: "Szlak Fortyfikacji Nadmorskich (Fort Gerharda, Podziemne Miasto)", len: "7.0 km", diff: "Łatwy", bg: "#3b82f6" }
+            ],
+            "Kołobrzeg": [
+                { type: "rower", name: "Nadmorski Szlak Rowerowy R10 (Ustronie Morskie - Kołobrzeg)", len: "14.5 km", diff: "Łatwy", bg: "#10b981" },
+                { type: "pieszy", name: "Szlak Ku Słońcu wzdłuż Ekoparku Wschodniego", len: "9.0 km", diff: "Łatwy", bg: "#3b82f6" }
+            ],
+            "Wisła": [
+                { type: "pieszy", name: "Szlak na Baranią Górę przez Kaskady Rodła", len: "8.2 km", diff: "Średni", bg: "#ef4444" },
+                { type: "rower", name: "Trasa Rowerowa Wiślana Trasa Rowerowa (Początek)", len: "12.0 km", diff: "Łatwy", bg: "#10b981" }
+            ],
+            "Zakopane": [
+                { type: "pieszy", name: "Szlak przez Dolinę Kościeliską do Hali Ornak", len: "5.5 km", diff: "Łatwy", bg: "#10b981" },
+                { type: "pieszy", name: "Czerwony szlak na Giewont z Doliny Strążyskiej", len: "6.0 km", diff: "Trudny", bg: "#ef4444" }
+            ]
         };
 
-        const cityBoards = {
-            "Karpacz": {
-                1: { name: "CLEAN EXPERT", url: "https://sprzatanie.jelenia.pl/", logoImg: "pobrane.jpeg", qty: 1, isChild: false }
-            }, 
-            "Szklarska Poręba": {}, "Świeradów-Zdrój": {}, "Świnoujście": {}, "Kołobrzeg": {}, "Sopot": {}, "Wisła": {}, "Zakopane": {}
-        };
-
-        const vipWinners = {
-            "Karpacz": null, "Szklarska Poręba": null, "Świeradów-Zdrój": null, "Świnoujście": null, "Kołobrzeg": null, "Sopot": null, "Wisła": null, "Zakopane": null
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const fileInput = document.getElementById('inputLogoFile');
-            if(fileInput) {
-                fileInput.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => { uploadedLogoBase64 = event.target.result; };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-            updateLiveWidget();
-            setInterval(updateLiveWidget, 1000);
-        });
-
-        function updateLiveWidget() {
-            const now = new Date();
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = now.getFullYear();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-
-            document.getElementById('widgetDate').innerText = `${day}.${month}.${year}`;
-            document.getElementById('widgetTime').innerText = `${hours}:${minutes}:${seconds}`;
-            document.getElementById('widgetWeather').innerText = weatherDatabase[currentCity] || "☀️ Stabilna, 20°C";
-        }
-
-        function buildMatrix() {
-            const matrixContainer = document.getElementById('boardMatrix');
-            if (!matrixContainer) return;
-            matrixContainer.innerHTML = "";
-
-            const currentData = cityBoards[currentCity] || {};
-            let occupiedCount = 0;
-
-            // Pętla generuje równe 100 okienek (od 1 do 100)
-            for (let i = 1; i <= 100; i++) {
-                let row = Math.floor((i - 1) / 10) + 1;
-                let col = ((i - 1) % 10) + 1;
-
-                // WYŚWIETLANIE DIAMENTOWEGO TELEBIMU VIP W SAMYM ŚRODKU (Rzędy 4-7, Kolumny 4-7)
-                if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
-                    if (row === 4 && col === 4) {
-                        const centerVIP = document.createElement('div');
-                        centerVIP.className = "grid-center";
-                        centerVIP.id = "vipTelebim";
-                        
-                        const winner = vipWinners[currentCity];
-                        if (winner) {
-                            centerVIP.classList.add('diamond-mode');
-                            centerVIP.innerHTML = `
-                                <div class="vip-crown" style="color: var(--diamond-color); font-weight:900; text-shadow: 0 0 12px #00d2ff;">💎 PANEL VIP 💎</div>
-                                <div class="vip-company">${winner}</div>
-                                <div style="font-size:9px; color: #fff; margin-top:5px; font-weight:bold; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:10px;">👑 Władca Tablicy 👑</div>
-                            `;
-                        } else {
-                            centerVIP.innerHTML = `
-                                <div class="vip-crown">👑 TELEBIM VIP</div>
-                                <div class="vip-company" style="color: var(--gold-primary); font-size:14px;">PolskieOkienka.pl</div>
-                                <div style="font-size:9px; color:#6b7280; margin-top:5px;">Subskrypcje biorą udział w losowaniu!</div>
-                            `;
-                        }
-                        matrixContainer.appendChild(centerVIP);
-                    }
-                    continue;
-                }
-
-                if (currentData[i] && currentData[i].isChild) continue;
-
-                const cell = document.createElement('div');
-                cell.className = "grid-item";
-                
-                // NOWY PODZIAŁ: Pierwsze 3 rzędy (indeksy 1-30) to PREMIUM na samej górze
-                const isGoldZone = (i <= 30); 
-
-                if (currentData[i]) {
-                    occupiedCount++;
-                    cell.classList.add(isGoldZone ? 'gold-active' : 'standard-active');
-
-                    if (currentData[i].qty > 1) {
-                        cell.style.gridColumn = `span ${currentData[i].qty}`;
-                    }
-
-                    if (currentData[i].logoImg) {
-                        cell.innerHTML = `
-                            <div class="grid-item-logo-container">
-                                <img src="${currentData[i].logoImg}" class="grid-item-logo-img" alt="${currentData[i].name}">
-                                <div class="logo-placeholder" style="font-size:9px; color: #ccc;">${currentData[i].name}</div>
-                            </div>
-                        `;
-                    } else {
-                        cell.innerHTML = `
-                            <div class="logo-placeholder">${currentData[i].name}</div>
-                            <span class="badge-type" style="background: ${isGoldZone ? 'var(--gold-primary)' : '#4b5563'}; color: #000;">AKTYWNY</span>
-                        `;
-                    }
-
-                    const targetUrl = currentData[i].url;
-                    cell.onclick = () => {
-                        if (targetUrl) window.open(targetUrl, '_blank');
-                        else alert(`Okienko zajęte przez: ${currentData[i].name}`);
-                    };
-                } else {
-                    if (isGoldZone) {
-                        cell.classList.add('gold-vacant');
-                        cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:var(--gold-primary); margin-top:3px; font-weight:800;">300 zł</div>`;
-                    } else {
-                        cell.classList.add('standard-vacant');
-                        cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:#4b5563; margin-top:3px;">200 zł</div>`;
-                    }
-                    cell.onclick = () => openPurchaseModal(i, isGoldZone);
-                }
-
-                matrixContainer.appendChild(cell);
-            }
-
-            // Aktualizacja licznika zajętości (odliczamy od 84 wolnych miejsc, bo 16 zabiera środek VIP)
-            const counterEl = document.getElementById('statsOccupied');
-            if (counterEl) counterEl.innerText = occupiedCount;
-        }
-
-        function openPurchaseModal(index, isGoldZone) {
-            selectedCell = index;
-            uploadedLogoBase64 = null;
-            const fileInput = document.getElementById('inputLogoFile');
-            if (fileInput) fileInput.value = "";
-
-            const modal = document.getElementById('purchaseModal');
-            document.getElementById('modalTitle').innerText = `Szybki Zakup Okienka [${index}]`;
-            document.getElementById('infoAdZone').innerText = isGoldZone ? "Okienko Premium (Górny Sektor)" : "Okienko Standardowe";
-            document.getElementById('infoAdBasePrice').innerText = isGoldZone ? "300" : "200";
-            
-            const currentColumn = ((index - 1) % 10) + 1;
-            const maxAllowedMerge = Math.min(4, 11 - currentColumn);
-            
-            const mergeSelect = document.getElementById('selectMergeQty');
-            mergeSelect.innerHTML = "";
-            for (let m = 1; m <= maxAllowedMerge; m++) {
-                const opt = document.createElement('option');
-                opt.value = m;
-                opt.innerText = m === 1 ? "1 Okienko (Bez łączenia)" : `${m} Okienka (Połączone strukturalnie)`;
-                mergeSelect.appendChild(opt);
-            }
-
-            document.getElementById('selectDuration').value = "1";
-            updatePriceCalculation();
-            if (modal) modal.style.display = "flex";
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('purchaseModal');
-            if (modal) modal.style.display = "none";
-        }
-
-        function updatePriceCalculation() {
-            const index = selectedCell;
-            const isGoldZone = (index <= 30); // Zaktualizowana strefa w kalkulatorze ceny
-            const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
-            const months = parseInt(document.getElementById('selectDuration').value) || 1;
-            
-            const baseMonthlyPrice = isGoldZone ? 300 : 200;
-            let totalPrice = baseMonthlyPrice * qty * months;
-
-            if (months === 6) totalPrice = totalPrice * 0.90;
-            else if (months === 12) totalPrice = totalPrice * 0.85;
-
-            document.getElementById('calculatedPrice').innerText = Math.round(totalPrice);
-        }
-
-        function confirmAdPurchase() {
-            const nameInput = document.getElementById('inputBizName');
-            const urlInput = document.getElementById('inputBizUrl');
-            const emailInput = document.getElementById('inputBizEmail');
-            const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
-            const months = parseInt(document.getElementById('selectDuration').value) || 1;
-            
-            const name = nameInput.value.trim().toUpperCase();
-            let url = urlInput.value.trim();
-            const email = emailInput.value.trim();
-
-            if (!name) {
-                alert("Proszę podać nazwę firmy!");
-                return;
-            }
-
-            if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'https://' + url;
-            }
-
-            cityBoards[currentCity][selectedCell] = {
-                name: name,
-                url: url || null,
-                logoImg: uploadedLogoBase64 || null,
-                qty: qty,
-                isChild: false
-            };
-
-            for (let i = 1; i < qty; i++) {
-                cityBoards[currentCity][selectedCell + i] = { isChild: true };
-            }
-
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
-            }
-
-            alert(`Sukces! Okienko dodane na tablicę. Twoja firma bierze udział w losowaniu Diamentowego VIP!`);
-            
-            if (email) {
-                setTimeout(() => {
-                    const toast = document.getElementById('emailNotification');
-                    const toastText = document.getElementById('emailNotificationText');
-                    if (toast && toastText) {
-                        toastText.innerHTML = `Hej <strong>${name}</strong>!<br>Twój zakupiony pakiet (${months} msc) w mieście <strong>${currentCity}</strong> właśnie wygasa. Odnów subskrypcję, aby nie utracić miejsca i szansy na lśniący Diamentowy Telebim!`;
-                        toast.style.display = "block";
-                    }
-                }, 4000);
-            }
-
-            closeModal();
-            nameInput.value = ""; urlInput.value = ""; emailInput.value = "";
-            buildMatrix();
-        }
-
-        function drawMonthlyVipWinner() {
-            const currentData = cityBoards[currentCity] || {};
-            const activeCompanies = [];
-
-            for (let key in currentData) {
-                if (currentData[key] && !currentData[key].isChild && currentData[key].name) {
-                    activeCompanies.push(currentData[key].name);
-                }
-            }
-
-            if (activeCompanies.length === 0) {
-                alert("Brak aktywnych subskrypcji w tym mieście, które mogłyby wziąć udział w losowaniu!");
-                return;
-            }
-
-            const randomIndex = Math.floor(Math.random() * activeCompanies.length);
-            const winner = activeCompanies[randomIndex];
-            
-            vipWinners[currentCity] = winner;
-            buildMatrix();
-            
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 250, spread: 120, colors: ['#b9f2ff', '#00d2ff', '#ffffff', '#d4af37'] });
-            }
-            alert(`🎉 POTĘŻNE LOSOWANIE DIAMENTOWEGO TELEBIMU ZAKOŃCZONE!\n\nW tym miesiącu cały środek błyszczy dla firmy: ${winner}`);
-        }
-
-        function selectCity(cityName) {
-            currentCity = cityName;
-            const label = document.getElementById('currentCityLabel');
-            if (label) label.innerText = cityName;
-            updateLiveWidget();
-            buildMatrix();
-        }
-
-        window.onload = function() {
-            buildMatrix();
-        };
-    </script>
-</body>
-</html>
+        // NAGRODY NA KOLE FORTUNY W ZALEŻNOŚCI OD MIASTA
+        const wheelRewards = [
+            "Darmowe wejście do lokalnego Muzeum / Parku",
+            "Zniżka -15% na noclegi w oznaczonych apartamentach",
+            "Bon 20 zł na pyszny obiad w regionalnej karczmie",
+            "Darmowy
