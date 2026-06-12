@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolskieOkienka.pl - Ogólnopolska Platforma Reklamowo-Turystyczna</title>
+    <title>PolskieOkienka.pl - Główna Matryca Kurortów</title>
     
     <!-- Biblioteka konfetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -17,6 +17,7 @@
             --bg-panel: rgba(15, 17, 24, 0.95);
             --text-main: #f3f4f6;
             --green-live: #2ecc71;
+            --diamond-color: #b9f2ff;
         }
 
         body {
@@ -62,13 +63,8 @@
         .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; }
         .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; }
         .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; }
-        .stat-item span.live-value { color: var(--green-live); font-size: 15px; font-weight: 800; }
 
-        .auth-bar { display: flex; align-items: center; gap: 12px; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 30px; border: 1px solid #333; }
-        .auth-btn-quick { background: var(--gold-dark); color: #000; border: none; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-        .auth-btn-quick:hover { background: var(--gold-primary); }
-
-        /* WIDOK MAPY - BAZA */
+        /* LISTA MIAST (MOBILNA + DESKTOP) */
         #map-view {
             display: flex;
             flex-direction: column;
@@ -83,43 +79,38 @@
             box-sizing: border-box;
             margin-bottom: 25px;
         }
-        
-        /* KONTENER MAPY (Domyślnie dla komputera) */
+
         .map-container {
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             width: 100%;
-            aspect-ratio: 1.1 / 1;
-            background: #040507;
-            border: 2px solid #171a22;
-            border-radius: 14px;
-            overflow: hidden;
         }
 
-        .poland-svg-bg { position: absolute; top: 2%; left: 2%; width: 96%; height: 96%; pointer-events: none; }
+        .city-pin {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background: rgba(18, 21, 31, 0.8);
+            border: 1px solid var(--gold-primary);
+            padding: 14px 18px;
+            border-radius: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-        /* PINEZKI I ETYKIETY (Domyślnie dla komputera) */
-        .city-pin { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); background: none; border: none; cursor: pointer; }
-        .pin-dot { width: 14px; height: 14px; background-color: var(--gold-primary); border: 2px solid #050608; border-radius: 50%; box-shadow: 0 0 15px var(--gold-primary); transition: all 0.2s; }
-        .city-label { color: #ffffff; font-size: 10px; font-weight: 800; text-transform: uppercase; white-space: nowrap; background: rgba(4, 5, 7, 0.95); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--gold-primary); position: absolute; }
+        .city-pin:hover { background: var(--gold-primary); }
+        .pin-dot { width: 12px; height: 12px; background-color: var(--gold-primary); border-radius: 50%; margin-right: 15px; flex-shrink: 0; }
+        .city-pin:hover .pin-dot { background-color: #000; }
+        .city-label { color: #fff; font-size: 14px; font-weight: 800; text-transform: uppercase; }
+        .city-pin:hover .city-label { color: #000; }
 
-        /* Pozycje etykiet względem kropek na komputerze */
-        .lbl-top { bottom: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-bottom { top: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-left { right: 22px; top: 50%; transform: translateY(-50%); }
-        .lbl-right { left: 22px; top: 50%; transform: translateY(-50%); }
-
-        .city-pin:hover .pin-dot { transform: scale(1.5); background-color: #fff; }
-        .city-pin:hover .city-label { background: var(--gold-primary); color: #000; }
-
-        /* Sztywne pozycje pinezek na mapie Polski (Komputer) */
-        #pin-swinoujscie { top: 18%; left: 8%; }
-        #pin-kolobrzeg   { top: 12%; left: 23%; }
-        #pin-sopot        { top: 10%; left: 50%; }
-        #pin-swieradow    { top: 73%; left: 10%; }
-        #pin-szklarska    { top: 76%; left: 15%; }
-        #pin-karpacz      { top: 79%; left: 21%; }
-        #pin-wisla        { top: 86%; left: 51%; }
-        #pin-zakopane     { top: 92%; left: 64%; }
+        @media (min-width: 769px) {
+            .map-container { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .city-pin { width: calc(25% - 15px); min-width: 180px; }
+        }
 
         /* PANEL MATRYCY */
         #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; }
@@ -130,329 +121,64 @@
         }
 
         .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
-        .layout-grid { display: flex; flex-direction: column; gap: 25px; }
-        
-        @media (min-width: 1200px) { .layout-grid { flex-direction: row; } }
-
-        .grid-wrapper { flex: 1.5; width: 100%; overflow-x: auto; }
         
         /* SIATKA OKIENEK */
         .grid-board {
-            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
-            gap: 6px; background-color: #030405; padding: 12px; border-radius: 10px;
-            border: 2px solid #14161f; aspect-ratio: 1; min-width: 500px; box-sizing: border-box;
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            grid-auto-rows: minmax(55px, auto);
+            gap: 8px; background-color: #030405; padding: 12px; border-radius: 10px;
+            border: 2px solid #14161f; width: 100%; box-sizing: border-box;
         }
 
-        .cell-link { text-decoration: none; display: block; height: 100%; }
         .grid-item {
             height: 100%; background: linear-gradient(135deg, #131620 0%, #07080b 100%);
-            border: 1px solid #1f2433; border-radius: 5px; display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; min-height: 45px; box-sizing: border-box;
+            border: 1px solid #1f2433; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; padding: 5px; box-sizing: border-box; text-align: center;
         }
-        .cell-link:hover .grid-item { transform: scale(1.08); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
-        .grid-item.premium { border: 2px solid var(--gold-primary); color: var(--gold-primary); background: rgba(212,175,55,0.05); }
-        .grid-item.occupied { border-color: #3b82f6; color: #93c5fd; }
+        .grid-item:hover { transform: scale(1.04); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+        
+        /* Styl 60% - Standard */
+        .grid-item.standard-active { border: 1px solid #4b5563; color: #f3f4f6; background: rgba(31, 41, 55, 0.4); }
+        
+        /* Styl 40% - Podświetlane na złoto */
+        .grid-item.gold-active { 
+            border: 2px solid var(--gold-primary); 
+            color: #fff; 
+            background: linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(7,8,12,0.9) 100%);
+            box-shadow: inset 0 0 10px rgba(212,175,55,0.3), 0 0 8px rgba(212,175,55,0.2);
+        }
 
-        /* ŚRODEK VIP */
+        /* ŚRODEK VIP - LOSOWANY (Złoto-Diamentowy) */
         .grid-center {
             grid-column: 4 / span 4; grid-row: 4 / span 4;
-            background: linear-gradient(135deg, #030406 0%, #0e1118 100%);
-            border: 2px solid var(--gold-primary); border-radius: 10px; padding: 12px;
-            display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;
+            background: linear-gradient(135deg, #07090e 0%, #1a233a 50%, #07090e 100%);
+            border: 3px solid var(--gold-primary); border-radius: 12px; padding: 15px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box;
+            box-shadow: 0 0 30px rgba(185, 242, 255, 0.2);
+            transition: all 0.5s ease;
         }
-        .banner-crown { color: var(--gold-primary); font-size: 10px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed var(--gold-primary); padding-bottom: 4px; }
-        .banner-main-title { font-size: 14px; font-weight: 900; color: var(--gold-primary); margin: 5px 0; }
-
-        /* KOŁA FORTUNY */
-        .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; box-sizing: border-box; }
-        .wheel-card {
-            background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
-            display: flex; flex-direction: column; align-items: center; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        .grid-center.diamond-mode {
+            border-color: var(--diamond-color);
+            background: linear-gradient(135deg, #111625 0%, #2a3a5c 50%, #111625 100%);
+            box-shadow: 0 0 35px rgba(185, 242, 255, 0.5);
         }
-        .wheel-card h3 { font-size: 13px; color: var(--gold-primary); margin: 0 0 15px 0; text-transform: uppercase; }
-        .wheel-box { position: relative; width: 160px; height: 160px; margin-bottom: 15px; }
-        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--gold-primary); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-pointer { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 15px solid var(--gold-primary); z-index: 10; }
-        
-        .btn { background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%); color: #000; border: none; padding: 12px; font-weight: 900; border-radius: 25px; cursor: pointer; width: 100%; text-transform: uppercase; font-size: 11px; }
-        .btn:disabled { background: #161822 !important; color: #4b5563 !important; cursor: not-allowed; }
+        .vip-crown { color: var(--gold-primary); font-size: 11px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px;}
+        .vip-company { font-size: 16px; font-weight: 900; color: #fff; text-transform: uppercase; }
 
-        /* TICKER DOLNY */
-        .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #030405; border-top: 2px solid var(--gold-primary); padding: 12px 0; overflow: hidden; z-index: 999; }
-        .ticker { display: flex; white-space: nowrap; animation: tickerAnim 25s linear infinite; padding-left: 100px; }
-        .ticker-item { display: inline-block; padding: 0 25px; color: #fff; font-size: 13px; font-weight: bold; }
-        @keyframes tickerAnim { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
-
-        /* MODAL */
+        /* MODAL REZERWACJI */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-box { background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px; width: 90%; max-width: 450px; padding: 25px; box-sizing: border-box; text-align: center; }
+        .modal-box { background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px; width: 95%; max-width: 480px; padding: 25px; box-sizing: border-box; text-align: center; }
         .modal-input { width: 100%; padding: 12px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
-        .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; }
+        .modal-select { width: 100%; padding: 12px; margin-bottom: 15px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
+        
+        .price-display { margin: 15px 0; font-size: 16px; font-weight: bold; color: var(--gold-primary); background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; }
+        .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; font-size: 13px; }
         .btn-buy-cancel { background: #333; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; }
 
-        /* ======================================================= */
-        /* ROZWIĄZANIE PROBLEMU NA TELEFONACH (Ekran poniżej 768px) */
-        /* ======================================================= */
-        @media (max-width: 768px) {
-            .poland-svg-bg {
-                display: none; /* Ukrywamy rysunek mapy, bo się gniecie */
-            }
-
-            .map-container {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                height: auto !important;
-                aspect-ratio: auto !important;
-                background: transparent;
-                border: none;
-                padding: 5px;
-                overflow: visible;
-            }
-
-            .city-pin {
-                position: static !important;
-                transform: none !important;
-                width: 100%;
-                display: flex;
-                flex-direction: row !important; /* Kropka obok tekstu */
-                align-items: center;
-                background: rgba(18, 21, 31, 0.8) !important;
-                border: 1px solid var(--gold-primary) !important;
-                padding: 14px 18px !important;
-                border-radius: 10px !important;
-                box-sizing: border-box;
-            }
-
-            .city-pin:hover {
-                background: var(--gold-primary) !important;
-            }
-
-            .pin-dot {
-                margin-right: 15px;
-                flex-shrink: 0;
-            }
-
-            .city-label {
-                position: static !important;
-                transform: none !important;
-                background: none !important;
-                border: none !important;
-                padding: 0 !important;
-                font-size: 14px !important; /* Większe, czytelne napisy */
-                color: #fff !important;
-            }
-            
-            .city-pin:hover .city-label {
-                color: #000 !important;
-            }
-        }
-    </style>
-        /* 1. Poprawka dla kontenera mapy - usunięcie sztywnego wymiaru na telefonach */
-.map-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1.1 / 1;
-    background: #040507;
-
-
-    /* Kropka jako mały złoty akcent z lewej strony */
-    .pin-dot {
-        margin-right: 12px;
-        flex-shrink: 0;
-    }
-
-    /* Reset pozycji napisów - teraz są zwykłym tekstem wewnątrz przycisku */
-    .city-label {
-        position: static !important;
-        transform: none !important;
-        background: none !important;
-        border: none !important;
-        padding: 0 !important;
-        font-size: 14px !important; /* Większa czcionka, żeby łatwiej było klikać */
-        color: #fff !important;
-    }
-}
-        :root {
-            --gold-primary: #d4af37;
-            --gold-light: #f3e5ab;
-            --gold-dark: #aa7c11;
-            --bg-darker: #050608;
-            --bg-panel: rgba(15, 17, 24, 0.95);
-            --text-main: #f3f4f6;
-            --green-live: #2ecc71;
-        }
-
-        body {
-            background: radial-gradient(circle at top, #161925 0%, #08090d 60%, #020203 100%) no-repeat fixed;
-            color: var(--text-main);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-            padding-bottom: 90px;
-        }
-
-        /* NAGŁÓWEK */
-        .header-panel {
-            background: linear-gradient(135deg, #12151f 0%, #07080c 100%);
-            border: 2px solid var(--gold-primary);
-            border-radius: 16px;
-            padding: 20px 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12);
-            width: 100%;
-            max-width: 1400px;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .header-left h2 { 
-            margin: 0 0 8px 0; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            color: #ffffff; 
-            font-size: 24px;
-        }
-        
-        .stats-container { display: flex; gap: 25px; font-size: 13px; font-weight: 600; }
-        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px; }
-        .stat-item span.stat-value { color: var(--gold-primary); font-size: 15px; font-weight: 800; }
-        .stat-item span.live-value { color: var(--green-live); font-size: 15px; font-weight: 800; }
-
-        .auth-bar { display: flex; align-items: center; gap: 12px; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 30px; border: 1px solid #333; }
-        .auth-btn-quick { background: var(--gold-dark); color: #000; border: none; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-        .auth-btn-quick:hover { background: var(--gold-primary); }
-
-        /* MAPA */
-        #map-view {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 900px;
-            background: var(--bg-panel);
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid var(--gold-primary);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.85);
-            box-sizing: border-box;
-            margin-bottom: 25px;
-        }
-        
-        .map-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1.1 / 1;
-            background: #040507;
-            border: 2px solid #171a22;
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .poland-svg-bg { position: absolute; top: 2%; left: 2%; width: 96%; height: 96%; pointer-events: none; }
-
-        /* PINEZKI */
-        .city-pin { position: absolute; z-index: 10; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); background: none; border: none; cursor: pointer; }
-        .pin-dot { width: 14px; height: 14px; background-color: var(--gold-primary); border: 2px solid #050608; border-radius: 50%; box-shadow: 0 0 15px var(--gold-primary); transition: all 0.2s; }
-        .city-label { color: #ffffff; font-size: 10px; font-weight: 800; text-transform: uppercase; white-space: nowrap; background: rgba(4, 5, 7, 0.95); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--gold-primary); position: absolute; }
-
-        .lbl-top { bottom: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-bottom { top: 22px; left: 50%; transform: translateX(-50%); }
-        .lbl-left { right: 22px; top: 50%; transform: translateY(-50%); }
-        .lbl-right { left: 22px; top: 50%; transform: translateY(-50%); }
-
-        .city-pin:hover .pin-dot { transform: scale(1.5); background-color: #fff; }
-        .city-pin:hover .city-label { background: var(--gold-primary); color: #000; }
-
-        #pin-swinoujscie { top: 18%; left: 8%; }
-        #pin-kolobrzeg   { top: 12%; left: 23%; }
-        #pin-sopot        { top: 10%; left: 50%; }
-        #pin-swieradow    { top: 73%; left: 10%; }
-        #pin-szklarska    { top: 76%; left: 15%; }
-        #pin-karpacz      { top: 79%; left: 21%; }
-        #pin-wisla        { top: 86%; left: 51%; }
-        #pin-zakopane     { top: 92%; left: 64%; }
-
-        /* PANEL MATRYCY */
-        #dashboard-view { display: block; width: 100%; max-width: 1450px; margin-top: 20px; }
-        
-        .back-btn { background: #07080c; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
-        .back-btn:hover { background: var(--gold-primary); color: #000; }
-
-        .billboard-frame {
-            background: linear-gradient(135deg, #a67c1e 0%, #f3e5ab 25%, #d4af37 50%, #f3e5ab 75%, #aa7c11 100%);
-            padding: 14px; border-radius: 18px; box-shadow: 0 35px 80px rgba(0,0,0,0.95); border: 2px solid #73540b;
-        }
-
-        .billboard-inner { background-color: #07080c; border: 2px solid #161822; padding: 20px; border-radius: 10px; }
-        .layout-grid { display: flex; flex-direction: column; gap: 25px; }
-        
-        @media (min-width: 1200px) { .layout-grid { flex-direction: row; } }
-
-        .grid-wrapper { flex: 1.5; width: 100%; overflow-x: auto; }
-        
-        /* SIATKA OKIENEK */
-        .grid-board {
-            display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
-            gap: 6px; background-color: #030405; padding: 12px; border-radius: 10px;
-            border: 2px solid #14161f; aspect-ratio: 1; min-width: 500px; box-sizing: border-box;
-        }
-
-        .cell-link { text-decoration: none; display: block; height: 100%; }
-        .grid-item {
-            height: 100%; background: linear-gradient(135deg, #131620 0%, #07080b 100%);
-            border: 1px solid #1f2433; border-radius: 5px; display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: bold; color: #6b7280; cursor: pointer; transition: all 0.15s; min-height: 45px; box-sizing: border-box;
-        }
-        .cell-link:hover .grid-item { transform: scale(1.08); border-color: var(--gold-primary); color: #fff; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
-        .grid-item.premium { border: 2px solid var(--gold-primary); color: var(--gold-primary); background: rgba(212,175,55,0.05); }
-        .grid-item.occupied { border-color: #3b82f6; color: #93c5fd; }
-
-        /* ŚRODEK VIP */
-        .grid-center {
-            grid-column: 4 / span 4; grid-row: 4 / span 4;
-            background: linear-gradient(135deg, #030406 0%, #0e1118 100%);
-            border: 2px solid var(--gold-primary); border-radius: 10px; padding: 12px;
-            display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box;
-        }
-        .banner-crown { color: var(--gold-primary); font-size: 10px; font-weight: 900; text-transform: uppercase; width: 100%; border-bottom: 1px dashed var(--gold-primary); padding-bottom: 4px; }
-        .banner-main-title { font-size: 14px; font-weight: 900; color: var(--gold-primary); margin: 5px 0; }
-
-        /* KOŁA FORTUNY SIDEBAR */
-        .wheels-sidebar { display: flex; flex-direction: column; gap: 25px; flex: 0.8; width: 100%; box-sizing: border-box; }
-        .wheel-card {
-            background: rgba(7,8,12,0.95); padding: 20px; border-radius: 16px; border: 2px solid #161922;
-            display: flex; flex-direction: column; align-items: center; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-        }
-        .wheel-card h3 { font-size: 13px; color: var(--gold-primary); margin: 0 0 15px 0; text-transform: uppercase; }
-        .wheel-box { position: relative; width: 160px; height: 160px; margin-bottom: 15px; }
-        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--gold-primary); transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .wheel-pointer { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 15px solid var(--gold-primary); z-index: 10; }
-        
-        .btn { background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%); color: #000; border: none; padding: 12px; font-weight: 900; border-radius: 25px; cursor: pointer; width: 100%; text-transform: uppercase; font-size: 11px; }
-        .btn:disabled { background: #161822 !important; color: #4b5563 !important; cursor: not-allowed; }
-
-        /* TICKER DOLNY */
-        .ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #030405; border-top: 2px solid var(--gold-primary); padding: 12px 0; overflow: hidden; z-index: 999; }
-        .ticker { display: flex; white-space: nowrap; animation: tickerAnim 25s linear infinite; padding-left: 100px; }
-        .ticker-item { display: inline-block; padding: 0 25px; color: #fff; font-size: 13px; font-weight: bold; }
-        @keyframes tickerAnim { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
-
-        /* MODAL */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-box { background: #0f121d; border: 2px solid var(--gold-primary); border-radius: 16px; width: 90%; max-width: 450px; padding: 25px; box-sizing: border-box; text-align: center; }
-        .modal-input { width: 100%; padding: 12px; margin-bottom: 12px; background: #050609; border: 1px solid #232838; border-radius: 8px; color: #fff; box-sizing: border-box; }
-        .btn-buy-confirm { background: var(--green-live); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; }
-        .btn-buy-cancel { background: #333; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; }
+        /* LOGO FIRMY W SCALONYM OKIENKU */
+        .logo-placeholder { font-size: 14px; letter-spacing: 1px; color: #fff; font-weight: 800; margin-top: 2px; }
+        .badge-type { font-size: 8px; text-transform: uppercase; padding: 2px 6px; border-radius: 10px; margin-top: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -462,124 +188,86 @@
         <div class="header-left">
             <h2>PolskieOkienka.pl - Główna Matryca Kurortów</h2>
             <div class="stats-container">
-                <div class="stat-item">Goście Online: <span class="live-value">24</span></div>
-                <div class="stat-item">Zajęte Okienka: <span class="stat-value" id="statsOccupied">0</span> / 100</div>
+                <div class="stat-item">Zajęte Okienka: <span class="stat-value" id="statsOccupied">0</span> / 84</div>
+                <button onclick="drawMonthlyVipWinner()" style="background: var(--gold-dark); border: none; color: #000; font-weight: bold; padding: 5px 15px; border-radius: 12px; cursor: pointer; margin-left: 10px; font-size: 11px; text-transform: uppercase;">
+                    🎲 Losuj Telebim VIP (Co miesiąc)
+                </button>
             </div>
-        </div>
-
-        <div class="auth-bar">
-            <span id="userStatusLabel" style="font-size: 12px; font-weight: bold;">Status: Gość</span>
-            <button class="auth-btn-quick" onclick="quickLogin('firma')">Zaloguj jako Firma</button>
-            <button class="auth-btn-quick" style="background:#444; color:#fff;" onclick="quickLogin('gosc')">Reset</button>
         </div>
     </div>
 
-    <!-- MAPA -->
+    <!-- WYBÓR KURORTU -->
     <div id="map-view">
-        <h1>Wybierz kurort, aby wczytać dedykowaną złotą tablicę:</h1>
+        <h3 style="margin: 0 0 15px 0; font-size: 16px; text-transform: uppercase; color: var(--gold-primary);">Wybierz kurort:</h3>
         <div class="map-container">
-            <svg class="poland-svg-bg" viewBox="0 0 650 600" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 125,95 C 145,83 178,92 195,85 C 220,55 265,55 310,60 C 355,42 390,62 415,55 C 450,22 475,25 525,58 C 575,55 595,78 620,130 C 632,230 622,255 615,335 C 570,402 580,455 565,485 C 505,538 488,585 465,595 C 410,585 355,590 310,550 C 250,552 195,522 140,532 C 115,490 72,472 52,425 C 18,385 35,335 28,278 C 55,232 48,175 85,130 Z" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="4 6"/>
-            </svg>
-            <button class="city-pin" id="pin-swinoujscie" onclick="selectCity('Świnoujście')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Świnoujście</div></button>
-            <button class="city-pin" id="pin-kolobrzeg" onclick="selectCity('Kołobrzeg')"><div class="pin-dot"></div><div class="city-label lbl-top">Kołobrzeg</div></button>
-            <button class="city-pin" id="pin-sopot" onclick="selectCity('Sopot')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Sopot</div></button>
-            <button class="city-pin" id="pin-swieradow" onclick="selectCity('Świeradów-Zdrój')"><div class="pin-dot"></div><div class="city-label lbl-left">Świeradów-Zdrój</div></button>
-            <button class="city-pin" id="pin-szklarska" onclick="selectCity('Szklarska Poręba')"><div class="pin-dot"></div><div class="city-label lbl-top">Szklarska Poręba</div></button>
-            <button class="city-pin" id="pin-karpacz" onclick="selectCity('Karpacz')"><div class="pin-dot"></div><div class="city-label lbl-right">Karpacz</div></button>
-            <button class="city-pin" id="pin-wisla" onclick="selectCity('Wisła')"><div class="pin-dot"></div><div class="city-label lbl-left">Wisła</div></button>
-            <button class="city-pin" id="pin-zakopane" onclick="selectCity('Zakopane')"><div class="pin-dot"></div><div class="city-label lbl-bottom">Zakopane</div></button>
+            <div class="city-pin" onclick="selectCity('Świnoujście')"><div class="pin-dot"></div><div class="city-label">Świnoujście</div></div>
+            <div class="city-pin" onclick="selectCity('Kołobrzeg')"><div class="pin-dot"></div><div class="city-label">Kołobrzeg</div></div>
+            <div class="city-pin" onclick="selectCity('Sopot')"><div class="pin-dot"></div><div class="city-label">Sopot</div></div>
+            <div class="city-pin" onclick="selectCity('Świeradów-Zdrój')"><div class="pin-dot"></div><div class="city-label">Świeradów-Zdrój</div></div>
+            <div class="city-pin" onclick="selectCity('Szklarska Poręba')"><div class="pin-dot"></div><div class="city-label">Szklarska Poręba</div></div>
+            <div class="city-pin" onclick="selectCity('Karpacz')"><div class="pin-dot"></div><div class="city-label">Karpacz</div></div>
+            <div class="city-pin" onclick="selectCity('Wisła')"><div class="pin-dot"></div><div class="city-label">Wisła</div></div>
+            <div class="city-pin" onclick="selectCity('Zakopane')"><div class="pin-dot"></div><div class="city-label">Zakopane</div></div>
         </div>
     </div>
 
     <!-- ZŁOTY DASHBOARD MATRYCY -->
     <div id="dashboard-view">
-        <div style="margin-bottom: 10px; font-weight: bold; color: var(--gold-primary);">
-            Wybrana lokalizacja: <span id="currentCityLabel" style="color:#fff; text-transform:uppercase;">Karpacz</span>
+        <div style="margin-bottom: 12px; font-weight: bold; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;">
+            Bieżąca Tablica: <span id="currentCityLabel" style="color:#fff;">Karpacz</span>
         </div>
         <div class="billboard-frame">
             <div class="billboard-inner">
-                <div class="layout-grid">
-                    
-                    <!-- MATRYCA 10x10 -->
-                    <div class="grid-wrapper">
-                        <div class="grid-board" id="boardMatrix"></div>
-                    </div>
-
-                    <!-- BOCOWNE KOŁA FORTUNY -->
-                    <div class="wheels-sidebar">
-                        <div class="wheel-card">
-                            <h3>🎁 Koło Promocji i Bonusów</h3>
-                            <div class="wheel-box"><div class="wheel-pointer"></div><canvas class="wheel-canvas" id="canvasTourist" width="160" height="160"></canvas></div>
-                            <button class="btn" id="btnTourist" onclick="spinWheel('tourist')">Losuj Gratisy</button>
-                        </div>
-
-                        <div class="wheel-card">
-                            <h3>💼 Koło Zniżek dla Biznesu</h3>
-                            <div class="wheel-box"><div class="wheel-pointer"></div><canvas class="wheel-canvas" id="canvasBusiness" width="160" height="160"></canvas></div>
-                            <button class="btn" id="btnBusiness" onclick="spinWheel('business')" disabled>Dostępne po zakupie okienka</button>
-                        </div>
-                    </div>
-
-                </div>
+                <!-- MATRYCA 10x10 -->
+                <div class="grid-board" id="boardMatrix"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL REZERWACJI -->
+    <!-- MODAL REZERWACJI I NATYCHMIASTOWEGO ZAKUPU -->
     <div class="modal-overlay" id="purchaseModal">
         <div class="modal-box">
-            <h3 id="modalTitle">Rezerwacja Powierzchni</h3>
-            <p style="color: #aaa; font-size: 13px;">Wprowadź dane, aby umieścić swoją firmę na złotej tablicy:</p>
-            <input type="text" class="modal-input" id="inputBizName" placeholder="Nazwa Twojej Firmy (np. Wonder Home)">
-            <input type="number" class="modal-input" id="inputCellsQty" value="1" min="1" max="4" placeholder="Ile okienek połączyć (1-4)">
+            <h3 id="modalTitle" style="color: var(--gold-primary); margin-top: 0;">Szybki Zakup Okienka</h3>
+            <p style="color: #aaa; font-size: 13px; margin-bottom: 20px;">Wybierz pakiet i skonfiguruj reklamę na tablicy:</p>
             
-            <div style="margin: 10px 0; font-weight: bold; color: var(--gold-primary);">Cena: 200 PLN / szt.</div>
+            <input type="text" class="modal-input" id="inputBizName" placeholder="Nazwa Twojej Firmy / Logo Text">
             
-            <button class="btn-buy-confirm" onclick="confirmAdPurchase()">Zatwierdź i dodaj</button>
+            <label style="display:block; text-align:left; font-size:12px; margin-bottom:5px; color:#ccc;">Wybierz rodzaj powierzchni (Subskrypcja miesięczna):</label>
+            <select class="modal-select" id="selectPackage" onchange="updatePriceCalculation()">
+                <option value="standard">Standard (60% tablicy) - 200 zł netto / msc</option>
+                <option value="gold">Podświetlane Złoto (40% tablicy) - 350 zł netto / msc</option>
+            </select>
+
+            <label style="display:block; text-align:left; font-size:12px; margin-bottom:5px; color:#ccc;">Połącz sąsiednie okienka w jedno duże (Horyzontalnie):</label>
+            <select class="modal-select" id="selectMergeQty" onchange="updatePriceCalculation()">
+                <option value="1">1 Okienko (Standardowe)</option>
+                <option value="2">2 Okienka obok siebie (Podwójne duże okno)</option>
+                <option value="3">3 Okienka obok siebie (Potrójne wielkie okno)</option>
+                <option value="4">4 Okienka obok siebie (Gigantyczne okno na Logo)</option>
+            </select>
+            
+            <div class="price-display">
+                Do zapłaty: <span id="calculatedPrice">200</span> zł netto / miesiąc
+            </div>
+            
+            <button class="btn-buy-confirm" onclick="confirmAdPurchase()">Aktywuj subskrypcję i dodaj logo</button>
             <button class="btn-buy-cancel" onclick="closeModal()">Anuluj</button>
         </div>
     </div>
 
-    <!-- TICKER -->
-    <div class="ticker-wrap">
-        <div class="ticker" id="tickerContainer">
-            <div class="ticker-item">🏠 Wonder Home Karpacz - Luksusowe Apartamenty pod Śnieżką.</div>
-            <div class="ticker-item">🧹 Serwis Apartamentów Kowary - Profesjonalne sprzątanie i automatyzacja logistyki.</div>
-            <div class="ticker-item">🚴 Bike Park Karkonosze - Trasy rowerowe i Singletracki otwarte.</div>
-        </div>
-    </div>
-
-    <!-- SKRYPT LOGICZNY - CAŁKOWICIE ZABEZPIECZONY -->
     <script>
         let currentCity = "Karpacz";
-        let loggedRole = "gosc";
         let selectedCell = null;
 
-        // Baza danych o zajętych okienkach per miasto
+        // Baza danych okienek dla każdego miasta
         const cityBoards = {
             "Karpacz": {}, "Szklarska Poręba": {}, "Świeradów-Zdrój": {}, "Świnoujście": {}, "Kołobrzeg": {}, "Sopot": {}, "Wisła": {}, "Zakopane": {}
         };
 
-        // Inicjalizacja kół na starcie (odporna na błędy braku canvasu)
-        function drawSimpleWheel(canvasId, colors) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const segments = colors.length;
-            const angle = (2 * Math.PI) / segments;
-            const r = canvas.width / 2;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < segments; i++) {
-                ctx.beginPath();
-                ctx.moveTo(r, r);
-                ctx.arc(r, r, r - 2, i * angle, (i + 1) * angle);
-                ctx.fillStyle = colors[i];
-                ctx.fill();
-                ctx.stroke();
-            }
-        }
+        // Aktualny zwycięzca losowania VIP dla danego miasta
+        const vipWinners = {
+            "Karpacz": null, "Szklarska Poręba": null, "Świeradów-Zdrój": null, "Świnoujście": null, "Kołobrzeg": null, "Sopot": null, "Wisła": null, "Zakopane": null
+        };
 
         function buildMatrix() {
             const matrixContainer = document.getElementById('boardMatrix');
@@ -593,51 +281,191 @@
                 let row = Math.floor((i - 1) / 10) + 1;
                 let col = ((i - 1) % 10) + 1;
 
-                // Środek VIP (wiersze 4-7, kolumny 4-7)
+                // 1. ŚRODEK VIP (Wiersze 4-7, Kolumny 4-7)
                 if (row >= 4 && row <= 7 && col >= 4 && col <= 7) {
                     if (row === 4 && col === 4) {
                         const centerVIP = document.createElement('div');
                         centerVIP.className = "grid-center";
-                        centerVIP.innerHTML = `
-                            <div class="banner-crown">👑 TELEBIM VIP</div>
-                            <div class="banner-main-title">PolskieOkienka</div>
-                            <div style="font-size:10px; color:#2ecc71;">REKLAMA PREMIUM</div>
-                        `;
+                        centerVIP.id = "vipTelebim";
+                        
+                        const winner = vipWinners[currentCity];
+                        if (winner) {
+                            // Jeśli wylosowano zwycięzcę, środek "rumieni się" na diamentowo
+                            centerVIP.classList.add('diamond-mode');
+                            centerVIP.innerHTML = `
+                                <div class="vip-crown" style="color: var(--diamond-color); text-shadow: 0 0 10px rgba(185,242,255,0.8);">💎 TELEBIM VIP DIAMENT 💎</div>
+                                <div class="vip-company" style="color: #fff; font-size:15px;">${winner}</div>
+                                <div style="font-size:9px; color: #a5b4fc; margin-top:5px; font-weight:bold;">Wylosowany z subskrypcji</div>
+                            `;
+                        } else {
+                            centerVIP.innerHTML = `
+                                <div class="vip-crown">👑 TELEBIM VIP</div>
+                                <div class="vip-company" style="color: var(--gold-primary); font-size:13px;">PolskieOkienka.pl</div>
+                                <div style="font-size:9px; color:#6b7280; margin-top:5px;">Losowanie co miesiąc wśród firm</div>
+                            `;
+                        }
                         matrixContainer.appendChild(centerVIP);
                     }
                     continue;
                 }
 
-                // Sprawdzamy czy to okienko nie jest częścią scalenia
+                // 2. POMIJANIE ELEMENTÓW SCALONYCH (DZIECI)
                 if (currentData[i] && currentData[i].isChild) {
                     continue;
                 }
 
-                const link = document.createElement('a');
-                link.className = "cell-link";
-                link.href = "#";
-                link.onclick = (e) => { e.preventDefault(); clickCell(i); };
-
+                // 3. BUDOWANIE ZWYKŁYCH OKIENEK
                 const cell = document.createElement('div');
                 cell.className = "grid-item";
 
                 if (currentData[i]) {
-                    cell.classList.add('occupied');
+                    // Okienko zajęte (Zakupione)
                     occupiedCount++;
+                    
+                    // Nadawanie klasy w zależności od wybranego pakietu (Standard 60% lub Złoto 40%)
+                    if (currentData[i].package === 'gold') {
+                        cell.classList.add('gold-active');
+                    } else {
+                        cell.classList.add('standard-active');
+                    }
+
+                    // Obsługa scalania - rozciąganie okienka w prawo za pomocą CSS Grid
                     if (currentData[i].qty > 1) {
                         cell.style.gridColumn = `span ${currentData[i].qty}`;
                     }
-                    cell.innerHTML = `<span>${currentData[i].name}</span>`;
+
+                    // Prezentacja logotypu firmy wewnątrz scalonego okna
+                    cell.innerHTML = `
+                        <div class="logo-placeholder">${currentData[i].name}</div>
+                        <span class="badge-type" style="background: ${currentData[i].package === 'gold' ? 'var(--gold-dark)' : '#4b5563'}; color: #000;">
+                            ${currentData[i].package === 'gold' ? 'ZŁOTO' : 'STANDARD'}
+                        </span>
+                    `;
+                    
+                    // Kliknięcie zajętego okienka informuje o firmie
+                    cell.onclick = () => alert(`Okienko zajęte przez subskrypcję: ${currentData[i].name}`);
                 } else {
-                    cell.innerHTML = `<span>[${i}]</span>`;
+                    // Okienko wolne - NATYCHMIASTOWY ZAKUP PO KLIKNIĘCIU
+                    cell.innerHTML = `<span>[${i}]</span><div style="font-size:8px; color:#444; margin-top:3px;">WOLNE</div>`;
+                    cell.onclick = () => openPurchaseModal(i);
                 }
 
-                link.appendChild(cell);
-                matrixContainer.appendChild(link);
+                matrixContainer.appendChild(cell);
             }
 
             const counterEl = document.getElementById('statsOccupied');
             if (counterEl) counterEl.innerText = occupiedCount;
+        }
+
+        // OTWIERANIE OKNA ZAKUPU
+        function openPurchaseModal(index) {
+            selectedCell = index;
+            const modal = document.getElementById('purchaseModal');
+            const title = document.getElementById('modalTitle');
+            if (title) title.innerText = `Szybki Zakup Okienka [${index}] - ${currentCity}`;
+            
+            // Dynamiczne dostosowanie limitu scalania, żeby nie wyjść poza rząd (10 kolumn)
+            const currentColumn = ((index - 1) % 10) + 1;
+            const maxAllowedMerge = Math.min(4, 11 - currentColumn);
+            
+            const mergeSelect = document.getElementById('selectMergeQty');
+            mergeSelect.innerHTML = "";
+            for (let m = 1; m <= maxAllowedMerge; m++) {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.innerText = m === 1 ? "1 Okienko (Standardowe)" : `${m} Okienka obok siebie (Połączone w jedno LOGO)`;
+                mergeSelect.appendChild(opt);
+            }
+
+            updatePriceCalculation();
+            if (modal) modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('purchaseModal');
+            if (modal) modal.style.display = "none";
+        }
+
+        // PRZELICZANIE CENY NA ŻYWO (NETTO)
+        function updatePriceCalculation() {
+            const pack = document.getElementById('selectPackage').value;
+            const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
+            
+            const basePrice = pack === 'gold' ? 350 : 200;
+            const totalPrice = basePrice * qty;
+            
+            document.getElementById('calculatedPrice').innerText = totalPrice;
+        }
+
+        // POTWIERDZENIE I AKTUALIZACJA MATRYCY
+        function confirmAdPurchase() {
+            const nameInput = document.getElementById('inputBizName');
+            const pack = document.getElementById('selectPackage').value;
+            const qty = parseInt(document.getElementById('selectMergeQty').value) || 1;
+
+            const name = nameInput.value.trim().toUpperCase();
+
+            if (!name) {
+                alert("Proszę podać nazwę firmy do wyświetlenia w okienku!");
+                return;
+            }
+
+            // Zapisanie głównego okienka
+            cityBoards[currentCity][selectedCell] = {
+                name: name,
+                package: pack,
+                qty: qty,
+                isChild: false
+            };
+
+            // Blokowanie i scalanie kolejnych okienek w poziomie (oznaczanie jako dzieci)
+            for (let i = 1; i < qty; i++) {
+                let nextIndex = selectedCell + i;
+                cityBoards[currentCity][nextIndex] = { isChild: true };
+            }
+
+            // Konfetti dla nowego subskrybenta premium!
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
+            }
+
+            alert(`Sukces! Uruchomiono subskrypcję miesięczną dla firmy "${name}". Okienka zostały scalone.`);
+            
+            closeModal();
+            nameInput.value = "";
+            buildMatrix();
+        }
+
+        // LOSOWANIE DIAMENTOWEGO ŚRODKA SPOŚRÓD SUBKRYBENTÓW
+        function drawMonthlyVipWinner() {
+            const currentData = cityBoards[currentCity] || {};
+            const activeCompanies = [];
+
+            // Zbierz wszystkie unikalne firmy z subskrypcji w tym mieście
+            for (let key in currentData) {
+                if (currentData[key] && !currentData[key].isChild && currentData[key].name) {
+                    activeCompanies.push(currentData[key].name);
+                }
+            }
+
+            if (activeCompanies.length === 0) {
+                alert("Brak aktywnych subskrypcji w tym mieście! Kup pierwsze okienko, aby móc przeprowadzić losowanie.");
+                return;
+            }
+
+            // Losowy wybór zwycięzcy
+            const randomIndex = Math.floor(Math.random() * activeCompanies.length);
+            const winner = activeCompanies[randomIndex];
+            
+            vipWinners[currentCity] = winner;
+            
+            // Efektowne odświeżenie matrycy z nowym diamentowym wyróżnieniem
+            buildMatrix();
+            
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 200, spread: 100, colors: ['#b9f2ff', '#d4af37', '#ffffff'] });
+            }
+            alert(`🎉 WYNIK LOSOWANIA MIESIĘCZNEGO! 🎉\n\nŚrodkowy Telebim VIP w mieście ${currentCity} rumieni się od złota po diamenty dla firmy:\n\n👉 ${winner} 👈\n\nGratulacje!`);
         }
 
         function selectCity(cityName) {
@@ -647,107 +475,7 @@
             buildMatrix();
         }
 
-        function quickLogin(role) {
-            loggedRole = role;
-            const label = document.getElementById('userStatusLabel');
-            if (label) {
-                label.innerText = role === 'firma' ? "Rola: FIRMA (Partner)" : "Status: Gość";
-            }
-            alert(role === 'firma' ? "Zalogowano profil firmowy. Możesz teraz klikać wolne okienka!" : "Zresetowano sesję.");
-        }
-
-        function clickCell(index) {
-            if (loggedRole !== 'firma') {
-                alert("Aby zarezerwować okienko [" + index + "], zaloguj się jako FIRMA przyciskiem na górze ekranu.");
-                return;
-            }
-            selectedCell = index;
-            const modal = document.getElementById('purchaseModal');
-            const title = document.getElementById('modalTitle');
-            if (title) title.innerText = `Rezerwacja Okienka [${index}] - ${currentCity}`;
-            if (modal) modal.style.display = "flex";
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('purchaseModal');
-            if (modal) modal.style.display = "none";
-        }
-
-        function confirmAdPurchase() {
-            const nameInput = document.getElementById('inputBizName');
-            const qtyInput = document.getElementById('inputCellsQty');
-            if (!nameInput || !qtyInput) return;
-
-            const name = nameInput.value.trim().toUpperCase();
-            const qty = parseInt(qtyInput.value) || 1;
-
-            if (!name) {
-                alert("Wpisz nazwę firmy!");
-                return;
-            }
-
-            // Zapisz boks główny
-            cityBoards[currentCity][selectedCell] = {
-                name: name,
-                qty: qty,
-                isChild: false
-            };
-
-            // Obsługa scalenia (oznacz kolejne komórki jako dzieci)
-            for (let i = 1; i < qty; i++) {
-                let nextIndex = selectedCell + i;
-                if (nextIndex <= 100) {
-                    cityBoards[currentCity][nextIndex] = { isChild: true };
-                }
-            }
-
-            alert(`Sukces! Dodano firmę "${name}" na tablicę w mieście ${currentCity}.`);
-            
-            // Odblokuj koło biznesowe
-            const btnBiz = document.getElementById('btnBusiness');
-            if (btnBiz) {
-                btnBiz.disabled = false;
-                btnBiz.innerText = "Losuj zniżkę na wznowienie";
-            }
-
-            closeModal();
-            buildMatrix();
-
-            // Reset inputów
-            nameInput.value = "";
-            qtyInput.value = "1";
-        }
-
-        function spinWheel(type) {
-            const canvas = type === 'tourist' ? document.getElementById('canvasTourist') : document.getElementById('canvasBusiness');
-            const btn = type === 'tourist' ? document.getElementById('btnTourist') : document.getElementById('btnBusiness');
-            if (!canvas || !btn) return;
-
-            btn.disabled = true;
-            const randomDeg = Math.floor(Math.random() * 360) + 1440;
-            canvas.style.transform = `rotate(${randomDeg}deg)`;
-
-            setTimeout(() => {
-                if (typeof confetti === 'function') {
-                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                }
-                alert(type === 'tourist' ? "🎁 Wylosowano darmowy bilet lub kawę premium w kurorcie!" : "🔥 Wylosowano bon rabatowy -20% na przedłużenie okienka na kolejny miesiąc!");
-                btn.innerText = "Wykorzystano";
-            }, 4000);
-        }
-
         window.onload = function() {
-            // Bezpieczne ładowanie elementów graficznych
-            drawSimpleWheel('canvasTourist', ['#d4af37', '#12151f', '#aa7c11', '#222', '#f3e5ab', '#000']);
-            drawSimpleWheel('canvasBusiness', ['#3b82f6', '#07080c', '#2ecc71', '#111', '#d4af37', '#222']);
-            
-            // Klonowanie zawartości tickera dla płynnej animacji w pętli
-            const ticker = document.getElementById('tickerContainer');
-            if (ticker) {
-                ticker.innerHTML += ticker.innerHTML;
-            }
-
-            // Domyślne załadowanie matrycy dla Karpacza
             buildMatrix();
         };
     </script>
