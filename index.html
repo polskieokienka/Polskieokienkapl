@@ -1,553 +1,640 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karkonosze GO - Premium Regional Portal</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Portal Turystyczno-Biznesowy</title>
     
+    <!-- Biblioteka do efektu konfetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Biblioteka OpenStreetMap / Leaflet do obsługi PRAWDZIWEJ MAPY -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --accent-glow: #38bdf8;
-            --accent-green: #10b981;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --premium-gradient: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+            --primary-color: #2e7d32;
+            --secondary-color: #1565c0;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --accent-gold: #ffd700;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
         }
 
-        /* PREMIUM TOP BAR */
-        .top-bar {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 30px;
+        /* Nawigacja */
+        nav {
+            background-color: #000;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-color);
         }
 
-        .user-modes {
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
             display: flex;
-            gap: 10px;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 4px;
-            border-radius: 30px;
-            border: 1px solid var(--border-color);
+            list-style: none;
+            gap: 20px;
         }
 
-        .btn-mode {
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
             cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: color 0.3s;
         }
 
-        .btn-mode.active {
-            background: var(--premium-gradient);
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .auth-btn {
+            background-color: var(--primary-color);
             color: white;
-            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-        }
-
-        .lang-select-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .lang-select-wrapper select {
-            background: transparent;
-            color: var(--text-main);
             border: none;
-            outline: none;
+            padding: 8px 16px;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: 500;
         }
 
-        /* HERO SECTION */
+        /* Główne kontenery */
         .container {
-            max-width: 1300px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* System Autoryzacji */
+        .auth-container {
+            max-width: 450px;
             margin: 40px auto;
-            padding: 0 25px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
         }
 
-        .header-title {
+        .quick-login-box {
+            background: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
             text-align: center;
-            margin-bottom: 50px;
         }
 
-        .header-title h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* PREMIUM CARDS GRID */
-        .grid-modules {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .card-premium {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-premium::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .card-premium:hover {
-            transform: translateY(-6px);
-            border-color: rgba(56, 189, 248, 0.3);
-            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.1);
-        }
-
-        .card-premium:hover::before {
-            opacity: 1;
-        }
-
-        .card-premium h3 {
-            margin-top: 0;
-            font-size: 1.3rem;
-            font-weight: 600;
+        .tab-group {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #fff;
-        }
-
-        .card-premium h3 i {
-            color: var(--accent-glow);
-        }
-
-        .card-description {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
             margin-bottom: 20px;
         }
 
-        /* DYNAMIC LISTS */
-        .premium-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .premium-list li {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid var(--border-color);
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-badge.open { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
-        .status-badge.closed { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-
-        /* CZAT AI INTERFEJS (PREMIUM) */
-        .chat-ai-container {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            height: 220px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            margin-top: 15px;
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 12px;
-            overflow-y: auto;
-            font-size: 0.85rem;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .msg {
-            padding: 8px 12px;
-            border-radius: 8px;
-            max-width: 85%;
-        }
-
-        .msg.user {
-            background: rgba(255, 255, 255, 0.06);
-            align-self: flex-end;
-            color: var(--text-main);
-        }
-
-        .msg.bot {
-            background: rgba(56, 189, 248, 0.1);
-            border-left: 3px solid var(--accent-glow);
-            align-self: flex-start;
-        }
-
-        .chat-input-area {
-            display: flex;
-            border-top: 1px solid var(--border-color);
-            background: rgba(30, 41, 59, 0.5);
-        }
-
-        .chat-input-area input {
-            flex-grow: 1;
-            background: transparent;
-            border: none;
-            padding: 12px;
-            color: white;
-            outline: none;
-            font-size: 0.85rem;
-        }
-
-        .chat-send-btn {
-            background: transparent;
-            border: none;
-            color: var(--accent-glow);
-            padding: 0 15px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .chat-send-btn:hover { transform: scale(1.1); }
-
-        /* MAP MODULE INTERFEJS */
-        .map-container-premium {
-            background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600&q=80') center/cover;
-            height: 220px;
-            border-radius: 12px;
-            position: relative;
-            border: 1px solid var(--border-color);
-            margin-top: 15px;
-        }
-
-        .map-overlay {
-            position: absolute;
-            bottom: 10px; left: 10px; right: 10px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
+        .tab {
+            flex: 1;
             padding: 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            background: #222;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
         }
 
-        /* STRUKTURA WIDOKÓW */
-        .view-section { display: none; }
-        .view-section.active { display: block; animation: fadeIn 0.5s ease forwards; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            font-weight: bold;
         }
 
-        /* PREMIUM PRZYCISKI */
-        .btn-premium-action {
-            background: var(--premium-gradient);
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 5px;
             cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            font-size: 1rem;
         }
 
-        .btn-premium-action:hover {
-            filter: brightness(1.1);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        /* PRAWDZIWA TABLICA OKIENEK (Siatka ogłoszeń) */
+        .grid-container {
+            margin-top: 20px;
+        }
+
+        .ad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .ad-box {
+            background: #1e1e1e;
+            border: 2px dashed #444;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .ad-box.occupied {
+            border-style: solid;
+            border-color: var(--secondary-color);
+            background: linear-gradient(135deg, #112233, #1a3a5f);
+        }
+
+        .ad-box.premium {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, #2c2205, #4a3b0b);
+        }
+
+        .ad-box.sponsor-row {
+            grid-column: span 4;
+            min-height: 90px;
+            background: linear-gradient(135deg, #3c1053, #210535);
+            border: 2px solid #9c27b0;
+        }
+
+        .ad-box h4 {
+            color: var(--accent-gold);
+            margin-bottom: 5px;
+        }
+
+        /* Stylizacja Mapy */
+        #map {
+            width: 100%;
+            height: 550px;
+            border-radius: 10px;
+            border: 2px solid #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Koło Fortuny */
+        .wheel-section {
+            text-align: center;
+            margin: 40px auto;
+            max-width: 500px;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid #333;
+            position: relative;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid var(--accent-gold);
+            z-index: 10;
+        }
+
+        .spin-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .spin-btn:disabled {
+            background: #555;
+            color: #aaa;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="user-modes">
-            <button class="btn-mode active" id="btn-tourist" onclick="switchMode('tourist')">
-                <i class="fas fa-hiking"></i> <span data-i18n="nav-tourist">Zaloguj jako Turysta</span>
-            </button>
-            <button class="btn-mode" id="btn-company" onclick="switchMode('company')">
-                <i class="fas fa-briefcase"></i> <span data-i18n="nav-company">Zaloguj jako Firma</span>
-            </button>
-        </div>
-        
-        <div class="lang-select-wrapper">
-            <i class="fas fa-globe" style="color: var(--accent-glow);"></i>
-            <select id="language" onchange="changeLanguage()">
-                <option value="pl">Polski</option>
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-            </select>
-        </div>
-    </div>
+    <!-- Nawigacja -->
+    <nav>
+        <div class="logo">Karkonosze Gps & Biznes</div>
+        <ul class="nav-links">
+            <li><a onclick="switchPage('home')">Strona Główna</a></li>
+            <li><a onclick="switchPage('reklamowa')">Tablica Ogłoszeń</a></li>
+            <li><a onclick="switchPage('rowery')">Mapy Rowerowe</a></li>
+            <li><a onclick="switchPage('losowanie')" id="nav-wheel" style="display:none;">Strefa Nagród (Koło)</a></li>
+        </ul>
+        <button class="auth-btn" id="auth-nav-btn" onclick="switchPage('login')">Zaloguj się</button>
+    </nav>
 
     <div class="container">
-        <div class="header-title">
-            <h1 id="main-title">Karkonosze GO</h1>
-            <p id="sub-title" style="color: var(--text-muted);">Zintegrowany panel zarządzania i nawigacji regionalnej</p>
-        </div>
 
-        <div id="tourist-view" class="view-section active">
-            <div class="grid-modules">
-                
-                <div class="card-premium">
-                    <h3><i class="fas fa-bus-alt"></i> <span data-i18n="title-bus">Rozkład Autobusów & Asystent</span></h3>
-                    <p class="card-description" data-i18n="desc-bus">Aktualne kursy z Kowar, Karpacza i okolic połączone z inteligentnym asystentem podróży.</p>
-                    
-                    <ul class="premium-list">
-                        <li>
-                            <div><strong style="color: #fff;">Linia 100</strong> <span style="color: var(--text-muted); margin-left:8px;">Kowary - Karpacz</span></div>
-                            <span style="color: var(--accent-glow); font-weight:600;">08:15, 10:30, 14:20</span>
-                        </li>
-                        <li>
-                            <div><strong style="color: #fff;">Linia 200</strong> <span style="color: var(--text-muted); margin-left:8px;">Jelenia Góra - Miłków</span></div>
-                            <span style="color: var(--accent-glow); font-weight:600;">09:00, 11:45, 16:10</span>
-                        </li>
-                    </ul>
-
-                    <div class="chat-ai-container">
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="msg bot">Cześć! Jestem Twoim lokalnym asystentem. Zapytaj mnie o dowolne połączenie autobusowe lub szlak.</div>
-                        </div>
-                        <div class="chat-input-area">
-                            <input type="text" id="chatInput" placeholder="Napisz do asystenta (np. Kiedy bus do Miłkowa?)..." onkeypress="handleChatKey(event)">
-                            <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
+        <!-- STRONA GŁÓWNA -->
+        <section id="home" class="page-section active">
+            <h2>Witaj na platformie regionalnej</h2>
+            <p style="margin-top: 10px; color: #aaa;">Zaloguj się jako Turysta, aby losować zniżki, lub jako Firma, aby zarządzać tablicą okienek reklamowych.</p>
+            
+            <!-- Baner Sponsora pobierany dynamicznie -->
+            <div style="margin-top:30px; padding:20px; background:#1e1e1e; border-radius:8px;">
+                <h3>Główny Sponsor Serwisu</h3>
+                <div id="home-sponsor-zone" style="margin-top:15px;">
+                    <p style="color:#666; font-style:italic;">Miejsce wolne na Twój baner sponsorski. Wykup je w zakładce Tablica Ogłoszeń.</p>
                 </div>
-
-                <div class="card-premium">
-                    <h3><i class="fas fa-map-location-dot"></i> <span data-i18n="title-map">Mapa Szlaków Turystycznych</span></h3>
-                    <p class="card-description" data-i18n="desc-map">Interaktywne śledzenie tras pieszych, czasów przejść oraz schronisk w Karkonoszach.</p>
-                    
-                    <div class="map-container-premium">
-                        <div class="map-overlay">
-                            <span><i class="fas fa-layer-group" style="color: var(--accent-glow);"></i> Warstwa: Szlaki Karkonosze</span>
-                            <span style="color: var(--accent-green); font-weight:500;"><i class="fas fa-circle-check"></i> Live GPS ok</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-premium">
-                    <h3><i class="fas fa-bicycle"></i> <span data-i18n="title-bike">Bike Parki & Trasy Rowerowe</span></h3>
-                    <p class="card-description" data-i18n="desc-bike">Sprawdź statusy zjazdów oraz warunki panujące na lokalnych singletrackach.</p>
-                    
-                    <ul class="premium-list">
-                        <li>
-                            <span>Singletrack A (Kowary-Pustelnik)</span>
-                            <span class="status-badge open">Otwarta</span>
-                        </li>
-                        <li>
-                            <span>Downhill Extremal Line</span>
-                            <span class="status-badge closed">Remont</span>
-                        </li>
-                        <li>
-                            <span>Trasa Widokowa Karkonosze</span>
-                            <span class="status-badge open">Otwarta</span>
-                        </li>
-                    </ul>
-                </div>
-
             </div>
-        </div>
+        </section>
 
-        <div id="company-view" class="view-section">
-            <div class="grid-modules">
-                
-                <div class="card-premium">
-                    <h3><i class="fas fa-sliders"></i> <span data-i18n="title-comp-panel">Panel Logistyki i Usług</span></h3>
-                    <p class="card-description">Kompleksowe zarządzanie serwisem apartamentów, zleceniami sprzątania oraz bazą noclegową w Karpaczu i okolicach.</p>
-                    <button class="btn-premium-action" style="margin-bottom: 12px;"><i class="fas fa-plus-circle"></i> Dodaj Nowe Zlecenie</button>
-                    <button class="btn-premium-action" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: white; box-shadow: none;">
-                        <i class="fas fa-file-invoice-dollar"></i> Raporty Logistyczne
-                    </button>
+        <!-- LOGOWANIE / REJESTRACJA (Z szybkim logowaniem) -->
+        <section id="login" class="page-section">
+            <div class="auth-container">
+                <div class="quick-login-box">
+                    <p style="margin-bottom: 10px; font-weight: bold; color: var(--accent-gold);">⚡ Szybkie logowanie do testów:</p>
+                    <button class="auth-btn" style="background:#1565c0; margin-right:5px;" onclick="directLogin('turysta@test.pl', 'turysta')">Jako Turysta</button>
+                    <button class="auth-btn" style="background:#2e7d32;" onclick="directLogin('firma@test.pl', 'firma')">Jako Firma</button>
                 </div>
 
-                <div class="card-premium">
-                    <h3><i class="fas fa-chart-pie"></i> <span data-i18n="title-comp-stats">Analityka Ruchu i Rekomendacji</span></h3>
-                    <p class="card-description">Monitoruj ile razy Twój obiekt lub usługa były rekomendowane turystom przez Asystenta AI.</p>
-                    <div class="map-container-premium" style="background: rgba(15, 23, 42, 0.6); display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border-color);">
-                        <div style="text-align: center; color: var(--text-muted);">
-                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--accent-glow); margin-bottom: 10px;"></i>
-                            <div style="font-size: 0.85rem;">Wykresy unikalnych wyświetleń i zapytań AI</div>
-                        </div>
+                <hr style="border-color:#333; margin-bottom:20px;">
+
+                <div class="tab-group">
+                    <div class="tab active" id="tab-turysta" onclick="setAuthRole('turysta')">Turysta</div>
+                    <div class="tab" id="tab-firma" onclick="setAuthRole('firma')">Firma</div>
+                </div>
+                <h3 id="auth-title">Logowanie jako Turysta</h3>
+                <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" id="auth-email" required placeholder="twoj-email@domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Hasło</label>
+                        <input type="password" id="auth-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-submit">Zaloguj się</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- MAPY ROWEROWE (Z DZIAŁAJĄCĄ MAPĄ LEAFLET) -->
+        <section id="rowery" class="page-section">
+            <h2>Interaktywna Mapa Tras Rowerowych</h2>
+            <p style="margin-bottom: 20px; color: #aaa;">Prawdziwa mapa regionu. Klikaj na ikony, aby zobaczyć polecane punkty i ścieżki rowerowe wokół Kowar i Karpacza.</p>
+            
+            <!-- Tu renderuje się prawdziwa mapa -->
+            <div id="map"></div>
+        </section>
+
+        <!-- TABLICA REKLAMOWA (OKIENKA) -->
+        <section id="reklamowa" class="page-section">
+            <h2>System Zakupu Okienek Reklamowych</h2>
+            <p style="color:#aaa; margin-bottom:20px;">Możesz kupić pojedyncze okienko lub kilka na raz – połączą się one automatycznie na naszej głównej tablicy!</p>
+
+            <!-- Panel zakupowy -->
+            <div style="background:#1e1e1e; padding:20px; border-radius:8px; margin-bottom:30px; border: 1px solid #333;">
+                <h3>Kalkulator i rezerwacja powierzchni</h3>
+                <div style="display:flex; gap:15px; margin-top:15px; flex-wrap:wrap;">
+                    <div class="form-group" style="flex:1; min-width:200px;">
+                        <label>Rodzaj reklamy</label>
+                        <select id="ad-type-select" onchange="updatePriceCalc()">
+                            <option value="standard">Zwykłe okienko (200 zł / mc)</option>
+                            <option value="premium">Okienko Premium (300 zł / mc)</option>
+                            <option value="sponsor">Pasek Sponsora (400 zł / tydzień)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="width:100px;">
+                        <label>Ilość okienek (Łączenie)</label>
+                        <input type="number" id="ad-quantity" value="1" min="1" max="4" onchange="updatePriceCalc()">
+                    </div>
+                    <div style="flex:1; min-width:200px; display:flex; align-items:center; justify-content:space-between; padding-top:20px;">
+                        <div>Suma: <strong id="ad-price-display" style="color:var(--accent-gold); font-size:1.3rem;">200 zł</strong></div>
+                        <button class="auth-btn" style="background:var(--secondary-color);" onclick="buyAdSpaces()">Kupuję i losuję nagrodę</button>
                     </div>
                 </div>
-
             </div>
-        </div>
+
+            <!-- NASZA GLÓWNA TABLICA Z OKIENKAMI -->
+            <h3>Nasza Tablica Ogłoszeniowa</h3>
+            <div class="grid-container">
+                <div id="grid-sponsor-zone"></div>
+                <div class="ad-grid" id="main-ad-grid">
+                    <div class="ad-box" id="box-1"><h4>Okienko 1</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
+                    <div class="ad-box" id="box-2"><h4>Okienko 2</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
+                    <div class="ad-box" id="box-3"><h4>Okienko 3</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
+                    <div class="ad-box" id="box-4"><h4>Okienko 4</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KOŁO FORTUNY (STREFA NAGRÓD) -->
+        <section id="losowanie" class="page-section">
+            <div class="wheel-section">
+                <h2 id="wheel-title">Koło Fortuny</h2>
+                <p id="wheel-desc" style="color:#aaa; margin-bottom:20px;"></p>
+                
+                <div class="wheel-wrapper">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="main-wheel"></div>
+                </div>
+
+                <button class="spin-btn" id="spin-button" onclick="spinWheel()">Losuj nagrodę!</button>
+                <div id="wheel-result" style="margin-top:20px; font-size:1.2rem; font-weight:bold; color:var(--accent-gold);"></div>
+            </div>
+        </section>
+
     </div>
 
     <script>
-        // Słownik tłumaczeń (PL, EN, DE) zapobiegający przeładowaniu strony
-        const translations = {
-            pl: {
-                "nav-tourist": "Zaloguj jako Turysta",
-                "nav-company": "Zaloguj jako Firma",
-                "title-bus": "Rozkład Autobusów & Asystent",
-                "desc-bus": "Aktualne kursy z Kowar, Karpacza i okolic połączone z inteligentnym asystentem podróży.",
-                "title-map": "Mapa Szlaków Turystycznych",
-                "desc-map": "Interaktywne śledzenie tras pieszych, czasów przejść oraz schronisk w Karkonoszach.",
-                "title-bike": "Bike Parki & Trasy Rowerowe",
-                "desc-bike": "Sprawdź statusy zjazdów oraz warunki panujące na lokalnych singletrackach.",
-                "title-comp-panel": "Panel Logistyki i Usług",
-                "title-comp-stats": "Analityka Ruchu i Rekomendacji"
-            },
-            en: {
-                "nav-tourist": "Login as Tourist",
-                "nav-company": "Login as Company",
-                "title-bus": "Bus Timetable & AI Assistant",
-                "desc-bus": "Current connections from region combined with intelligent travel companion.",
-                "title-map": "Tourist Trails Map",
-                "desc-map": "Interactive tracking of hiking trails, walking times and mountain shelters.",
-                "title-bike": "Bike Parks & Trails",
-                "desc-bike": "Check downhill track statuses and current trail conditions.",
-                "title-comp-panel": "Logistics & Services Panel",
-                "title-comp-stats": "Traffic & Recommendation Analytics"
-            },
-            de: {
-                "nav-tourist": "Als Tourist einloggen",
-                "nav-company": "Als Firma einloggen",
-                "title-bus": "Busfahrplan & AI Assistent",
-                "desc-bus": "Aktuelle Busverbindungen der Region integriert mit einem smarten Reiseassistenten.",
-                "title-map": "Wanderwege-Karte",
-                "desc-map": "Interaktive Verfolgung von Bergpfaden, Gehzeiten und Berghütten.",
-                "title-bike": "Bike Parks & Radwege",
-                "desc-bike": "Überprüfen Sie den Status der Downhill-Strecken und die Bedingungen.",
-                "title-comp-panel": "Logistik- & Service-Panel",
-                "title-comp-stats": "Verkehrs- & Empfehlungsanalysen"
-            }
-        };
+        // Stan globalny systemu
+        let currentUser = null; 
+        let currentRole = 'turysta';
+        let hasSpunThisWeek = false;
+        let firmDiscountEarned = 0;
+        let mapInitialized = false;
+        let myMap = null;
 
-        // 1. Przełączanie widoków (Turysta / Firma)
-        function switchMode(mode) {
-            document.getElementById('btn-tourist').classList.remove('active');
-            document.getElementById('btn-company').classList.remove('active');
-            document.getElementById('tourist-view').classList.remove('active');
-            document.getElementById('company-view').classList.remove('active');
-
-            if (mode === 'tourist') {
-                document.getElementById('btn-tourist').classList.add('active');
-                document.getElementById('tourist-view').classList.add('active');
-            } else {
-                document.getElementById('btn-company').classList.add('active');
-                document.getElementById('company-view').classList.add('active');
-            }
-        }
-
-        // 2. Dynamiczny wybór języka
-        function changeLanguage() {
-            const selectedLang = document.getElementById('language').value;
-            const elements = document.querySelectorAll('[data-i18n]');
-            
-            elements.forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[selectedLang] && translations[selectedLang][key]) {
-                    element.innerText = translations[selectedLang][key];
-                }
+        // Przełączanie podstron
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
             });
-        }
-
-        // 3. Obsługa wysyłania wiadomości w Czacie AI
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const messagesContainer = document.getElementById('chatMessages');
-            const userText = input.value.trim();
-
-            if (userText === '') return;
-
-            // Dodaj wiadomość użytkownika
-            const userMsgDiv = document.createElement('div');
-            userMsgDiv.className = 'msg user';
-            userMsgDiv.innerText = userText;
-            messagesContainer.appendChild(userMsgDiv);
-
-            input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            // Logika automatycznej odpowiedzi (symulacja AI bazy rozkładów)
-            setTimeout(() => {
-                const botMsgDiv = document.createElement('div');
-                botMsgDiv.className = 'msg bot';
-                
-                if (userText.toLowerCase().includes('miłków') || userText.toLowerCase().includes('bus')) {
-                    botMsgDiv.innerText = "Najbliższy autobus z Kowar do Miłkowa (Linia 200) odjeżdża o godzinie 11:45. Przystanek główny.";
-                } else {
-                    botMsgDiv.innerText = "Rozumiem! Sprawdzam bazę danych dla Karkonoszy. Czy chcesz, abym zapisał to powiadomienie?";
-                }
-                
-                messagesContainer.appendChild(botMsgDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 800);
-        }
-
-        function handleChatKey(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
+            const targetSection = document.getElementById(pageId);
+            if(targetSection) {
+                targetSection.classList.add('active');
             }
+            if(pageId === 'losowanie') {
+                setupWheelView();
+            }
+            // Inicjalizacja prawdziwej mapy po wejściu w zakładkę rowerów
+            if(pageId === 'rowery' && !mapInitialized) {
+                setTimeout(initMap, 100); 
+            }
+        }
+
+        // Inicjalizacja PRAWDZIWEJ MAPY wokół Twojego regionu
+        function initMap() {
+            // Współrzędne ustawione na region Kowary / Karpacz
+            myMap = L.map('map').setView([50.7922, 15.8302], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(myMap);
+
+            // Przykładowe trasy i pinezki rowerowe na mapie
+            const locations = [
+                {coords: [50.7940, 15.8340], text: "<b>Punkt Serwisowy Kowary</b><br>Darmowa stacja naprawcza."},
+                {coords: [50.7745, 15.7525], text: "<b>Trasa Rowerowa Karpacz</b><br>Wymagający podjazd górski."},
+                {coords: [50.8120, 15.8110], text: "<b>Ścieżka widokowa nad Jedlicą</b><br>Trasa łatwa, rodzinna."}
+            ];
+
+            locations.forEach(loc => {
+                L.marker(loc.coords).addTo(myMap).bindPopup(loc.text);
+            });
+
+            mapInitialized = true;
+        }
+
+        function setAuthRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${role}`).classList.add('active');
+            document.getElementById('auth-title').innerText = `Logowanie jako ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+        }
+
+        function directLogin(email, role) {
+            currentUser = { email: email, role: role };
+            document.getElementById('auth-nav-btn').innerText = `Wyloguj (${email.split('@')[0]})`;
+            document.getElementById('auth-nav-btn').setAttribute('onclick', 'logout()');
+            document.getElementById('nav-wheel').style.display = 'block';
+            hasSpunThisWeek = false; 
+            alert(`Zalogowano automatycznie jako: ${role.toUpperCase()}`);
+            switchPage('home');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            directLogin(email, currentRole);
+        }
+
+        function logout() {
+            currentUser = null;
+            hasSpunThisWeek = false;
+            document.getElementById('auth-nav-btn').innerText = 'Zaloguj się';
+            document.getElementById('auth-nav-btn').setAttribute('onclick', "switchPage('login')");
+            document.getElementById('nav-wheel').style.display = 'none';
+            alert('Wylogowano');
+            switchPage('home');
+        }
+
+        function updatePriceCalc() {
+            const type = document.getElementById('ad-type-select').value;
+            const qty = parseInt(document.getElementById('ad-quantity').value) || 1;
+            let basePrice = 200;
+
+            if(type === 'premium') basePrice = 300;
+            if(type === 'sponsor') basePrice = 400;
+
+            let finalPrice = basePrice * qty;
+            
+            if(type !== 'sponsor' && firmDiscountEarned > 0) {
+                finalPrice = finalPrice * (1 - (firmDiscountEarned / 100));
+                document.getElementById('ad-price-display').innerHTML = `<span style="text-decoration:line-through; font-size:0.9rem; color:#888;">${basePrice * qty} zł</span> ${finalPrice.toFixed(0)} zł (-${firmDiscountEarned}%)`;
+            } else {
+                document.getElementById('ad-price-display').innerText = `${finalPrice} zł`;
+            }
+        }
+
+        // Kupowanie i łączenie okienek na tablicy
+        function buyAdSpaces() {
+            if(!currentUser || currentUser.role !== 'firma') {
+                alert('Musisz być zalogowany jako FIRMA! Kliknij Zaloguj się w menu i użyj przycisku ekspresowego logowania.');
+                switchPage('login');
+                return;
+            }
+
+            const type = document.getElementById('ad-type-select').value;
+            const qty = parseInt(document.getElementById('ad-quantity').value) || 1;
+
+            if(type === 'sponsor') {
+                document.getElementById('grid-sponsor-zone').innerHTML = `
+                    <div class="ad-box sponsor-row">
+                        <h4 style="color:#e040fb;">⭐ SPONSOR GŁÓWNY: ${currentUser.email.split('@')[0].toUpperCase()}</h4>
+                        <p>Baner scalony z całej szerokości portalu aktywny na tydzień</p>
+                    </div>
+                `;
+                document.getElementById('home-sponsor-zone').innerHTML = `
+                    <div class="ad-box sponsor-row" style="width:100%; margin:0;">
+                        <h4 style="color:#e040fb;">🔥 POLECAMY: Menedżer Reklamy ${currentUser.email.split('@')[0].toUpperCase()}</h4>
+                    </div>
+                `;
+            } else {
+                const mainGrid = document.getElementById('main-ad-grid');
+                mainGrid.innerHTML = '';
+
+                // Wygenerowanie złączonego okienka na tablicy ogłoszeń
+                const mergedBox = document.createElement('div');
+                mergedBox.className = `ad-box occupied ${type === 'premium' ? 'premium' : ''}`;
+                mergedBox.style.gridColumn = `span ${qty}`;
+                mergedBox.innerHTML = `
+                    <h4>PROMO: ${currentUser.email.split('@')[0].toUpperCase()}</h4>
+                    <p style="font-size:0.9rem;">Powierzchnia złączona z ${qty}x modułów</p>
+                    <small style="color: #888;">Typ profilu: ${type.toUpperCase()}</small>
+                `;
+                mainGrid.appendChild(mergedBox);
+
+                // Dopełnienie reszty pustych kafelków na tablicy
+                for(let i = qty + 1; i <= 4; i++) {
+                    const emptyBox = document.createElement('div');
+                    emptyBox.className = 'ad-box';
+                    emptyBox.innerHTML = `<h4>Okienko ${i}</h4><p style="color:#666; font-size:0.85rem;">Miejsce Wolne<br>200 zł / mc</p>`;
+                    mainGrid.appendChild(emptyBox);
+                }
+            }
+
+            firmDiscountEarned = 0;
+            hasSpunThisWeek = false; 
+            alert('Sukces! Okienka połączone na naszej tablicy. Przenoszę Cię na losowanie koła biznesowego!');
+            switchPage('losowanie');
+        }
+
+        function setupWheelView() {
+            if(!currentUser) {
+                alert('Zaloguj się najpierw!');
+                switchPage('login');
+                return;
+            }
+
+            const title = document.getElementById('wheel-title');
+            const desc = document.getElementById('wheel-desc');
+            const wheel = document.getElementById('main-wheel');
+            const btn = document.getElementById('spin-button');
+            
+            document.getElementById('wheel-result').innerText = '';
+            btn.disabled = hasSpunThisWeek;
+
+            if(currentUser.role === 'firma') {
+                title.innerText = 'Koło Biznesowe (Dla Firm)';
+                desc.innerText = 'Wylosuj zniżkę, która automatycznie pomniejszy wartość kolejnego zakupu okienek!';
+                wheel.style.background = `conic-gradient(
+                    #4caf50 0deg 90deg, 
+                    #81c784 90deg 180deg, 
+                    #2e7d32 180deg 270deg, 
+                    #1b5e20 270deg 360deg
+                )`;
+            } else {
+                title.innerText = 'Koło Nagród (Dla Turystów)';
+                desc.innerText = 'Losuj nagrody raz w tygodniu! Unikalny kod rabatowy prześlemy natychmiast na Twój adres e-mail.';
+                wheel.style.background = `conic-gradient(
+                    #ff5722 0deg 60deg,
+                    #ffeb3b 60deg 120deg,
+                    #4caf50 120deg 180deg,
+                    #00bcd4 180deg 240deg,
+                    #9c27b0 240deg 300deg,
+                    #e91e63 300deg 360deg
+                )`;
+            }
+        }
+
+        function spinWheel() {
+            if(hasSpunThisWeek) return;
+
+            const wheel = document.getElementById('main-wheel');
+            const btn = document.getElementById('spin-button');
+            const resultDiv = document.getElementById('wheel-result');
+            
+            btn.disabled = true;
+            hasSpunThisWeek = true;
+
+            const randomDegrees = Math.floor(Math.random() * 360) + 1800; 
+            wheel.style.transform = `rotate(${randomDegrees}deg)`;
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                if(currentUser.role === 'firma') {
+                    const rewards = [10, 15, 20, 30];
+                    const selectedReward = rewards[Math.floor(Math.random() * rewards.length)];
+                    firmDiscountEarned = selectedReward;
+                    resultDiv.innerText = `Gratulacje! Wylosowałeś ${selectedReward}% zniżki na następny abonament! Naliczy się ona automatycznie przy kolejnej rezerwacji.`;
+                    updatePriceCalc();
+                } else {
+                    const rewards = [
+                        'Rabat -20% na wypożyczenie roweru',
+                        'Darmowy bilet do muzeum regionalnego',
+                        'Zniżka 15% na pizzerię w centrum',
+                        'Kupon o wartości 30zł na lokalne atrakcje'
+                    ];
+                    const selectedReward = rewards[Math.floor(Math.random() * rewards.length)];
+                    resultDiv.innerHTML = `Wygrałeś: ${selectedReward}!<br><span style="font-size:0.9rem; color:#aaa;">Kod zniżkowy został wysłany automatycznie na adres: ${currentUser.email}</span>`;
+                }
+            }, 4000);
         }
     </script>
 </body>
