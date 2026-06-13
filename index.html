@@ -93,12 +93,12 @@
             border: none;
         }
 
-        /* NOWOŚĆ: Selektor Regionów Karkonoszy */
+        /* Sekcja Regionów */
         .region-selector {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
-            margin-bottom: 15px;
+            margin: 10px 0 15px 0;
         }
 
         .region-btn {
@@ -216,7 +216,7 @@
             box-shadow: 0 4px 12px rgba(232, 62, 140, 0.3);
         }
 
-        /* NOWOŚĆ: Baza Turystyczna (Firmy Regionalne) */
+        /* Baza Turystyczna */
         .business-directory {
             margin-top: 25px;
             border-top: 1px solid var(--border-color);
@@ -397,7 +397,7 @@
     <button class="main-button">💼 PANEL BIZNESOWY B2B (RESTAURACJE)</button>
     <button class="main-button">🛑 MONITOR MODERATORA (ADMIN)</button>
 
-    <!-- NOWOŚĆ: Szybki Wybór Regionu Karkonoszy -->
+    <!-- Wybór Regionu Karkonoszy -->
     <div class="region-selector">
         <button class="region-btn active" onclick="selectRegion('karpacz')">📍 KARPACZ</button>
         <button class="region-btn" onclick="selectRegion('kowary')">📍 KOWARY</button>
@@ -434,14 +434,14 @@
         <button class="live-strip-btn" id="btn-live" onclick="triggerAction()">🚀 WYKUP PASEK LIVE (50 ZŁ/DZIEŃ)</button>
     </div>
 
-    <!-- NOWOŚĆ: Dynamiczna Baza Turystyczna Regionu -->
+    <!-- Dynamiczna Baza Turystyczna Regionu -->
     <div class="business-directory">
         <h3>
             <span id="title-directory">Polecane Firmy i Usługi</span>
             <span class="promo-tag" id="tag-promo">FREE DO 30.06</span>
         </h3>
         <div id="directory-box">
-            <!-- Tutaj JS automatycznie wstrzykuje firmy z logami i linkami -->
+            <!-- JS wstrzykuje firmy -->
         </div>
     </div>
 
@@ -464,40 +464,34 @@
 </div>
 
 <script>
-    // Baza Danych Regionów, Pogody i Firm (Loga jako Ikony CSS, Prawdziwe Linki)
+    // Baza Danych Regionów, Pogody i Firm
     const regionalData = {
         karpacz: {
-            weather: "Słonecznie, 21°C",
-            timezoneOffset: 0, // Czas lokalny bazowy
+            weather: "Słonecznie, Karpacz",
             companies: [
                 { name: "Wonder Home Apartamenty", cat: "Noclegi & Zarządzanie", logo: "🏨", url: "https://www.wonderhome.pl" },
-                { name: "Schronisko Samotnia", cat: "Kultowe Schronisko Górskie", logo: "⛰️", url: "https://www.samotnia.com.pl" },
-                { name: "Restauracja U Ducha Gór", cat: "Regionalna Kuchnia", logo: "🍲", url: "#" }
+                { name: "Schronisko Samotnia", cat: "Kultowe Schronisko Górskie", logo: "⛰️", url: "https://www.samotnia.com.pl" }
             ]
         },
         kowary: {
-            weather: "Lekkie chmury, 19°C",
-            timezoneOffset: 0,
+            weather: "Lekkie chmury, Kowary",
             companies: [
                 { name: "Park Miniatur Dolnego Śląska", cat: "Atrakcja Turystyczna", logo: "🏰", url: "https://www.parkminiatur.com" },
-                { name: "Sztolnie Kowary", cat: "Podziemna Trasa Turystyczna", logo: "⛏️", url: "https://www.sztolniekowary.com" },
-                { name: "Fabryka Dywanów Kowary", cat: "Tradycja i Historia", logo: "🧶", url: "#" }
+                { name: "Sztolnie Kowary", cat: "Podziemna Trasa", logo: "⛏️", url: "https://www.sztolniekowary.com" }
             ]
         },
         szklarska: {
-            weather: "Przelotny deszcz, 18°C",
-            timezoneOffset: 0,
+            weather: "Przelotny deszcz, Szklarska P.",
             companies: [
                 { name: "Norweska Dolina Luxury Resort", cat: "Ekskluzywne Apartamenty", logo: "🏡", url: "https://www.norweskadolina.pl" },
-                { name: "Huta Szkła Kryształowego Julia", cat: "Manufaktura i Zwiedzanie", logo: "💎", url: "https://www.hutajulia.com" }
+                { name: "Huta Szkła Julia", cat: "Zwiedzanie i Manufaktura", logo: "💎", url: "https://www.hutajulia.com" }
             ]
         },
         jelenia: {
-            weather: "Słonecznie, 22°C",
-            timezoneOffset: 0,
+            weather: "Słonecznie, Jelenia Góra",
             companies: [
-                { name: "Termy Cieplickie", cat: "Aquapark i Baseny Termalne", logo: "🏊", url: "https://www.termycieplickie.pl" },
-                { name: "Pałac Wojanów", cat: "Hotel, Restauracja & SPA", logo: "🏛️", url: "https://www.palac-wojanow.pl" }
+                { name: "Termy Cieplickie", cat: "Aquapark i Baseny", logo: "🏊", url: "https://www.termycieplickie.pl" },
+                { name: "Pałac Wojanów", cat: "Hotel & SPA", logo: "🏛️", url: "https://www.palac-wojanow.pl" }
             ]
         }
     };
@@ -507,7 +501,7 @@
             status: "Niezalogowany", log: "Konto / Logowanie",
             sub: "- EKSKLUZYWNA SIEĆ REGIONALNA",
             desc: "Złoto, Szmaragd i Diament – najbardziej hipnotyzująca tablica reklamowa w kraju. Wybierz region docelowy.",
-            sectors: "Aktywne Sektory: ", weatherLabel: "Pogoda: ",
+            sectors: "Aktywne Sektory: ",
             buy: "🚀 WYKUP PASEK LIVE (50 ZŁ/DZIEŃ)",
             revTitle: "Opinie i Weryfikacja Przewodnika",
             revBtn: "Dodaj zweryfikowaną opinię",
@@ -518,13 +512,13 @@
             visit: "Zobacz",
             alertSpam: "Opinia odrzucona! Wykryto spam, zakazane frazy lub linki reklamowe.",
             alertSuccess: "Pomyślnie wygenerowano Twój plan PDF i sprawdzono dane!",
-            partner: "Zniżki u partnerów regionalnych zostały dołączone do Twojego profilu mobilnego."
+            partner: "Rabat u partnera Wonder Home Karpacz: 20 PLN dołączony do PDF!"
         },
         en: {
             status: "Not logged in", log: "Account / Login",
             sub: "- EXCLUSIVE REGIONAL NETWORK",
             desc: "Gold, Emerald and Diamond – the most mesmerizing advertising board in the country. Select target region.",
-            sectors: "Active Sectors: ", weatherLabel: "Weather: ",
+            sectors: "Active Sectors: ",
             buy: "🚀 BUY LIVE STRIP (50 PLN/DAY)",
             revTitle: "Reviews & Guide Verification",
             revBtn: "Add verified review",
@@ -535,13 +529,13 @@
             visit: "Visit",
             alertSpam: "Review rejected! Spam, banned phrases or promotional links detected.",
             alertSuccess: "Your itinerary PDF has been successfully generated and verified!",
-            partner: "Discounts from regional partners have been linked to your mobile profile."
+            partner: "Discount at partner Wonder Home Karpacz: approx. 5 EUR added to PDF!"
         },
         de: {
             status: "Nicht eingeloggt", log: "Konto / Login",
             sub: "- EXKLUSIVES REGIONALES NETZWERK",
             desc: "Gold, Smaragd und Diamant – die faszinierendste Werbetafel des Landes. Wählen Sie die Zielregion.",
-            sectors: "Aktive Sektoren: ", weatherLabel: "Wetter: ",
+            sectors: "Aktive Sektoren: ",
             buy: "🚀 LIVE-LEISTE KAUFEN (50 PLN/TAG)",
             revTitle: "Bewertungen & Leitfadenüberprüfung",
             revBtn: "Verifizierte Bewertung hinzufügen",
@@ -552,13 +546,13 @@
             visit: "Oeffnen",
             alertSpam: "Bewertung abgelehnt! Spam, verbotene Formulierungen oder Werbelinks erkannt.",
             alertSuccess: "Ihr Reiseplan-PDF wurde erfolgreich erstellt und überprüft!",
-            partner: "Rabatte von regionalen Partnern wurden mit Ihrem mobilen Profil verknüpft."
+            partner: "Rabatt beim Partner Wonder Home Karpacz: ca. 5 EUR im PDF enthalten!"
         },
         cs: {
             status: "Nezalogován", log: "Účet / Přihlášení",
             sub: "- EXKLUZIVNÍ REGIONÁLNÍ SÍŤ",
             desc: "Zlato, Smaragd a Diamant – nejvíce fascinující reklamní tabule v zemi. Vyberte cílovou oblast.",
-            sectors: "Aktivní Sektory: ", weatherLabel: "Počasí: ",
+            sectors: "Aktivní Sektory: ",
             buy: "🚀 KOUPIT LIVE PROUŽEK (50 PLN/DEN)",
             revTitle: "Recenze a Ověření Průvodce",
             revBtn: "Přidat ověřenou recenzi",
@@ -569,7 +563,7 @@
             visit: "Otevřít",
             alertSpam: "Recenze byla odmítnuta! Byl detekován spam, zakázané fráze nebo reklamní odkazy.",
             alertSuccess: "Váš itinerář v PDF byl úspěšně vygenerován a zkontrolován!",
-            partner: "Slevy od regionálních partnerů byly propojeny s vaším mobilním profilem."
+            partner: "Sleva u partnera Wonder Home Karpacz: cca 120 CZK přibalena k PDF!"
         }
     };
 
@@ -577,16 +571,12 @@
     let currentRegion = 'karpacz';
     const bannedWords = ["scam", "oszustwo", "crypto", "casino", "kasyno", "fvck", "free-money"];
 
-    // Licznik czasu i daty na żywo z uwzględnieniem wybranego regionu
+    // Licznik czasu i daty na żywo
     function updateLiveTime() {
         const now = new Date();
-        
-        // Formatowanie daty rrrr-mm-dd
         const day = String(now.getDate()).padStart(2, '0');
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const year = now.getFullYear();
-        
-        // Formatowanie czasu hh:mm:ss
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -597,24 +587,22 @@
     }
     setInterval(updateLiveTime, 1000);
 
-    // Zmiana i ładowanie całego regionu (Pogoda, Czas, Firmy)
+    // Wybór regionu
     function selectRegion(regionKey) {
         currentRegion = regionKey;
         
         document.querySelectorAll('.region-btn').forEach(btn => {
             btn.classList.remove('active');
-            if(btn.innerText.toLowerCase().includes(regionKey.substring(0,5))) btn.classList.add('active');
         });
+        event.currentTarget.classList.add('active');
 
-        // Aktualizacja pogody na żywo
         const rData = regionalData[regionKey];
         document.getElementById('val-weather').innerText = rData.weather;
 
-        // Renderowanie darmowej bazy firm regionalnych
         renderDirectory();
     }
 
-    // Generator Listy Firm z przyciskami "Zobacz" i logami
+    // Dynamiczna lista firm
     function renderDirectory() {
         const box = document.getElementById('directory-box');
         box.innerHTML = "";
@@ -638,7 +626,7 @@
         document.getElementById('tag-promo').innerText = dictionary[currentLang].promo;
     }
 
-    // Wielojęzyczność
+    // Zmiana języków
     function changeLanguage(lang) {
         currentLang = lang;
         
@@ -665,7 +653,7 @@
         alert(dictionary[currentLang].alertSuccess + "\n\n" + dictionary[currentLang].partner);
     }
 
-    // Logika weryfikacji opinii i Anti-Spam
+    // Dodawanie opinii i antyspam
     function processReview() {
         const author = document.getElementById('inp-author').value.trim() || "Anonim";
         const comment = document.getElementById('inp-comment').value.trim();
@@ -703,9 +691,9 @@
         fileInput.value = "";
     }
 
-    // Inicjalizacja startowa strony
+    // Pierwsze uruchomienie
     updateLiveTime();
-    selectRegion('karpacz');
+    renderDirectory();
 </script>
 
 </body>
