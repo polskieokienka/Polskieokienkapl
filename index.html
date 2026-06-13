@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polskie Okienka Live - Regionalny Portal Premium</title>
+    <!-- Biblioteka Confetti do losowań na żywo -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -266,6 +267,35 @@
             gap: 20px;
         }
 
+        /* STRUKTURA KOŁA FORTUNY */
+        .wheel-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 15px auto;
+        }
+        .fortune-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #1e293b;
+            background: conic-gradient(var(--gold-primary) 0deg 120deg, var(--purple-premium) 120deg 240deg, var(--diamond-blue) 240deg 360deg);
+            position: relative;
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+        .wheel-marker {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid var(--danger-color);
+            z-index: 10;
+        }
+
         .ai-chat-wrapper {
             background: #111827;
             border: 1px solid #1f293d;
@@ -295,28 +325,28 @@
         .historic-card, .trail-card, .bus-card, .food-card {
             background: #111827;
             border: 1px solid #1f293d;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 13px;
         }
 
         .card-badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; margin-right: 6px; }
-        .btn-redirect { float: right; background: #1f293d; color: #fff; text-decoration: none; padding: 2px 8px; border-radius: 4px; font-size: 11px; border: 1px solid #374151; }
+        .btn-redirect { float: right; background: #1f293d; color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; border: 1px solid #374151; }
         .btn-redirect:hover { background: #374151; }
 
-        .user-reviews-list { background: rgba(0,0,0,0.3); padding: 6px; border-radius: 4px; margin-top: 8px; }
-        .single-user-review { border-bottom: 1px solid #1f293d; padding: 4px 0; font-size: 11px; }
+        .user-reviews-list { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; margin-top: 8px; }
+        .single-user-review { border-bottom: 1px solid #1f293d; padding: 6px 0; font-size: 11px; }
         .single-user-review:last-child { border-bottom: none; }
         .owner-reply-box { margin-top: 4px; padding: 4px 8px; background: rgba(168,85,247,0.1); border-left: 2px solid var(--purple-premium); border-radius: 2px; color: #c084fc; }
 
         .review-form-block { margin-top: 8px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 4px; border: 1px dashed #374151; }
         .stars-rating-select { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; margin-bottom: 4px; }
         .stars-rating-select input { display: none; }
-        .stars-rating-select label { font-size: 18px; color: #4b5563; cursor: pointer; }
+        .stars-rating-select label { font-size: 20px; color: #4b5563; cursor: pointer; }
         .stars-rating-select input:checked ~ label, .stars-rating-select label:hover, .stars-rating-select label:hover ~ label { color: #f59e0b; }
-        .gastro-textarea { width: 100%; height: 40px; background: #1f293d; border: 1px solid #374151; color: #fff; font-size: 12px; padding: 4px; border-radius: 4px; resize: none; box-sizing: border-box; margin-bottom: 4px; }
-        .btn-submit-review { background: var(--gold-primary); color: #000; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .gastro-textarea { width: 100%; height: 50px; background: #1f293d; border: 1px solid #374151; color: #fff; font-size: 12px; padding: 6px; border-radius: 4px; resize: none; box-sizing: border-box; margin-bottom: 4px; }
+        .btn-submit-review { background: var(--gold-primary); color: #000; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
 
         .biz-reply-container { background: #0b0f19; border: 1px solid #1f293d; padding: 10px; border-radius: 6px; margin-bottom: 8px; }
         .admin-log-row { display: flex; justify-content: space-between; align-items: center; background: #111827; padding: 8px; border-radius: 4px; margin-bottom: 6px; font-size: 12px; }
@@ -357,17 +387,20 @@
 </head>
 <body>
 
+    <!-- GÓRNY NAGŁÓWEK SYSTEMU -->
     <header class="app-header">
         <div class="header-logo-zone">
             <h1>🇵🇱 POLSKIE OKIENKA LIVE <span style="font-size: 11px; color: var(--gold-primary); font-weight: bold; vertical-align: super;">PREMIUM B2B</span></h1>
         </div>
         
         <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- DYNAMICZNY LICZNIK GOŚCI ONLINE -->
             <div class="stats-bar">
                 <div class="stat-item" id="lblOnlineGuests">🔥 Online: <span id="onlineGuestsCount">--</span></div>
                 <div class="stat-item" id="lblTotalSlots">Zajęte Sektory: <span id="statsOccupied">0</span>/100</div>
             </div>
 
+            <!-- PRZEŁĄCZNIK JĘZYKÓW -->
             <div class="lang-switcher">
                 <button onclick="changeLanguage('pl')" title="Polski">🇵🇱</button>
                 <button onclick="changeLanguage('en')" title="English">🇬🇧</button>
@@ -377,6 +410,7 @@
         </div>
     </header>
 
+    <!-- SEKCJA NAWIGACJI -->
     <div class="navigation-row">
         <div class="nav-tabs">
             <button class="nav-btn active" id="btnTablica" onclick="switchMainView('tablica')">🔲 GŁÓWNA MATRYCA</button>
@@ -386,17 +420,22 @@
         </div>
 
         <div id="authHeaderStateZone">
-            <button class="nav-btn" style="background: var(--diamond-blue); color: #000; font-weight: bold;" onclick="openAuthModal()">👤 ZALOGUJ / ZAREJESTRUJ SE</button>
+            <button class="nav-btn" style="background: var(--diamond-blue); color: #000; font-weight: bold;" onclick="openAuthModal()">👤 ZALOGUJ / ZAREJESTRUJ SIĘ</button>
         </div>
     </div>
 
+    <!-- PASEK FILTRU REGIONALNEGO (20 MIAST) -->
     <div class="city-filter-container">
         <div class="city-grid" id="cityPinsGrid"></div>
     </div>
 
+    <!-- ================= WIDOKI APLIKACJI ================= -->
+
+    <!-- WIDOK A: GŁÓWNA TABLICA REKLAMOWA -->
     <div id="viewTablica" class="app-view active-view">
         <div class="main-board-layout">
             
+            <!-- LEWA STRONA: MATRYCA 100 OKIENEK -->
             <div class="grid-matrix-container">
                 <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid #1f293d; padding-bottom:8px;">
                     <span style="font-size:12px; color:#cbd5e1; font-weight:bold; text-transform:uppercase;">🗺️ Szyld Cyfrowy: <strong id="currentCityLabel" style="color:var(--gold-primary);">Karpacz</strong></span>
@@ -405,7 +444,9 @@
                 <div class="matrix-grid" id="boardMatrix"></div>
             </div>
 
+            <!-- PRAWA STRONA: WIDGETY LIVE -->
             <div class="sidebar-right">
+                <!-- TELEBIM LIVE -->
                 <div class="telebim-container">
                     <div style="background: #1e293b; color: #fff; font-size:10px; font-weight:bold; padding:3px 0; text-transform:uppercase; border-radius:4px 4px 0 0; margin-bottom:6px;">📺 TELEBIM LIVE: FIRMA DNIA</div>
                     <div class="telebim-screen" id="telebimZone" onclick="openTelebimUrl()">
@@ -413,6 +454,7 @@
                     </div>
                 </div>
 
+                <!-- SZYBKI ZAKUP PASKA -->
                 <div class="tourist-panel" style="border-color:#e11d48; background:rgba(225,29,72,0.02);">
                     <h4 style="margin-top:0; color:#fda4af; font-size:13px; text-transform:uppercase;">🚀 Ekspresowy Ticker Sponsorowany</h4>
                     <p style="font-size:11px; color:#9ca3af; margin:0 0 10px 0;">Twój tekst reklamowy widoczny na dole strony we wszystkich 20 miastach jednocześnie!</p>
@@ -422,6 +464,7 @@
         </div>
     </div>
 
+    <!-- WIDOK B: STREFA TURYSTY -->
     <div id="viewTurysta" class="app-view">
         <div class="alert-box" id="regionalAlertBox">
             <span style="font-size: 22px;">🚨</span>
@@ -432,20 +475,29 @@
         </div>
 
         <div class="tourist-grid">
+            <!-- LEWA KOLUMNA: KOŁO FORTUNY + ASYSTENT AI -->
             <div>
                 <div class="tourist-panel" style="border-color: var(--gold-primary);">
                     <h3 style="margin-top:0; color:var(--gold-primary); text-transform:uppercase; font-size:13px; border-bottom:1px solid #1f293d; padding-bottom:6px;" id="lblWheelTitle">🎡 Koło Szczęśliwego Turysty</h3>
+                    
                     <div id="wheelAuthLock">
                         <p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;" id="lblWheelLock">🔒 Zaloguj się na konto **Turysty**, aby odblokować losowanie bonusów i kuponów.</p>
                     </div>
+                    
                     <div id="wheelActiveZone" style="display:none;">
-                        <div style="display:flex; flex-direction:column; align-items:center; padding:15px 0;">
+                        <!-- ELEMENTY WIZUALNEGO KOŁA FORTUNY -->
+                        <div class="wheel-wrapper">
+                            <div class="wheel-marker"></div>
+                            <div class="fortune-wheel" id="fortuneWheel"></div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:center; padding:5px 0;">
                             <button class="btn-spin" id="spinWheelBtn" style="background:var(--gold-primary); font-weight:bold; padding:10px 25px; border:none; border-radius:6px; cursor:pointer;" onclick="spinTheWheel()">URUCHOM LOSOWANIE</button>
                         </div>
                         <div id="wheelResultDisplay" style="margin-top:12px; text-align:center; font-weight:bold; color:var(--emerald-light); min-height:18px; font-size:12px;"></div>
                     </div>
                 </div>
 
+                <!-- CZAT ASYSTENTA AI -->
                 <div class="ai-chat-wrapper">
                     <h3 style="margin-top:0; color:var(--emerald-light); text-transform:uppercase; font-size:13px; display:flex; align-items:center; gap:6px;">🤖 Przewodnik AI (<span class="current-region-txt">Karpacz</span>)</h3>
                     <div class="ai-chat-messages" id="chatAiMessages"></div>
@@ -456,6 +508,7 @@
                 </div>
             </div>
 
+            <!-- PRAWA KOLUMNA: DANE TURYSTYCZNE (LISTINGI REGIONALNE) -->
             <div>
                 <div class="tourist-panel" style="border-color: #f59e0b; margin-bottom: 15px;">
                     <h3 style="margin-top:0; color:#f59e0b; text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;" id="lblGastroTitle">🍽️ Polecane Restauracje i Gastronomia</h3>
@@ -480,6 +533,7 @@
         </div>
     </div>
 
+    <!-- WIDOK C: PANEL GOSPODARZA B2B -->
     <div id="viewBizPanel" class="app-view">
         <div class="tourist-panel" style="border-color: var(--purple-premium);">
             <h3 style="margin-top:0; color:var(--purple-premium); text-transform:uppercase; font-size:16px;">💼 Panel Abonenta Premium B2B - Zarządzanie Lokalem</h3>
@@ -508,14 +562,15 @@
         </div>
     </div>
 
+    <!-- WIDOK D: CENTRALNY PANEL ADMINISTRATORA -->
     <div id="viewAdminPanel" class="app-view">
         <div class="tourist-panel" style="border-color: var(--danger-color);">
             <h3 style="margin-top:0; color:var(--danger-color); text-transform:uppercase; font-size:16px;">🛑 Główny System Moderacji i Zarządzania Platformą</h3>
             
             <div style="background: rgba(168, 85, 247, 0.12); border: 1px solid var(--purple-premium); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h4 style="margin-top:0; color:#c084fc; font-size:13px; text-transform:uppercase; display:flex; align-items:center; gap:6px;">🎰 SILNIK LOSOWANIA TELEBIMU (UKRYTY KOKPIT)</h4>
+                <h4 style="margin-top:0; color:#c084fc; font-size:13px; text-transform:uppercase; display:flex; align-items:center; gap:6px;">♣️ SILNIK LOSOWANIA TELEBIMU (UKRYTY KOKPIT)</h4>
                 <p style="font-size:11px; color:#9ca3af; margin:0 0 10px 0;">Panel niewidoczny dla zwykłych użytkowników. Wybierz miasto na liście wyżej, a następnie kliknij przycisk, by wylosować reklamę dnia na telebim.</p>
-                <button class="btn-buy-confirm" style="background:#a855f7; width:auto; padding:8px 20px;" onclick="drawTelebimWinner()">🎰 Losuj firmę dnia dla: <span class="current-region-txt">Karpacz</span></button>
+                <button class="btn-buy-confirm" style="background:#a855f7; width:auto; padding:8px 20px;" onclick="drawTelebimWinner()">♣️ Losuj firmę dnia dla: <span class="current-region-txt">Karpacz</span></button>
                 <div id="adminDrawStatus" style="font-size:12px; color:var(--gold-primary); margin-top:8px; font-weight:bold;"></div>
             </div>
 
@@ -526,6 +581,9 @@
         </div>
     </div>
 
+    <!-- ================= MODALE MODUŁÓW ================= -->
+
+    <!-- MODAL LOGOWANIA I REJESTRACJI -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-box" style="border-color: var(--diamond-blue);">
             <h3 style="color: var(--diamond-blue); margin-top: 0; text-transform:uppercase; font-size:14px;" id="authModalTitle">Logowanie do Platformy</h3>
@@ -550,6 +608,7 @@
         </div>
     </div>
 
+    <!-- MODAL MATRYCY OKIENEK -->
     <div class="modal-overlay" id="purchaseModal">
         <div class="modal-box">
             <h3 style="color: var(--gold-primary); margin-top: 0; text-transform:uppercase; font-size:14px;">Zarezerwuj Sektor Szyldu</h3>
@@ -569,6 +628,7 @@
         </div>
     </div>
 
+    <!-- MODAL PASKA INFORMACYJNEGO -->
     <div class="modal-overlay" id="tickerPurchaseModal">
         <div class="modal-box" style="border-color: #e11d48;">
             <h3 style="color: #fda4af; margin-top: 0; text-transform:uppercase; font-size:14px;">🚀 Ekspresowy Wpis Reklamowy na Pasek</h3>
@@ -582,11 +642,13 @@
         </div>
     </div>
 
+    <!-- PASEK DOLNY TICKER -->
     <div class="bottom-ticker-container">
         <div class="ticker-badge">🔴 POLSKIE OKIENKA LIVE</div>
         <div class="ticker-scroll-content" id="tickerScrollContent"></div>
     </div>
 
+    <!-- ================= LOGIKA SKRYPTÓW JAVASCRIPT ================= -->
     <script>
         let currentCity = "Karpacz";
         let selectedCell = null;
@@ -676,7 +738,7 @@
                 weather: "🌤️ Przyjemnie, 21°C", alert: "🟢 Warunki w Beskidach znakomite.",
                 rewards: ["Kupon Muzeum Małysza", "Ciastko w kawiarni u Wisły", "Pusty los"],
                 historicNames: ["Zamek Prezydenta RP", "Skocznia Malinka im. Adama Małysza", "Muzeum Beskidzkie", "Zabytkowa Enklawa Budownictwa Drewnianego", "Pałacyk Myśliwski Habsburgów", "Zapora w Wiśle Czarnem", "Kaskady Rodła", "Kościół Ewangelicko-Augsburski Apostołów Piotra i Pawła", "Dom Mansjonarski", "Pomnik Źródeł Wisły"],
-                trailNames: ["Szlak na Baranią Górę", "Trasa na Stożek Wielki", "Szlak na Cienków", "Trasa spacerowa Kamienny", "Wiślańska Trasa Rowerowa", "Trasa Rowerowa Nowa Osada", "Szlak na Trzy Kopce Wiślańskie", "Ścieżka dydaktyczna w Czarnem", "Pętla rowerowa przez Kubalonkę", "Szlak na przełęcz Salmopolską"]
+                trailNames: ["Szlak na Baranią Górę", "Trasa na Stożek Wielki", "Szlak na Cienków", "Trasa spacerowa Kamienny", "Wiślańska Trasa Rowerowa", "Trasa Rowerowa Nowa Osada", "Szlak na Trzy Kopce Wiślańskie", "Ścieżka dydaktyczna w Czarnem", "Pętla rowerowa przez Kubalonkę", "Szlak na przełęcz Salmopolskou"]
             },
             "Zakopane": {
                 weather: "☀️ Słonecznie, Tatry czyste, 16°C", alert: "🟡 Uwaga na oblodzenia w wysokich partiach.",
@@ -731,7 +793,7 @@
             }
         };
 
-        // INTEGRACJA SYSTEMU SYSTEMU DARMOWYCH REKLAM NA START
+        // INTEGRACJA SYSTEMU DARMOWYCH REKLAM NA START
         function initLocalStorage() {
             const local = localStorage.getItem('polskie_okienka_master_store');
             if(local) { 
@@ -795,7 +857,7 @@
                 el.innerText = randomGuests;
             }
             updateCount();
-            setInterval(updateCount, 4000); // Zmiana co 4 sekundy
+            setInterval(updateCount, 4000);
         }
 
         // FUNKCJA ZMIANY JĘZYKA UI
@@ -969,7 +1031,7 @@
             const historicContainer = document.getElementById('historicListContainer'); historicContainer.innerHTML = "";
             data.historic.forEach(h => {
                 const card = document.createElement('div'); card.className = "historic-card";
-                card.innerHTML = `<div><span class="card-badge" style="background:var(--gold-primary);">${h.type}</span> <strong>${h.name}</strong></div><div style="color:#9ca3af; font-size:12px;">${h.desc}</div><a href="${h.url}" target="_blank" class="btn-redirect">📍 Mapa</a>`;
+                card.innerHTML = `<div><span class="card-badge" style="background:var(--gold-primary); color:#000;">${h.type}</span> <strong>${h.name}</strong></div><div style="color:#9ca3af; font-size:12px; margin-top:4px;">${h.desc}</div><a href="${h.url}" target="_blank" class="btn-redirect">📍 Mapa</a>`;
                 historicContainer.appendChild(card);
             });
 
@@ -977,14 +1039,14 @@
             data.trails.forEach(t => {
                 const card = document.createElement('div'); card.className = "trail-card";
                 const isBike = (t.type === "bike");
-                card.innerHTML = `<div><span class="card-badge" style="background:${isBike ? "var(--blue-tourist)":"var(--emerald-light)"}; color:#fff;">${isBike ? "🚴 ROWER":"🥾 PIESZY"}</span> <strong>${t.name}</strong></div><div style="color:#9ca3af; font-size:12px;">${t.desc}</div><a href="${t.url}" target="_blank" class="btn-redirect">Mapa 🗺️</a>`;
+                card.innerHTML = `<div><span class="card-badge" style="background:${isBike ? "var(--blue-tourist)":"var(--emerald-light)"}; color:#fff;">${isBike ? "🚴 ROWER":"🥾 PIESZY"}</span> <strong>${t.name}</strong></div><div style="color:#9ca3af; font-size:12px; margin-top:4px;">${t.desc}</div><a href="${t.url}" target="_blank" class="btn-redirect">Mapa 🗺️</a>`;
                 trailsContainer.appendChild(card);
             });
 
             const busContainer = document.getElementById('busListContainer'); busContainer.innerHTML = "";
             data.buses.forEach(b => {
                 const card = document.createElement('div'); card.className = "bus-card";
-                card.innerHTML = `<div><strong>${b.route}</strong></div><div style="color:#9ca3af; font-size:12px;">Rozkłady jazdy PKP/PKS na żywo.</div><a href="${b.url}" target="_blank" class="btn-redirect">Rozkład 🎫</a>`;
+                card.innerHTML = `<div><strong>${b.route}</strong></div><div style="color:#9ca3af; font-size:12px; margin-top:4px;">Rozkłady jazdy PKP/PKS na żywo.</div><a href="${b.url}" target="_blank" class="btn-redirect">Rozkład 🎫</a>`;
                 busContainer.appendChild(card);
             });
         }
@@ -1005,8 +1067,8 @@
                 
                 const canReview = (currentUser && currentUser.role === 'tourist');
                 card.innerHTML = `
-                    <div><span class="card-badge" style="background:#f59e0b;">${r.type}</span> <strong>${r.name}</strong></div>
-                    <div style="font-size:12px; margin:2px 0;">Ocena: <span style="color:#f59e0b;">${avg}/5</span> (${r.votes} opinii)</div>
+                    <div><span class="card-badge" style="background:#f59e0b; color:#000;">${r.type}</span> <strong>${r.name}</strong></div>
+                    <div style="font-size:12px; margin:4px 0;">Ocena: <span style="color:#f59e0b; font-weight:bold;">★ ${avg}/5</span> (${r.votes} opinii)</div>
                     <div class="user-reviews-list">${reviewsHTML ? reviewsHTML : '<div style="font-size:10px; color:#6b7280;">Brak opinii.</div>'}</div>
                     ${canReview ? `<div class="review-form-block">
                         <div class="stars-rating-select">
@@ -1016,9 +1078,9 @@
                             <input type="radio" id="gstar2_${r.id}" name="gstars_${r.id}" value="2"><label for="gstar2_${r.id}">★</label>
                             <input type="radio" id="gstar1_${r.id}" name="gstars_${r.id}" value="1"><label for="gstar1_${r.id}">★</label>
                         </div>
-                        <textarea class="gastro-textarea" id="gtxt_${r.id}" placeholder="Komentarz..."></textarea>
+                        <textarea class="gastro-textarea" id="gtxt_${r.id}" placeholder="Dodaj komentarz turystyczny..."></textarea>
                         <button class="btn-submit-review" onclick="submitGastroReview('${r.id}')">Zatwierdź</button>
-                    </div>` : `<div style="font-size:11px; color:#9ca3af; text-align:center; padding:5px;">${currentUser ? '🔒 Tylko konta Turystów mogą oceniać.' : '🔒 Zaloguj się jako Turysta, by ocenić.'}</div>`}
+                    </div>` : `<div style="font-size:11px; color:#9ca3af; text-align:center; padding:5px; margin-top:5px; background:rgba(0,0,0,0.15); border-radius:4px;">${currentUser ? '🔒 Tylko konta Turystów mogą oceniać.' : '🔒 Zaloguj się jako Turysta, by dodać ocenę gwiazdkową.'}</div>`}
                 `;
                 container.appendChild(card);
             });
@@ -1040,7 +1102,7 @@
         function resetAiChat() {
             const box = document.getElementById('chatAiMessages');
             const welcomeText = languageDictionary[currentLang].aiWelcome;
-            box.innerHTML = `<div class="ai-msg bot">${welcomeText} <strong>${currentCity}</strong>. O o co chcesz zapytać? Znam tu szlaki oraz lokalne zabytki!</div>`;
+            box.innerHTML = `<div class="ai-msg bot">${welcomeText} <strong>${currentCity}</strong>. O co chcesz zapytać? Znam tu szlaki oraz lokalne zabytki!</div>`;
         }
 
         function sendAiChatMessage() {
@@ -1073,7 +1135,7 @@
             document.getElementById('bizActiveDashboard').style.display = "block"; target.innerHTML = "";
 
             if(!restaurant || restaurant.reviews.length === 0) {
-                target.innerHTML = `<p style="font-size:12px; color:#9ca3af;">Brak opinii.</p>`; return;
+                target.innerHTML = `<p style="font-size:12px; color:#9ca3af;">Brak opinii do przetworzenia.</p>`; return;
             }
             restaurant.reviews.forEach(rev => {
                 const div = document.createElement('div'); div.className = "biz-reply-container";
@@ -1124,7 +1186,7 @@
             const tc = document.getElementById('tickerScrollContent');
             let base = `<div class="ticker-item">📍 Miasto: <span style="color:var(--gold-primary); font-weight:bold;">${currentCity.toUpperCase()}</span></div><div class="ticker-item">🌤️ Pogoda: <span>${regionalDatabase[currentCity]?.weather}</span></div>`;
             storeData.customTickerAds.forEach(ad => { base += `<div class="ticker-item"><span class="sponsor-tag">SPONSOR</span><strong>${ad.company}:</strong> ${ad.text}</div>`; });
-            tc.innerHTML = base + base; // Dublowanie tekstu dla efektu nieskończonego przewijania
+            tc.innerHTML = base + base;
         }
 
         function openTickerPurchaseModal() { document.getElementById('tickerPurchaseModal').style.display = "flex"; }
@@ -1174,6 +1236,7 @@
             document.getElementById('authModal').style.display = "flex";
         }
 
+        // PRZEŁĄCZANIE ZAKŁADEK LOGOWANIA / REJESTRACJI
         function toggleAuthTab(tab) {
             authCurrentTab = tab;
             if(tab === 'login') {
@@ -1234,17 +1297,26 @@
             location.reload();
         }
 
+        // ANIMACJA OBRACANIA KOŁA FORTUNY Z FIZYKĄ
         function spinTheWheel() {
             if(!currentUser || currentUser.role !== 'tourist') return;
-            const btn = document.getElementById('spinWheelBtn'); const wheel = document.getElementById('fortuneWheel');
-            btn.disabled = true; const db = regionalDatabase[currentCity];
+            const btn = document.getElementById('spinWheelBtn'); 
+            const wheel = document.getElementById('fortuneWheel');
+            btn.disabled = true; 
+            
+            const db = regionalDatabase[currentCity];
             const rIdx = Math.floor(Math.random() * db.rewards.length);
-            document.getElementById('wheelResultDisplay').innerText = "⚡ Koło się kręci...";
+            
+            // Kąt obrotu: 4 pełne obroty + przesunięcie na wylosowany segment (120 stopni na nagrodę)
+            const targetRotation = 1440 + (rIdx * 120);
+            wheel.style.transform = `rotate(${targetRotation}deg)`;
+            document.getElementById('wheelResultDisplay').innerText = "⚡ Trwa losowanie kuponu...";
+            
             setTimeout(() => {
                 document.getElementById('wheelResultDisplay').innerHTML = `🎁 WYGRANA: <span style="background:var(--gold-primary); color:#000; padding:2px 5px; border-radius:4px;">${db.rewards[rIdx]}</span>`;
-                if(typeof confetti === 'function') confetti({ particleCount: 50, spread: 40 });
+                if(typeof confetti === 'function') confetti({ particleCount: 60, spread: 50 });
                 btn.disabled = false;
-            }, 1500);
+            }, 4000);
         }
     </script>
 </body>
