@@ -3,27 +3,6 @@
 <head>
     <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #0a0a0a; border-bottom: 1px solid #333;">
     <!-- Licznik Online -->
-    <div style="font-size: 14px; color: #0f0;">
-        Online: <span id="onlineCount">482</span>
-    </div>
-
-    <!-- Przełącznik Języków -->
-    <select id="langSelect" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px;">
-        <option value="pl">PL 🇵🇱</option>
-        <option value="cs">CZ 🇨🇿</option>
-        <option value="en">EN 🇬🇧</option>
-        <option value="de">DE 🇩🇪</option>
-    </select>
-
-    <!-- Przycisk Logowania -->
-    <button onclick="document.getElementById('loginModal').style.display='block'" 
-            style="background: #1a1a1a; color: #fff; border: 1px solid #444; padding: 5px 15px; cursor: pointer;">
-        Zaloguj się
-    </button>
-</header>
-
-<script>
-    // Skrypt licznika
     setInterval(() => {
         let el = document.getElementById('onlineCount');
         let count = parseInt(el.innerText);
@@ -59,6 +38,36 @@
         }
 
         body {
+            <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #0a0a0a; border-bottom: 1px solid #333;">
+    <!-- Licznik Online -->
+    <div style="font-size: 14px; color: #0f0;">
+        Online: <span id="onlineCount">482</span>
+    </div>
+
+    <!-- Przełącznik Języków -->
+    <select id="langSelect" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px;">
+        <option value="pl">PL 🇵🇱</option>
+        <option value="cs">CZ 🇨🇿</option>
+        <option value="en">EN 🇬🇧</option>
+        <option value="de">DE 🇩🇪</option>
+    </select>
+
+    <!-- Przycisk Logowania -->
+    <button onclick="document.getElementById('loginModal').style.display='block'" 
+            style="background: #1a1a1a; color: #fff; border: 1px solid #444; padding: 5px 15px; cursor: pointer;">
+        Zaloguj się
+    </button>
+</header>
+
+<script>
+    // Skrypt licznika
+    setInterval(() => {
+        let el = document.getElementById('onlineCount');
+        let count = parseInt(el.innerText);
+        let change = Math.floor(Math.random() * 7) - 3; 
+        el.innerText = count + change;
+    }, 4000);
+</script>
             background: radial-gradient(circle at top, #0d131a 0%, #05070a 65%, #010203 100%) no-repeat fixed;
             color: var(--text-main);
             font-family: 'Segoe UI', Arial, sans-serif;
