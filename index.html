@@ -3,487 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polskie Okienka Live - Regionalny Portal Premium</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>PolskieOkienka.pl - Ekskluzywna Matryca Premium, AI B2B i Przewodnik Turystyczny</title>
+    
+    <!-- Biblioteka konfetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
-            --bg-dark-core: #0b0f19;
-            --panel-bg: #131a26;
-            --gold-primary: #fbbf24;
-            --emerald-light: #34d399;
-            --diamond-blue: #22d3ee;
-            --purple-premium: #a855f7;
+            --gold-primary: #d4af37;
+            --gold-dark: #aa7c11;
+            --emerald-light: #50c878;
+            --emerald-deep: #0b6623;
+            --pearl-base: #f0ead6;
+            --pearl-glow: #eae0c8;
+            --diamond-cyan: #b9f2ff;
+            --diamond-blue: #70d1f4;
+            
+            --bg-darker: #030508;
+            --bg-panel: rgba(8, 11, 18, 0.96);
+            --text-main: #f3f4f6;
+            --green-live: #10b981;
+            --blue-tourist: #2563eb;
             --danger-color: #ef4444;
-            --blue-tourist: #3b82f6;
+            --purple-premium: #a855f7;
         }
 
         body {
-            background-color: var(--bg-dark-core);
-            color: #f3f4f6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top, #0d131a 0%, #05070a 65%, #010203 100%) no-repeat fixed;
+            color: var(--text-main);
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            padding-bottom: 60px;
-        }
-
-        .app-header {
-            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-            border-bottom: 2px solid var(--gold-primary);
-            padding: 15px 20px;
+            padding: 15px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding-bottom: 120px; 
         }
 
-        .header-logo-zone h1 {
-            margin: 0;
-            font-size: 20px;
-            color: #fff;
-            letter-spacing: 1px;
+        @keyframes matrixGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .stats-bar {
-            display: flex;
-            gap: 15px;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 15px;
-            border-radius: 6px;
-            border: 1px solid #1e293b;
-            font-size: 12px;
-        }
-
-        .stat-item span {
-            color: var(--gold-primary);
-            font-weight: bold;
-        }
-
-        .navigation-row {
-            background: #0f172a;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1e293b;
-        }
-
-        .nav-tabs {
+        /* NAWIGACJA */
+        .main-nav {
             display: flex;
             gap: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 1400px;
+            flex-wrap: wrap;
         }
 
         .nav-btn {
-            background: #1e293b;
+            background: rgba(13, 17, 28, 0.8);
+            border: 1px solid #1f2738;
             color: #9ca3af;
-            border: 1px solid #334155;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 11px 22px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: bold;
             font-size: 13px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-
-        .nav-btn:hover {
-            background: #334155;
-            color: #fff;
-        }
-
         .nav-btn.active {
-            background: var(--gold-primary);
+            background: linear-gradient(135deg, var(--gold-primary), var(--emerald-light));
             color: #000;
-            border-color: var(--gold-primary);
+            border-color: var(--diamond-cyan);
+            box-shadow: 0 0 20px rgba(80, 200, 120, 0.4);
         }
-
-        .nav-btn-biz.active {
-            background: var(--purple-premium) !important;
-            color: #fff !important;
-            border-color: var(--purple-premium) !important;
-        }
-
-        .nav-btn-admin.active {
-            background: var(--danger-color) !important;
-            color: #fff !important;
-            border-color: var(--danger-color) !important;
-        }
-
-        .city-filter-container {
-            padding: 15px 20px;
+        .nav-btn-user {
             background: #111827;
+            color: #f3f4f6;
+            border: 1px solid #374151;
+        }
+        .nav-btn-biz {
+            background: #1e1b4b;
+            color: #c7d2fe;
+            border: 1px solid #4338ca;
+        }
+        .nav-btn-admin {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border: 1px solid #b91c1c;
         }
 
-        .city-grid {
+        /* HEADER PANEL */
+        .header-panel {
+            background: linear-gradient(135deg, #0a0d14 0%, #030407 100%);
+            border: 2px solid var(--gold-primary);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 40px rgba(214, 175, 55, 0.15);
+            width: 100%;
+            max-width: 1400px;
+            box-sizing: border-box;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 20px;
+        }
+
+        .header-left h2 { 
+            margin: 0; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            background: linear-gradient(to right, #fff 20%, var(--gold-primary) 50%, var(--diamond-cyan) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 24px;
+        }
+        
+        .stats-container { display: flex; align-items: center; gap: 15px; font-size: 13px; font-weight: 600; flex-wrap: wrap; }
+        .stat-item { display: flex; align-items: center; gap: 8px; color: #9ca3af; background: rgba(0,0,0,0.5); padding: 6px 14px; border-radius: 20px; }
+        .stat-item span.stat-value { color: var(--emerald-light); font-size: 15px; font-weight: 800; }
+
+        .live-widget {
+            background: rgba(7, 9, 15, 0.8);
+            border: 1px solid rgba(80, 200, 120, 0.3);
+            border-radius: 12px;
+            padding: 8px 16px;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            font-size: 13px;
+        }
+        .widget-highlight { color: var(--gold-primary); font-weight: bold; }
+
+        /* LISTA MIAST (20 MIAST) */
+        #map-view {
+            width: 100%;
+            max-width: 1400px;
+            background: var(--bg-panel);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid var(--emerald-deep);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-sizing: border-box;
+            margin-bottom: 25px;
+        }
+
+        .map-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            width: 100%;
+            margin-top: 12px;
         }
 
         .city-pin {
-            background: #1f293d;
-            border: 1px solid #2d3748;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            background: rgba(13, 17, 26, 0.8);
+            border: 1px solid #1f293d;
+            padding: 10px 14px;
+            border-radius: 8px;
             cursor: pointer;
-            color: #cbd5e1;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
-
-        .city-pin:hover {
-            background: #374151;
+        .city-pin:hover, .city-pin.active-city {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--emerald-deep) 100%);
+            border-color: var(--diamond-cyan);
+            box-shadow: 0 4px 12px rgba(80, 200, 120, 0.3);
         }
+        .pin-dot { width: 8px; height: 8px; background-color: var(--diamond-cyan); border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
+        .city-pin:hover .pin-dot, .city-pin.active-city .pin-dot { background-color: #fff; box-shadow: 0 0 8px #fff; }
+        .city-label { color: #cbd5e1; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .city-pin:hover .city-label, .city-pin.active-city .city-label { color: #fff; }
 
-        .city-pin.active-city {
-            background: var(--diamond-blue);
+        /* WIDOKI */
+        .app-view { display: none; width: 100%; max-width: 1400px; box-sizing: border-box; }
+        .app-view.active-view { display: block; }
+
+        /* TELEBIM DNIA PREMIUM */
+        .main-telebim-frame {
+            background: linear-gradient(270deg, var(--gold-primary), var(--emerald-light), var(--pearl-base), var(--diamond-cyan));
+            background-size: 600% 600%;
+            animation: matrixGlow 12s ease infinite;
+            padding: 5px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 35px rgba(80, 200, 120, 0.25);
+        }
+        .main-telebim-inner {
+            background: radial-gradient(circle, #090d16 0%, #020305 100%);
+            border-radius: 10px;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .telebim-badge {
+            position: absolute;
+            top: 12px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--diamond-cyan));
             color: #000;
-            font-weight: bold;
-            border-color: var(--diamond-blue);
+            font-size: 10px;
+            font-weight: 900;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+        .telebim-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            margin: 0;
         }
 
-        .app-view {
-            display: none;
-            padding: 20px;
+        /* MATRYCA REKLAM */
+        .billboard-frame {
+            background: linear-gradient(270deg, var(--gold-primary) 0%, var(--emerald-light) 33%, var(--pearl-glow) 66%, var(--diamond-cyan) 100%);
+            background-size: 400% 400%;
+            animation: matrixGlow 8s ease infinite;
+            padding: 10px; 
+            border-radius: 20px; 
+            box-shadow: 0 40px 90px rgba(0,0,0,0.95);
+            width: 100%; 
+            box-sizing: border-box; 
+            overflow-x: auto;
         }
-
-        .app-view.active-view {
-            display: block;
-        }
-
-        .main-board-layout {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 20px;
-        }
-
-        .grid-matrix-container {
-            background: #090d16;
-            border: 2px solid #1f293d;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: inset 0 4px 20px rgba(0,0,0,0.8);
-        }
-
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
+        .billboard-inner { background-color: #040609; padding: 12px; border-radius: 12px; min-width: 1000px; }
+        
+        .grid-board {
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            grid-template-rows: repeat(10, minmax(75px, auto));
+            gap: 8px; background-color: #020305; padding: 12px; border-radius: 10px;
+            width: 100%; box-sizing: border-box;
         }
 
         .grid-item {
-            aspect-ratio: 1;
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            padding: 4px;
-            box-sizing: border-box;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .grid-item:hover {
-            transform: scale(1.04);
-            z-index: 10;
-            box-shadow: 0 0 12px rgba(255,255,255,0.2);
-        }
-
-        .gold-vacant { background: rgba(251,191,36,0.03); border: 1px dashed rgba(251,191,36,0.4); color: var(--gold-primary); }
-        .gold-active { background: linear-gradient(135deg, #2e2300 0%, #1c1500 100%); border: 2px solid var(--gold-primary); color: #fff; }
-        .standard-vacant { background: rgba(34,211,238,0.02); border: 1px dashed rgba(34,211,238,0.3); color: var(--diamond-blue); }
-        .standard-active { background: linear-gradient(135deg, #082f49 0%, #0f172a 100%); border: 2px solid var(--diamond-blue); color: #fff; }
-
-        .grid-item-logo-img {
-            max-width: 90%;
-            max-height: 60%;
-            object-fit: contain;
-            margin-bottom: 4px;
-        }
-
-        .sidebar-right {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .telebim-container {
-            background: #000;
-            border: 3px solid #1e293b;
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 0 25px rgba(168,85,247,0.3);
-            text-align: center;
+            background: linear-gradient(135deg, #0e131f 0%, #04060a 100%);
+            border: 1px solid #1b2336; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: bold; color: #4b5563; cursor: pointer; transition: all 0.2s; padding: 6px; box-sizing: border-box; text-align: center;
             position: relative;
         }
-
-        .telebim-screen {
-            background: #050505;
-            border: 1px solid #111;
-            border-radius: 4px;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
+        .grid-item:hover { 
+            transform: scale(1.05); z-index: 5;
+            border-color: var(--diamond-cyan); 
+            box-shadow: 0 0 15px var(--emerald-light);
+        }
+        
+        .grid-item.gold-vacant { 
+            border: 1px dashed var(--gold-primary); color: var(--gold-primary);
+            background: linear-gradient(135deg, rgba(214,175,55,0.04) 0%, #04060a 100%);
+        }
+        .grid-item.standard-vacant { 
+            border: 1px dashed var(--emerald-light); color: var(--emerald-light);
+            background: linear-gradient(135deg, rgba(80,200,120,0.03) 0%, #04060a 100%);
+        }
+        
+        .grid-item.gold-active { 
+            border: 2px solid var(--gold-primary); color: #fff; 
+            background: linear-gradient(135deg, rgba(214,175,55,0.15) 0%, #05080e 100%);
+            box-shadow: inset 0 0 8px rgba(214,175,55,0.2);
+        }
+        .grid-item.standard-active { 
+            border: 2px solid var(--emerald-light); color: #fff; 
+            background: linear-gradient(135deg, rgba(80,200,120,0.1) 0%, #05080e 100%);
+            box-shadow: inset 0 0 8px rgba(80,200,120,0.15);
         }
 
-        .telebim-title {
-            font-size: 14px;
-            font-weight: 900;
-            color: #fff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+        .grid-item-logo-img { max-width: 95%; max-height: 38px; object-fit: contain; border-radius: 4px; }
+
+        /* STREFA TURYSTY LAYOUT */
+        .tourist-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 1024px) { .tourist-grid { grid-template-columns: 380px 1fr; } }
 
         .tourist-panel {
-            background: var(--panel-bg);
-            border: 1px solid #1e293b;
-            border-left: 4px solid var(--gold-primary);
-            border-radius: 8px;
-            padding: 15px;
+            background: var(--bg-panel);
+            border: 2px solid var(--blue-tourist);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         .alert-box {
-            background: rgba(239,68,68,0.1);
-            border: 1px solid var(--danger-color);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            background: rgba(239, 68, 68, 0.08); border: 1px solid var(--danger-color);
+            border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; font-size: 13px;
         }
 
-        .tourist-grid {
-            display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 20px;
+        .trail-card, .bus-card, .food-card, .historic-card {
+            background: rgba(255,255,255,0.01);
+            border-radius: 8px; padding: 14px; margin-bottom: 15px; font-size: 13px;
+            display: flex; flex-direction: column; gap: 6px; box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-left-width: 4px;
         }
+        .historic-card { border-left: 4px solid var(--gold-primary); background: linear-gradient(90deg, rgba(214,175,55,0.03) 0%, transparent 100%); }
+        .trail-card { border-left: 4px solid var(--emerald-light); }
+        .bus-card { border-left: 4px solid var(--diamond-blue); }
+        .food-card { border-left: 4px solid #f59e0b; background: linear-gradient(90deg, rgba(245,158,11,0.02) 0%, transparent 100%); }
 
-        /* STRUKTURA KOŁA FORTUNY */
-        .wheel-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 15px auto;
+        .card-badge { font-size: 10px; font-weight: 900; padding: 2px 7px; border-radius: 4px; color: #000; width: fit-content; text-transform: uppercase; }
+        .stars-display { color: #ffcc00; font-size: 14px; font-weight: bold; }
+
+        /* FORMULARZ OPINII GASTRO */
+        .review-form-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(245,158,11,0.2);
+            padding: 12px; border-radius: 6px; margin-top: 10px;
         }
-        .fortune-wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 6px solid #1e293b;
-            background: conic-gradient(var(--gold-primary) 0deg 120deg, var(--purple-premium) 120deg 240deg, var(--diamond-blue) 240deg 360deg);
-            position: relative;
-            transition: transform 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+        .stars-rating-select {
+            display: flex; flex-direction: row-reverse; justify-content: flex-end; margin: 5px 0;
         }
-        .wheel-marker {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 20px solid var(--danger-color);
-            z-index: 10;
-        }
-
-        .ai-chat-wrapper {
-            background: #111827;
-            border: 1px solid #1f293d;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 20px;
-        }
-
-        .ai-chat-messages {
-            height: 200px;
-            overflow-y: auto;
-            border: 1px solid #1f293d;
-            background: #0b0f19;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 12px;
-        }
-
-        .ai-msg { margin-bottom: 8px; padding: 6px 10px; border-radius: 6px; line-height: 1.4; }
-        .ai-msg.bot { background: #1e293b; color: #e5e7eb; border-left: 3px solid var(--emerald-light); }
-        .ai-msg.user { background: #065f46; color: #fff; text-align: right; margin-left: 20px; }
-
-        .ai-chat-input-row { display: flex; gap: 6px; }
-        .ai-chat-input { flex: 1; background: #1f293d; border: 1px solid #374151; border-radius: 4px; padding: 6px 10px; color: #fff; font-size: 12px; }
-
-        .historic-card, .trail-card, .bus-card, .food-card {
-            background: #111827;
-            border: 1px solid #1f293d;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            font-size: 13px;
-        }
-
-        .card-badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; margin-right: 6px; }
-        .btn-redirect { float: right; background: #1f293d; color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; border: 1px solid #374151; }
-        .btn-redirect:hover { background: #374151; }
-
-        .user-reviews-list { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; margin-top: 8px; }
-        .single-user-review { border-bottom: 1px solid #1f293d; padding: 6px 0; font-size: 11px; }
-        .single-user-review:last-child { border-bottom: none; }
-        .owner-reply-box { margin-top: 4px; padding: 4px 8px; background: rgba(168,85,247,0.1); border-left: 2px solid var(--purple-premium); border-radius: 2px; color: #c084fc; }
-
-        .review-form-block { margin-top: 8px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 4px; border: 1px dashed #374151; }
-        .stars-rating-select { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; margin-bottom: 4px; }
         .stars-rating-select input { display: none; }
-        .stars-rating-select label { font-size: 20px; color: #4b5563; cursor: pointer; }
-        .stars-rating-select input:checked ~ label, .stars-rating-select label:hover, .stars-rating-select label:hover ~ label { color: #f59e0b; }
-        .gastro-textarea { width: 100%; height: 50px; background: #1f293d; border: 1px solid #374151; color: #fff; font-size: 12px; padding: 6px; border-radius: 4px; resize: none; box-sizing: border-box; margin-bottom: 4px; }
-        .btn-submit-review { background: var(--gold-primary); color: #000; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .stars-rating-select label { font-size: 24px; color: #4b5563; cursor: pointer; transition: color 0.2s; padding: 0 2px; }
+        .stars-rating-select label:hover,
+        .stars-rating-select label:hover ~ label,
+        .stars-rating-select input:checked ~ label { color: #ffcc00; }
 
-        .biz-reply-container { background: #0b0f19; border: 1px solid #1f293d; padding: 10px; border-radius: 6px; margin-bottom: 8px; }
-        .admin-log-row { display: flex; justify-content: space-between; align-items: center; background: #111827; padding: 8px; border-radius: 4px; margin-bottom: 6px; font-size: 12px; }
+        .gastro-textarea {
+            width: 100%; height: 50px; background: #030508; border: 1px solid #1f293d;
+            border-radius: 5px; color: #fff; padding: 6px; box-sizing: border-box; font-size: 12px; resize: none; margin-bottom: 6px;
+        }
+        .btn-submit-review { background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 900; font-size: 11px; cursor: pointer; }
 
-        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; justify-content:center; align-items:center; }
-        .modal-box { background: #111827; border: 2px solid var(--gold-primary); border-radius: 12px; padding: 25px; width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .modal-input, .modal-select { width: 100%; background: #1f293d; border: 1px solid #374151; color:#fff; padding: 8px; border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; font-size: 13px; }
-        .price-display { background: rgba(251,191,36,0.1); border: 1px solid var(--gold-primary); padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; color: var(--gold-primary); margin-bottom: 12px; }
-        .btn-buy-confirm { width: 100%; background: var(--gold-primary); color: #000; font-weight: bold; padding: 10px; border: none; border-radius: 6px; cursor: pointer; }
+        .user-reviews-list {
+            margin-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;
+        }
+        .single-user-review {
+            font-size: 11px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 4px; margin-bottom: 6px; border-left: 2px solid #374151;
+        }
+        .owner-reply-box {
+            margin-top: 6px; padding: 6px; background: rgba(67, 56, 202, 0.15); border: 1px solid rgba(67, 56, 202, 0.4); border-radius: 4px; font-size: 11px; color: #e0e7ff;
+        }
 
+        .btn-redirect {
+            background: #0f1422; color: #60a5fa; border: 1px solid #232f4d;
+            padding: 7px 14px; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: bold;
+            text-transform: uppercase; width: fit-content; text-decoration: none; display: inline-flex;
+            align-items: center; gap: 5px; transition: all 0.2s; margin-top: 5px;
+        }
+        .btn-redirect:hover { background: var(--blue-tourist); color: #fff; border-color: var(--blue-tourist); }
+
+        /* KOŁO FORTUNY */
+        .wheel-container { display: flex; flex-direction: column; align-items: center; }
+        .wheel-wrapper { position: relative; width: 190px; height: 190px; }
+        .wheel-pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 16px solid var(--gold-primary); z-index: 10; }
+        .wheel-canvas {
+            width: 100%; height: 100%; border-radius: 50%; border: 4px solid #fff;
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+            background: conic-gradient(#ef4444 0deg 60deg, #3b82f6 60deg 120deg, #10b981 120deg 180deg, #f59e0b 180deg 240deg, #8b5cf6 240deg 300deg, #ec4899 300deg 360deg);
+        }
+        .btn-spin { background: #fff; color: #000; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 900; margin-top: 12px; cursor: pointer; font-size: 11px;}
+
+        /* CZAT AI STREFA */
+        .ai-chat-wrapper {
+            background: rgba(10, 15, 26, 0.95);
+            border: 2px solid var(--emerald-light);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .ai-chat-messages {
+            height: 200px; overflow-y: auto; background: #030508; border: 1px solid #1f293d;
+            border-radius: 6px; padding: 10px; margin-bottom: 10px; font-size: 12px; display: flex; flex-direction: column; gap: 8px;
+        }
+        .ai-msg { padding: 8px 12px; border-radius: 6px; max-width: 85%; width: fit-content; line-height: 1.4; }
+        .ai-msg.user { background: #1e293b; color: #fff; align-self: flex-end; border-bottom-right-radius: 0; }
+        .ai-msg.bot { background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); color: #e6f4ea; align-self: flex-start; border-bottom-left-radius: 0; border: 1px solid rgba(80,200,120,0.3); }
+        .ai-chat-input-row { display: flex; gap: 8px; }
+        .ai-chat-input { flex: 1; background: #020305; border: 1px solid #1f293d; border-radius: 6px; color: #fff; padding: 8px; font-size: 12px; }
+
+        /* DOLNY PASEK */
         .bottom-ticker-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 35px; background: #090d16; border-top: 2px solid #e11d48; display: flex; align-items: center; z-index: 999; overflow: hidden;
+            position: fixed; bottom: 0; left: 0; width: 100%; background: #04060a;
+            border-top: 3px solid var(--gold-primary); color: #fff; height: 50px;
+            z-index: 9999; display: flex; align-items: center; overflow: hidden; box-sizing: border-box;
         }
-        .ticker-badge { background: #e11d48; color: #fff; padding: 0 12px; height: 100%; display: flex; align-items: center; font-size: 11px; font-weight: bold; white-space: nowrap; z-index: 2; }
-        .ticker-scroll-content { display: flex; white-space: nowrap; animation: tickerScroll 25s linear infinite; padding-left: 20px; }
-        .ticker-item { display: inline-flex; align-items: center; margin-right: 40px; font-size: 12px; color: #cbd5e1; }
-        .sponsor-tag { background: #e11d48; color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 3px; font-weight: bold; margin-right: 6px; }
+        .ticker-badge {
+            background: linear-gradient(135deg, var(--gold-primary), var(--emerald-light)); color: #000;
+            font-weight: 900; font-size: 11px; padding: 0 16px; height: 100%;
+            display: flex; align-items: center; letter-spacing: 1px; text-transform: uppercase; z-index: 10001;
+        }
+        .ticker-scroll-content { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker-animation 45s linear infinite; font-size: 13px; font-weight: 600; }
+        .ticker-item { display: inline-block; margin-right: 50px; }
+        .sponsor-tag { background: #e11d48; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 900; margin-right: 6px; }
 
-        @keyframes tickerScroll {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
+        @keyframes ticker-animation { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        .btn-buy-ticker-floating {
+            position: fixed; bottom: 65px; right: 20px; background: #e11d48; color: #fff;
+            border: 2px solid #fda4af; padding: 10px 20px; border-radius: 30px; font-weight: 900;
+            font-size: 12px; cursor: pointer; z-index: 9998; box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4); text-transform: uppercase;
         }
 
-        .lang-switcher button {
-            background: #1f293d;
-            border: 1px solid #334155;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: transform 0.1s;
+        /* MODALE */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-box { background: #0a0d14; border: 2px solid var(--gold-primary); border-radius: 16px; width: 95%; max-width: 480px; padding: 25px; box-sizing: border-box; text-align: center; }
+        .modal-input, .modal-select { width: 100%; padding: 11px; margin-bottom: 12px; background: #020305; border: 1px solid #1f283d; border-radius: 8px; color: #fff; box-sizing: border-box; }
+        .price-display { margin: 12px 0; font-size: 18px; font-weight: bold; color: var(--gold-primary); background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; }
+        .btn-buy-confirm { background: #10b981; color: #000; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        /* REPLIES B2B I ADMIN */
+        .biz-reply-container { background: #11131e; border: 1px solid #312e81; padding: 12px; border-radius: 8px; margin-bottom: 12px; text-align: left; }
+        .admin-log-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; border-left: 3px solid var(--danger-color); }
+        
+        /* AUTH STYLE STYLES */
+        .auth-status-bar {
+            display: flex; align-items: center; gap: 10px; margin-left: auto; background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 8px; border: 1px solid #1f293d;
         }
-        .lang-switcher button:hover {
-            transform: scale(1.1);
-            border-color: var(--gold-primary);
-        }
+        .auth-indicator { font-size: 12px; font-weight: bold; color: #9ca3af; }
     </style>
 </head>
 <body>
 
-    <header class="app-header">
-        <div class="header-logo-zone">
-            <h1>🇵🇱 POLSKIE OKIENKA LIVE <span style="font-size: 11px; color: var(--gold-primary); font-weight: bold; vertical-align: super;">PREMIUM B2B</span></h1>
+    <!-- SYSTEM REKLAMOWY TOAST -->
+    <div class="modal-overlay" id="emailNotification" style="z-index: 10005;">
+        <div class="modal-box" style="border-color: var(--diamond-cyan);">
+            <strong style="color:var(--diamond-cyan); font-size:16px; display:block; margin-bottom:10px;">📨 Komunikat Systemu / Powiadomienie</strong>
+            <div style="font-size:13px; color:#e2e8f0; text-align:left; line-height:1.5; background:#000; padding:12px; border-radius:6px;" id="emailNotificationText"></div>
+            <button class="btn-buy-confirm" style="margin-top:15px; padding:10px;" onclick="closeModal('emailNotification')">Rozumiem</button>
         </div>
+    </div>
+
+    <!-- PŁYWAJĄCY PRZYCISK EMISJI -->
+    <button class="btn-buy-ticker-floating" onclick="openTickerPurchaseModal()">🚀 Wykup pasek LIVE (50 zł/dzień)</button>
+
+    <!-- NAWIGACJA APKI -->
+    <div class="main-nav">
+        <button class="nav-btn active" id="btnTablica" onclick="switchMainView('tablica')">💎 MATRYCA REKLAM SZYCHTA</button>
+        <button class="nav-btn" id="btnTurysta" onclick="switchMainView('turysta')">🌲 KRAJOWA STREFA TURYSTY (LIVE)</button>
+        <button class="nav-btn" id="btnBizPanel" onclick="switchMainView('bizpanel')">💼 PANEL BIZNESOWY B2B (RESTAURACJE)</button>
+        <button class="nav-btn" id="btnAdminPanel" onclick="switchMainView('adminpanel')">🛑 MONITOR MODERATORA (ADMIN)</button>
         
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div class="stats-bar">
-                <div class="stat-item" id="lblOnlineGuests">🔥 Online: <span id="onlineGuestsCount">--</span></div>
-                <div class="stat-item" id="lblTotalSlots">Zajęte Sektory: <span id="statsOccupied">0</span>/100</div>
-            </div>
-
-            <div class="lang-switcher">
-                <button onclick="changeLanguage('pl')" title="Polski">🇵🇱</button>
-                <button onclick="changeLanguage('en')" title="English">🇬🇧</button>
-                <button onclick="changeLanguage('de')" title="Deutsch">🇩🇪</button>
-                <button onclick="changeLanguage('cs')" title="Čeština">🇨🇿</button>
-            </div>
-        </div>
-    </header>
-
-    <div class="navigation-row">
-        <div class="nav-tabs">
-            <button class="nav-btn active" id="btnTablica" onclick="switchMainView('tablica')">🔲 GŁÓWNA MATRYCA</button>
-            <button class="nav-btn" id="btnTurysta" onclick="switchMainView('turysta')">🥾 STREFA TURYSTY</button>
-            <button class="nav-btn" id="btnBizPanel" onclick="switchMainView('bizpanel')">💼 PANEL GOSPODARZA B2B</button>
-            <button class="nav-btn" id="btnAdminPanel" style="border-color: rgba(239,68,68,0.3);" onclick="switchMainView('adminpanel')">🛑 MONITOR MODERATORA</button>
-        </div>
-
-        <div id="authHeaderStateZone">
-            <button class="nav-btn" style="background: var(--diamond-blue); color: #000; font-weight: bold;" onclick="openAuthModal()">👤 ZALOGUJ / ZAREJESTRUJ SIĘ</button>
+        <!-- NOWY SYSTEM WĘZŁA LOGOWANIA -->
+        <div class="auth-status-bar" id="authStatusBar">
+            <span class="auth-indicator" id="authIndicatorTxt">Niezalogowany</span>
+            <button class="nav-btn nav-btn-user" style="padding: 6px 12px; font-size: 11px; margin: 0;" onclick="openAuthModal()">Konto / Logowanie</button>
         </div>
     </div>
 
-    <div class="city-filter-container">
-        <div class="city-grid" id="cityPinsGrid"></div>
+    <!-- HEADER SYSTEMU -->
+    <div class="header-panel">
+        <div class="header-left">
+            <h2>PolskieOkienka.pl - Ekskluzywna Sieć Regionalna</h2>
+            <div style="font-size: 12px; color: #9ca3af; margin-top: 4px;">Złoto, Szmaragd i Diament – najbardziej hipnotyzująca tablica reklamowa w kraju. Wybierz region docelowy.</div>
+        </div>
+        <div class="stats-container">
+            <div class="stat-item">Aktywne Sektory: <span class="stat-value" id="statsOccupied">0</span> / 100</div>
+            <div class="live-widget">
+                <div>📅 <span id="widgetDate">-</span></div>
+                <div>⏰ <span id="widgetTime" class="widget-highlight">-</span></div>
+                <div>🌤️ <span id="widgetWeather" style="color:var(--emerald-light); font-weight:bold;">-</span></div>
+            </div>
+        </div>
     </div>
 
+    <!-- FILTR REGIONALNY: 20 MIAST -->
+    <div id="map-view">
+        <h3 style="margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; color: var(--gold-primary); letter-spacing: 1px;">🌍 Wybierz Region / Kurort Docelowy (20 lokalizacji):</h3>
+        <div class="map-container" id="citiesGridFilter"></div>
+    </div>
+
+    <!-- WIDOK A: MATRYCA -->
     <div id="viewTablica" class="app-view active-view">
-        <div class="main-board-layout">
-            
-            <div class="grid-matrix-container">
-                <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid #1f293d; padding-bottom:8px;">
-                    <span style="font-size:12px; color:#cbd5e1; font-weight:bold; text-transform:uppercase;">🗺️ Szyld Cyfrowy: <strong id="currentCityLabel" style="color:var(--gold-primary);">Karpacz</strong></span>
-                    <span style="font-size:11px; color:#9ca3af;">Złota Strefa (Sektory 1-30) • Standard (Sektory 31-100)</span>
+        <div style="margin-bottom: 15px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1px;">
+            Region Handlowy: <span id="currentCityLabel" style="color:var(--gold-primary); text-shadow: 0 0 10px var(--gold-dark);">Karpacz</span>
+        </div>
+
+        <!-- TELEBIM DNIA -->
+        <div class="main-telebim-frame">
+            <div class="main-telebim-inner" id="telebimZone" onclick="openTelebimUrl()">
+                <div class="telebim-badge">🏆 GŁÓWNA NAGRODA DNIA: TELEBIM PREMIUM</div>
+                <div id="telebimContent">
+                    <p style="color:#9ca3af; font-size:14px; margin:0; font-style:italic;">Brak aktywnego losowania.</p>
                 </div>
-                <div class="matrix-grid" id="boardMatrix"></div>
             </div>
+        </div>
 
-            <div class="sidebar-right">
-                <div class="telebim-container">
-                    <div style="background: #1e293b; color: #fff; font-size:10px; font-weight:bold; padding:3px 0; text-transform:uppercase; border-radius:4px 4px 0 0; margin-bottom:6px;">📺 TELEBIM LIVE: FIRMA DNIA</div>
-                    <div class="telebim-screen" id="telebimZone" onclick="openTelebimUrl()">
-                        <div id="telebimContent"></div>
-                    </div>
-                </div>
-
-                <div class="tourist-panel" style="border-color:#e11d48; background:rgba(225,29,72,0.02);">
-                    <h4 style="margin-top:0; color:#fda4af; font-size:13px; text-transform:uppercase;">🚀 Ekspresowy Ticker Sponsorowany</h4>
-                    <p style="font-size:11px; color:#9ca3af; margin:0 0 10px 0;">Twój tekst reklamowy widoczny na dole strony we wszystkich 20 miastach jednocześnie!</p>
-                    <button class="nav-btn" style="background:#e11d48; color:#fff; border:none; width:100%; font-weight:bold;" onclick="openTickerPurchaseModal()">⚡ Wykup wpis (50 zł)</button>
-                </div>
+        <div class="billboard-frame">
+            <div class="billboard-inner">
+                <div class="grid-board" id="boardMatrix"></div>
             </div>
         </div>
     </div>
 
+    <!-- WIDOK B: STREFA TURYSTY -->
     <div id="viewTurysta" class="app-view">
         <div class="alert-box" id="regionalAlertBox">
             <span style="font-size: 22px;">🚨</span>
             <div>
-                <strong id="lblSafetyHeader">Komunikat Bezpieczeństwa (<span class="current-region-txt">Karpacz</span>):</strong> 
+                <strong>Komunikat Bezpieczeństwa (<span class="current-region-txt">Karpacz</span>):</strong> 
                 <span id="alertMessageText">Monitorowanie warunków pogodowych...</span>
             </div>
         </div>
 
         <div class="tourist-grid">
+            <!-- LEWA KOLUMNA -->
             <div>
                 <div class="tourist-panel" style="border-color: var(--gold-primary);">
-                    <h3 style="margin-top:0; color:var(--gold-primary); text-transform:uppercase; font-size:13px; border-bottom:1px solid #1f293d; padding-bottom:6px;" id="lblWheelTitle">🎡 Koło Szczęśliwego Turysty</h3>
-                    
+                    <h3 style="margin-top:0; color:var(--gold-primary); text-transform:uppercase; font-size:13px; border-bottom:1px solid #1f293d; padding-bottom:6px;">🎡 Koło Szczęśliwego Turysty</h3>
                     <div id="wheelAuthLock">
-                        <p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;" id="lblWheelLock">🔒 Zaloguj się na konto **Turysty**, aby odblokować losowanie bonusów i kuponów.</p>
+                        <p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;">🔒 Zaloguj się na konto **Turysty**, aby odblokować losowanie bonusów i kuponów.</p>
                     </div>
-                    
                     <div id="wheelActiveZone" style="display:none;">
-                        <div class="wheel-wrapper">
-                            <div class="wheel-marker"></div>
-                            <div class="fortune-wheel" id="fortuneWheel"></div>
-                        </div>
-                        <div style="display:flex; flex-direction:column; align-items:center; padding:5px 0;">
-                            <button class="btn-spin" id="spinWheelBtn" style="background:var(--gold-primary); font-weight:bold; padding:10px 25px; border:none; border-radius:6px; cursor:pointer;" onclick="spinTheWheel()">URUCHOM LOSOWANIE</button>
+                        <div class="wheel-container">
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer"></div>
+                                <div class="wheel-canvas" id="fortuneWheel"></div>
+                            </div>
+                            <button class="btn-spin" id="spinWheelBtn" onclick="spinTheWheel()">URUCHOM</button>
                         </div>
                         <div id="wheelResultDisplay" style="margin-top:12px; text-align:center; font-weight:bold; color:var(--emerald-light); min-height:18px; font-size:12px;"></div>
                     </div>
                 </div>
 
+                <!-- NOWY CZAT AI -->
                 <div class="ai-chat-wrapper">
                     <h3 style="margin-top:0; color:var(--emerald-light); text-transform:uppercase; font-size:13px; display:flex; align-items:center; gap:6px;">🤖 Przewodnik AI (<span class="current-region-txt">Karpacz</span>)</h3>
-                    <div class="ai-chat-messages" id="chatAiMessages"></div>
+                    <div class="ai-chat-messages" id="chatAiMessages">
+                        <div class="ai-msg bot">Cześć! Jestem Twoim regionalnym asystentem AI. O co chcesz zapytać w kontekście regionu <strong class="current-region-txt">Karpacz</strong>? Chętnie ułożę dla Ciebie idealny plan wycieczki!</div>
+                    </div>
                     <div class="ai-chat-input-row">
                         <input type="text" class="ai-chat-input" id="chatAiInput" placeholder="Zapytaj AI o szlaki, zabytki, restauracje..." onkeydown="if(event.key==='Enter') sendAiChatMessage()">
                         <button class="btn-submit-review" style="background:var(--emerald-light); color:#000;" onclick="sendAiChatMessage()">Wyślij</button>
@@ -491,30 +537,32 @@
                 </div>
             </div>
 
+            <!-- PRAWA KOLUMNA: DANE TURYSTYCZNE -->
             <div>
-                <div class="tourist-panel" style="border-color: #f59e0b; margin-bottom: 15px;">
-                    <h3 style="margin-top:0; color:#f59e0b; text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;" id="lblGastroTitle">🍽️ Polecane Restauracje i Gastronomia</h3>
+                <div class="tourist-panel" style="border-color: #f59e0b;">
+                    <h3 style="margin-top:0; color:#f59e0b; text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;">🍽️ Polecane Restauracje i Gastronomia (<span class="current-region-txt">Karpacz</span>)</h3>
                     <div id="gastroListContainer"></div>
                 </div>
 
-                <div class="tourist-panel" style="border-color: var(--gold-primary); margin-bottom: 15px;">
-                    <h3 style="margin-top:0; color:var(--gold-primary); text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;" id="lblHistoricTitle">🏛️ Dziedzictwo, Zabytki i Miejsca Historyczne</h3>
+                <div class="tourist-panel" style="border-color: var(--gold-primary);">
+                    <h3 style="margin-top:0; color:var(--gold-primary); text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;">🏛️ Dziedzictwo, Zabytki i Miejsca Historyczne (<span class="current-region-txt">Karpacz</span>)</h3>
                     <div id="historicListContainer"></div>
                 </div>
 
-                <div class="tourist-panel" style="border-color: var(--emerald-light); margin-bottom: 15px;">
-                    <h3 style="margin-top:0; color:var(--emerald-light); text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;" id="lblTrailsTitle">🗺️ Interaktywne Szlaki i Trasy</h3>
+                <div class="tourist-panel" style="border-color: var(--emerald-light);">
+                    <h3 style="margin-top:0; color:var(--emerald-light); text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;">🗺️ Interaktywne Szlaki i Trasy (<span class="current-region-txt">Karpacz</span>)</h3>
                     <div id="trailsListContainer"></div>
                 </div>
 
                 <div class="tourist-panel" style="border-color: var(--diamond-blue);">
-                    <h3 style="margin-top:0; color:var(--diamond-blue); text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;" id="lblBusTitle">🚌 Dworce i Lokalne Rozkłady Jazdy (PKP/PKS/BUS)</h3>
+                    <h3 style="margin-top:0; color:var(--diamond-blue); text-transform:uppercase; font-size:14px; border-bottom:1px solid #1f293d; padding-bottom:8px;">🚌 Dworce i Lokalne Rozkłady Jazdy (PKP/PKS/BUS)</h3>
                     <div id="busListContainer"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- WIDOK C: PANEL GOSPODARZA B2B -->
     <div id="viewBizPanel" class="app-view">
         <div class="tourist-panel" style="border-color: var(--purple-premium);">
             <h3 style="margin-top:0; color:var(--purple-premium); text-transform:uppercase; font-size:16px;">💼 Panel Abonenta Premium B2B - Zarządzanie Lokalem</h3>
@@ -526,7 +574,10 @@
             <div id="bizDashboardActiveZone" style="display:none;">
                 <p style="font-size:13px; color:#cbd5e1;">Zalogowano jako Partner Biznesowy: <strong id="bizLoggedFirmName" style="color:var(--emerald-light);">-</strong></p>
                 <div style="margin-bottom:15px; display:flex; gap:10px;">
-                    <select class="modal-select" id="bizRestaurantSelect" style="max-width:300px; margin-bottom:0;"></select>
+                    <select class="modal-select" id="bizRestaurantSelect" style="max-width:300px; margin-bottom:0;">
+                        <option value="kar_g1">Smażalnia Pod Smażoną Rybką (Karpacz)</option>
+                        <option value="kar_g2">Karczma Karkonoska (Karpacz)</option>
+                    </select>
                     <button class="nav-btn nav-btn-biz" onclick="loadBizRestaurantPanel()">Zarządzaj tą restauracją</button>
                 </div>
 
@@ -540,14 +591,16 @@
         </div>
     </div>
 
+    <!-- WIDOK D: CENTRALNY PANEL ADMINISTRATORA (MONITOR MODERATORA) -->
     <div id="viewAdminPanel" class="app-view">
         <div class="tourist-panel" style="border-color: var(--danger-color);">
-            <h3 style="margin-top:0; color(--danger-color); text-transform:uppercase; font-size:16px;">🛑 Główny System Moderacji i Zarządzania Platformą</h3>
+            <h3 style="margin-top:0; color:var(--danger-color); text-transform:uppercase; font-size:16px;">🛑 Główny System Moderacji i Zarządzania Platformą</h3>
             
+            <!-- UKRYTY PANEL LOSOWANIA TELEBIMU (Zgodnie z życzeniem - schowany przed turystami) -->
             <div style="background: rgba(168, 85, 247, 0.12); border: 1px solid var(--purple-premium); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h4 style="margin-top:0; color:#c084fc; font-size:13px; text-transform:uppercase; display:flex; align-items:center; gap:6px;">♣️ SILNIK LOSOWANIA TELEBIMU (UKRYTY KOKPIT)</h4>
+                <h4 style="margin-top:0; color:#c084fc; font-size:13px; text-transform:uppercase; display:flex; align-items:center; gap:6px;">🎰 SILNIK LOSOWANIA TELEBIMU (UKRYTY KOKPIT)</h4>
                 <p style="font-size:11px; color:#9ca3af; margin:0 0 10px 0;">Panel niewidoczny dla zwykłych użytkowników. Wybierz miasto na liście wyżej, a następnie kliknij przycisk, by wylosować reklamę dnia na telebim.</p>
-                <button class="btn-buy-confirm" style="background:#a855f7; width:auto; padding:8px 20px;" onclick="drawTelebimWinner()">♣️ Losuj firmę dnia dla: <span class="current-region-txt">Karpacz</span></button>
+                <button class="btn-buy-confirm" style="background:#a855f7; width:auto; padding:8px 20px;" onclick="drawTelebimWinner()">🎰 Losuj firmę dnia dla: <span class="current-region-txt">Karpacz</span></button>
                 <div id="adminDrawStatus" style="font-size:12px; color:var(--gold-primary); margin-top:8px; font-weight:bold;"></div>
             </div>
 
@@ -558,6 +611,7 @@
         </div>
     </div>
 
+    <!-- MODAL LOGOWANIA I REJESTRACJI -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-box" style="border-color: var(--diamond-blue);">
             <h3 style="color: var(--diamond-blue); margin-top: 0; text-transform:uppercase; font-size:14px;" id="authModalTitle">Logowanie do Platformy</h3>
@@ -582,6 +636,7 @@
         </div>
     </div>
 
+    <!-- MODALE MATRYCY -->
     <div class="modal-overlay" id="purchaseModal">
         <div class="modal-box">
             <h3 style="color: var(--gold-primary); margin-top: 0; text-transform:uppercase; font-size:14px;">Zarezerwuj Sektor Szyldu</h3>
@@ -601,6 +656,7 @@
         </div>
     </div>
 
+    <!-- MODAL PASKA INFORMACYJNEGO -->
     <div class="modal-overlay" id="tickerPurchaseModal">
         <div class="modal-box" style="border-color: #e11d48;">
             <h3 style="color: #fda4af; margin-top: 0; text-transform:uppercase; font-size:14px;">🚀 Ekspresowy Wpis Reklamowy na Pasek</h3>
@@ -614,6 +670,7 @@
         </div>
     </div>
 
+    <!-- PASEK DOLNY -->
     <div class="bottom-ticker-container">
         <div class="ticker-badge">🔴 POLSKIE OKIENKA LIVE</div>
         <div class="ticker-scroll-content" id="tickerScrollContent"></div>
@@ -623,12 +680,13 @@
         let currentCity = "Karpacz";
         let selectedCell = null;
         let uploadedLogoBase64 = null;
-        let currentUser = null;
-        let authCurrentTab = "login";
-        let currentLang = "pl";
+        
+        // NOWE ZMIENNE BACKENDU AUTH
+        let currentUser = null; // Obiekt przechowujący aktualnie zalogowanego gracza/firmę
+        let authCurrentTab = "login"; // login lub register
 
         const bannedWords = ["badziewie", "oszusci", "gowno", "cholera", "idioci"];
-        
+
         const citiesList = [
             "Karpacz", "Szklarska Poręba", "Świeradów-Zdrój", "Wisła", "Zakopane",
             "Krynica-Zdrój", "Szczawnica", "Solina", "Świnoujście", "Kołobrzeg",
@@ -636,249 +694,98 @@
             "Krynica Morska", "Mikołajki", "Giżycko", "Kazimierz Dolny", "Sandomierz"
         ];
 
-        // SŁOWNIK TŁUMACZEŃ MULTI-LANGUAGE
-        const languageDictionary = {
-            pl: {
-                safety: "Komunikat Bezpieczeństwa", online: "🔥 Online: ",
-                wheelTitle: "🎡 Koło Szczęśliwego Turysty", wheelLock: "🔒 Zaloguj się na konto **Turysty**, aby odblokować losowanie bonusów i kuponów.",
-                gastro: "🍽️ Polecane Restauracje i Gastronomia", historic: "🏛️ Dziedzictwo, Zabytki i Miejsca Historyczne",
-                trails: "🗺️ Interaktywne Szlaki i Trasy", bus: "🚌 Dworce i Lokalne Rozkłady Jazdy (PKP/PKS/BUS)", aiWelcome: "Cześć! Przełączyłeś się na region"
-            },
-            en: {
-                safety: "Safety Announcement", online: "🔥 Online Users: ",
-                wheelTitle: "🎡 Lucky Tourist Wheel", wheelLock: "🔒 Log in to a **Tourist** account to unlock coupon draws.",
-                gastro: "🍽️ Recommended Restaurants & Gastronomy", historic: "🏛️ Heritage, Monuments & Historic Sites",
-                trails: "🗺️ Interactive Trails and Routes", bus: "🚌 Stations & Local Timetables (Train/Bus)", aiWelcome: "Hi! You switched to region"
-            },
-            de: {
-                safety: "Sicherheitsmeldung", online: "🔥 Online-Gäste: ",
-                wheelTitle: "🎡 Glücksrad für Touristen", wheelLock: "🔒 Melden Sie sich als **Tourist** an, um das Bonusrad freizuschalten.",
-                gastro: "🍽️ Empfohlene Restaurants & Gastronomie", historic: "🏛️ Erbe, Denkmäler & Historische Orte",
-                trails: "🗺️ Interaktive Wanderwege und Routen", bus: "🚌 Bahnhöfe & Lokale Fahrpläne (Zug/Bus)", aiWelcome: "Hallo! Sie haben gewechselt zur Region"
-            },
-            cs: {
-                safety: "Bezpečnostní oznámení", online: "🔥 Online uživatelé: ",
-                wheelTitle: "🎡 Kolo štěstí pro turisty", wheelLock: "🔒 Přihlaste se jako **Turista** pro odemčení losování kupónů.",
-                gastro: "🍽️ Doporučené restaurace a gastronomie", historic: "🏛️ Dědictví, památky a historická místa",
-                trails: "🗺️ Interaktivní stezky a trasy", bus: "🚌 Nádraží a místní jízdní řády (Vlak/Bus)", aiWelcome: "Ahoj! Přepnul jsi na region"
-            }
-        };
+        // GLOBALNA BAZA DANYCH - 20 MIAST, PO 10 UNIKALNYCH ATRAKCJI I 10 SZLAKÓW W KAŻDYM
+        const regionalDatabase = {};
 
-        // BAZA PRESETÓW REKORDÓW - W PEŁNI URZĄDZONE KAŻDE Z 20 MIAST
         const rawPresetData = {
             "Karpacz": {
                 weather: "☀️ Słonecznie, 19°C", alert: "🟢 Warunki karkonoskie stabilne.",
-                rewards: ["KPN Wstęp -50%", "Kawa w Samotni Gratis", "Darmowy Przewodnik"],
-                historic: ["Kościół Wang", "Zapora na Łomnicy", "Dziki Wodospad", "Młyn Miłości", "Schronisko Samotnia", "Krucze Skały", "Strzecha Akademicka", "Muzeum Zabawek", "Kaplica św. Wawrzyńca na Śnieżce", "Karkonoskie Tajemnice"],
-                trails: ["Droga Jubileuszowa na Śnieżkę", "Szlak przez Kocioł Małego Stawu", "Szlak Czarny przez Kocioł Białego Jaru", "Szlak Żółty przez Kocioł Łomniczki", "Zielony Szlak na Słonecznik", "Pętla ER-2 rowerowa", "Trasa Rowerowa do Miłkowa", "Karkonoski Szlak Rowerowy", "Singletrek pod Ostrzycą", "Trasa wokół Góry Brzeźnik"]
+                rewards: ["KPN Wstęp -50%", "Kawa w Samotni Gratis", "Pusty Los"],
+                historicNames: ["Kościół Wang", "Zapora na Łomnicy", "Dziki Wodospad", "Młyn Miłości", "Schronisko Samotnia", "Krucze Skały", "Strzecha Akademicka", "Muzeum Zabawek", "Kaplica św. Wawrzyńca na Śnieżce", "Karkonoskie Tajemnice"],
+                trailNames: ["Droga Jubileuszowa na Śnieżkę", "Szlak przez Kocioł Małego Stawu", "Szlak Czarny przez Kocioł Białego Jaru", "Szlak Żółty przez Kocioł Łomniczki", "Zielony Szlak na Słonecznik", "Pętla ER-2 rowerowa", "Trasa Rowerowa do Miłkowa", "Karkonoski Szlak Rowerowy", "Singletrek pod Ostrzycą", "Trasa wokół Góry Brzeźnik"]
             },
             "Szklarska Poręba": {
                 weather: "🌤️ Lekkie zachmurzenie, 18°C", alert: "🟢 Szlaki suche i bezpieczne.",
-                rewards: ["Wodospad Kamieńczyka gratis", "Kupon Schronisko Kamieńczyk", "Rabat -15% Karkonosze"],
-                historic: ["Wodospad Kamieńczyka", "Wodospad Szklarki", "Chybotek", "Złoty Widok", "Krzywe Baszty", "Sudecka Stacja Instytutu Geograficznego", "Muzeum Mineralogiczne", "Dom Carla i Gerharta Hauptmannów", "Schronisko na Szrenicy", "Wysoki Kamień"],
-                trails: ["Szlak na Szrenicę", "Droga pod Reglami", "Pętla wokół Wodospadu Szklarki", "Szlak na Łabski Szczyt", "Trasa Rowerowa Trzy Jawory", "Duża Pętla Jakuszycka", "Trasa do Kopalni Stanisław", "Singletrack Szklarska", "Ścieżka radiowej Jedynki", "Szlak do Schroniska pod Łabskim Szczytem"]
+                rewards: ["Wodospad Kamieńczyka bilet gratis", "Kupon Schronisko Kamieńczyk", "Spróbuj ponownie"],
+                historicNames: ["Wodospad Kamieńczyka", "Wodospad Szklarki", "Chybotek", "Złoty Widok", "Krzywe Baszty", "Sudecka Stacja Instytutu Geograficznego", "Muzeum Mineralogiczne", "Dom Carla i Gerharta Hauptmannów", "Schronisko na Szrenicy", "Wysoki Kamień"],
+                trailNames: ["Szlak na Szrenicę", "Droga pod Reglami", "Pętla wokół Wodospadu Szklarki", "Szlak na Łabski Szczyt", "Trasa Rowerowa Trzy Jawory", "Duża Pętla Jakuszycka", "Trasa do Kopalni Stanisław", "Singletrack Szklarska", "Ścieżka edukacyjna Radiowa Jedynka", "Szlak do Schroniska pod Łabskim Szczytem"]
             },
             "Świeradów-Zdrój": {
                 weather: "☀️ Pięknie i rześko, 17°C", alert: "🟢 Kolej gondolowa kursuje planowo.",
-                rewards: ["Gondola wjazd -20%", "Kąpiel borowinowa bonus", "Kupon na gofra"],
-                historic: ["Dom Zdrojowy z halą spacerową", "Czarci Młyn", "Wieża widokowa Sky Walk", "Schronisko na Stogu Izerskim", "Pijalnia Wód Mineralnych", "Sępia Góra", "Park Zdrojowy", "Izerski Punkt Antystresowy", "Muzeum Zdrojowe", "Zabytkowa fontanna z żabkami"],
-                trails: ["Główny Szlak Sudecki na Stóg", "Szlak na Sępią Górę", "Ścieżka Zajęcznik", "Singletrack Izery: Pętla Zajęcznik", "Trasa Rowerowa do Orlego", "Szlak na Wysoki Kamień", "Droga Tartaczna spacerowa", "Trasa na Smrek", "Pętla biegowa wokół Stogu", "Izerski Szlak Rowerowy"]
+                rewards: ["Gondola wjazd -20%", "Kąpiel borowinowa bonus", "Pusty los"],
+                historicNames: ["Dom Zdrojowy z halą spacerową", "Czarci Młyn", "Wieża widokowa na Sky Walk", "Schronisko na Stogu Izerskim", "Pijalnia Wód Mineralnych", "Sępia Góra", "Park Zdrojowy", "Izerski Punkt Antystresowy", "Muzeum Zdrojowe", "Zabytkowa fontanna z żabkami"],
+                trailNames: ["Główny Szlak Sudecki na Stóg", "Szlak na Sępią Górę", "Ścieżka Zajęcznik", "Singletrack Izery: Pętla Zajęcznik", "Trasa Rowerowa do Orlego", "Szlak na Wysoki Kamień ze Świeradowa", "Droga Tartaczna spacerowa", "Trasa na Smrek", "Pętla biegowa wokół Stogu Izerskiego", "Izerski Szlak Rowerowy"]
             },
             "Wisła": {
                 weather: "🌤️ Przyjemnie, 21°C", alert: "🟢 Warunki w Beskidach znakomite.",
-                rewards: ["Kupon Muzeum Małysza", "Ciastko w kawiarni u Wisły", "Rabat -10% baseny"],
-                historic: ["Zamek Prezydenta RP", "Skocznia Malinka im. A. Małysza", "Muzeum Beskidzkie", "Enklawa Budownictwa Drewnianego", "Pałacyk Myśliwski Habsburgów", "Zapora w Wiśle Czarnem", "Kaskady Rodła", "Kościół Ewangelicki Piotra i Pawła", "Dom Mansjonarski", "Pomnik Źródeł Wisły"],
-                trails: ["Szlak na Baranią Górę", "Trasa na Stożek Wielki", "Szlak na Cienków", "Trasa spacerowa Kamienny", "Wiślańska Trasa Rowerowa", "Trasa Rowerowa Nowa Osada", "Szlak na Trzy Kopce Wiślańskie", "Ścieżka dydaktyczna w Czarnem", "Pętla rowerowa przez Kubalonkę", "Szlak na przełęcz Salmopolską"]
+                rewards: ["Kupon Muzeum Małysza", "Ciastko w kawiarni u Wisły", "Pusty los"],
+                historicNames: ["Zamek Prezydenta RP", "Skocznia Malinka im. Adama Małysza", "Muzeum Beskidzkie", "Zabytkowa Enklawa Budownictwa Drewnianego", "Pałacyk Myśliwski Habsburgów", "Zapora w Wiśle Czarnem", "Kaskady Rodła", "Kościół Ewangelicko-Augsburski Apostołów Piotra i Pawła", "Dom Mansjonarski", "Pomnik Źródeł Wisły"],
+                trailNames: ["Szlak na Baranią Górę", "Trasa na Stożek Wielki", "Szlak na Cienków", "Trasa spacerowa Kamienny", "Wiślańska Trasa Rowerowa", "Trasa Rowerowa Nowa Osada", "Szlak na Trzy Kopce Wiślańskie", "Ścieżka dydaktyczna w Czarnem", "Pętla rowerowa przez Kubalonkę", "Szlak na przełęcz Salmopolską"]
             },
             "Zakopane": {
-                weather: "☀️ Tatry czyste, 16°C", alert: "🟡 Uwaga na oblodzenia w wysokich partiach.",
-                rewards: ["Kolejka Gubałówka -50%", "Oscypek u bacy gratis", "Kupon Kasprowy Wierch"],
-                historic: ["Kaplica na Jaszczurówce", "Willa Koliba", "Cmentarz na Pęksowym Brzyzku", "Muzeum Tatrzańskie", "Willa Atma", "Sanktuarium na Krzeptówkach", "Dworzec Tatrzański", "Stary Kościółek przy Kościeliskiej", "Willa Oksza", "Chata Sabały"],
-                trails: ["Droga pod Reglami", "Szlak przez Dolinę Kościeliską", "Podejście na Giewont z Kondratowej", "Trasa nad Morskie Oko", "Szlak na Kasprowy Wierch przez Kuźnice", "Dolina Strążyska na Sarnią Skałę", "Trasa Rowerowa wokół Tatr", "Szlak na Gubałówkę", "Ścieżka nad Reglami", "Dolina Chochołowska na rowerze"]
-            },
-            "Krynica-Zdrój": {
-                weather: "🌤️ Ciepło, 20°C", alert: "🟢 Pijalnie i ogrody w pełni dostępne.",
-                rewards: ["Wjazd na Jaworzynę -25%", "Kryniczanka woda gratis", "Kupon na Deptak"],
-                historic: ["Stary Dom Zdrojowy", "Pijalnia Główna", "Muzeum Nikifora", "Góra Parkowa", "Zabytkowe Łazienki Mineralne", "Kościół św. Włodzimierza", "Willa Romanówka", "Pomnik Nikifora Krynickiego", "Teatr Modrzejewskiej", "Cerkiew w Krynicy-Wsi"],
-                trails: ["Szlak na Jaworzynę Krynicką", "Trasa na Huzary", "Pętla spacerowa na Górę Parkową", "Szlak Jaworzyński przez Runek", "Rowerowy Szlak Winny", "Ścieżka edukacyjna Kopciowa", "Trasa na Tylicz", "Szlak Czerwony do Krynicy Dolnej", "Ścieżka rowerowa Krynica-Muszyna", "Szlak do Schroniska na Łabowskiej Hali"]
-            },
-            "Szczawnica": {
-                weather: "☀️ Pięknie, 22°C", alert: "🟢 Warunki spływu Dunajcem doskonałe.",
-                rewards: ["Rabat na Spływ Dunajcem", "Wjazd na Palenicę -20%", "Lody Uzdrowiskowe gratis"],
-                historic: ["Pijalnia Wód Magdalena", "Park Dolny i Górny", "Zabytkowa Stacja Kolei Linowej", "Muzeum Pienińskie", "Dworek Gościnny", "Sanatorium Hutnik", "Willa Pod Modrzewiami", "Kaplica Zdrojowa", "Stara Karczma", "Pomnik Józefa Dietla"],
-                trails: ["Droga Pienińska do Czerwonego Klasztoru", "Szlak na Trzy Korony", "Trasa na Sokolicę", "Szlak przez Wąwóz Homole", "Trasa na Bryjarkę", "Szlak na Bereśnik", "Pętla rowerowa wokół Dunajca", "Szlak do Schroniska Orlica", "Trasa na Wysoką", "Promenada nad Grajcarkiem"]
-            },
-            "Solina": {
-                weather: "☀️ Bezwietrznie, Bieszczady, 23°C", alert: "🟢 Kąpieliska bezpieczne, rejsy bez zakłóceń.",
-                rewards: ["Bilet na Kolejkę Gondolową -15%", "Rejs statkiem zniżka", "Pamiątka Solińska"],
-                historic: ["Zapora Wodna w Solinie", "Punkt Widokowy Jawor", "Cerkiew w Myczkowie", "Zabytkowy tunel hydroenergetyczny", "Muzeum Bojków", "Stary kamieniołom w Kozieńcu", "Zapora w Myczkowcach", "Park Miniatur Świątyń", "Cerkiew w Łopience", "Ruiny klasztoru Zagórz"],
-                trails: ["Szlak dookoła Jeziora Solińskiego", "Trasa na pasmo Kozieńca", "Szlak Polańczyk - Solina", "Ścieżka przyrodnicza wokół Myczkowiec", "Zielony Szlak na Wołosań", "Bieszczadzki Trakt rowerowy", "Trasa MTB wokół Jawora", "Szlak spacerowy do Wołkowyi", "Pętla Solina-Zabrodzie", "Ścieżka do źródła mineralnego w Polańczyku"]
-            },
-            "Świnoujście": {
-                weather: "🌤️ Wiatr od morza, 19°C", alert: "🟢 Przeprawy promowe działają płynnie.",
-                rewards: ["Wstęp na Latarnię Morską gratis", "Kupon na rybę w porcie", "Kawa na Promenadzie"],
-                historic: ["Latarnia Morska Świnoujście", "Fort Gerharda", "Fort Anioła", "Fort Zachodni", "Podziemne Miasto na wyspie Wolin", "Stawa Młyny (Wiatrak)", "Park Zdrojowy", "Kościół Chrystusa Króla z kotwicą", "Wieża dawnego kościoła Marcina Lutra", "Muzeum Rybołówstwa Morskiego"],
-                trails: ["Nadmorski Szlak Świdny", "Trasa rowerowa wokół wyspy Uznam", "Szlak Forteczny", "Międzynarodowy szlak R-10", "Ścieżka przez Karsiborskie Paprocie", "Trasa do Latarni Morskiej", "Szlak wzdłuż Świny", "Pętla wokół Karsiboru", "Ścieżka do rezerwatu ptaków", "Nadmorska Promenada spacerowa"]
-            },
-            "Kołobrzeg": {
-                weather: "☀️ Bezchmurnie, 20°C", alert: "🟢 Stan czystości plaż idealny.",
-                rewards: ["Bilet na Molo gratis", "Wejście do Muzeum Oręża -50%", "Pączek Kołobrzeski"],
-                historic: ["Molo w Kołobrzegu", "Latarnia Morska Kołobrzeg", "Bazylika Mariacka", "Muzeum Oręża Polskiego", "Baszta Lontowa", "Ratusz Miejski neogotycki", "Pałac Braunschweigów", "Reduta Solna", "Fort Kleista", "Zabytkowe Sanatorium Kurhaus"],
-                trails: ["Nadmorski Szlak Pieszy E9", "Trasa Rowerowa Orła Bielika", "Szlak ku Słońcu", "Pętla wokół Ekoparku Wschodniego", "Trasa wzdłuż rzeki Parsęty", "Kołobrzeska Ścieżka Historyczna", "Droga do Podczela", "Międzynarodowa trasa R-10", "Ścieżka spacerowa w Parku Żeromskiego", "Trasa rowerowa do Dźwirzyna"]
-            },
-            "Sopot": {
-                weather: "☀️ Słonecznie i prestiżowo, 21°C", alert: "🟢 Brak zagrożeń falowych.",
-                rewards: ["Wejście na Molo darmowe", "Drinki w Krzywym Domku -15%", "Kupon na gofra z owocami"],
-                historic: ["Molo w Sopocie", "Krzywy Domek", "Opera Leśna", "Grand Hotel", "Latarnia Morska Sopot", "Willa Basnera", "Muzeum Sopotu", "Zabytkowy Zakład Balneologiczny", "Grodzisko w Sopocie", "Kościół garnizonowy św. Jerzego"],
-                trails: ["Szlak Lisów w Trójmiejskim Parku", "Trasa spacerowa Brzegiem Morza", "Szlak Wiewiórki", "Ścieżka rowerowa Sopot-Gdańsk", "Trasa przez Dolinę Świń", "Droga do Opery Leśnej", "Szlak do Lisiego Wzgórza", "Trasa rowerowa Nadmorska", "Ścieżka spacerowa wzdłuż Monciaka", "Pętla rekreacyjna Karlikowo"]
-            },
-            "Międzyzdroje": {
-                weather: "🌤️ Ciepło, nadmorsko, 20°C", alert: "🟢 Szlaki Wolińskiego Parku bezpieczne.",
-                rewards: ["Bilet do Zagrody Żubrów gratis", "Wstęp do Gabinetu Figur Woskowych", "Rabat na smażalnię"],
-                historic: ["Molo w Międzyzdrojach", "Aleja Gwiazd", "Zagroda Pokazowa Żubrów", "Muzeum Przyrodnicze WPN", "Kawcza Góra", "Góra Gosań", "Bunkier V3 w Wicku", "Zabytkowy Park Zdrojowy", "Kaplica Stella Matutina", "Wieża ciśnień neogotycka"],
-                trails: ["Szlak Czerwony przez WPN", "Trasa na Kawczą Górę", "Ścieżka na Górę Gosań", "Nadmorski szlak pieszy", "Trasa rowerowa do Wapnicy i Jeziora Turkusowego", "Szlak Wydmowy", "Ścieżka do Trzciągowa", "Międzynarodowy Szlak R-10", "Trasa wokół Wicka Wielkiego", "Szlak edukacyjny Pod dębami"]
-            },
-            "Łeba": {
-                weather: "☀️ Pięknie, wiatr umiarkowany, 21°C", alert: "🟢 Wydmy ruchome stabilne, szlaki otwarte.",
-                rewards: ["Wjazd do Słowińskiego Parku gratis", "Kupon na rejs po Łebsku", "Darmowy gokart na godzinę"],
-                historic: ["Wydmy Ruchome (Góra Łącka)", "Ruiny kościoła św. Mikołaja", "Muzeum Motyli", "Port Jachtowy w Łebie", "Wyrzutnia Rakiet w Rąbce", "Zabytkowe domki rybackie na Kościuszki", "Muzeum Bursztynu", "Pałac w Nowęcinie", "Latarnia Morska Stilo", "Zabytkowy Dworzec PKP"],
-                trails: ["Szlak na Wydmę Łącką", "Pętla wokół jeziora Sarbsko", "Ścieżka przyrodnicza Mierzeja Łebska", "Szlak pieszy do latarni Stilo", "Trasa rowerowa do Izbicy", "Szlak wokół jeziora Łebsko", "Droga do Rąbki", "Nadmorski trakt spacerowy", "Ścieżka edukacyjna Klukowskie Lasy", "Trasa rowerowa na Nowęcin"]
-            },
-            "Ustka": {
-                weather: "🌤️ Słonecznie, rześko, 19°C", alert: "🟢 Port i kładka obrotowa sprawne.",
-                rewards: ["Zwiedzanie Bunkrów Blüchera -50%", "Krókówka ustecka gratis", "Kupon na rybę smażoną"],
-                historic: ["Latarnia Morska Ustka", "Bunkry Blüchera", "Promenada Nadmorska", "Kładka obrotowa w porcie", "Zabytkowa dzielnica rybacka", "Kościół Najświętszego Zbawiciela", "Muzeum Ziemi Usteckiej", "Muzeum Chleba", "Stara Stacja Ratownictwa Morskiego", "Czerwona Szopa"],
-                trails: ["Szlak Zwiniętych Torów rowerowy", "Nadmorski Szlak Pieszy", "Trasa przez Wydmę Orzechowską", "Ścieżka wzdłuż rzeki Słupi", "Trasa Ustka - Rowy", "Szlak do Orzechowa Morskiego", "Ścieżka przyrodnicza Poddąbek", "Droga leśna do Przewłoki", "Rowerowa pętla ustecka", "Spacerowy trakt portowy"]
-            },
-            "Władysławowo": {
-                weather: "☀️ Dużo słońca, wiatr lekki, 22°C", alert: "🟢 Wejścia na plażę czyste i bezpieczne.",
-                rewards: ["Wejście na Wieżę Domu Rybaka", "Kupon Aleja Gwiazd Sportu", "Darmowy gofr premium"],
-                historic: ["Dom Rybaka (Wieża widokowa)", "Aleja Gwiazd Sportu", "Hallerówka (Muzeum)", "Port Rybacki we Władysławowie", "Kościół Wniebowzięcia NMP", "Pomnik Korony Chałup", "Zabytkowy pensjonat „Haller”", "Gwiazda Północy (blisko Jastrzębia)", "Osada Łowców Fok w Rzucewie", "Zabytkowa kapliczka rybacka"],
-                trails: ["Szlak przez rezerwat Słone Łąki", "Trasa rowerowa na Półwysep Helski", "Szlak Kaszubski pieszy", "Ścieżka Władysławowo - Jastrzębia Góra", "Trasa do Chłapowskiego Wąwozu", "Szlak Kępy Puckiej", "Ścieżka wzdłuż Zatoki Puckiej", "Pętla rowerowa przez Rozewie", "Trakt spacerowy ku Cetniewu", "Droga do Swarzewa"]
-            },
-            "Krynica Morska": {
-                weather: "☀️ Bezchmurnie, Mierzeja, 21°C", alert: "🟢 Żegluga po Zalewie Wiślanym planowa.",
-                rewards: ["Wjazd na Latarnię Morską gratis", "Kupon Wielbłądzi Garb", "Rabat na rybę w porcie"],
-                historic: ["Latarnia Morska Krynica Morska", "Wielbłądzi Garb (Punkt widokowy)", "Port pasażerski i jachtowy", "Zabytkowe wille z XIX wieku", "Kościół św. Piotra i Pawła", "Pomnik Rybaka", "Zabytkowa leśniczówka", "Przebrno - dawna granica Wolnego Miasta", "Góra Pirata", "Granica Państwa w Piaskach"],
-                trails: ["Szlak Mierzei Wiślanej", "Trasa na Wielbłądzi Garb", "Ścieżka do Góry Pirata", "Trasa rowerowa R-10 do Piasków", "Szlak spacerowy wzdłuż Zalewu", "Ścieżka leśna do plaży centralnej", "Pętla wokół Krynicy Morskiej", "Droga do Przebrna", "Trakt spacerowy Promenada", "Trasa rowerowa na Przekop Mierzei"]
-            },
-            "Mikołajki": {
-                weather: "☀️ Słońce odbija się w jeziorach, 24°C", alert: "🟢 Mazurskie alerty czyste, wiatr idealny pod żagle.",
-                rewards: ["Rejs statkiem żeglugi -20%", "Kupon Wioska Żeglarska", "Sielawa Mazurska gratis"],
-                historic: ["Wioska Żeglarska w Mikołajkach", "Kościół Ewangelicko-Augsburski św. Trójcy", "Rynek z Królem Sielaw", "Muzeum Reformacji Polskiej", "Zabytkowy most kołowy i kolejowy", "Rezerwat Łabędzia Niemego na Łuknajnie", "Zabytkowa strażnica pożarna", "Kościół MB Różańcowej", "Stary cmentarz żydowski", "Pałac w Tałtach"],
-                trails: ["Szlak wokół Jeziora Łuknajno", "Trasa żeglarska Mikołajki - Ruciane", "Szlak rowerowy Krutynia", "Ścieżka przyrodnicza do Śniardw", "Trakt pieszy do Tałt", "Pętla Mazurska rowerowa", "Szlak do Urwiska nad Śniardwami", "Trasa piesza Łuknajno-Woźnice", "Ścieżka spacerowa wzdłuż promenady", "Szlak Rowerowy Grodzisk Pruskich"]
-            },
-            "Giżycko": {
-                weather: "🌤️ Lekki zefir, Mazury, 23°C", alert: "🟢 Twierdza i most obrotowy działają w godzinach.",
-                rewards: ["Wstęp do Twierdzy Boyen", "Bilet na Wieżę Ciśnień gratis", "Kupon na pizzę mazurską"],
-                historic: ["Twierdza Boyen", "Most Obrotowy na Kanale Łuczańskim", "Wieża Ciśnień z kawiarnią", "Zamek Krzyżacki (teraz hotel)", "Krzyż Brunona z Kwerfurtu", "Port Żeglugi Mazurskiej", "Zabytkowy wiadukt kolejowy", "Cerkiew prawosławna św. Anny", "Kościół ewangelicki", "Willa zbójcy w Wilkasach"],
-                trails: ["Szlak wokół jeziora Niegocin", "Trasa piesza do Twierdzy Boyen", "Szlak rowerowy im. G. Gizewiusza", "Ścieżka do Lasu Miejskiego", "Wielka Pętla Mazurska (odcinek Giżycko)", "Szlak Czarny do Wilkas", "Droga spacerowa nad jeziorem Kisajno", "Trasa rowerowa do Sztynortu", "Ścieżka wokół Kanału Piękna Góra", "Szlak do Pierkunowa"]
-            },
-            "Kazimierz Dolny": {
-                weather: "☀️ Przepięknie, nad Wisłą, 20°C", alert: "🟢 Wąwozy lessowe suche, stabilne.",
-                rewards: ["Kogut Kazimierski gratis", "Bilet na Zamek i Basztę", "Kupon na rejs po Wiśle"],
-                historic: ["Zamek i Baszta w Kazimierzu", "Góra Trzech Krzyży", "Rynek z renesansowymi kamienicami", "Wąwóz Korzeniowy Dół", "Kościół Farny św. Jana Chrzciciela", "Klocek / Synagoga", "Kamienica pod św. Mikołajem", "Spichlerz Królewski", "Klasztor OO. Reformatów", "Dom Kuncewiczów"],
-                trails: ["Szlak przez Wąwóz Korzeniowy Dół", "Trasa na Górę Trzech Krzyży", "Szlak do Albrechtówki", "Ścieżka spacerowa wzdłuż Wisły", "Trasa rowerowa do Janowca", "Szlak Norwida", "Pętla wokół Męćmierza", "Ścieżka rezerwatu Krowia Wyspa", "Trakt do spichlerzy", "Wąwóz Małachowskiego"]
-            },
-            "Sandomierz": {
-                weather: "☀️ Ciepło i słonecznie, 22°C", alert: "🟢 Podziemia turystyczne i szlaki w pełni bezpieczne.",
-                rewards: ["Wstęp do Podziemnej Trasy -25%", "Królewski Obiad rabat", "Kupon na Sandomierskie Jabłko"],
-                historic: ["Brama Opatowska", "Zamek Królewski w Sandomierzu", "Podziemna Trasa Turystyczna", "Rynek z gotyckim Ratuszem", "Bazylika Katedralna Narodzenia NMP", "Wąwóz Królowej Jadwigi", "Dom Długosza", "Collegium Gostomianum", "Kościół św. Jakuba", "Góry Pieprzowe"],
-                trails: ["Szlak przez Góry Pieprzowe", "Trasa przez Wąwóz Królowej Jadwigi", "Sandomierski Szlak Jabłkowy", "Ścieżka spacerowa wokół Podwala", "Trasa rowerowa Green Velo", "Szlak św. Jakuba", "Trakt Królewski do zamku", "Ścieżka historyczna Starego Miasta", "Pętla rekreacyjna nad Wisłą", "Szlak pieszy do Kamienia Łukawskiego"]
+                weather: "☀️ Słonecznie, Tatry czyste, 16°C", alert: "🟡 Uwaga na oblodzenia w wysokich partiach.",
+                rewards: ["Kolejka Gubałówka -50%", "Oscypek u bacy gratis", "Brak wygranej"],
+                historicNames: ["Kaplica na Jaszczurówce", "Willa Koliba", "Cmentarz na Pęksowym Brzyzku", "Muzeum Tatrzańskie", "Willa Atma", "Sanktuarium na Krzeptówkach", "Dworzec Tatrzański", "Stary Kościółek przy Kościeliskiej", "Willa Oksza", "Chata Sabały"],
+                trailNames: ["Droga pod Reglami", "Szlak przez Dolinę Kościeliską", "Podejście na Giewont z Kondratowej", "Trasa nad Morskie Oko", "Szlak na Kasprowy Wierch przez Kuźnice", "Dolina Strążyska na Sarnią Skałę", "Trasa Rowerowa wokół Tatr", "Szlak na Gubałówkę", "Ścieżka nad Reglami", "Dolina Chochołowska na rowerze"]
             }
         };
 
-        // SZTUCZNE OPINIE (GENEROWANIE OGLĄDALNOŚCI)
-        const fakeReviewsPool = [
-            { user: "Tomek_W", rating: 5, text: "Niezwykłe miejsce, świetne podejście i genialny standard lokalny! Polecam z czystym sumieniem.", reply: "Cieszymy się bardzo! Robimy wszystko, aby goście byli zachwyceni." },
-            { user: "Magda_G", rating: 5, text: "Najlepszy punkt w całym regionie, pyszne jedzenie i bezbłędny klimat. Stały klient od teraz!", reply: "Dziękujemy Magda! Zapraszamy ponownie na kolejny weekend." },
-            { user: "Krzysiek_Mazur", rating: 4, text: "Bardzo przyjemnie, porcje duże, czas oczekiwania w normie mimo pełnego sezonu. Warto wpaść.", reply: "Dziękujemy za opinię, stale pracujemy nad skróceniem czasu obsługi." },
-            { user: "Karolina_Turystka", rating: 5, text: "Absolutne mistrzostwo świata! Bardzo czysto i niesamowicie uprzejmy personel.", reply: "Dziękujemy za tak miłe słowa. Do zobaczenia!" },
-            { user: "Janusz_K", rating: 4, text: "Dobre miejsce na odpoczynek po całym dniu chodzenia po szlakach. Przystępne ceny.", reply: "Miło nam to słyszeć Janusz. Pozdrawiamy serdecznie cały zespół." }
-        ];
+        citiesList.forEach(city => {
+            const preset = rawPresetData[city] || {
+                weather: "☀️ Słonecznie, 20°C", alert: "🟢 Brak alertów dla regionu.",
+                rewards: ["Kupon Rabatowy -15%", "Darmowa pamiątka regionalna", "Pusty Los"],
+                historicNames: ["Zamek Królewski / Fortyfikacja", "Ratusz Miejski i Rynek", "Zabytkowy Kościół Staromiejski", "Muzeum Regionalne i Etnograficzne", "Brama Miejska i Baszta", "Spichlerze Handlowe", "Podziemia Turystyczne", "Pałac Magnacki z parkiem", "Kamienice Mieszczańskie", "Wzgórze Widokowe z ruinami"],
+                trailNames: ["Główny Trakt Miejski", "Pętla Krajobrazowa", "Szlak Historyczny Kurortu", "Ścieżka Przyrodnicza Brzegiem Rzeki", "Trasa Rowerowa MTB Forest", "Rodzinna Pętla Rekreacyjna", "Szlak Zielony do Punktu Widokowego", "Nadmorska / Nadwiślańska Ścieżka rowerowa", "Trasa Biegowa Wyzwanie Szychty", "Spacernik Panoramiczny"]
+            };
+
+            regionalDatabase[city] = {
+                weather: preset.weather,
+                alert: preset.alert,
+                rewards: preset.rewards,
+                historic: [],
+                trails: [],
+                buses: [{ route: `Główny Węzeł Komunikacyjny ${city}`, url: "https://www.e-podroznik.pl" }]
+            };
+
+            for(let k=1; k<=10; k++) {
+                const nameH = preset.historicNames[k-1] || `${preset.historicNames[0]} nr ${k}`;
+                regionalDatabase[city].historic.push({
+                    name: nameH,
+                    type: k % 2 === 0 ? "Zabytek Architektury" : "Atrakcja Przyrodnicza",
+                    desc: `Wyjątkowe i unikalne miejsce w ${city}. Reprezentuje punkt numer ${k} na naszej liście polecanych obiektów turystycznych sieci Premium.`,
+                    url: "https://maps.google.com/?q=" + encodeURIComponent(nameH + " " + city)
+                });
+
+                const nameT = preset.trailNames[k-1] || `${preset.trailNames[0]} Trasa ${k}`;
+                regionalDatabase[city].trails.push({
+                    type: k % 3 === 0 ? "bike" : "hiking",
+                    name: nameT,
+                    desc: `Ścieżka numer ${k} przygotowana pod kątem maksymalnych wrażeń estetycznych i sportowych w regionie ${city}.`,
+                    url: "https://mapa-turystyczna.pl"
+                });
+            }
+        });
 
         let storeData = {
             cityBoards: {}, telebimWinners: {}, customTickerAds: [],
-            users: { "admin": {username: "admin", password: "123", role: "admin"} },
-            restaurants: {}
+            users: {
+                "admin": {username: "admin", password: "123", role: "admin"} // Domyślne konto admina
+            },
+            restaurants: {
+                "kar_g1": { id: "kar_g1", name: "Smażalnia Pod Smażoną Rybką", city: "Karpacz", type: "Ryby i Kuchnia Polska", votes: 2, sumStars: 9, reviews: [{id: "r1", user:"Marek_K", rating:5, text:"Pstrąg z potoku po prostu poezja!", reply:null}, {id: "r2", user:"Anna_G", rating:4, text:"Duże porcje, frytki chrupiące.", reply:null}] },
+                "kar_g2": { id: "kar_g2", name: "Karczma Karkonoska", city: "Karpacz", type: "Regionalna", votes: 1, sumStars: 5, reviews: [{id: "r3", user:"Janusz_T", rating:5, text:"Anuluje zmęczenie po Śnieżce.", reply:null}] }
+            }
         };
 
         function initLocalStorage() {
             const local = localStorage.getItem('polskie_okienka_master_store');
-            if(local) { 
-                try { storeData = JSON.parse(local); } catch(e) { console.error(e); } 
-            } else {
+            if(local) { try { storeData = JSON.parse(local); } catch(e) { console.error(e); } }
+            else {
                 citiesList.forEach(c => { storeData.cityBoards[c] = {}; storeData.telebimWinners[c] = null; });
-                
-                // KAMPANIA DARMOWYCH ZASIĘGÓW - EMULACJA WSADU ORIGINALNEGO
-                storeData.cityBoards["Karpacz"][1] = {
-                    name: "WONDER HOME APARTAMENTY",
-                    url: "https://www.wonderhome.pl",
-                    qty: 3, isChild: false,
-                    logoImg: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' fill='%2306b6d4'><text x='50%' y='65%' font-family='sans-serif' font-size='8' font-weight='bold' text-anchor='middle'>WONDER HOME</text></svg>"
-                };
-                storeData.cityBoards["Karpacz"][2] = { isChild: true };
-                storeData.cityBoards["Karpacz"][3] = { isChild: true };
-
-                storeData.cityBoards["Karpacz"][11] = {
-                    name: "SCHRONISKO SAMOTNIA",
-                    url: "https://www.samotnia.com.pl",
-                    qty: 1, isChild: false,
-                    logoImg: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='%23f59e0b'><circle cx='25' cy='20' r='10'/><text x='50%' y='85%' font-family='sans-serif' font-size='6' font-weight='bold' text-anchor='middle'>SAMOTNIA</text></svg>"
-                };
-
-                storeData.cityBoards["Karpacz"][12] = {
-                    name: "SMAŻALNIA POD RYBKĄ",
-                    url: "https://google.com",
-                    qty: 1, isChild: false,
-                    logoImg: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='%2310b981'><text x='50%' y='50%' font-family='sans-serif' font-size='20' text-anchor='middle'>🐟</text><text x='50%' y='85%' font-family='sans-serif' font-size='5' font-weight='bold' text-anchor='middle'>POD RYBKĄ</text></svg>"
-                };
-
-                storeData.cityBoards["Szklarska Poręba"][1] = {
-                    name: "SKI ARENA SZRENICA",
-                    url: "https://sudetylift.com.pl",
-                    qty: 2, isChild: false,
-                    logoImg: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' fill='%233b82f6'><text x='50%' y='65%' font-family='sans-serif' font-size='8' font-weight='bold' text-anchor='middle'>⛷️ SZRENICA</text></svg>"
-                };
-                storeData.cityBoards["Szklarska Poręba"][2] = { isChild: true };
-
                 saveToLocalStorage();
             }
-
-            // GENEROWANIE AUTOMATYCZNEJ GASTRONOMII Z OPINIAMI (RUCHU) DLA KAŻDEGO MIASTA
-            citiesList.forEach((city, index) => {
-                const id1 = `rest_${index}_1`;
-                const id2 = `rest_${index}_2`;
-
-                if (!storeData.restaurants[id1]) {
-                    // Wymieszanie sztucznych opinii do wygenerowania wiarygodnego ruchu
-                    const revs = [
-                        { id: "fr1", user: fakeReviewsPool[0].user, rating: fakeReviewsPool[0].rating, text: fakeReviewsPool[0].text, reply: fakeReviewsPool[0].reply },
-                        { id: "fr2", user: fakeReviewsPool[1].user, rating: fakeReviewsPool[1].rating, text: fakeReviewsPool[1].text, reply: null }
-                    ];
-                    storeData.restaurants[id1] = {
-                        id: id1, name: `Karczma Regionalna Gościniec (${city})`, city: city, type: "Kuchnia Regionalna i Polska",
-                        votes: 2, sumStars: 10, reviews: revs
-                    };
-                }
-
-                if (!storeData.restaurants[id2]) {
-                    const revs = [
-                        { id: "fr3", user: fakeReviewsPool[2].user, rating: fakeReviewsPool[2].rating, text: fakeReviewsPool[2].text, reply: fakeReviewsPool[2].reply },
-                        { id: "fr4", user: fakeReviewsPool[3].user, rating: fakeReviewsPool[3].rating, text: fakeReviewsPool[3].text, reply: null }
-                    ];
-                    storeData.restaurants[id2] = {
-                        id: id2, name: `Restauracja Smaki Polskie (${city})`, city: city, type: "Tradycyjne Obiady Domowe",
-                        votes: 2, sumStars: 9, reviews: revs
-                    };
-                }
-            });
-
             if(!storeData.customTickerAds) storeData.customTickerAds = [];
             if(!storeData.users) storeData.users = {"admin": {username: "admin", password: "123", role: "admin"}};
-            
-            saveToLocalStorage();
-            buildBizSelectOptions();
         }
 
         function saveToLocalStorage() { localStorage.setItem('polskie_okienka_master_store', JSON.stringify(storeData)); }
@@ -889,54 +796,9 @@
             return cleared;
         }
 
-        // LICZNIK ONLINE (SZTUCZNY RUCH OD 140 DO 450 DLA EFEKTU SKALI)
-        function initOnlineGuestsCounter() {
-            const el = document.getElementById('onlineGuestsCount');
-            if(!el) return;
-            
-            function updateCount() {
-                const randomGuests = Math.floor(Math.random() * (450 - 140 + 1)) + 140;
-                el.innerText = randomGuests;
-            }
-            updateCount();
-            setInterval(updateCount, 3000);
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const dict = languageDictionary[lang];
-            
-            document.getElementById('lblSafetyHeader').innerHTML = `${dict.safety} (<span class="current-region-txt">${currentCity}</span>):`;
-            document.getElementById('lblOnlineGuests').innerHTML = `${dict.online}<span id="onlineGuestsCount">--</span>`;
-            document.getElementById('lblWheelTitle').innerText = dict.wheelTitle;
-            if(document.getElementById('lblWheelLock')) document.getElementById('lblWheelLock').innerText = dict.wheelLock;
-            
-            document.getElementById('lblGastroTitle').innerText = dict.gastro;
-            document.getElementById('lblHistoricTitle').innerText = dict.historic;
-            document.getElementById('lblTrailsTitle').innerText = dict.trails;
-            document.getElementById('lblBusTitle').innerText = dict.bus;
-
-            resetAiChat();
-            initOnlineGuestsCounter();
-        }
-
-        function buildBizSelectOptions() {
-            const select = document.getElementById('bizRestaurantSelect');
-            if(!select) return;
-            select.innerHTML = "";
-            Object.values(storeData.restaurants).forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = r.id;
-                opt.innerText = `${r.name} - [${r.city}]`;
-                select.appendChild(opt);
-            });
-        }
-
         document.addEventListener("DOMContentLoaded", () => {
             initLocalStorage();
             buildCitiesFilterGrid();
-            selectCity("Karpacz");
-            initOnlineGuestsCounter();
             
             const fileInput = document.getElementById('inputLogoFile');
             if(fileInput) {
@@ -949,20 +811,146 @@
                     }
                 });
             }
+            
+            updateLiveWidget();
+            setInterval(updateLiveWidget, 1000);
+            buildMatrix();
+            renderTouristZoneAllPanels();
+            updateAuthVisualStatus();
         });
 
+        // SYSTEM OBSŁUGI LOGOWANIA I REJESTRACJI
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = "flex";
+            toggleAuthTab('login');
+        }
+
+        function toggleAuthTab(tab) {
+            authCurrentTab = tab;
+            const tabLogin = document.getElementById('authTabLogin');
+            const tabRegister = document.getElementById('authTabRegister');
+            const registerFields = document.getElementById('registerOnlyFields');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const title = document.getElementById('authModalTitle');
+
+            if (tab === 'login') {
+                tabLogin.classList.add('active'); tabRegister.classList.remove('active');
+                registerFields.style.display = "none";
+                submitBtn.innerText = "Zaloguj się"; title.innerText = "Logowanie do platformy";
+            } else {
+                tabRegister.classList.add('active'); tabLogin.classList.remove('active');
+                registerFields.style.display = "block";
+                submitBtn.innerText = "Zarejestruj nowe konto"; title.innerText = "Tworzenie nowego konta";
+            }
+        }
+
+        function handleAuthSubmit() {
+            const userInp = document.getElementById('authUsername').value.trim();
+            const passInp = document.getElementById('authPassword').value.trim();
+            const roleInp = document.getElementById('authRole').value;
+
+            if (!userInp || !passInp) { alert("Wpisz login oraz hasło!"); return; }
+
+            if (authCurrentTab === 'register') {
+                if (storeData.users[userInp.toLowerCase()]) { alert("Taki użytkownik już istnieje!"); return; }
+                
+                storeData.users[userInp.toLowerCase()] = { username: userInp, password: passInp, role: roleInp };
+                saveToLocalStorage();
+                alert("Konto założone pomyślnie! Teraz możesz się zalogować.");
+                toggleAuthTab('login');
+            } else {
+                const account = storeData.users[userInp.toLowerCase()];
+                if (!account || account.password !== passInp) { alert("Błędny login lub hasło!"); return; }
+
+                currentUser = account;
+                alert(`Zalogowano pomyślnie jako: ${currentUser.username} (${currentUser.role.toUpperCase()})`);
+                closeModal('authModal');
+                updateAuthVisualStatus();
+                
+                // Automatyczne odświeżenie stref i paneli po logowaniu
+                renderGastroSection();
+                if(currentUser.role === 'firm') { switchMainView('bizpanel'); }
+            }
+            // Wyczyszczenie okienek wpisów
+            document.getElementById('authUsername').value = "";
+            document.getElementById('authPassword').value = "";
+        }
+
+        function logOutUser() {
+            currentUser = null;
+            updateAuthVisualStatus();
+            renderGastroSection();
+            switchMainView('tablica');
+            alert("Wylogowano z systemu.");
+        }
+
+        function updateAuthVisualStatus() {
+            const txt = document.getElementById('authIndicatorTxt');
+            const bar = document.getElementById('authStatusBar');
+            
+            // Czyszczenie starego przycisku akcji
+            const oldBtn = bar.querySelector('.auth-action-btn');
+            if(oldBtn) oldBtn.remove();
+
+            const actionBtn = document.createElement('button');
+            actionBtn.className = "nav-btn nav-btn-user auth-action-btn";
+            actionBtn.style.padding = "6px 12px"; actionBtn.style.fontSize = "11px"; actionBtn.style.margin = "0";
+
+            if (currentUser) {
+                txt.innerText = `👤 ${currentUser.username} [${currentUser.role.toUpperCase()}]`;
+                txt.style.color = "var(--emerald-light)";
+                actionBtn.innerText = "Wyloguj"; actionBtn.onclick = logOutUser;
+                
+                // Koło fortuny aktywacja
+                if(currentUser.role === 'tourist') {
+                    document.getElementById('wheelAuthLock').style.display = "none";
+                    document.getElementById('wheelActiveZone').style.display = "block";
+                } else {
+                    document.getElementById('wheelAuthLock').innerHTML = `<p style="font-size:12px; color:var(--danger-color); text-align:center; margin:0;">🔒 Koło fortuny dostępne wyłącznie dla kont typu Turysta.</p>`;
+                    document.getElementById('wheelAuthLock').style.display = "block";
+                    document.getElementById('wheelActiveZone').style.display = "none";
+                }
+
+                // Blokada B2B panelu
+                if(currentUser.role === 'firm' || currentUser.role === 'admin') {
+                    document.getElementById('bizAuthLockMessage').style.display = "none";
+                    document.getElementById('bizDashboardActiveZone').style.display = "block";
+                    document.getElementById('bizLoggedFirmName').innerText = currentUser.username;
+                } else {
+                    document.getElementById('bizAuthLockMessage').style.display = "block";
+                    document.getElementById('bizDashboardActiveZone').style.display = "none";
+                }
+            } else {
+                txt.innerText = "Niezalogowany"; txt.style.color = "#9ca3af";
+                actionBtn.innerText = "Konto / Logowanie"; actionBtn.onclick = openAuthModal;
+                document.getElementById('wheelAuthLock').innerHTML = `<p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;">🔒 Zaloguj się na konto **Turysta**, aby odblokować losowanie bonusów i kuponów.</p>`;
+                document.getElementById('wheelAuthLock').style.display = "block";
+                document.getElementById('wheelActiveZone').style.display = "none";
+                
+                document.getElementById('bizAuthLockMessage').style.display = "block";
+                document.getElementById('bizDashboardActiveZone').style.display = "none";
+            }
+            bar.appendChild(actionBtn);
+        }
+
         function buildCitiesFilterGrid() {
-            const container = document.getElementById('cityPinsGrid');
-            if(!container) return;
+            const container = document.getElementById('citiesGridFilter');
             container.innerHTML = "";
             citiesList.forEach(city => {
-                const pin = document.createElement('div');
-                pin.className = "city-pin";
-                pin.id = "pin-" + city.replace(/\s+/g, '');
-                pin.innerText = city;
-                pin.onclick = () => selectCity(city);
-                container.appendChild(pin);
+                const div = document.createElement('div');
+                div.className = "city-pin" + (city === currentCity ? " active-city" : "");
+                div.id = "pin-" + city.replace(/\s+/g, '');
+                div.onclick = () => selectCity(city);
+                div.innerHTML = `<div class="pin-dot"></div><div class="city-label">${city}</div>`;
+                container.appendChild(div);
             });
+        }
+
+        function updateLiveWidget() {
+            const now = new Date();
+            document.getElementById('widgetDate').innerText = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.getFullYear()}`;
+            document.getElementById('widgetTime').innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            document.getElementById('widgetWeather').innerText = regionalDatabase[currentCity]?.weather || "☀️ Stabilna";
         }
 
         function switchMainView(viewName) {
@@ -995,6 +983,7 @@
             document.getElementById('currentCityLabel').innerText = cityName;
             document.querySelectorAll('.current-region-txt').forEach(el => el.innerText = cityName);
 
+            updateLiveWidget();
             buildMatrix();
             renderTouristZoneAllPanels();
             resetAiChat();
@@ -1038,6 +1027,7 @@
             updateTelebimDisplay();
         }
 
+        // PANEL LOSOWANIA PRZENIESIONY DLA ADMINA / SCHOWANY
         function drawTelebimWinner() {
             const currentData = storeData.cityBoards[currentCity] || {};
             const activePool = [];
@@ -1045,9 +1035,9 @@
 
             const statusEl = document.getElementById('adminDrawStatus');
             if (activePool.length === 0) {
-                statusEl.style.color = "var(--danger-color)"; statusEl.innerText = "❌ Brak firm na matrycy!"; return;
+                statusEl.style.color = "var(--danger-color)"; statusEl.innerText = "❌ Brak firm na matrycy w tym mieście!"; return;
             }
-            statusEl.style.color = "var(--gold-primary)"; statusEl.innerText = "⚡ Losowanie bębna...";
+            statusEl.style.color = "var(--gold-primary)"; statusEl.innerText = "⚡ Trwa losowanie bębna...";
             setTimeout(() => {
                 const winner = activePool[Math.floor(Math.random() * activePool.length)];
                 storeData.telebimWinners[currentCity] = winner;
@@ -1067,7 +1057,7 @@
                 telebimContent.innerHTML = winner.logoImg ? `<img src="${winner.logoImg}" style="max-height:85px; margin-bottom:8px;"><div class="telebim-title">${winner.name}</div>` : `<div class="telebim-title">${winner.name}</div>`;
             } else {
                 telebimZone.style.cursor = "default";
-                telebimContent.innerHTML = `<p style="color:#9ca3af; font-size:13px; margin:0; font-style:italic;">Brak losowania firmy dnia.</p>`;
+                telebimContent.innerHTML = `<p style="color:#9ca3af; font-size:13px; margin:0; font-style:italic;">Brak losowania firmy dnia w mieście ${currentCity}.</p>`;
             }
         }
 
@@ -1081,25 +1071,27 @@
             document.getElementById('alertMessageText').innerText = data.alert;
             renderGastroSection();
 
+            // RENDER 10 ATRAKCJI
             const historicContainer = document.getElementById('historicListContainer'); historicContainer.innerHTML = "";
             data.historic.forEach(h => {
                 const card = document.createElement('div'); card.className = "historic-card";
-                card.innerHTML = `<div><span class="card-badge" style="background:var(--gold-primary); color:#000;">${h.type}</span> <strong>${h.name}</strong></div><div style="color:#9ca3af; font-size:12px; margin-top:4px;">${h.desc}</div><a href="${h.url}" target="_blank" class="btn-redirect">📍 Mapa</a>`;
+                card.innerHTML = `<div><span class="card-badge" style="background:var(--gold-primary);">${h.type}</span> <strong>${h.name}</strong></div><div style="color:#9ca3af; font-size:12px;">${h.desc}</div><a href="${h.url}" target="_blank" class="btn-redirect">📍 Mapa</a>`;
                 historicContainer.appendChild(card);
             });
 
+            // RENDER 10 SZLAKÓW
             const trailsContainer = document.getElementById('trailsListContainer'); trailsContainer.innerHTML = "";
             data.trails.forEach(t => {
                 const card = document.createElement('div'); card.className = "trail-card";
                 const isBike = (t.type === "bike");
-                card.innerHTML = `<div><span class="card-badge" style="background:${isBike ? "var(--blue-tourist)":"var(--emerald-light)"}; color:#fff;">${isBike ? "🚴 ROWER":"🥾 PIESZY"}</span> <strong>${t.name}</strong></div><div style="color:#9ca3af; font-size:12px; margin-top:4px;">${t.desc}</div><a href="${t.url}" target="_blank" class="btn-redirect">Mapa 🗺️</a>`;
+                card.innerHTML = `<div><span class="card-badge" style="background:${isBike ? "var(--blue-tourist)":"var(--emerald-light)"}; color:#fff;">${isBike ? "🚴 ROWEROWY":"🥾 PIESZY"}</span> <strong>${t.name}</strong></div><div style="color:#9ca3af; font-size:12px;">${t.desc}</div><a href="${t.url}" target="_blank" class="btn-redirect">Mapa trasy 🗺️</a>`;
                 trailsContainer.appendChild(card);
             });
 
             const busContainer = document.getElementById('busListContainer'); busContainer.innerHTML = "";
             data.buses.forEach(b => {
                 const card = document.createElement('div'); card.className = "bus-card";
-                card.innerHTML = `<div><strong>${b.route}</strong></div><div style="color:#9ca3af; font-size:12px; margin-top:4px;">Rozkłady jazdy PKP/PKS na żywo.</div><a href="${b.url}" target="_blank" class="btn-redirect">Rozkład 🎫</a>`;
+                card.innerHTML = `<div><strong>${b.route}</strong></div><div style="color:#9ca3af; font-size:12px;">Rozkłady jazdy PKP/PKS na żywo.</div><a href="${b.url}" target="_blank" class="btn-redirect">Rozkład 🎫</a>`;
                 busContainer.appendChild(card);
             });
         }
@@ -1118,10 +1110,12 @@
                     reviewsHTML += `<div class="single-user-review"><strong>${rev.user}</strong> <span style="color:#ffcc00;">(${"★".repeat(rev.rating)})</span>: ${rev.text}${rev.reply ? `<div class="owner-reply-box">💼 Odpowiedź: ${rev.reply}</div>`:''}</div>`;
                 });
                 
+                // Sprawdzamy czy zalogowany użytkownik to Turysta (tylko turysta dodaje opinie)
                 const canReview = (currentUser && currentUser.role === 'tourist');
+
                 card.innerHTML = `
-                    <div><span class="card-badge" style="background:#f59e0b; color:#000;">${r.type}</span> <strong>${r.name}</strong></div>
-                    <div style="font-size:12px; margin:4px 0;">Ocena: <span style="color:#f59e0b; font-weight:bold;">★ ${avg}/5</span> (${r.votes} opinii)</div>
+                    <div><span class="card-badge" style="background:#f59e0b;">${r.type}</span> <strong>${r.name}</strong></div>
+                    <div style="font-size:12px; margin:2px 0;">Ocena: <span style="color:#f59e0b;">${avg}/5</span> (${r.votes} opinii)</div>
                     <div class="user-reviews-list">${reviewsHTML ? reviewsHTML : '<div style="font-size:10px; color:#6b7280;">Brak opinii.</div>'}</div>
                     ${canReview ? `<div class="review-form-block">
                         <div class="stars-rating-select">
@@ -1131,9 +1125,9 @@
                             <input type="radio" id="gstar2_${r.id}" name="gstars_${r.id}" value="2"><label for="gstar2_${r.id}">★</label>
                             <input type="radio" id="gstar1_${r.id}" name="gstars_${r.id}" value="1"><label for="gstar1_${r.id}">★</label>
                         </div>
-                        <textarea class="gastro-textarea" id="gtxt_${r.id}" placeholder="Dodaj komentarz turystyczny..."></textarea>
+                        <textarea class="gastro-textarea" id="gtxt_${r.id}" placeholder="Komentarz..."></textarea>
                         <button class="btn-submit-review" onclick="submitGastroReview('${r.id}')">Zatwierdź</button>
-                    </div>` : `<div style="font-size:11px; color:#9ca3af; text-align:center; padding:5px; margin-top:5px; background:rgba(0,0,0,0.15); border-radius:4px;">${currentUser ? '🔒 Tylko konta Turystów mogą oceniać.' : '🔒 Zaloguj się jako Turysta, by dodać ocenę gwiazdkową.'}</div>`}
+                    </div>` : `<div style="font-size:11px; color:#9ca3af; text-align:center; padding:5px;">${currentUser ? '🔒 Tylko konta Turystów mogą oceniać.' : '🔒 Zaloguj się jako Turysta, by ocenić.'}</div>`}
                 `;
                 container.appendChild(card);
             });
@@ -1152,10 +1146,10 @@
             }
         }
 
+        // CZAT AI
         function resetAiChat() {
             const box = document.getElementById('chatAiMessages');
-            const welcomeText = languageDictionary[currentLang].aiWelcome;
-            box.innerHTML = `<div class="ai-msg bot">${welcomeText} <strong>${currentCity}</strong>. O co chcesz zapytać? Znam tu szlaki oraz lokalne zabytki!</div>`;
+            box.innerHTML = `<div class="ai-msg bot">Cześć! Przełączyłeś się na region <strong>${currentCity}</strong>. O co chcesz zapytać? Znam tu wszystkie 10 unikalnych atrakcji, szlaki rowerowe oraz piesze! Mogę rozpisać Ci harmonogram wycieczki.</div>`;
         }
 
         function sendAiChatMessage() {
@@ -1170,26 +1164,31 @@
             setTimeout(() => {
                 const botDiv = document.createElement('div'); botDiv.className = "ai-msg bot";
                 const db = regionalDatabase[currentCity];
-                let reply = `[AI - ${currentLang.toUpperCase()}] Przeanalizowałem: "${query}" dla ${currentCity}. `;
-                if(query.toLowerCase().includes("szlak")) {
-                    reply += `Polecam trasę: **${db.trails[0].name}**. Aura: ${db.weather}.`;
+                let reply = `Jako Twój przewodnik AI po **${currentCity}**, przeanalizowałem zapytanie "${query}". `;
+
+                if(query.toLowerCase().includes("szlak") || query.toLowerCase().includes("ścieżk") || query.toLowerCase().includes("rower")) {
+                    reply += `W tym regionie posiadamy 10 zintegrowanych tras. Najbardziej polecam: **${db.trails[0].name}** (${db.trails[0].desc}) oraz trasę alternatywną **${db.trails[1].name}**. Aktualny komunikat meteo: ${db.weather}.`;
+                } else if(query.toLowerCase().includes("atrakcj") || query.toLowerCase().includes("zabytek") || query.toLowerCase().includes("co zobaczyc")) {
+                    reply += `Koniecznie musisz zobaczyć nasze główne punkty dziedzictwa! Na szczycie listy znajduje się **${db.historic[0].name}** - ${db.historic[0].desc}. Tuż obok warto odwiedzić **${db.historic[1].name}**.`;
+                } else if(query.toLowerCase().includes("plan") || query.toLowerCase().includes("wycieczk")) {
+                    reply += `Oto ekspresowy plan na 1 dzień: Rano odwiedź **${db.historic[0].name}**, następnie ruszaj na szlak **${db.trails[0].name}**, a obiad zjedz w jednej z naszych rekomendowanych restauracji regionalnych!`;
                 } else {
-                    reply += `Warto zwiedzić obiekt historyczny: **${db.historic[0].name}**.`;
+                    reply += `W kurorcie **${currentCity}** mamy przygotowane pełne zaplecze turystyczne (10 atrakcji i 10 szlaków). Jeśli szukasz inspiracji, polecam sprawdzić zabytek **${db.historic[2].name}** albo wybrać się na trasę spacerową **${db.trails[2].name}**.`;
                 }
                 botDiv.innerHTML = reply; box.appendChild(botDiv); box.scrollTop = box.scrollHeight;
             }, 600);
         }
 
+        // B2B PANEL
         function loadBizRestaurantPanel() {
             if(!currentUser) return;
             const restId = document.getElementById('bizRestaurantSelect').value;
-            if(!restId) return;
             const restaurant = storeData.restaurants[restId];
             const target = document.getElementById('bizReviewsTarget');
             document.getElementById('bizActiveDashboard').style.display = "block"; target.innerHTML = "";
 
             if(!restaurant || restaurant.reviews.length === 0) {
-                target.innerHTML = `<p style="font-size:12px; color:#9ca3af;">Brak opinii do przetworzenia.</p>`; return;
+                target.innerHTML = `<p style="font-size:12px; color:#9ca3af;">Brak opinii.</p>`; return;
             }
             restaurant.reviews.forEach(rev => {
                 const div = document.createElement('div'); div.className = "biz-reply-container";
@@ -1197,8 +1196,8 @@
                     <div style="font-size:12px; margin-bottom:6px;"><strong>👤 ${rev.user}</strong> (${rev.rating}★): <em>"${rev.text}"</em></div>
                     <textarea class="gastro-textarea" id="reply_input_${rev.id}">${rev.reply || ""}</textarea>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn-submit-review" style="background:var(--purple-premium); color:#fff;" onclick="generateAiReply('${restId}', '${rev.id}', ${rev.rating})">✨ Odpowiedź AI</button>
-                        <button class="btn-submit-review" onclick="submitBizReply('${restId}', '${rev.id}')">Opublikuj</button>
+                        <button class="btn-submit-review" style="background:var(--purple-premium); color:#fff;" onclick="generateAiReply('${restId}', '${rev.id}', ${rev.rating})">✨ Odpowiedź AI Premium</button>
+                        <button class="btn-submit-review" onclick="submitBizReply('${restId}', '${rev.id}')">Opublikuj odpowiedź</button>
                     </div>
                 `;
                 target.appendChild(div);
@@ -1207,15 +1206,16 @@
 
         function generateAiReply(restId, revId, rating) {
             const ta = document.getElementById(`reply_input_${revId}`);
-            ta.value = rating >= 4 ? "Dziękujemy bardzo za świetną opinię i odwiedzenie naszego lokalu! Zapraszamy ponownie!" : "Dziękujemy za opinię, przeanalizujemy uwagi z zespołem w celu poprawy standardu potraw.";
+            ta.value = rating >= 4 ? "Dziękujemy bardzo za świetną opinię i odwiedzenie naszego lokalu! Zapraszamy ponownie!" : "Dziękujemy za opinię, przeanalizujemy uwagi z szefem kuchni w celu poprawy standardu potraw.";
         }
 
         function submitBizReply(restId, revId) {
             const text = document.getElementById(`reply_input_${revId}`).value.trim();
             const rev = storeData.restaurants[restId]?.reviews.find(r => r.id === revId);
-            if(rev) { rev.reply = text || null; saveToLocalStorage(); alert("Odpowiedź zapisana!"); loadBizRestaurantPanel(); }
+            if(rev) { rev.reply = text || null; saveToLocalStorage(); alert("Odpowiedź zapisana!"); renderGastroSection(); }
         }
 
+        // ADMIN MONITOR
         function renderAdminGlobalPanel() {
             const target = document.getElementById('adminGlobalReviewsList'); target.innerHTML = "";
             Object.values(storeData.restaurants).forEach(rest => {
@@ -1232,16 +1232,16 @@
             const idx = rest?.reviews.findIndex(r => r.id === revId);
             if(idx > -1) {
                 rest.sumStars -= rest.reviews[idx].rating; rest.votes--; rest.reviews.splice(idx, 1);
-                saveToLocalStorage(); renderAdminGlobalPanel();
+                saveToLocalStorage(); renderAdminGlobalPanel(); renderGastroSection();
             }
         }
 
+        // TICKER MARKUP
         function updateBottomTickerMarkup() {
             const tc = document.getElementById('tickerScrollContent');
-            if(!tc) return;
-            let base = `<div class="ticker-item">📍 Miasto: <span style="color:var(--gold-primary); font-weight:bold;">${currentCity.toUpperCase()}</span></div><div class="ticker-item">🌤️ Pogoda: <span>${regionalDatabase[currentCity]?.weather}</span></div>`;
+            let base = `<div class="ticker-item">📍 Wybrany Kurort: <span style="color:var(--gold-primary); font-weight:bold;">${currentCity.toUpperCase()}</span></div><div class="ticker-item">🌤️ Pogoda: <span>${regionalDatabase[currentCity]?.weather}</span></div>`;
             storeData.customTickerAds.forEach(ad => { base += `<div class="ticker-item"><span class="sponsor-tag">SPONSOR</span><strong>${ad.company}:</strong> ${ad.text}</div>`; });
-            tc.innerHTML = base + base;
+            tc.innerHTML = base;
         }
 
         function openTickerPurchaseModal() { document.getElementById('tickerPurchaseModal').style.display = "flex"; }
@@ -1287,115 +1287,18 @@
             saveToLocalStorage(); closeModal('purchaseModal'); buildMatrix();
         }
 
-        function openAuthModal() { document.getElementById('authModal').style.display = "flex"; }
-
-        function toggleAuthTab(tab) {
-            authCurrentTab = tab;
-            if(tab === 'login') {
-                document.getElementById('authModalTitle').innerText = "Logowanie do Platformy";
-                document.getElementById('registerOnlyFields').style.display = "none";
-            } else {
-                document.getElementById('authModalTitle').innerText = "Rejestracja Nowego Konta";
-                document.getElementById('registerOnlyFields').style.display = "block";
-            }
-        }
-
-        function handleAuthSubmit() {
-            const u = document.getElementById('authUsername').value.trim();
-            const p = document.getElementById('authPassword').value.trim();
-            if(!u || !p) { alert("Uzupełnij pola!"); return; }
-
-            if(authCurrentTab === 'login') {
-                if(u === 'admin' && p === '123') {
-                    currentUser = { username: "admin", role: "admin" };
-                } else if(storeData.users[u] && storeData.users[u].password === p) {
-                    currentUser = storeData.users[u];
-                } else {
-                    alert("Nieprawidłowy login lub hasło!"); return;
-                }
-            } else {
-                const r = document.getElementById('authRole').value;
-                if(storeData.users[u]) { alert("Taki użytkownik istnieje!"); return; }
-                storeData.users[u] = { username: u, password: p, role: r };
-                currentUser = storeData.users[u];
-                saveToLocalStorage();
-            }
-
-            closeModal('authModal');
-            updateAuthUIState();
-        }
-
-        function updateAuthUIState() {
-            const container = document.getElementById('authHeaderStateZone');
-            if(!currentUser) return;
-
-            container.innerHTML = `<span style="font-size:12px; margin-right:10px; color:var(--emerald-light);">👤 Zalogowano: <strong>${currentUser.username.toUpperCase()}</strong> (${currentUser.role})</span><button class="nav-btn" style="background:#334155; color:#fff; padding:4px 10px;" onclick="handleLogout()">Wyloguj</button>`;
-            
-            if(currentUser.role === 'tourist') {
-                document.getElementById('wheelAuthLock').style.display = "none";
-                document.getElementById('wheelActiveZone').style.display = "block";
-                document.getElementById('bizAuthLockMessage').style.display = "block";
-                document.getElementById('bizDashboardActiveZone').style.display = "none";
-            } else if(currentUser.role === 'firm') {
-                document.getElementById('bizAuthLockMessage').style.display = "none";
-                document.getElementById('bizDashboardActiveZone').style.display = "block";
-                document.getElementById('bizLoggedFirmName').innerText = currentUser.username.toUpperCase();
-            }
-            renderGastroSection();
-        }
-
-        function handleLogout() { currentUser = null; location.reload(); }
-
         function spinTheWheel() {
             if(!currentUser || currentUser.role !== 'tourist') return;
-            const btn = document.getElementById('spinWheelBtn'); 
-            const wheel = document.getElementById('fortuneWheel');
-            btn.disabled = true; 
-            
-            const db = regionalDatabase[currentCity];
+            const btn = document.getElementById('spinWheelBtn'); const wheel = document.getElementById('fortuneWheel');
+            btn.disabled = true; const db = regionalDatabase[currentCity];
             const rIdx = Math.floor(Math.random() * db.rewards.length);
-            const targetRotation = 1440 + (rIdx * 120);
-            wheel.style.transform = `rotate(${targetRotation}deg)`;
-            document.getElementById('wheelResultDisplay').innerText = "⚡ Trwa losowanie kuponu...";
-            
+            wheel.style.transform = `rotate(${1440 + (rIdx * 120)}deg)`;
             setTimeout(() => {
                 document.getElementById('wheelResultDisplay').innerHTML = `🎁 WYGRANA: <span style="background:var(--gold-primary); color:#000; padding:2px 5px; border-radius:4px;">${db.rewards[rIdx]}</span>`;
-                if(typeof confetti === 'function') confetti({ particleCount: 60, spread: 50 });
+                if(typeof confetti === 'function') confetti({ particleCount: 50, spread: 40 });
                 btn.disabled = false;
             }, 4000);
         }
-
-        // PETLA INICJUJĄCA REALISTYCZNE OBIEKTY DLA WSZYSTKICH 20 MIAST Z LISTY
-        const regionalDatabase = {};
-        citiesList.forEach(city => {
-            const preset = rawPresetData[city] || {
-                weather: "☀️ Słonecznie, 20°C", alert: "🟢 Brak aktywnych alertów kryzysowych.",
-                rewards: ["Kupon Regionalny -15%", "Darmowa pamiątka", "Los Szczęścia"],
-                historic: ["Rynek Główny", "Ratusz Miejski", "Zabytkowa Fortyfikacja", "Muzeum Regionalne", "Baszta Obronna", "Krypta Historyczna", "Spichlerz Miejski", "Pałac Magnacki", "Kamieniczki Starówki", "Punkt Widokowy"],
-                trails: ["Główny Trakt Miejski", "Pętla Krajobrazowa", "Szlak Historyczny Kurortu", "Ścieżka nad Rzeką", "Trasa MTB Forest", "Rodzinna Pętla Rekreacyjna", "Zielony Szlak Widokowy", "Nadmorska Ścieżka", "Trasa Biegacza", "Panoramiczny Spacernik"]
-            };
-
-            regionalDatabase[city] = {
-                weather: preset.weather, alert: preset.alert, rewards: preset.rewards,
-                historic: [], trails: [], buses: [{ route: `Centralny Dworzec Komunikacyjny ${city}`, url: "https://www.e-podroznik.pl" }]
-            };
-
-            for(let k = 1; k <= 10; k++) {
-                const nameH = preset.historic[k-1] || `${preset.historic[0]} Sektor ${k}`;
-                regionalDatabase[city].historic.push({
-                    name: nameH, type: k % 2 === 0 ? "Zabytek" : "Atrakcja",
-                    desc: `Wyjątkowy punkt turystyczny w miejscowości ${city} zachęcający do zwiedzania.`,
-                    url: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(nameH + " " + city)
-                });
-
-                const nameT = preset.trails[k-1] || `${preset.trails[0]} Odcinek ${k}`;
-                regionalDatabase[city].trails.push({
-                    type: k % 3 === 0 ? "bike" : "hiking", name: nameT,
-                    desc: `Trasa rekreacyjno-krajobrazowa w rejonie ${city} przygotowana pod wysokie zasięgi turystyczne.`,
-                    url: "https://mapa-turystyczna.pl"
-                });
-            }
-        });
     </script>
 </body>
 </html>
