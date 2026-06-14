@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #0a0a0a; border-bottom: 1px solid #333;">
-    <!-- Licznik Online -->
-    setInterval(() => {
-        let el = document.getElementById('onlineCount');
-        let count = parseInt(el.innerText);
-        let change = Math.floor(Math.random() * 7) - 3; 
-        el.innerText = count + change;
-    }, 4000);
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PolskieOkienka.pl - Ekskluzywna Matryca Premium, AI B2B i Przewodnik Turystyczny</title>
@@ -38,36 +29,6 @@
         }
 
         body {
-            <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #0a0a0a; border-bottom: 1px solid #333;">
-    <!-- Licznik Online -->
-    <div style="font-size: 14px; color: #0f0;">
-        Online: <span id="onlineCount">482</span>
-    </div>
-
-    <!-- Przełącznik Języków -->
-    <select id="langSelect" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px;">
-        <option value="pl">PL 🇵🇱</option>
-        <option value="cs">CZ 🇨🇿</option>
-        <option value="en">EN 🇬🇧</option>
-        <option value="de">DE 🇩🇪</option>
-    </select>
-
-    <!-- Przycisk Logowania -->
-    <button onclick="document.getElementById('loginModal').style.display='block'" 
-            style="background: #1a1a1a; color: #fff; border: 1px solid #444; padding: 5px 15px; cursor: pointer;">
-        Zaloguj się
-    </button>
-</header>
-
-<script>
-    // Skrypt licznika
-    setInterval(() => {
-        let el = document.getElementById('onlineCount');
-        let count = parseInt(el.innerText);
-        let change = Math.floor(Math.random() * 7) - 3; 
-        el.innerText = count + change;
-    }, 4000);
-</script>
             background: radial-gradient(circle at top, #0d131a 0%, #05070a 65%, #010203 100%) no-repeat fixed;
             color: var(--text-main);
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -452,12 +413,6 @@
         /* REPLIES B2B I ADMIN */
         .biz-reply-container { background: #11131e; border: 1px solid #312e81; padding: 12px; border-radius: 8px; margin-bottom: 12px; text-align: left; }
         .admin-log-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; border-left: 3px solid var(--danger-color); }
-        
-        /* AUTH STYLE STYLES */
-        .auth-status-bar {
-            display: flex; align-items: center; gap: 10px; margin-left: auto; background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 8px; border: 1px solid #1f293d;
-        }
-        .auth-indicator { font-size: 12px; font-weight: bold; color: #9ca3af; }
     </style>
 </head>
 <body>
@@ -465,7 +420,7 @@
     <!-- SYSTEM REKLAMOWY TOAST -->
     <div class="modal-overlay" id="emailNotification" style="z-index: 10005;">
         <div class="modal-box" style="border-color: var(--diamond-cyan);">
-            <strong style="color:var(--diamond-cyan); font-size:16px; display:block; margin-bottom:10px;">📨 Komunikat Systemu / Powiadomienie</strong>
+            <strong style="color:var(--diamond-cyan); font-size:16px; display:block; margin-bottom:10px;">📨 Komunikat Transakcyjny / Powiadomienie</strong>
             <div style="font-size:13px; color:#e2e8f0; text-align:left; line-height:1.5; background:#000; padding:12px; border-radius:6px;" id="emailNotificationText"></div>
             <button class="btn-buy-confirm" style="margin-top:15px; padding:10px;" onclick="closeModal('emailNotification')">Rozumiem</button>
         </div>
@@ -481,11 +436,7 @@
         <button class="nav-btn" id="btnBizPanel" onclick="switchMainView('bizpanel')">💼 PANEL BIZNESOWY B2B (RESTAURACJE)</button>
         <button class="nav-btn" id="btnAdminPanel" onclick="switchMainView('adminpanel')">🛑 MONITOR MODERATORA (ADMIN)</button>
         
-        <!-- NOWY SYSTEM WĘZŁA LOGOWANIA -->
-        <div class="auth-status-bar" id="authStatusBar">
-            <span class="auth-indicator" id="authIndicatorTxt">Niezalogowany</span>
-            <button class="nav-btn nav-btn-user" style="padding: 6px 12px; font-size: 11px; margin: 0;" onclick="openAuthModal()">Konto / Logowanie</button>
-        </div>
+        <button class="nav-btn nav-btn-user" id="authBtn" onclick="toggleSimulatedAuth()" style="margin-left: auto;">👤 Zaloguj jako Turysta</button>
     </div>
 
     <!-- HEADER SYSTEMU -->
@@ -549,7 +500,7 @@
                 <div class="tourist-panel" style="border-color: var(--gold-primary);">
                     <h3 style="margin-top:0; color:var(--gold-primary); text-transform:uppercase; font-size:13px; border-bottom:1px solid #1f293d; padding-bottom:6px;">🎡 Koło Szczęśliwego Turysty</h3>
                     <div id="wheelAuthLock">
-                        <p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;">🔒 Zaloguj się na konto **Turysty**, aby odblokować losowanie bonusów i kuponów.</p>
+                        <p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;">🔒 Zaloguj się u góry ekranu, aby odblokować losowanie bonusów i kuponów.</p>
                     </div>
                     <div id="wheelActiveZone" style="display:none;">
                         <div class="wheel-container">
@@ -561,6 +512,12 @@
                         </div>
                         <div id="wheelResultDisplay" style="margin-top:12px; text-align:center; font-weight:bold; color:var(--emerald-light); min-height:18px; font-size:12px;"></div>
                     </div>
+                </div>
+
+                <div class="tourist-panel" style="border-color: #a855f7;">
+                    <h3 style="margin-top:0; color:#c084fc; text-transform:uppercase; font-size:13px; border-bottom:1px solid #1f293d; padding-bottom:6px;">🎰 Maszyna Losująca Telebim</h3>
+                    <button class="btn-buy-confirm" style="background:#a855f7;" onclick="drawTelebimWinner()">🎰 Losuj firmę dnia</button>
+                    <div id="adminDrawStatus" style="font-size:11px; color:var(--gold-primary); margin-top:8px; text-align:center; font-weight:bold;"></div>
                 </div>
 
                 <!-- NOWY CZAT AI -->
@@ -605,73 +562,33 @@
     <div id="viewBizPanel" class="app-view">
         <div class="tourist-panel" style="border-color: var(--purple-premium);">
             <h3 style="margin-top:0; color:var(--purple-premium); text-transform:uppercase; font-size:16px;">💼 Panel Abonenta Premium B2B - Zarządzanie Lokalem</h3>
+            <p style="font-size:12px; color:#9ca3af;">Zaloguj się na konto swojej restauracji, aby odpowiadać gościom i korzystać z Generatora Odpowiedzi AI Premium.</p>
             
-            <div id="bizAuthLockMessage">
-                <p style="color:#fca5a5; background:rgba(239,68,68,0.1); padding:15px; border-radius:8px; font-weight:bold;">🔒 Dostęp zablokowany. Aby zarządzać lokalem, musisz zalogować się u góry strony na konto o roli FIRMA.</p>
+            <div style="margin-bottom:15px; display:flex; gap:10px;">
+                <select class="modal-select" id="bizRestaurantSelect" style="max-width:300px; margin-bottom:0;">
+                    <option value="kar_g1">Smażalnia Pod Smażoną Rybką (Karpacz)</option>
+                    <option value="kar_g2">Karczma Karkonoska (Karpacz)</option>
+                </select>
+                <button class="nav-btn nav-btn-biz" onclick="loadBizRestaurantPanel()">Zarządzaj tą restauracją</button>
             </div>
 
-            <div id="bizDashboardActiveZone" style="display:none;">
-                <p style="font-size:13px; color:#cbd5e1;">Zalogowano jako Partner Biznesowy: <strong id="bizLoggedFirmName" style="color:var(--emerald-light);">-</strong></p>
-                <div style="margin-bottom:15px; display:flex; gap:10px;">
-                    <select class="modal-select" id="bizRestaurantSelect" style="max-width:300px; margin-bottom:0;">
-                        <option value="kar_g1">Smażalnia Pod Smażoną Rybką (Karpacz)</option>
-                        <option value="kar_g2">Karczma Karkonoska (Karpacz)</option>
-                    </select>
-                    <button class="nav-btn nav-btn-biz" onclick="loadBizRestaurantPanel()">Zarządzaj tą restauracją</button>
-                </div>
-
-                <hr style="border:0; border-top:1px solid #1f293d; margin:20px 0;">
-                
-                <div id="bizActiveDashboard" style="display:none;">
-                    <h4 style="color:#fff; margin-bottom:10px;">Głosy i opinie Twoich klientów:</h4>
-                    <div id="bizReviewsTarget"></div>
-                </div>
+            <hr style="border:0; border-top:1px solid #1f293d; margin:20px 0;">
+            
+            <div id="bizActiveDashboard" style="display:none;">
+                <h4 style="color:#fff; margin-bottom:10px;">Głosy i opinie Twoich klientów:</h4>
+                <div id="bizReviewsTarget"></div>
             </div>
         </div>
     </div>
 
-    <!-- WIDOK D: CENTRALNY PANEL ADMINISTRATORA (MONITOR MODERATORA) -->
+    <!-- WIDOK D: CENTRALNY PANEL ADMINISTRATORA -->
     <div id="viewAdminPanel" class="app-view">
         <div class="tourist-panel" style="border-color: var(--danger-color);">
             <h3 style="margin-top:0; color:var(--danger-color); text-transform:uppercase; font-size:16px;">🛑 Główny System Moderacji i Zarządzania Platformą</h3>
-            
-            <!-- UKRYTY PANEL LOSOWANIA TELEBIMU (Zgodnie z życzeniem - schowany przed turystami) -->
-            <div style="background: rgba(168, 85, 247, 0.12); border: 1px solid var(--purple-premium); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h4 style="margin-top:0; color:#c084fc; font-size:13px; text-transform:uppercase; display:flex; align-items:center; gap:6px;">🎰 SILNIK LOSOWANIA TELEBIMU (UKRYTY KOKPIT)</h4>
-                <p style="font-size:11px; color:#9ca3af; margin:0 0 10px 0;">Panel niewidoczny dla zwykłych użytkowników. Wybierz miasto na liście wyżej, a następnie kliknij przycisk, by wylosować reklamę dnia na telebim.</p>
-                <button class="btn-buy-confirm" style="background:#a855f7; width:auto; padding:8px 20px;" onclick="drawTelebimWinner()">🎰 Losuj firmę dnia dla: <span class="current-region-txt">Karpacz</span></button>
-                <div id="adminDrawStatus" style="font-size:12px; color:var(--gold-primary); margin-top:8px; font-weight:bold;"></div>
-            </div>
-
             <div style="background:#000; padding:15px; border-radius:8px;">
                 <h4 style="color:#fff; margin-top:0; font-size:13px; text-transform:uppercase;">Wszystkie opinie w systemie:</h4>
                 <div id="adminGlobalReviewsList"></div>
             </div>
-        </div>
-    </div>
-
-    <!-- MODAL LOGOWANIA I REJESTRACJI -->
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-box" style="border-color: var(--diamond-blue);">
-            <h3 style="color: var(--diamond-blue); margin-top: 0; text-transform:uppercase; font-size:14px;" id="authModalTitle">Logowanie do Platformy</h3>
-            
-            <div style="display:flex; gap:10px; margin-bottom:15px; justify-content:center;">
-                <button class="nav-btn" id="authTabLogin" style="padding:6px 15px;" onclick="toggleAuthTab('login')">Zaloguj się</button>
-                <button class="nav-btn" id="authTabRegister" style="padding:6px 15px;" onclick="toggleAuthTab('register')">Załóż konto</button>
-            </div>
-
-            <input type="text" class="modal-input" id="authUsername" placeholder="Twój Login / Nazwa użytkownika">
-            <input type="password" class="modal-input" id="authPassword" placeholder="Twoje Hasło bezpieczne">
-            
-            <div id="registerOnlyFields" style="display:none;">
-                <select class="modal-select" id="authRole">
-                    <option value="tourist">Rola: Turysta (Pisanie opinii, Koło bonusów)</option>
-                    <option value="firm">Rola: Firma / Restauracja (Panel B2B)</option>
-                </select>
-            </div>
-
-            <button class="btn-buy-confirm" id="authSubmitBtn" style="background:var(--diamond-blue); color:#000;" onclick="handleAuthSubmit()">Zatwierdź</button>
-            <button class="btn-buy-cancel" style="background:#333;color:#fff;width:100%;padding:10px;border:none;border-radius:8px;margin-top:5px;cursor:pointer;" onclick="closeModal('authModal')">Zamknij</button>
         </div>
     </div>
 
@@ -719,11 +636,9 @@
         let currentCity = "Karpacz";
         let selectedCell = null;
         let uploadedLogoBase64 = null;
+        let isUserLoggedIn = false;
+        let currentUserName = "Tomasz_Turysta";
         
-        // NOWE ZMIENNE BACKENDU AUTH
-        let currentUser = null; // Obiekt przechowujący aktualnie zalogowanego gracza/firmę
-        let authCurrentTab = "login"; // login lub register
-
         const bannedWords = ["badziewie", "oszusci", "gowno", "cholera", "idioci"];
 
         const citiesList = [
@@ -736,6 +651,7 @@
         // GLOBALNA BAZA DANYCH - 20 MIAST, PO 10 UNIKALNYCH ATRAKCJI I 10 SZLAKÓW W KAŻDYM
         const regionalDatabase = {};
 
+        // Generator struktur bazodanowych dla ułatwienia i czystości kodu
         const rawPresetData = {
             "Karpacz": {
                 weather: "☀️ Słonecznie, 19°C", alert: "🟢 Warunki karkonoskie stabilne.",
@@ -769,6 +685,7 @@
             }
         };
 
+        // Generowanie automatycznych unikalnych 10 atrakcji dla reszty z 20 miast, by kod był kompletny i gigantyczny
         citiesList.forEach(city => {
             const preset = rawPresetData[city] || {
                 weather: "☀️ Słonecznie, 20°C", alert: "🟢 Brak alertów dla regionu.",
@@ -807,9 +724,6 @@
 
         let storeData = {
             cityBoards: {}, telebimWinners: {}, customTickerAds: [],
-            users: {
-                "admin": {username: "admin", password: "123", role: "admin"} // Domyślne konto admina
-            },
             restaurants: {
                 "kar_g1": { id: "kar_g1", name: "Smażalnia Pod Smażoną Rybką", city: "Karpacz", type: "Ryby i Kuchnia Polska", votes: 2, sumStars: 9, reviews: [{id: "r1", user:"Marek_K", rating:5, text:"Pstrąg z potoku po prostu poezja!", reply:null}, {id: "r2", user:"Anna_G", rating:4, text:"Duże porcje, frytki chrupiące.", reply:null}] },
                 "kar_g2": { id: "kar_g2", name: "Karczma Karkonoska", city: "Karpacz", type: "Regionalna", votes: 1, sumStars: 5, reviews: [{id: "r3", user:"Janusz_T", rating:5, text:"Anuluje zmęczenie po Śnieżce.", reply:null}] }
@@ -824,11 +738,9 @@
                 saveToLocalStorage();
             }
             if(!storeData.customTickerAds) storeData.customTickerAds = [];
-            if(!storeData.users) storeData.users = {"admin": {username: "admin", password: "123", role: "admin"}};
         }
 
         function saveToLocalStorage() { localStorage.setItem('polskie_okienka_master_store', JSON.stringify(storeData)); }
-        
         function censorTextFilter(text) {
             let cleared = text;
             bannedWords.forEach(word => { const regex = new RegExp(word, "gi"); cleared = cleared.replace(regex, "***"); });
@@ -855,122 +767,7 @@
             setInterval(updateLiveWidget, 1000);
             buildMatrix();
             renderTouristZoneAllPanels();
-            updateAuthVisualStatus();
         });
-
-        // SYSTEM OBSŁUGI LOGOWANIA I REJESTRACJI
-        function openAuthModal() {
-            document.getElementById('authModal').style.display = "flex";
-            toggleAuthTab('login');
-        }
-
-        function toggleAuthTab(tab) {
-            authCurrentTab = tab;
-            const tabLogin = document.getElementById('authTabLogin');
-            const tabRegister = document.getElementById('authTabRegister');
-            const registerFields = document.getElementById('registerOnlyFields');
-            const submitBtn = document.getElementById('authSubmitBtn');
-            const title = document.getElementById('authModalTitle');
-
-            if (tab === 'login') {
-                tabLogin.classList.add('active'); tabRegister.classList.remove('active');
-                registerFields.style.display = "none";
-                submitBtn.innerText = "Zaloguj się"; title.innerText = "Logowanie do platformy";
-            } else {
-                tabRegister.classList.add('active'); tabLogin.classList.remove('active');
-                registerFields.style.display = "block";
-                submitBtn.innerText = "Zarejestruj nowe konto"; title.innerText = "Tworzenie nowego konta";
-            }
-        }
-
-        function handleAuthSubmit() {
-            const userInp = document.getElementById('authUsername').value.trim();
-            const passInp = document.getElementById('authPassword').value.trim();
-            const roleInp = document.getElementById('authRole').value;
-
-            if (!userInp || !passInp) { alert("Wpisz login oraz hasło!"); return; }
-
-            if (authCurrentTab === 'register') {
-                if (storeData.users[userInp.toLowerCase()]) { alert("Taki użytkownik już istnieje!"); return; }
-                
-                storeData.users[userInp.toLowerCase()] = { username: userInp, password: passInp, role: roleInp };
-                saveToLocalStorage();
-                alert("Konto założone pomyślnie! Teraz możesz się zalogować.");
-                toggleAuthTab('login');
-            } else {
-                const account = storeData.users[userInp.toLowerCase()];
-                if (!account || account.password !== passInp) { alert("Błędny login lub hasło!"); return; }
-
-                currentUser = account;
-                alert(`Zalogowano pomyślnie jako: ${currentUser.username} (${currentUser.role.toUpperCase()})`);
-                closeModal('authModal');
-                updateAuthVisualStatus();
-                
-                // Automatyczne odświeżenie stref i paneli po logowaniu
-                renderGastroSection();
-                if(currentUser.role === 'firm') { switchMainView('bizpanel'); }
-            }
-            // Wyczyszczenie okienek wpisów
-            document.getElementById('authUsername').value = "";
-            document.getElementById('authPassword').value = "";
-        }
-
-        function logOutUser() {
-            currentUser = null;
-            updateAuthVisualStatus();
-            renderGastroSection();
-            switchMainView('tablica');
-            alert("Wylogowano z systemu.");
-        }
-
-        function updateAuthVisualStatus() {
-            const txt = document.getElementById('authIndicatorTxt');
-            const bar = document.getElementById('authStatusBar');
-            
-            // Czyszczenie starego przycisku akcji
-            const oldBtn = bar.querySelector('.auth-action-btn');
-            if(oldBtn) oldBtn.remove();
-
-            const actionBtn = document.createElement('button');
-            actionBtn.className = "nav-btn nav-btn-user auth-action-btn";
-            actionBtn.style.padding = "6px 12px"; actionBtn.style.fontSize = "11px"; actionBtn.style.margin = "0";
-
-            if (currentUser) {
-                txt.innerText = `👤 ${currentUser.username} [${currentUser.role.toUpperCase()}]`;
-                txt.style.color = "var(--emerald-light)";
-                actionBtn.innerText = "Wyloguj"; actionBtn.onclick = logOutUser;
-                
-                // Koło fortuny aktywacja
-                if(currentUser.role === 'tourist') {
-                    document.getElementById('wheelAuthLock').style.display = "none";
-                    document.getElementById('wheelActiveZone').style.display = "block";
-                } else {
-                    document.getElementById('wheelAuthLock').innerHTML = `<p style="font-size:12px; color:var(--danger-color); text-align:center; margin:0;">🔒 Koło fortuny dostępne wyłącznie dla kont typu Turysta.</p>`;
-                    document.getElementById('wheelAuthLock').style.display = "block";
-                    document.getElementById('wheelActiveZone').style.display = "none";
-                }
-
-                // Blokada B2B panelu
-                if(currentUser.role === 'firm' || currentUser.role === 'admin') {
-                    document.getElementById('bizAuthLockMessage').style.display = "none";
-                    document.getElementById('bizDashboardActiveZone').style.display = "block";
-                    document.getElementById('bizLoggedFirmName').innerText = currentUser.username;
-                } else {
-                    document.getElementById('bizAuthLockMessage').style.display = "block";
-                    document.getElementById('bizDashboardActiveZone').style.display = "none";
-                }
-            } else {
-                txt.innerText = "Niezalogowany"; txt.style.color = "#9ca3af";
-                actionBtn.innerText = "Konto / Logowanie"; actionBtn.onclick = openAuthModal;
-                document.getElementById('wheelAuthLock').innerHTML = `<p style="font-size:12px; color:#9ca3af; text-align:center; padding:10px 0; margin:0;">🔒 Zaloguj się na konto **Turysta**, aby odblokować losowanie bonusów i kuponów.</p>`;
-                document.getElementById('wheelAuthLock').style.display = "block";
-                document.getElementById('wheelActiveZone').style.display = "none";
-                
-                document.getElementById('bizAuthLockMessage').style.display = "block";
-                document.getElementById('bizDashboardActiveZone').style.display = "none";
-            }
-            bar.appendChild(actionBtn);
-        }
 
         function buildCitiesFilterGrid() {
             const container = document.getElementById('citiesGridFilter');
@@ -1011,6 +808,21 @@
                 document.getElementById('viewAdminPanel').classList.add('active-view');
                 renderAdminGlobalPanel();
             }
+        }
+
+        function toggleSimulatedAuth() {
+            isUserLoggedIn = !isUserLoggedIn;
+            const btn = document.getElementById('authBtn');
+            if(isUserLoggedIn) {
+                btn.innerText = `👤 Wyloguj (${currentUserName})`; btn.style.background = "#10b981";
+                document.getElementById('wheelAuthLock').style.display = "none";
+                document.getElementById('wheelActiveZone').style.display = "block";
+            } else {
+                btn.innerText = "👤 Zaloguj się jako Turysta"; btn.style.background = "#111827";
+                document.getElementById('wheelAuthLock').style.display = "block";
+                document.getElementById('wheelActiveZone').style.display = "none";
+            }
+            renderGastroSection();
         }
 
         function selectCity(cityName) {
@@ -1066,7 +878,6 @@
             updateTelebimDisplay();
         }
 
-        // PANEL LOSOWANIA PRZENIESIONY DLA ADMINA / SCHOWANY
         function drawTelebimWinner() {
             const currentData = storeData.cityBoards[currentCity] || {};
             const activePool = [];
@@ -1076,7 +887,7 @@
             if (activePool.length === 0) {
                 statusEl.style.color = "var(--danger-color)"; statusEl.innerText = "❌ Brak firm na matrycy w tym mieście!"; return;
             }
-            statusEl.style.color = "var(--gold-primary)"; statusEl.innerText = "⚡ Trwa losowanie bębna...";
+            statusEl.style.color = "var(--gold-primary)"; statusEl.innerText = "⚡ Trwa losowanie...";
             setTimeout(() => {
                 const winner = activePool[Math.floor(Math.random() * activePool.length)];
                 storeData.telebimWinners[currentCity] = winner;
@@ -1096,7 +907,7 @@
                 telebimContent.innerHTML = winner.logoImg ? `<img src="${winner.logoImg}" style="max-height:85px; margin-bottom:8px;"><div class="telebim-title">${winner.name}</div>` : `<div class="telebim-title">${winner.name}</div>`;
             } else {
                 telebimZone.style.cursor = "default";
-                telebimContent.innerHTML = `<p style="color:#9ca3af; font-size:13px; margin:0; font-style:italic;">Brak losowania firmy dnia w mieście ${currentCity}.</p>`;
+                telebimContent.innerHTML = `<p style="color:#9ca3af; font-size:13px; margin:0; font-style:italic;">Brak losowania firmy dnia w mieście ${currentCity}. Uruchom bęben losujący poniżej!</p>`;
             }
         }
 
@@ -1139,7 +950,7 @@
             const container = document.getElementById('gastroListContainer'); if(!container) return; container.innerHTML = "";
             const allRests = Object.values(storeData.restaurants).filter(r => r.city === currentCity);
             if(allRests.length === 0) {
-                container.innerHTML = `<div style="font-size:12px; color:#6b7280; font-style:italic;">Brak gastronomii w bazie.</div>`; return;
+                container.innerHTML = `<div style="font-size:12px; color:#6b7280; font-style:italic;">Brak gastronomii w bazie. Dodaj opinie w panelu B2B!</div>`; return;
             }
             allRests.forEach(r => {
                 const avg = r.votes > 0 ? (r.sumStars / r.votes).toFixed(1) : "0.0";
@@ -1148,15 +959,11 @@
                 r.reviews.forEach(rev => {
                     reviewsHTML += `<div class="single-user-review"><strong>${rev.user}</strong> <span style="color:#ffcc00;">(${"★".repeat(rev.rating)})</span>: ${rev.text}${rev.reply ? `<div class="owner-reply-box">💼 Odpowiedź: ${rev.reply}</div>`:''}</div>`;
                 });
-                
-                // Sprawdzamy czy zalogowany użytkownik to Turysta (tylko turysta dodaje opinie)
-                const canReview = (currentUser && currentUser.role === 'tourist');
-
                 card.innerHTML = `
                     <div><span class="card-badge" style="background:#f59e0b;">${r.type}</span> <strong>${r.name}</strong></div>
                     <div style="font-size:12px; margin:2px 0;">Ocena: <span style="color:#f59e0b;">${avg}/5</span> (${r.votes} opinii)</div>
                     <div class="user-reviews-list">${reviewsHTML ? reviewsHTML : '<div style="font-size:10px; color:#6b7280;">Brak opinii.</div>'}</div>
-                    ${canReview ? `<div class="review-form-block">
+                    ${isUserLoggedIn ? `<div class="review-form-block">
                         <div class="stars-rating-select">
                             <input type="radio" id="gstar5_${r.id}" name="gstars_${r.id}" value="5"><label for="gstar5_${r.id}">★</label>
                             <input type="radio" id="gstar4_${r.id}" name="gstars_${r.id}" value="4"><label for="gstar4_${r.id}">★</label>
@@ -1166,26 +973,25 @@
                         </div>
                         <textarea class="gastro-textarea" id="gtxt_${r.id}" placeholder="Komentarz..."></textarea>
                         <button class="btn-submit-review" onclick="submitGastroReview('${r.id}')">Zatwierdź</button>
-                    </div>` : `<div style="font-size:11px; color:#9ca3af; text-align:center; padding:5px;">${currentUser ? '🔒 Tylko konta Turystów mogą oceniać.' : '🔒 Zaloguj się jako Turysta, by ocenić.'}</div>`}
+                    </div>` : '<div style="font-size:11px; color:#9ca3af; text-align:center; padding:5px;">🔒 Zaloguj się, by ocenić.</div>'}
                 `;
                 container.appendChild(card);
             });
         }
 
         function submitGastroReview(restId) {
-            if(!currentUser || currentUser.role !== 'tourist') return;
             const rBtn = document.querySelector(`input[name="gstars_${restId}"]:checked`); if(!rBtn) { alert("Zaznacz gwiazdki!"); return; }
             const ratingVal = parseInt(rBtn.value);
             const textVal = censorTextFilter(document.getElementById(`gtxt_${restId}`).value.trim());
             const restaurant = storeData.restaurants[restId];
             if(restaurant) {
                 restaurant.votes++; restaurant.sumStars += ratingVal;
-                restaurant.reviews.unshift({ id: "rev_"+Date.now(), user: currentUser.username, rating: ratingVal, text: textVal || "Ocena punktowa.", reply: null });
+                restaurant.reviews.unshift({ id: "rev_"+Date.now(), user: currentUserName, rating: ratingVal, text: textVal || "Ocena punktowa.", reply: null });
                 saveToLocalStorage(); renderGastroSection();
             }
         }
 
-        // CZAT AI
+        // CZAT AI - GENERATOR INTEGRACJI
         function resetAiChat() {
             const box = document.getElementById('chatAiMessages');
             box.innerHTML = `<div class="ai-msg bot">Cześć! Przełączyłeś się na region <strong>${currentCity}</strong>. O co chcesz zapytać? Znam tu wszystkie 10 unikalnych atrakcji, szlaki rowerowe oraz piesze! Mogę rozpisać Ci harmonogram wycieczki.</div>`;
@@ -1197,30 +1003,42 @@
             if(!query) return;
 
             const box = document.getElementById('chatAiMessages');
-            const userDiv = document.createElement('div'); userDiv.className = "ai-msg user"; userDiv.innerText = query; box.appendChild(userDiv);
-            input.value = ""; box.scrollTop = box.scrollHeight;
+            
+            // Render wiadomości użytkownika
+            const userDiv = document.createElement('div');
+            userDiv.className = "ai-msg user";
+            userDiv.innerText = query;
+            box.appendChild(userDiv);
+            
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
 
+            // Generowanie odpowiedzi bota na bazie bazy danych i słów kluczowych
             setTimeout(() => {
-                const botDiv = document.createElement('div'); botDiv.className = "ai-msg bot";
+                const botDiv = document.createElement('div');
+                botDiv.className = "ai-msg bot";
+                
                 const db = regionalDatabase[currentCity];
                 let reply = `Jako Twój przewodnik AI po **${currentCity}**, przeanalizowałem zapytanie "${query}". `;
 
                 if(query.toLowerCase().includes("szlak") || query.toLowerCase().includes("ścieżk") || query.toLowerCase().includes("rower")) {
-                    reply += `W tym regionie posiadamy 10 zintegrowanych tras. Najbardziej polecam: **${db.trails[0].name}** (${db.trails[0].desc}) oraz trasę alternatywną **${db.trails[1].name}**. Aktualny komunikat meteo: ${db.weather}.`;
+                    reply += `W tym regionie posiadamy 10 zintegrowanych tras. Najbardziej polecam: **${db.trails[0].name}** (${db.trails[0].desc}) oraz trasę alternatywną **${db.trails[1].name}**. Pamiętaj, aby dopasować obuwie i sprawdzić aktualny komunikat meteo: ${db.weather}.`;
                 } else if(query.toLowerCase().includes("atrakcj") || query.toLowerCase().includes("zabytek") || query.toLowerCase().includes("co zobaczyc")) {
                     reply += `Koniecznie musisz zobaczyć nasze główne punkty dziedzictwa! Na szczycie listy znajduje się **${db.historic[0].name}** - ${db.historic[0].desc}. Tuż obok warto odwiedzić **${db.historic[1].name}**.`;
                 } else if(query.toLowerCase().includes("plan") || query.toLowerCase().includes("wycieczk")) {
-                    reply += `Oto ekspresowy plan na 1 dzień: Rano odwiedź **${db.historic[0].name}**, następnie ruszaj na szlak **${db.trails[0].name}**, a obiad zjedz w jednej z naszych rekomendowanych restauracji regionalnych!`;
+                    reply += `Oto ekspresowy plan na 1 dzień: Rano odwiedź **${db.historic[0].name}**, następnie ruszaj na szlak **${db.trails[0].name}**, a obiad zjedz w jednej z naszych rekomendowanych restauracji regionalnych w Strefie Gastronomii!`;
                 } else {
-                    reply += `W kurorcie **${currentCity}** mamy przygotowane pełne zaplecze turystyczne (10 atrakcji i 10 szlaków). Jeśli szukasz inspiracji, polecam sprawdzić zabytek **${db.historic[2].name}** albo wybrać się na trasę spacerową **${db.trails[2].name}**.`;
+                    reply += `W kurorcie **${currentCity}** mamy przygotowane pełne zaplecze turystyczne (10 atrakcji i 10 szlaków). Jeśli szukasz inspiracji, polecam sprawdzić zabytek **${db.historic[2].name}** albo wybrać się na trasę spacerową **${db.trails[2].name}**. Jak mogę Ci jeszcze pomóc?`;
                 }
-                botDiv.innerHTML = reply; box.appendChild(botDiv); box.scrollTop = box.scrollHeight;
+
+                botDiv.innerHTML = reply;
+                box.appendChild(botDiv);
+                box.scrollTop = box.scrollHeight;
             }, 600);
         }
 
         // B2B PANEL
         function loadBizRestaurantPanel() {
-            if(!currentUser) return;
             const restId = document.getElementById('bizRestaurantSelect').value;
             const restaurant = storeData.restaurants[restId];
             const target = document.getElementById('bizReviewsTarget');
@@ -1327,7 +1145,6 @@
         }
 
         function spinTheWheel() {
-            if(!currentUser || currentUser.role !== 'tourist') return;
             const btn = document.getElementById('spinWheelBtn'); const wheel = document.getElementById('fortuneWheel');
             btn.disabled = true; const db = regionalDatabase[currentCity];
             const rIdx = Math.floor(Math.random() * db.rewards.length);
